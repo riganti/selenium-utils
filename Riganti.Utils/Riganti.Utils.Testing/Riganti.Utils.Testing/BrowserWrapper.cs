@@ -14,18 +14,30 @@ namespace Riganti.Utils.Testing.SeleniumCore
 {
     public class BrowserWrapper
     {
-        private readonly IWebDriver browser;
+        // ReSharper disable once InconsistentNaming
+        protected readonly IWebDriver browser;
+
         public IWebDriver Browser => browser;
 
         public BrowserWrapper(IWebDriver browser)
         {
             this.browser = browser;
             SetCssSelector();
+            var timeouts = browser.Manage().Timeouts();
+            timeouts.SetPageLoadTimeout(TimeSpan.FromSeconds(15));
+            timeouts.ImplicitlyWait(TimeSpan.FromMilliseconds(150));
+        }
+
+        public void SetTimeouts(TimeSpan pageLoadTimeout, TimeSpan implicitlyWait)
+        {
+            var timeouts = browser.Manage().Timeouts();
+            timeouts.SetPageLoadTimeout(pageLoadTimeout);
+            timeouts.ImplicitlyWait(implicitlyWait);
         }
 
         private Func<string, By> selectorPreprocessMethod;
 
-        public virtual Func<string, By> SelectorPreprocessor
+        public virtual Func<string, By> SelectorPreprocessMethod
         {
             get { return selectorPreprocessMethod; }
             set
@@ -117,7 +129,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <returns></returns>
         public ElementWrapperCollection FindElements(string selector)
         {
-            return browser.FindElements(SelectorPreprocessor(selector)).ToElementsList(this, selector);
+            return browser.FindElements(SelectorPreprocessMethod(selector)).ToElementsList(this, selector);
         }
 
         public ElementWrapper FirstOrDefault(string selector)
@@ -156,7 +168,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return FindElements(selector).LastOrDefault();
         }
 
-        public void Blur()
+        public void FireJsBlur()
         {
             var jsExecutor = browser as IJavaScriptExecutor;
             jsExecutor?.ExecuteScript("if(document.activeElement && document.activeElement.blur) {document.activeElement.blur()}");

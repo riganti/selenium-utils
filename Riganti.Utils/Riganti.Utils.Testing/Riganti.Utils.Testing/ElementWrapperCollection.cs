@@ -130,6 +130,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
         }
 
+        public IEnumerable<TResult> Select<TResult>(Func<ElementWrapper, TResult> selector)
+        {
+            return collection.Select(selector);
+        }
+
         public ElementWrapper this[int index]
         {
             get { return collection[index]; }

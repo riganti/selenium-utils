@@ -28,7 +28,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public ElementWrapper CheckTagName(string expectedTagName)
         {
-            if (string.Equals(GetTagName(), expectedTagName, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(GetTagName(), expectedTagName, StringComparison.OrdinalIgnoreCase))
             {
                 throw new UnexpectedElementStateException($"Element has wrong tagName. Expected value: '{expectedTagName}', Provided value: '{GetTagName()}'");
             }
@@ -37,7 +37,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public ElementWrapper CheckTagName(Func<string, bool> expression)
         {
-            if (expression(GetTagName()))
+            if (!expression(GetTagName()))
             {
                 throw new UnexpectedElementStateException($"Element has wrong tagName. Provided value: '{GetTagName()}'");
             }
@@ -90,7 +90,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             var selectElm = new SelectElement(element);
             selectElm.SelectByValue(value);
-            browser.Blur();
             Wait();
             return this;
         }
@@ -99,7 +98,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             var selectElm = new SelectElement(element);
             process(selectElm);
-            browser.Blur();
             Wait();
             return this;
         }
@@ -108,7 +106,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             var selectElm = new SelectElement(element);
             process(selectElm);
-            browser.Blur();
             Wait();
             return this;
         }
@@ -121,7 +118,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 attribute = attribute.Trim();
                 value = value.Trim();
             }
-            if (string.Equals(value, attributeName,
+            if (!string.Equals(value, attributeName,
                 caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
             {
                 throw new UnexpectedElementStateException($"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{attribute}'");
@@ -154,7 +151,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <returns></returns>
         public virtual ElementWrapperCollection FindElements(string selector)
         {
-            return element.FindElements(By.CssSelector(selector)).ToElementsList(browser, selector, this);
+            return element.FindElements(browser.SelectorPreprocessMethod(selector)).ToElementsList(browser, selector, this);
         }
 
         public virtual ElementWrapper FirstOrDefault(string selector)
