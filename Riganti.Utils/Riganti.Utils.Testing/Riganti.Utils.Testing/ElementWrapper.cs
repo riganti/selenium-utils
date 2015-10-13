@@ -10,20 +10,38 @@ using System.Threading;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
-    public class ElementWrapper
+    public class ElementWrapper : ISeleniumWrapper
     {
         private readonly IWebElement element;
         private readonly BrowserWrapper browser;
+
+        public string Selector { get; set; }
+        public string FullSelector => GenerateFullSelector();
+
         public int ActionWaitTime { get; set; } = 100;
 
         public IWebElement WebElement => element;
 
         public BrowserWrapper BrowserWrapper => browser;
+        public ISeleniumWrapper Parent { get; set; }
 
         public ElementWrapper(IWebElement webElement, BrowserWrapper browserWrapper)
         {
             element = webElement;
             browser = browserWrapper;
+        }
+
+        private string GenerateFullSelector()
+        {
+            var parentSelector = Parent.FullSelector;
+            var parent = Parent as ElementWrapperCollection;
+            if (parent != null)
+            {
+                var index = parent.IndexOf(this);
+                parentSelector = string.IsNullOrWhiteSpace(parent.FullSelector) ? "" : parent.FullSelector.Trim() + $":nth-child({index})";
+                return $"{parentSelector}".Trim();
+            }
+            return $"{Selector}".Trim();
         }
 
         public ElementWrapper CheckTagName(string expectedTagName)
@@ -151,7 +169,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <returns></returns>
         public virtual ElementWrapperCollection FindElements(string selector)
         {
-            return element.FindElements(browser.SelectorPreprocessMethod(selector)).ToElementsList(browser, selector, this);
+            var collection = element.FindElements(browser.SelectorPreprocessMethod(selector)).ToElementsList(browser, selector, this);
+            collection.Parent = this;
+            return collection;
         }
 
         public virtual ElementWrapper FirstOrDefault(string selector)
@@ -226,6 +246,15 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
+        public virtual ElementWrapper CheckIfIsNotDisplayed()
+        {
+            if (IsDisplayed())
+            {
+                throw new UnexpectedElementStateException("Element is displayed and should not be.");
+            }
+            return this;
+        }
+
         public virtual ElementWrapper CheckIfIsEnabled()
         {
             if (!IsEnabled())
@@ -237,7 +266,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public ElementWrapper CheckIfIsSelected()
         {
-            if (!IsDisplayed())
+            if (!IsSelected())
             {
                 throw new UnexpectedElementStateException("Element is not selected.");
             }
@@ -249,6 +278,33 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (string.IsNullOrWhiteSpace(GetText()))
             {
                 throw new UnexpectedElementStateException("Element doesn't contain text.");
+            }
+            return this;
+        }
+
+        public virtual ElementWrapper CheckIfIsNotEnabled()
+        {
+            if (IsEnabled())
+            {
+                throw new UnexpectedElementStateException("Element is enabled and should not be.");
+            }
+            return this;
+        }
+
+        public ElementWrapper CheckIfIsNotSelected()
+        {
+            if (IsSelected())
+            {
+                throw new UnexpectedElementStateException("Element is selected and should not be.");
+            }
+            return this;
+        }
+
+        public virtual ElementWrapper CheckIfDoesNotContainsText()
+        {
+            if (!string.IsNullOrWhiteSpace(GetText()))
+            {
+                throw new UnexpectedElementStateException("Element does contain text. Element should be empty.");
             }
             return this;
         }

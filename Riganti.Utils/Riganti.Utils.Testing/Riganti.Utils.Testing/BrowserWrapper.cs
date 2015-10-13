@@ -1,12 +1,16 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
+using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
+using System.Data.SqlTypes;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -43,7 +47,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             set
             {
                 if (value == null)
-                { throw new Exception("Wrong selector preprocess methode."); }
+                { throw new ArgumentNullException("Wrong selector preprocess method."); }
                 selectorPreprocessMethod = value;
             }
         }
@@ -92,7 +96,42 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public void NavigateToUrl(string url)
         {
-            browser.Navigate().GoToUrl(url);
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                if (string.IsNullOrWhiteSpace(SeleniumTestsConfiguration.BaseUrl))
+                {
+                    throw new InvalidRedirectException();
+                }
+                browser.Navigate().GoToUrl(SeleniumTestsConfiguration.BaseUrl);
+                return;
+            }
+            //redirect if is absolute
+            if (Uri.IsWellFormedUriString(url, UriKind.Absolute) || url.StartsWith("//"))
+            {
+                browser.Navigate().GoToUrl(url);
+                return;
+            }
+
+            var builder = new UriBuilder(SeleniumTestsConfiguration.BaseUrl);
+
+            // replace url fragments
+            if (url.StartsWith("/"))
+            {
+                builder.Path = url;
+                browser.Navigate().GoToUrl(builder.ToString());
+                return;
+            }
+            // setup fragments (join urls)
+            var path = builder.Path;
+            path = path + (path.EndsWith("/") ? "" : "/");
+            builder.Path = path + url;
+
+            browser.Navigate().GoToUrl(builder.ToString());
+        }
+
+        public void NavigateToUrl()
+        {
+            NavigateToUrl(null);
         }
 
         public void NavigateBack()
@@ -125,11 +164,21 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// Finds all elements that satisfy the condition of css selector.
         /// </summary>
+        /// <param name="cssSelector"></param>
+        /// <returns></returns>
+        public ElementWrapperCollection FindElements(string cssSelector)
+        {
+            return browser.FindElements(SelectorPreprocessMethod(cssSelector)).ToElementsList(this, SelectorPreprocessMethod(cssSelector).GetSelector());
+        }
+
+        /// <summary>
+        /// Finds all elements that satisfy the condition of css selector.
+        /// </summary>
         /// <param name="selector"></param>
         /// <returns></returns>
-        public ElementWrapperCollection FindElements(string selector)
+        public ElementWrapperCollection FindElements(By selector)
         {
-            return browser.FindElements(SelectorPreprocessMethod(selector)).ToElementsList(this, selector);
+            return browser.FindElements(selector).ToElementsList(this, selector.GetSelector());
         }
 
         public ElementWrapper FirstOrDefault(string selector)
@@ -151,6 +200,35 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public ElementWrapper Single(string selector)
         {
             return FindElements(selector).Single();
+        }
+
+        public bool IsDisplayed(string selector)
+        {
+            return FindElements(selector).All(s => s.IsDisplayed());
+        }
+
+        public ElementWrapperCollection CheckIfIsDisplayed(string selector)
+        {
+            var collection = FindElements(selector);
+            var result = collection.All(s => s.IsDisplayed());
+            if (!result)
+            {
+                var index = collection.IndexOf(collection.First(s => !s.IsDisplayed()));
+                throw new UnexpectedElementStateException($"One or more elements are not displayed. Selector '{selector}', Index of non-displayed element: {index}");
+            }
+            return collection;
+        }
+
+        public ElementWrapperCollection CheckIfIsNotDisplayed(string selector)
+        {
+            var collection = FindElements(selector);
+            var result = collection.All(s => s.IsDisplayed()) && collection.Any();
+            if (result)
+            {
+                var index = collection.Any() ? collection.IndexOf(collection.First(s => !s.IsDisplayed())) : -1;
+                throw new UnexpectedElementStateException($"One or more elements are displayed and they shouldn't be. Selector '{selector}', Index of non-displayed element: {index}");
+            }
+            return collection;
         }
 
         public ElementWrapper ElementAt(string selector, int index)

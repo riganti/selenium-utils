@@ -1,6 +1,6 @@
+using OpenQA.Selenium;
 using System;
 using System.Runtime.Serialization;
-using OpenQA.Selenium;
 
 namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
 {

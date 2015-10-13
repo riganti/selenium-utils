@@ -27,6 +27,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 {
                     StartFirefoxDriver = TryParseBool(value);
                 }
+                if (string.Equals(key, GetSettingsKey("baseurl"), StringComparison.OrdinalIgnoreCase))
+                {
+                    BaseUrl = value;
+                }
+
                 if (string.Equals(key, GetSettingsKey("testattemptscount"), StringComparison.OrdinalIgnoreCase))
                 {
                     try
@@ -44,6 +49,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 }
             }
         }
+
+        public static string BaseUrl { get; set; }
 
         public const string ConfigurationAppSettingsKeyPrefix = "selenium:";
         public static bool StartChromeDriver { get; }

@@ -11,8 +11,6 @@ namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
     [Serializable]
     public class SelenumTestFailedException : WebDriverException
     {
-        private string screenshotsFolderPath;
-
         public SelenumTestFailedException()
         {
         }
@@ -33,10 +31,10 @@ namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
         {
         }
 
-        public SelenumTestFailedException(Exception innerException, string browserName, string screenshotsFolderPath) : this(innerException)
+        public SelenumTestFailedException(Exception innerException, string browserName, string screenshotsPath) : this($"Test failed in browser '{browserName}'. \r\n Screenshot path: '{screenshotsPath}'.", innerException)
         {
+            this.ScreenshotPath = screenshotsPath;
             this.BrowserName = browserName;
-            this.screenshotsFolderPath = screenshotsFolderPath;
         }
 
         public string ScreenshotPath { get; set; }

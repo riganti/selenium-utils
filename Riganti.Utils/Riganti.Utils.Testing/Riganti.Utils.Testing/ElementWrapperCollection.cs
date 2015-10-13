@@ -1,4 +1,5 @@
-﻿using Riganti.Utils.Testing.SeleniumCore.Exceptions;
+﻿using OpenQA.Selenium.Internal;
+using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,22 +7,43 @@ using System.Linq;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
-    public class ElementWrapperCollection : ICollection<ElementWrapper>
+    public class ElementWrapperCollection : ICollection<ElementWrapper>, ISeleniumWrapper
     {
+        public string Selector { get; }
+        public ISeleniumWrapper Parent { get; set; }
+
+        public string FullSelector
+        {
+            get
+            {
+                return Parent == null ? Selector : $"{Parent.FullSelector} {Selector}";
+            }
+        }
+
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector)
         {
             this.collection = new List<ElementWrapper>(collection);
             Selector = selector;
+            SetRerefernces(selector);
+        }
+
+        private void SetRerefernces(string selector)
+        {
+            foreach (var ew in collection)
+            {
+                ew.Selector = selector;
+                ew.Parent = this;
+            }
         }
 
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ElementWrapper parentElement)
         {
             this.collection = new List<ElementWrapper>(collection);
+            SetRerefernces(selector);
             Selector = selector;
             ParentElement = parentElement;
         }
 
-        public string Selector { get; }
         public ElementWrapper ParentElement { get; set; }
 
         public ElementWrapperCollection ThrowIfSequenceEmpty()
