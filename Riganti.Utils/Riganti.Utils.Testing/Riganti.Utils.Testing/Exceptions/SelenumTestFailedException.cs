@@ -31,7 +31,13 @@ namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
         {
         }
 
-        public SelenumTestFailedException(Exception innerException, string browserName, string screenshotsPath) : this($"Test failed in browser '{browserName}'. \r\n Screenshot path: '{screenshotsPath}'.", innerException)
+        public SelenumTestFailedException(Exception innerException, string browserName, string screenshotsPath) : this($"Test failed in browser '{browserName}'. \r\n Screenshot path: '{screenshotsPath}'.\r\n", innerException)
+        {
+            this.ScreenshotPath = screenshotsPath;
+            this.BrowserName = browserName;
+        }
+
+        public SelenumTestFailedException(Exception innerException, string browserName, string screenshotsPath, string currentSubSection) : this($"Test failed in browser '{browserName}'.\r\nTesting Subsection: {currentSubSection}.\r\nScreenshot path: '{screenshotsPath}'. \r\n", innerException)
         {
             this.ScreenshotPath = screenshotsPath;
             this.BrowserName = browserName;

@@ -47,5 +47,30 @@ namespace WebApplication1.Tests
                     .FullSelector);
             });
         }
+        [TestMethod]
+        public void SearchInElementsCollection()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.FindElements("form").FindElements("div").ThrowIfSequenceEmpty();
+            });
+        }
+
+        [TestMethod]
+        public void SubSectionTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                RunTestSubSection(nameof(SubSectionAction), SubSectionAction);
+            });
+
+        }
+
+        public void SubSectionAction(BrowserWrapper browser)
+        {
+            browser.FindElements("form").FindElements("div").ThrowIfDifferentCountThan(111);
+        }
     }
 }

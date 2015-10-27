@@ -12,13 +12,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public string Selector { get; }
         public ISeleniumWrapper Parent { get; set; }
 
-        public string FullSelector
-        {
-            get
-            {
-                return Parent == null ? Selector : $"{Parent.FullSelector} {Selector}";
-            }
-        }
+        public string FullSelector => (Parent == null ? Selector : $"{Parent.FullSelector} {Selector}").Trim();
 
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector)
         {
@@ -41,16 +35,22 @@ namespace Riganti.Utils.Testing.SeleniumCore
             this.collection = new List<ElementWrapper>(collection);
             SetRerefernces(selector);
             Selector = selector;
-            ParentElement = parentElement;
+            Parent = parentElement;
+        }
+        public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ElementWrapperCollection parentCollection)
+        {
+            this.collection = new List<ElementWrapper>(collection);
+            SetRerefernces(selector);
+            Selector = selector;
+            Parent = parentCollection;
         }
 
-        public ElementWrapper ParentElement { get; set; }
 
         public ElementWrapperCollection ThrowIfSequenceEmpty()
         {
             if (!collection.Any())
             {
-                throw new EmptySequenceException($"Sequence contains no one element. Selector: '{Selector}'");
+                throw new EmptySequenceException($"Sequence contains no one element. Selector: '{FullSelector}'");
             }
             return this;
         }
@@ -59,7 +59,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (Count > 1)
             {
-                throw new MoreElementsInSequenceException($"Sequence containse more Than one element. Selector: '{Selector}'");
+                throw new MoreElementsInSequenceException($"Sequence containse more Than one element. Selector: '{FullSelector}'");
             }
             return this;
         }
@@ -73,7 +73,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (Count != count)
             {
-                throw new SequenceCountException($"Count of elements in sequence is different Than expected value. Selector: '{Selector}', Expected value: '{count}', Actual value: '{Count}'.");
+                throw new SequenceCountException($"Count of elements in sequence is different Than expected value. Selector: '{FullSelector}', Expected value: '{count}', Actual value: '{Count}'.");
             }
             return this;
         }
@@ -92,7 +92,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (Count <= index || index < 0)
             {
-                throw new SequenceCountException($"Index is out of range. Selector: '{Selector}', Sequence contains {Count} elements, Current index: '{index}'");
+                throw new SequenceCountException($"Index is out of range. Selector: '{FullSelector}', Sequence contains {Count} elements, Current index: '{index}'");
             }
             return this[index];
         }
@@ -166,6 +166,28 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public void ForEach(Action<ElementWrapper> action)
         {
             collection.ForEach(action);
+        }
+
+        public ElementWrapperCollection FindElements(string selector)
+        {
+            var results = collection.SelectMany(item => item.FindElements(selector));
+
+            return new ElementWrapperCollection(results, selector, this);
+        }
+
+        public ElementWrapper First(string selector)
+        {
+            var element = FirstOrDefault(selector);
+            if (element != null)
+            {
+                return element;
+            }
+            throw new EmptySequenceException($"Sequence does not contain element with selector: '{FullSelector}'");
+        }
+
+        public ElementWrapper FirstOrDefault(string selector)
+        {
+            return collection.Select(item => item.FirstOrDefault(selector)).FirstOrDefault(element => element != null);
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (!string.Equals(GetTagName(), expectedTagName, StringComparison.OrdinalIgnoreCase))
             {
-                throw new UnexpectedElementStateException($"Element has wrong tagName. Expected value: '{expectedTagName}', Provided value: '{GetTagName()}'");
+                throw new UnexpectedElementStateException($"Element has wrong tagName. Expected value: '{expectedTagName}', Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -57,7 +57,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (!expression(GetTagName()))
             {
-                throw new UnexpectedElementStateException($"Element has wrong tagName. Provided value: '{GetTagName()}'");
+                throw new UnexpectedElementStateException($"Element has wrong tagName. Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -67,7 +67,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             var attribute = element.GetAttribute(attributeName);
             if (!expression(attribute))
             {
-                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Provided value: '{attribute}'");
+                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Provided value: '{attribute}' \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -82,7 +82,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (!string.Equals(text, GetText(),
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
             {
-                throw new UnexpectedElementStateException($"Element contains wrong content. Expected content: '{text}', Provided content: '{GetText()}'");
+                throw new UnexpectedElementStateException($"Element contains wrong content. Expected content: '{text}', Provided content: '{GetText()}' \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -91,7 +91,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (!expression(GetText()))
             {
-                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetText()}'");
+                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetText()}' \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -139,7 +139,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (!string.Equals(value, attributeName,
                 caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
             {
-                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{attribute}'");
+                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{attribute}' \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -241,7 +241,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (!IsDisplayed())
             {
-                throw new UnexpectedElementStateException("Element is not displayed.");
+                throw new UnexpectedElementStateException($"Element is not displayed. \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -250,7 +250,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (IsDisplayed())
             {
-                throw new UnexpectedElementStateException("Element is displayed and should not be.");
+                throw new UnexpectedElementStateException($"Element is displayed and should not be. \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -259,7 +259,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (!IsEnabled())
             {
-                throw new UnexpectedElementStateException("Element is not enabled.");
+                throw new UnexpectedElementStateException($"Element is not enabled. \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -268,7 +268,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (!IsSelected())
             {
-                throw new UnexpectedElementStateException("Element is not selected.");
+                throw new UnexpectedElementStateException($"Element is not selected. \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -277,7 +277,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (string.IsNullOrWhiteSpace(GetText()))
             {
-                throw new UnexpectedElementStateException("Element doesn't contain text.");
+                throw new UnexpectedElementStateException($"Element doesn't contain text. \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -286,7 +286,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (IsEnabled())
             {
-                throw new UnexpectedElementStateException("Element is enabled and should not be.");
+                throw new UnexpectedElementStateException($"Element is enabled and should not be. \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -295,7 +295,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (IsSelected())
             {
-                throw new UnexpectedElementStateException("Element is selected and should not be.");
+                throw new UnexpectedElementStateException($"Element is selected and should not be.\r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
@@ -304,7 +304,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (!string.IsNullOrWhiteSpace(GetText()))
             {
-                throw new UnexpectedElementStateException("Element does contain text. Element should be empty.");
+                throw new UnexpectedElementStateException($"Element does contain text. Element should be empty.\r\n Element selector: {Selector} \r\n");
             }
             return this;
         }

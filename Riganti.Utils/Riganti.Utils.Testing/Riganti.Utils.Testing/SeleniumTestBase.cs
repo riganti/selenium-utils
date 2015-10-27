@@ -14,6 +14,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public TestContext TestContext { get; set; }
         private WebDriverFacotryRegistry factory;
         private string screenshotsFolderPath;
+        private string CurrentSubSection { get; set; }
 
         public string ScreenshotsFolderPath
         {
@@ -31,6 +32,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public WebDriverFacotryRegistry Factory => factory ?? (factory = new WebDriverFacotryRegistry());
 
         protected virtual List<IWebDriverFactory> BrowserFactories => Factory.BrowserFactories;
+        private BrowserWrapper helper;
 
         /// <summary>
         /// Runs the specified action in all configured browsers.
@@ -43,6 +45,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             foreach (var browserFactory in BrowserFactories)
             {
+
                 var attemptNumber = 0;
                 string browserName;
                 Exception exception;
@@ -51,8 +54,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
                     attemptNumber++;
                     exception = null;
                     var browser = browserFactory.CreateNewInstance();
+                    helper = new BrowserWrapper(browser);
                     browserName = browser.GetType().Name;
-                    var helper = new BrowserWrapper(browser);
+
+                    WriteLine($"Testing browser '{browserName}' attempt no. {attemptNumber}");
 
                     try
                     {
@@ -81,16 +86,45 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
                 if (exception != null)
                 {
-                    throw new SelenumTestFailedException(exception, browserName, ScreenshotsFolderPath);
+                    if (CurrentSubSection == null)
+                        throw new SelenumTestFailedException(exception, browserName, ScreenshotsFolderPath);
+                    throw new SelenumTestFailedException(exception, browserName, ScreenshotsFolderPath, CurrentSubSection);
                 }
             }
         }
 
+
+        public virtual void RunTestSubSection(string subSectionName, Action<BrowserWrapper> action)
+        {
+            WriteLine($"Starts testing of section: {subSectionName}");
+            CurrentSubSection = subSectionName;
+            action(helper);
+            CurrentSubSection = null;
+            WriteLine($"Testing of section succesfully completed.");
+        }
+
+
+
+
+
         protected virtual void TakeScreenshot(int attemptNumber, BrowserWrapper helper)
         {
+            LogCurrentlyPerformedAction("Taking screenshot");
+
             var filename = Path.Combine(ScreenshotsFolderPath, $"{TestContext.FullyQualifiedTestClassName}_{TestContext.TestName}" + attemptNumber + ".png");
             helper.TakeScreenshot(filename);
             TestContext.AddResultFile(filename);
         }
+
+        protected virtual void WriteLine(string message)
+        {
+            TestContext?.WriteLine(message);
+        }
+
+        protected virtual void LogCurrentlyPerformedAction(string actionName)
+        {
+            WriteLine($"Currently performing: {actionName}");
+        }
+
     }
 }

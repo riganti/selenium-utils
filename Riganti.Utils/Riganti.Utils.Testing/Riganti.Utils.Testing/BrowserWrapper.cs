@@ -9,6 +9,7 @@ using System.Data.SqlTypes;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -170,7 +171,17 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             return browser.FindElements(SelectorPreprocessMethod(cssSelector)).ToElementsList(this, SelectorPreprocessMethod(cssSelector).GetSelector());
         }
-
+        
+        public BrowserWrapper Wait(int millisecconds)
+        {
+            Thread.Sleep(millisecconds);
+            return this;
+        }
+        public BrowserWrapper Wait(TimeSpan interval)
+        {
+            Thread.Sleep(interval);
+            return this;
+        }
         /// <summary>
         /// Finds all elements that satisfy the condition of css selector.
         /// </summary>
@@ -278,7 +289,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         ///<param name="format">Default value is PNG.</param>
         public void TakeScreenshot(string filename, ImageFormat format = null)
         {
-            ((ITakesScreenshot)browser).GetScreenshot().SaveAsFile(filename, format);
+            ((ITakesScreenshot)browser).GetScreenshot().SaveAsFile(filename, format ?? ImageFormat.Png);
         }
 
         public void Dispose()
