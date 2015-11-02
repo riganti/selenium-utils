@@ -62,7 +62,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public ElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression)
+        public virtual ElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression)
         {
             var attribute = element.GetAttribute(attributeName);
             if (!expression(attribute))
@@ -70,6 +70,29 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 throw new UnexpectedElementStateException($"Attribute contains unexpected value. Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
             }
             return this;
+        }
+        public virtual ElementWrapper CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true)
+        {
+            var attribute = element.GetAttribute(attributeName);
+            if (trimValue)
+            {
+                attribute = attribute.Trim();
+                value = value.Trim();
+            }
+            if (!string.Equals(value, attribute,
+                caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
+            {
+                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
+            }
+            return this;
+        }
+        public virtual ElementWrapper CheckClassAttribute(Func<string, bool> expression)
+        {
+            return CheckAttribute("class", expression);
+        }
+        public virtual ElementWrapper CheckClassAttribute(string value, bool caseInsensitive = false, bool trimValue = true)
+        {
+            return CheckAttribute("class", value, caseInsensitive, trimValue);
         }
 
         public string GetAttribute(string name)
@@ -149,21 +172,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public virtual ElementWrapper CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true)
-        {
-            var attribute = element.GetAttribute(attributeName);
-            if (trimValue)
-            {
-                attribute = attribute.Trim();
-                value = value.Trim();
-            }
-            if (!string.Equals(value, attributeName,
-                caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
-            {
-                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
-            }
-            return this;
-        }
 
         public virtual string GetTagName()
         {

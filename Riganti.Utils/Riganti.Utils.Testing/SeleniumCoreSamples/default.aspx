@@ -29,7 +29,7 @@
             Invisible element
         </div>
         <button id="dis-button" disabled>disabled button</button>
-
+        <input id="submit-button" type="submit" value="Submit Button Test"/>
     </form>
 </body>
 </html>
