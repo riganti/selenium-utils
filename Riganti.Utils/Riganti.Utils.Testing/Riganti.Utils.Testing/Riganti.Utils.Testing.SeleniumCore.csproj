@@ -64,6 +64,7 @@
     <Compile Include="Exceptions\UnexpectedElementStateException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ISeleniumWrapper.cs" />
+    <Compile Include="ITestBase.cs" />
     <Compile Include="IWebBrowserFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleniumTestBase.cs" />

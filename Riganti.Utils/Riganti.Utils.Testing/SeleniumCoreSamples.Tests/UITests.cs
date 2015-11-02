@@ -18,6 +18,8 @@ namespace WebApplication1.Tests
         {
             RunInAllBrowsers(browser =>
             {
+                Log("log something");
+                Thread.Sleep(5000);
                 browser.NavigateToUrl();
                 browser.CheckIfIsDisplayed("#displayed");
                 browser.First("#displayed").CheckIfIsDisplayed();

@@ -198,7 +198,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <returns></returns>
         public virtual ElementWrapperCollection FindElements(string selector)
         {
-            var collection = element.FindElements(browser.SelectorPreprocessMethod(selector)).ToElementsList(browser, selector, this);
+            var collection = element.FindElements(browser.SelectMethod(selector)).ToElementsList(browser, selector, this);
             collection.Parent = this;
             return collection;
         }

@@ -1,19 +1,9 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.Extensions;
-using Riganti.Utils.Testing.SeleniumCore.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Design;
-using System.Data.SqlTypes;
+﻿using System;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
+using OpenQA.Selenium;
+using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
@@ -21,12 +11,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
     {
         // ReSharper disable once InconsistentNaming
         protected readonly IWebDriver browser;
+        private readonly ITestBase testClass;
 
         public IWebDriver Browser => browser;
 
-        public BrowserWrapper(IWebDriver browser)
+        public BrowserWrapper(IWebDriver browser, ITestBase testClass)
         {
             this.browser = browser;
+            this.testClass = testClass;
             SetCssSelector();
             var timeouts = browser.Manage().Timeouts();
             timeouts.SetPageLoadTimeout(TimeSpan.FromSeconds(15));
@@ -40,22 +32,30 @@ namespace Riganti.Utils.Testing.SeleniumCore
             timeouts.ImplicitlyWait(implicitlyWait);
         }
 
-        private Func<string, By> selectorPreprocessMethod;
-
+        private Func<string, By> selectMethodFunc;
+        [Obsolete]
         public virtual Func<string, By> SelectorPreprocessMethod
         {
-            get { return selectorPreprocessMethod; }
+            get { return SelectMethod; }
+            set
+            {
+                SelectMethod = value;
+            }
+        }
+        public virtual Func<string, By> SelectMethod
+        {
+            get { return selectMethodFunc; }
             set
             {
                 if (value == null)
-                { throw new ArgumentNullException("Wrong selector preprocess method."); }
-                selectorPreprocessMethod = value;
+                { throw new ArgumentException("SelectMethod cannot be null. This method is used to select elements from loaded page."); }
+                selectMethodFunc = value;
             }
         }
 
         public void SetCssSelector()
         {
-            selectorPreprocessMethod = By.CssSelector;
+            selectMethodFunc = By.CssSelector;
         }
 
         /// <summary>
@@ -127,7 +127,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             path = path + (path.EndsWith("/") ? "" : "/");
             builder.Path = path + url;
 
-            browser.Navigate().GoToUrl(builder.ToString());
+
+            var navigateUrl = builder.ToString();
+            browser.Navigate().GoToUrl(navigateUrl);
         }
 
         public void NavigateToUrl()
@@ -169,7 +171,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <returns></returns>
         public ElementWrapperCollection FindElements(string cssSelector)
         {
-            return browser.FindElements(SelectorPreprocessMethod(cssSelector)).ToElementsList(this, SelectorPreprocessMethod(cssSelector).GetSelector());
+            return browser.FindElements(SelectMethod(cssSelector)).ToElementsList(this, SelectMethod(cssSelector).GetSelector());
         }
         
         public BrowserWrapper Wait(int millisecconds)
