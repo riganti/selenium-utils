@@ -28,6 +28,8 @@
         <div id="non-displayed" style="display: none;">
             Invisible element
         </div>
+        <button id="dis-button" disabled>disabled button</button>
+
     </form>
 </body>
 </html>

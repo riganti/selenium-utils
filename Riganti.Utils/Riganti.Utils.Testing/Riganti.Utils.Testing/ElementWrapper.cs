@@ -67,7 +67,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             var attribute = element.GetAttribute(attributeName);
             if (!expression(attribute))
             {
-                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Provided value: '{attribute}' \r\n Element selector: {Selector} \r\n");
+                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
             }
             return this;
         }
@@ -76,13 +76,34 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             return element.GetAttribute(name);
         }
+        public bool HasAttribute(string name)
+        {
+            return element.GetAttribute(name) != null;
+        }
+        public ElementWrapper CheckIfHasAttribute(string name)
+        {
+            if (!HasAttribute(name))
+            {
+                throw new UnexpectedElementStateException($"Element has not attribute '{name}'. Element selector: '{FullSelector}'.");
+
+            }
+            return this;
+        }
+        public ElementWrapper CheckIfHasNotAttribute(string name)
+        {
+            if (HasAttribute(name))
+            {
+                throw new UnexpectedElementStateException($"Attribute '{name}' was not expected. Element selector: '{FullSelector}'.");
+            }
+            return this;
+        }
 
         public virtual ElementWrapper CheckIfInnerTextEquals(string text, bool caseSensitive = true, bool trim = true)
         {
             if (!string.Equals(text, GetText(),
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
             {
-                throw new UnexpectedElementStateException($"Element contains wrong content. Expected content: '{text}', Provided content: '{GetText()}' \r\n Element selector: {Selector} \r\n");
+                throw new UnexpectedElementStateException($"Element contains wrong content. Expected content: '{text}', Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n");
             }
             return this;
         }
@@ -91,7 +112,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (!expression(GetText()))
             {
-                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetText()}' \r\n Element selector: {Selector} \r\n");
+                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n");
             }
             return this;
         }
@@ -139,7 +160,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (!string.Equals(value, attributeName,
                 caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
             {
-                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{attribute}' \r\n Element selector: {Selector} \r\n");
+                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
             }
             return this;
         }

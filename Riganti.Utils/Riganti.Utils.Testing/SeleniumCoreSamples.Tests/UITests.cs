@@ -72,5 +72,14 @@ namespace WebApplication1.Tests
         {
             browser.FindElements("form").FindElements("div").ThrowIfDifferentCountThan(111);
         }
+        [TestMethod]
+        public void HasAttribute()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.First("#dis-button").CheckIfHasAttribute("disabled");
+            });
+        }
     }
 }
