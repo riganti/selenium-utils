@@ -92,5 +92,31 @@ namespace WebApplication1.Tests
                 browser.First("#submit-button").CheckAttribute("type","submit");
             });
         }
+
+        [TestMethod]
+        public void CheckCheckboxes()
+        {
+
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Checkboxes.aspx");
+                browser.First("#checkbox1").Wait(1200)
+                                            .CheckIfIsChecked()
+                                            .Wait(1200)
+                                            .Click()
+                                            .Wait(1200)
+                                            .CheckIfIsNotChecked();
+
+                browser.First("#checkbox2").CheckIfIsNotChecked()
+                                            .Wait(1200)
+                                            .Click()
+                                            .Wait(1200)
+                                            .CheckIfIsChecked();
+
+
+            });
+            
+        }
+
     }
 }

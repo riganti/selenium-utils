@@ -131,7 +131,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public virtual ElementWrapper CheckIfInnerText(string text, Func<string, bool> expression)
+        public virtual ElementWrapper CheckIfInnerText(Func<string, bool> expression)
         {
             if (!expression(GetText()))
             {
@@ -283,6 +283,36 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+        public virtual ElementWrapper CheckIfIsChecked()
+        {
+            if (!IsChecked())
+            {
+                throw new UnexpectedElementStateException($"Element is NOT checked and should be. \r\n Element selector: {Selector} \r\n");
+            }
+            return this;
+        }
+        public virtual ElementWrapper CheckIfIsNotChecked()
+        {
+            if (IsChecked())
+            {
+                throw new UnexpectedElementStateException($"Element is checked and should NOT be. \r\n Element selector: {Selector} \r\n");
+            }
+            return this;
+        }
+
+        private bool IsChecked()
+        {
+            return TryParseBool(element.GetAttribute("checked"));
+        }
+
+        private bool TryParseBool(string value)
+        {
+            bool tmp;
+            bool.TryParse(value, out tmp);
+            return tmp;
+        }
+
+     
 
         public virtual ElementWrapper CheckIfIsEnabled()
         {
@@ -360,10 +390,21 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public virtual void Wait()
+        public virtual ElementWrapper Wait()
         {
             if (ActionWaitTime != 0)
                 Thread.Sleep(ActionWaitTime);
+            return this;
+        }
+        public virtual ElementWrapper Wait(int miliseconds)
+        {
+            Thread.Sleep(miliseconds);
+            return this;
+        }
+        public virtual ElementWrapper Wait(TimeSpan interval)
+        {
+            Thread.Sleep(interval);
+            return this;
         }
     }
 }

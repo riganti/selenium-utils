@@ -132,7 +132,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
         protected virtual void WriteLine(string message)
         {
             TestContext?.WriteLine(message);
-            Debug.WriteLine(message, "Default");
+            if (Debugger.IsAttached)
+            {
+                Debugger.Log(1,Debugger.DefaultCategory, message);
+            }
 
         }
         public virtual void Log(string message)
