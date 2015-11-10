@@ -4,7 +4,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
     {
         string Selector { get; }
-        ISeleniumWrapper Parent { get; set; }
+        ISeleniumWrapper ParentWrapper { get; set; }
         string FullSelector { get; }
     }
 }

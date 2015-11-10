@@ -23,7 +23,29 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public IWebElement WebElement => element;
 
         public BrowserWrapper BrowserWrapper => browser;
-        public ISeleniumWrapper Parent { get; set; }
+        /// <summary>
+        /// Parent wrapper
+        /// </summary>
+        public ISeleniumWrapper ParentWrapper { get; set; }
+        public ElementWrapper ParentElement
+        {
+            get
+            {
+                IWebElement parent;
+                try
+                {
+                    parent = element.FindElement(By.XPath(".."));
+                }
+                catch (Exception ex)
+                {
+
+                    throw new NoSuchElementException($"Parent element of '{FullSelector}' was not found!", ex);
+                }
+                if (parent == null)
+                    throw new NoSuchElementException($"Parent element of '{FullSelector}' was not found!");
+                return new ElementWrapper(parent, BrowserWrapper);
+            }
+        }
 
         public ElementWrapper(IWebElement webElement, BrowserWrapper browserWrapper)
         {
@@ -33,8 +55,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         private string GenerateFullSelector()
         {
-            var parentSelector = Parent.FullSelector;
-            var parent = Parent as ElementWrapperCollection;
+            var parentSelector = ParentWrapper.FullSelector;
+            var parent = ParentWrapper as ElementWrapperCollection;
             if (parent != null)
             {
                 var index = parent.IndexOf(this);
@@ -199,7 +221,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public virtual ElementWrapperCollection FindElements(string selector)
         {
             var collection = element.FindElements(browser.SelectMethod(selector)).ToElementsList(browser, selector, this);
-            collection.Parent = this;
+            collection.ParentWrapper = this;
             return collection;
         }
 
@@ -312,7 +334,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return tmp;
         }
 
-     
+
 
         public virtual ElementWrapper CheckIfIsEnabled()
         {
@@ -407,4 +429,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
     }
+
+ 
 }

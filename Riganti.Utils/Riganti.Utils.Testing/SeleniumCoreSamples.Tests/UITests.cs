@@ -1,12 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
 using Riganti.Utils.Testing.SeleniumCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace WebApplication1.Tests
 {
@@ -32,7 +26,6 @@ namespace WebApplication1.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                Thread.Sleep(3000);
                 browser.CheckIfIsNotDisplayed("#non-displayed");
                 browser.First("#non-displayed").CheckIfIsNotDisplayed();
             });
@@ -49,6 +42,7 @@ namespace WebApplication1.Tests
                     .FullSelector);
             });
         }
+
         [TestMethod]
         public void SearchInElementsCollection()
         {
@@ -67,13 +61,13 @@ namespace WebApplication1.Tests
                 browser.NavigateToUrl();
                 RunTestSubSection(nameof(SubSectionAction), SubSectionAction);
             });
-
         }
 
         public void SubSectionAction(BrowserWrapper browser)
         {
             browser.FindElements("form").FindElements("div").ThrowIfDifferentCountThan(111);
         }
+
         [TestMethod]
         public void HasAttributeTest()
         {
@@ -83,20 +77,20 @@ namespace WebApplication1.Tests
                 browser.First("#dis-button").CheckIfHasAttribute("disabled");
             });
         }
+
         [TestMethod]
         public void CheckAttributeTest()
         {
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                browser.First("#submit-button").CheckAttribute("type","submit");
+                browser.First("#submit-button").CheckAttribute("type", "submit");
             });
         }
 
         [TestMethod]
         public void CheckCheckboxes()
         {
-
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Checkboxes.aspx");
@@ -112,11 +106,27 @@ namespace WebApplication1.Tests
                                             .Click()
                                             .Wait(1200)
                                             .CheckIfIsChecked();
-
-
             });
-            
         }
 
+        [TestMethod]
+        public void NoParentTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("NoParentTest.aspx");
+                var parent = browser.First("html").ParentElement;
+            });
+        }
+
+        [TestMethod]
+        public void CollectionCheckClass()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("NoParentTest.aspx");
+                var parent = browser.First("html").ParentElement;
+            });
+        }
     }
 }

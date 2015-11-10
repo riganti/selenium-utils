@@ -10,9 +10,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
     public class ElementWrapperCollection : ICollection<ElementWrapper>, ISeleniumWrapper
     {
         public string Selector { get; }
-        public ISeleniumWrapper Parent { get; set; }
+        public ISeleniumWrapper ParentWrapper { get; set; }
 
-        public string FullSelector => (Parent == null ? Selector : $"{Parent.FullSelector} {Selector}").Trim();
+        public string FullSelector => (ParentWrapper == null ? Selector : $"{ParentWrapper.FullSelector} {Selector}").Trim();
 
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector)
         {
@@ -20,13 +20,16 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Selector = selector;
             SetRerefernces(selector);
         }
-
+        /// <summary>
+        /// Sets children reference to Parent wrapper
+        /// </summary>
+        /// <param name="selector"></param>
         private void SetRerefernces(string selector)
         {
             foreach (var ew in collection)
             {
                 ew.Selector = selector;
-                ew.Parent = this;
+                ew.ParentWrapper = this;
             }
         }
 
@@ -35,14 +38,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
             this.collection = new List<ElementWrapper>(collection);
             SetRerefernces(selector);
             Selector = selector;
-            Parent = parentElement;
+            ParentWrapper = parentElement;
         }
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ElementWrapperCollection parentCollection)
         {
             this.collection = new List<ElementWrapper>(collection);
             SetRerefernces(selector);
             Selector = selector;
-            Parent = parentCollection;
+            ParentWrapper = parentCollection;
         }
 
 
@@ -189,5 +192,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             return collection.Select(item => item.FirstOrDefault(selector)).FirstOrDefault(element => element != null);
         }
+
     }
 }
