@@ -9,35 +9,35 @@ using System.Threading.Tasks;
 namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
 {
     [Serializable]
-    public class SelenumTestFailedException : WebDriverException
+    public class SeleniumTestFailedException : WebDriverException
     {
-        public SelenumTestFailedException()
+        public SeleniumTestFailedException()
         {
         }
 
-        public SelenumTestFailedException(string message) : base(message)
+        public SeleniumTestFailedException(string message) : base(message)
         {
         }
 
-        public SelenumTestFailedException(Exception innerException) : base("", innerException)
+        public SeleniumTestFailedException(Exception innerException) : base("", innerException)
         {
         }
 
-        public SelenumTestFailedException(string message, Exception innerException) : base(message, innerException)
+        public SeleniumTestFailedException(string message, Exception innerException) : base(message, innerException)
         {
         }
 
-        protected SelenumTestFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected SeleniumTestFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
 
-        public SelenumTestFailedException(Exception innerException, string browserName, string screenshotsPath) : this($"Test failed in browser '{browserName}'. \r\n Screenshot path: '{screenshotsPath}'.\r\n", innerException)
+        public SeleniumTestFailedException(Exception innerException, string browserName, string screenshotsPath) : this($"Test failed in browser '{browserName}'. \r\n Screenshot path: '{screenshotsPath}'.\r\n", innerException)
         {
             this.ScreenshotPath = screenshotsPath;
             this.BrowserName = browserName;
         }
 
-        public SelenumTestFailedException(Exception innerException, string browserName, string screenshotsPath, string currentSubSection) : this($"Test failed in browser '{browserName}'.\r\nTesting Subsection: {currentSubSection}.\r\nScreenshot path: '{screenshotsPath}'. \r\n", innerException)
+        public SeleniumTestFailedException(Exception innerException, string browserName, string screenshotsPath, string currentSubSection) : this($"Test failed in browser '{browserName}'.\r\nTesting Subsection: {currentSubSection}.\r\nScreenshot path: '{screenshotsPath}'. \r\n", innerException)
         {
             this.ScreenshotPath = screenshotsPath;
             this.BrowserName = browserName;

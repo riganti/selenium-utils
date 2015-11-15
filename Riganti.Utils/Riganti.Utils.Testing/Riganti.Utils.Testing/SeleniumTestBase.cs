@@ -7,16 +7,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenQA.Selenium;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
     public class SeleniumTestBase : ITestBase
     {
+
         public TestContext TestContext { get; set; }
         private WebDriverFacotryRegistry factory;
         private string screenshotsFolderPath;
         private string CurrentSubSection { get; set; }
-
+        private Type ExpectedExceptionType { get; set; }
+        protected IWebDriver LatestLiveWebDriver { get; set; }
         public string ScreenshotsFolderPath
         {
             get
@@ -52,8 +55,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 if (exception != null)
                 {
                     if (CurrentSubSection == null)
-                        throw new SelenumTestFailedException(exception, browserName, ScreenshotsFolderPath);
-                    throw new SelenumTestFailedException(exception, browserName, ScreenshotsFolderPath, CurrentSubSection);
+                        throw new SeleniumTestFailedException(exception, browserName, ScreenshotsFolderPath);
+                    throw new SeleniumTestFailedException(exception, browserName, ScreenshotsFolderPath, CurrentSubSection);
                 }
             }
         }
@@ -65,7 +68,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             {
                 attemptNumber++;
                 exception = null;
-                var browser = browserFactory.CreateNewInstance();
+                var browser = LatestLiveWebDriver = browserFactory.CreateNewInstance();
                 helper = new BrowserWrapper(browser, this);
                 browserName = browser.GetType().Name;
 
@@ -77,10 +80,19 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 }
                 catch (Exception ex)
                 {
+                    bool isExpected = false;
+                    if (ExpectedExceptionType != null)
+                    {
+                        isExpected = ex.GetType() == ExpectedExceptionType || (AllowDerivedExceptionTypes && ExpectedExceptionType.IsInstanceOfType(ex));
+                    }
 
-                    TakeScreenshot(attemptNumber, helper);
-                    // fail the test
-                    exception = ex;
+
+                    if (!isExpected)
+                    {
+                        TakeScreenshot(attemptNumber, helper);
+                        // fail the test
+                        exception = ex;
+                    }
                 }
                 finally
                 {
@@ -134,7 +146,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             TestContext?.WriteLine(message);
             if (Debugger.IsAttached)
             {
-                Debugger.Log(1,Debugger.DefaultCategory, message);
+                Debugger.Log(1, Debugger.DefaultCategory, message);
             }
 
         }
@@ -153,5 +165,18 @@ namespace Riganti.Utils.Testing.SeleniumCore
             WriteLine($"Currently performing: {actionName}");
         }
 
+        protected void ExpectException(Type type, bool allowDerivedTypes = false)
+        {
+            AllowDerivedExceptionTypes = allowDerivedTypes;
+            ExpectedExceptionType = type;
+        }
+
+        public bool AllowDerivedExceptionTypes { get; set; }
+
+        [TestCleanup]
+        public virtual void CleanUp()
+        {
+            LatestLiveWebDriver?.Dispose();
+        }
     }
 }

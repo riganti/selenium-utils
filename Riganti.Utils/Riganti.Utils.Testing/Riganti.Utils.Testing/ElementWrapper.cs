@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Policy;
 using System.Threading;
 
 namespace Riganti.Utils.Testing.SeleniumCore
@@ -18,7 +19,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public string Selector { get; set; }
         public string FullSelector => GenerateFullSelector();
 
-        public int ActionWaitTime { get; set; } = 100;
+        public static int ActionTimeout { get; set; } = 400;
+
+        public int ActionWaitTime
+        {
+            get { return ActionTimeout; }
+            set { ActionTimeout = value; }
+        }
 
         public IWebElement WebElement => element;
 
@@ -27,6 +34,16 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// Parent wrapper
         /// </summary>
         public ISeleniumWrapper ParentWrapper { get; set; }
+
+
+        private Func<string, By> selectMethod = null;
+        public Func<string, By> SelectMethod
+        {
+            get { return selectMethod ?? browser.SelectMethod; }
+            set { selectMethod = value; }
+        }
+        
+
         public ElementWrapper ParentElement
         {
             get
@@ -51,8 +68,18 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             element = webElement;
             browser = browserWrapper;
+            SelectMethod = browser.SelectMethod;
+
         }
 
+        public void SetCssSelectMethod()
+        {
+            selectMethod  = By.CssSelector;
+        }
+        public void SetBrowserSelectMethod()
+        {
+            selectMethod = null;
+        }
         private string GenerateFullSelector()
         {
             var parentSelector = ParentWrapper.FullSelector;
@@ -75,21 +102,21 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public ElementWrapper CheckTagName(Func<string, bool> expression)
+        public ElementWrapper CheckTagName(Func<string, bool> expression, string message = null)
         {
             if (!expression(GetTagName()))
             {
-                throw new UnexpectedElementStateException($"Element has wrong tagName. Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n");
+                throw new UnexpectedElementStateException($"Element has wrong tagName. Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n { (message ?? "")}");
             }
             return this;
         }
 
-        public virtual ElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression)
+        public virtual ElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression, string message = null)
         {
             var attribute = element.GetAttribute(attributeName);
             if (!expression(attribute))
             {
-                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
+                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n {message ?? ""}");
             }
             return this;
         }
@@ -108,9 +135,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
-        public virtual ElementWrapper CheckClassAttribute(Func<string, bool> expression)
+        public virtual ElementWrapper CheckClassAttribute(Func<string, bool> expression, string messsage = "")
         {
-            return CheckAttribute("class", expression);
+            return CheckAttribute("class", expression, messsage);
         }
         public virtual ElementWrapper CheckClassAttribute(string value, bool caseInsensitive = false, bool trimValue = true)
         {
@@ -153,11 +180,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public virtual ElementWrapper CheckIfInnerText(Func<string, bool> expression)
+        public virtual ElementWrapper CheckIfInnerText(Func<string, bool> expression, string messsage = null)
         {
             if (!expression(GetText()))
             {
-                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n");
+                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n {messsage ?? ""}");
             }
             return this;
         }
@@ -213,6 +240,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Wait();
         }
 
+
+
         /// <summary>
         /// Finds all elements that satisfy the condition of css selector.
         /// </summary>
@@ -220,7 +249,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <returns></returns>
         public virtual ElementWrapperCollection FindElements(string selector)
         {
-            var collection = element.FindElements(browser.SelectMethod(selector)).ToElementsList(browser, selector, this);
+            var collection = element.FindElements(SelectMethod(selector)).ToElementsList(browser, selector, this);
             collection.ParentWrapper = this;
             return collection;
         }
@@ -418,9 +447,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 Thread.Sleep(ActionWaitTime);
             return this;
         }
-        public virtual ElementWrapper Wait(int miliseconds)
+        public virtual ElementWrapper Wait(int milliseconds)
         {
-            Thread.Sleep(miliseconds);
+            Thread.Sleep(milliseconds);
             return this;
         }
         public virtual ElementWrapper Wait(TimeSpan interval)
@@ -430,5 +459,5 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
     }
 
- 
+
 }

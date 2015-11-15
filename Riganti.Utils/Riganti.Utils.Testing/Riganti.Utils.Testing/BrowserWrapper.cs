@@ -1,9 +1,10 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using Riganti.Utils.Testing.SeleniumCore.Exceptions;
+using System;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
-using OpenQA.Selenium;
-using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
@@ -11,9 +12,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
     {
         // ReSharper disable once InconsistentNaming
         protected readonly IWebDriver browser;
+
         private readonly ITestBase testClass;
 
         public IWebDriver Browser => browser;
+        public int ActionWaitTime { get; set; } = 100;
 
         public BrowserWrapper(IWebDriver browser, ITestBase testClass)
         {
@@ -33,6 +36,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
 
         private Func<string, By> selectMethodFunc;
+
         [Obsolete]
         public virtual Func<string, By> SelectorPreprocessMethod
         {
@@ -42,6 +46,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 SelectMethod = value;
             }
         }
+
         public virtual Func<string, By> SelectMethod
         {
             get { return selectMethodFunc; }
@@ -127,7 +132,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             path = path + (path.EndsWith("/") ? "" : "/");
             builder.Path = path + url;
 
-
             var navigateUrl = builder.ToString();
             browser.Navigate().GoToUrl(navigateUrl);
         }
@@ -154,15 +158,84 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public string GetAlertText()
         {
-            var alert = browser.SwitchTo().Alert();
+            var alert = GetAlert();
             return alert?.Text;
         }
+        public BrowserWrapper CheckIfAlertTextEquals(string expectedValue, bool caseSensitive = false, bool trim = true)
+        {
+            var alert = GetAlert();
+            var alertText = "";
+            if (trim)
+            {
+                alertText = alert.Text?.Trim();
+                expectedValue = expectedValue.Trim();
+            }
 
-        public void ConfirmAlert()
+            if (!string.Equals(alertText, expectedValue,
+                    caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
+            {
+                throw new AlertException($"Alert does not contain expected value. Expected value: '{expectedValue}', provided value: '{alertText}'");
+            }
+            return this;
+        }
+
+        public IAlert GetAlert()
+        {
+            IAlert alert;
+            try
+
+            {
+                alert = browser.SwitchTo().Alert();
+            }
+            catch (Exception ex)
+            {
+                throw new AlertException("Alert not visible.", ex);
+            }
+            if (alert == null)
+                throw new AlertException("Alert not visible.");
+            return alert;
+
+        }
+
+        public BrowserWrapper CheckIfAlertTextContains(string expectedValue, bool trim = true)
+        {
+            var alert = GetAlert();
+            var alertText = "";
+            if (trim)
+            {
+                alertText = alert.Text?.Trim();
+                expectedValue = expectedValue.Trim();
+            }
+
+            if (alertText == null || !alertText.Contains(expectedValue))
+            {
+                throw new AlertException($"Alert does not contain expected value. Expected value: '{expectedValue}', provided value: '{alertText}'");
+            }
+            return this;
+        }
+        public BrowserWrapper CheckIfAlertText(Func<string, bool> expression, string message = "")
+        {
+            var alert = browser.SwitchTo().Alert()?.Text;
+            if (!expression(alert))
+            {
+                throw new AlertException($"Alert text is not correct. Provided value: '{alert}' \n { message } ");
+            }
+            return this;
+        }
+
+        public BrowserWrapper ConfirmAlert()
         {
             browser.SwitchTo().Alert().Accept();
-            Thread.Sleep(500);
+            Thread.Sleep(ActionWaitTime);
+            return this;
         }
+        public BrowserWrapper DismissAlert()
+        {
+            browser.SwitchTo().Alert().Dismiss();
+            Thread.Sleep(ActionWaitTime);
+            return this;
+        }
+
 
         /// <summary>
         /// Finds all elements that satisfy the condition of css selector.
@@ -173,17 +246,24 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             return browser.FindElements(SelectMethod(cssSelector)).ToElementsList(this, SelectMethod(cssSelector).GetSelector());
         }
-        
-        public BrowserWrapper Wait(int millisecconds)
+
+        public BrowserWrapper Wait(int milliseconds)
         {
-            Thread.Sleep(millisecconds);
+            Thread.Sleep(milliseconds);
             return this;
         }
+
+        public BrowserWrapper Wait()
+        {
+            return Wait(ActionWaitTime);
+        }
+
         public BrowserWrapper Wait(TimeSpan interval)
         {
             Thread.Sleep(interval);
             return this;
         }
+
         /// <summary>
         /// Finds all elements that satisfy the condition of css selector.
         /// </summary>
@@ -298,5 +378,77 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             browser.Dispose();
         }
+
+        #region CheckUrl
+
+        //public BrowserWrapper CheckUrlEquals(string url, params UriComponents[] criteria)
+        //{
+        //    UriComponents? finalCriteria = UriComponents.AbsoluteUri;
+
+        //    if (criteria.Any())
+        //    {
+        //        finalCriteria = criteria[0];
+        //        if (criteria.Length > 1)
+        //        {
+        //            for (int i = 1; i < criteria.Length; i++)
+        //            {
+        //                finalCriteria = finalCriteria | criteria[i];
+        //            }
+        //        }
+        //    }
+        //    var uri1 = new Uri(CurrentUrl, UriKind.RelativeOrAbsolute);
+        //    var uri2 = new Uri(url, UriKind.RelativeOrAbsolute);
+        //    if (Uri.Compare(uri1, uri2, (UriComponents)finalCriteria, UriFormat.Unescaped, StringComparison.OrdinalIgnoreCase) != 0)
+        //    {
+        //        throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}', Expected url: '{url}'.");
+        //    }
+
+        //    return this;
+        //}
+
+
+
+
+
+        public BrowserWrapper CheckUrl(Func<string, bool> expression, string message = null)
+        {
+            if (!expression(CurrentUrl))
+            {
+                throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}'. " + (message ?? ""));
+            }
+            return this;
+        }
+
+        #endregion CheckUrl
+
+
+        #region FileUploadDialog
+
+        /// <summary>
+        /// Opens file dialog and sends keys with full path to file, that should be uploaded.
+        /// </summary>
+        /// <param name="fileUploadOpener">Element that opens file dialog after it is clicked.</param>
+        /// <param name="fullFileName">Full path to file that is intended to be uploaded.</param>
+        public virtual BrowserWrapper FileUploadDialogSelect(ElementWrapper fileUploadOpener, string fullFileName)
+        {
+            // open file dialog 
+            fileUploadOpener.Click();
+
+            // write the full path to the dialog
+            System.Windows.Forms.SendKeys.SendWait(fullFileName);
+            SendEnterKey();
+            Wait();
+            return this;
+        }
+
+        public virtual void SendEnterKey()
+        {
+            System.Windows.Forms.SendKeys.SendWait("{Enter}");
+        }
+        public virtual void SendEscKey()
+        {
+            System.Windows.Forms.SendKeys.SendWait("{ESC}");
+        }
+        #endregion
     }
 }

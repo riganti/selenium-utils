@@ -70,7 +70,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Confirm.aspx" />
+    <Content Include="Alert.aspx" />
     <Content Include="Checkboxes.aspx" />
+    <Content Include="FileDialog.aspx" />
     <Content Include="NoParentTest.aspx" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
@@ -82,11 +85,26 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="default.aspx" />
+    <Content Include="SelectMethod.aspx" />
     <Content Include="Site2.aspx" />
     <Content Include="Sub\site2.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Confirm.aspx.cs">
+      <DependentUpon>Confirm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Confirm.aspx.designer.cs">
+      <DependentUpon>Confirm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Alert.aspx.cs">
+      <DependentUpon>Alert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Alert.aspx.designer.cs">
+      <DependentUpon>Alert.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Checkboxes.aspx.cs">
       <DependentUpon>Checkboxes.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -101,6 +119,13 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FileDialog.aspx.cs">
+      <DependentUpon>FileDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FileDialog.aspx.designer.cs">
+      <DependentUpon>FileDialog.aspx</DependentUpon>
+    </Compile>
     <Compile Include="NoParentTest.aspx.cs">
       <DependentUpon>NoParentTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -109,6 +134,13 @@
       <DependentUpon>NoParentTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectMethod.aspx.cs">
+      <DependentUpon>SelectMethod.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SelectMethod.aspx.designer.cs">
+      <DependentUpon>SelectMethod.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site2.aspx.cs">
       <DependentUpon>Site2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

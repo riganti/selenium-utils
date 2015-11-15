@@ -1,6 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.SeleniumCore;
 using System.Threading;
+using OpenQA.Selenium;
+using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 
 namespace WebApplication1.Tests
 {
@@ -126,6 +130,150 @@ namespace WebApplication1.Tests
             {
                 browser.NavigateToUrl("NoParentTest.aspx");
                 var parent = browser.First("html").ParentElement;
+            });
+        }
+        [TestMethod]
+        public void UrlComparationTest1()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/NoParentTest.aspx");
+                browser.CheckUrl(url => url.Contains("NoParentTest.aspx"));
+            });
+        }
+
+        [TestMethod]
+        public void AlertTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+
+                browser.First("#button").Click();
+                browser.CheckIfAlertTextEquals("confirm test");
+
+            });
+        }
+        [TestMethod]
+        [ExpectedException(typeof(SeleniumTestFailedException))]
+        public void AlertTest2()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+
+                browser.First("#button").Click();
+                browser.CheckIfAlertTextEquals("Confirm test", true);
+            });
+        }
+        [TestMethod]
+        public void AlertTest3()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+
+                browser.First("#button").Click();
+                browser.CheckIfAlertTextContains("confirm");
+            });
+        }
+        [TestMethod]
+        public void AlertTest4()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+                browser.First("#button").Click();
+                browser.CheckIfAlertText(s => s.EndsWith("test"), "alert text doesn't end with 'test.'");
+
+            });
+        }
+        [TestMethod]
+        public void ExpectedExceptionTest()
+        {
+            ExpectException(typeof(WebDriverException), true);
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+                browser.First("#button").Click();
+                browser.CheckIfAlertText(s => s.EndsWith("test."), "alert text doesn't end with 'test.'");
+
+            });
+        }
+
+        [TestMethod]
+        public void ExpectedExceptionTest2()
+        {
+            ExpectException(typeof(AlertException));
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+                browser.First("#button").Click();
+                browser.CheckIfAlertText(s => s.EndsWith("test."), "alert text doesn't end with 'test.'");
+            });
+        }
+
+        [TestMethod]
+        public void ConfirmTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Confirm.aspx");
+
+                var button = browser.First("#button");
+                button.Click();
+                browser.ConfirmAlert().First("#message").CheckIfInnerTextEquals("Accept", false);
+
+                button.Click();
+                browser.DismissAlert().First("#message").CheckIfInnerTextEquals("Dismiss", false);
+            });
+        }
+        [TestMethod]
+        public void SelectMethodTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/SelectMethod.aspx");
+
+                Func<string, By> sMethod = s => By.CssSelector($"[data-ui='{s}']");
+                browser.SelectMethod = sMethod;
+
+                var d = browser.First("d");
+                d.SetCssSelectMethod();
+                var c = d.First("#c");
+                c.ParentElement.CheckIfHasAttribute("data-ui");
+
+                //select css method - test switching
+                browser.SetCssSelector();
+
+                var a = browser.First("#a");
+                a.SelectMethod = sMethod;
+                var e = a.First("e");
+                e.First("#b");
+
+                a.SetBrowserSelectMethod();
+                a.First("#c");
+            });
+
+
+
+        }
+        [TestMethod]
+        public void FileDialogTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("FileDialog.aspx");
+
+                var tempFile = Path.GetTempFileName();
+                File.WriteAllText(tempFile, "test content");
+
+
+                browser.FileUploadDialogSelect(browser.First("input[type=file]"), tempFile);
+                browser.First("input[type=file]").CheckAttribute("value", string.IsNullOrWhiteSpace);
+
+                File.Delete(tempFile);
+
             });
         }
     }
