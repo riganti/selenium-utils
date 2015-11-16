@@ -156,6 +156,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
             browser.Navigate().Refresh();
         }
 
+        public void DropTest(string message)
+        {
+            throw new WebDriverException($"Test forcibly dropped: {message}");
+        }
+
         public string GetAlertText()
         {
             var alert = GetAlert();
@@ -449,6 +454,17 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             System.Windows.Forms.SendKeys.SendWait("{ESC}");
         }
+        #endregion
+
+
+        #region Frames support
+
+        internal void CreateFrameScope(string selector)
+        {
+            //TODO
+        }
+
+
         #endregion
     }
 }
