@@ -386,6 +386,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         #region CheckUrl
 
+        //TODO: 
         //public BrowserWrapper CheckUrlEquals(string url, params UriComponents[] criteria)
         //{
         //    UriComponents? finalCriteria = UriComponents.AbsoluteUri;
@@ -441,6 +442,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
             // write the full path to the dialog
             System.Windows.Forms.SendKeys.SendWait(fullFileName);
+            Wait();
             SendEnterKey();
             Wait();
             return this;
@@ -461,10 +463,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         internal void CreateFrameScope(string selector)
         {
-            //TODO
+            //TODO: add support of frame scopes
         }
-
-
         #endregion
     }
 }
