@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
-    public interface IWebDriverFactory
+    public interface IWebDriverFactory 
     {
         IWebDriver CreateNewInstance();
     }

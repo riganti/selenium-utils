@@ -42,7 +42,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             get { return selectMethod ?? browser.SelectMethod; }
             set { selectMethod = value; }
         }
-        
+
 
         public ElementWrapper ParentElement
         {
@@ -74,7 +74,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public void SetCssSelectMethod()
         {
-            selectMethod  = By.CssSelector;
+            selectMethod = By.CssSelector;
         }
         public void SetBrowserSelectMethod()
         {
@@ -172,6 +172,24 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual ElementWrapper CheckIfInnerTextEquals(string text, bool caseSensitive = true, bool trim = true)
         {
+            if (!string.Equals(text, GetInnerText(),
+                caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
+            {
+                throw new UnexpectedElementStateException($"Element contains wrong content. Expected content: '{text}', Provided content: '{GetInnerText()}' \r\n Element selector: {FullSelector} \r\n");
+            }
+            return this;
+        }
+
+        public virtual ElementWrapper CheckIfInnerText(Func<string, bool> expression, string messsage = null)
+        {
+            if (!expression(GetInnerText()))
+            {
+                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetInnerText()}' \r\n Element selector: {FullSelector} \r\n {messsage ?? ""}");
+            }
+            return this;
+        }
+        public virtual ElementWrapper CheckIfTextEquals(string text, bool caseSensitive = true, bool trim = true)
+        {
             if (!string.Equals(text, GetText(),
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
             {
@@ -180,7 +198,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public virtual ElementWrapper CheckIfInnerText(Func<string, bool> expression, string messsage = null)
+        public virtual ElementWrapper CheckIfText(Func<string, bool> expression, string messsage = null)
         {
             if (!expression(GetText()))
             {
@@ -299,8 +317,19 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return obj;
         }
 
+        public virtual string GetInnerText()
+        {
+            return element.Text;
+        }
+
         public virtual string GetText()
         {
+
+            string[] valueElements = new[] { "input", "textarea" };
+            if (valueElements.Contains(element.TagName.Trim().ToLower()))
+            {
+                return GetAttribute("value");
+            }
             return element.Text;
         }
 
@@ -385,7 +414,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual ElementWrapper CheckIfContainsText()
         {
-            if (string.IsNullOrWhiteSpace(GetText()))
+            if (string.IsNullOrWhiteSpace(GetInnerText()))
             {
                 throw new UnexpectedElementStateException($"Element doesn't contain text. \r\n Element selector: {Selector} \r\n");
             }
@@ -412,7 +441,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual ElementWrapper CheckIfDoesNotContainsText()
         {
-            if (!string.IsNullOrWhiteSpace(GetText()))
+            if (!string.IsNullOrWhiteSpace(GetInnerText()))
             {
                 throw new UnexpectedElementStateException($"Element does contain text. Element should be empty.\r\n Element selector: {Selector} \r\n");
             }

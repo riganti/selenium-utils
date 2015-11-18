@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.SeleniumCore;
 using System.Threading;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 
 namespace WebApplication1.Tests
@@ -276,5 +278,25 @@ namespace WebApplication1.Tests
 
             });
         }
+
+        [TestMethod]
+        public void TextTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("text.aspx");
+                browser.First("#button").CheckIfTextEquals("text", false);
+                browser.First("#input").CheckIfTextEquals("text", false);
+                browser.First("#area").CheckIfTextEquals("text", false);
+
+                browser.First("#button").CheckIfText(s=> s.ToLower().Contains("text"));
+                browser.First("#input").CheckIfText(s => s.Contains("text"));
+                browser.First("#area").CheckIfText(s => s.Contains("text"));
+
+
+            });
+        }
     }
+
+   
 }

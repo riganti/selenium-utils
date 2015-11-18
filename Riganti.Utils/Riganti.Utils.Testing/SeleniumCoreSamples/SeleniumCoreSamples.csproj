@@ -88,6 +88,7 @@
     <Content Include="SelectMethod.aspx" />
     <Content Include="Site2.aspx" />
     <Content Include="Sub\site2.aspx" />
+    <Content Include="Text.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +155,13 @@
     </Compile>
     <Compile Include="Sub\site2.aspx.designer.cs">
       <DependentUpon>site2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Text.aspx.cs">
+      <DependentUpon>Text.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Text.aspx.designer.cs">
+      <DependentUpon>Text.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
