@@ -379,11 +379,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             ((ITakesScreenshot)browser).GetScreenshot().SaveAsFile(filename, format ?? ImageFormat.Png);
         }
 
-        public void Dispose()
-        {
-            browser.Dispose();
-        }
-
         #region CheckUrl
 
         //TODO: 
