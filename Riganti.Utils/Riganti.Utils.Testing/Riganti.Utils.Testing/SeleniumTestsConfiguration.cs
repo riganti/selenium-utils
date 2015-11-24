@@ -27,6 +27,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 {
                     StartFirefoxDriver = TryParseBool(value);
                 }
+                if (string.Equals(key, GetSettingsKey("poolBrowsers"), StringComparison.OrdinalIgnoreCase))
+                {
+                    AllowBrowserPooling = TryParseBool(value);
+                }
                 if (string.Equals(key, GetSettingsKey("baseurl"), StringComparison.OrdinalIgnoreCase))
                 {
                     BaseUrl = value;
@@ -57,6 +61,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public static bool StartInternetExplorerDriver { get; }
         public static bool StartFirefoxDriver { get; }
         public static int TestAttemps { get; }
+
+        public static bool AllowBrowserPooling { get; }
 
         private static bool TryParseBool(string value)
         {

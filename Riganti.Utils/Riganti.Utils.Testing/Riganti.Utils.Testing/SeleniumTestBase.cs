@@ -33,7 +33,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             set { screenshotsFolderPath = value; }
         }
 
-        public WebDriverFacotryRegistry Factory => factory ?? (factory = new WebDriverFacotryRegistry());
+        public WebDriverFacotryRegistry Factory => WebDriverFacotryRegistry.Default.Clone();
 
         protected virtual List<IWebDriverFactory> BrowserFactories => Factory.BrowserFactories;
         private BrowserWrapper helper;
@@ -68,35 +68,33 @@ namespace Riganti.Utils.Testing.SeleniumCore
             {
                 attemptNumber++;
                 exception = null;
-                var browser = LatestLiveWebDriver = browserFactory.CreateNewInstance();
-                helper = new BrowserWrapper(browser, this);
-                browserName = browser.GetType().Name;
-
-                WriteLine($"Testing browser '{browserName}' attempt no. {attemptNumber}");
-
-                try
+                using (var browser = browserFactory.CreateNewInstance())
                 {
-                    action(helper);
-                }
-                catch (Exception ex)
-                {
-                    bool isExpected = false;
-                    if (ExpectedExceptionType != null)
+                    helper = new BrowserWrapper(browser.Driver, this);
+                    browserName = browser.GetType().Name;
+
+                    WriteLine($"Testing browser '{browserName}' attempt no. {attemptNumber}");
+
+                    try
                     {
-                        isExpected = ex.GetType() == ExpectedExceptionType || (AllowDerivedExceptionTypes && ExpectedExceptionType.IsInstanceOfType(ex));
+                        action(helper);
                     }
-
-
-                    if (!isExpected)
+                    catch (Exception ex)
                     {
-                        TakeScreenshot(attemptNumber, helper);
-                        // fail the test
-                        exception = ex;
+                        bool isExpected = false;
+                        if (ExpectedExceptionType != null)
+                        {
+                            isExpected = ex.GetType() == ExpectedExceptionType || (AllowDerivedExceptionTypes && ExpectedExceptionType.IsInstanceOfType(ex));
+                        }
+
+
+                        if (!isExpected)
+                        {
+                            TakeScreenshot(attemptNumber, helper);
+                            // fail the test
+                            exception = ex;
+                        }
                     }
-                }
-                finally
-                {
-                    helper.Dispose();
                 }
             }
             while (exception != null && attemptNumber == SeleniumTestsConfiguration.TestAttemps);

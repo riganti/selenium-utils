@@ -13,32 +13,52 @@ namespace Riganti.Utils.Testing.SeleniumCore
 {
     public interface IWebDriverFactory 
     {
-        IWebDriver CreateNewInstance();
+        IWebDriverToken CreateNewInstance();
+    }
+
+    public interface IWebDriverToken: IDisposable
+    {
+        IWebDriver Driver { get; }
+    }
+
+    class SimpleWebDriverToken : IWebDriverToken
+    {
+        public IWebDriver Driver { get; }
+
+        public SimpleWebDriverToken(IWebDriver driver)
+        {
+            Driver = driver;
+        }
+
+        public void Dispose()
+        {
+            Driver.Dispose();
+        }
     }
 
     public class DefaultChromeWebDriverFactory : IWebDriverFactory
     {
-        public IWebDriver CreateNewInstance()
+        public IWebDriverToken CreateNewInstance()
         {
             var options = new ChromeOptions();
             options.AddArgument("test-type");
-            return new ChromeDriver(options);
+            return new SimpleWebDriverToken(new ChromeDriver(options));
         }
     }
 
     public class DefaultInternetExplorerWebDriverFactory : IWebDriverFactory
     {
-        public IWebDriver CreateNewInstance()
+        public IWebDriverToken CreateNewInstance()
         {
-            return new InternetExplorerDriver();
+            return new SimpleWebDriverToken(new InternetExplorerDriver());
         }
     }
 
     public class DefaultFirefoxWebDriverFactory : IWebDriverFactory
     {
-        public IWebDriver CreateNewInstance()
+        public IWebDriverToken CreateNewInstance()
         {
-            return new FirefoxDriver();
+            return new SimpleWebDriverToken(new FirefoxDriver());
         }
     }
 
@@ -51,9 +71,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             this.factoryMethod = factoryMethod;
         }
 
-        public IWebDriver CreateNewInstance()
+        public IWebDriverToken CreateNewInstance()
         {
-            return factoryMethod();
+            return new SimpleWebDriverToken(factoryMethod());
         }
     }
 }
