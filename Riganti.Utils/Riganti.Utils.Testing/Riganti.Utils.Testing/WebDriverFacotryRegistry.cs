@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
-    public class WebDriverFacotryRegistry
+    public class WebDriverFactoryRegistry
     {
-        public WebDriverFacotryRegistry()
+        public WebDriverFactoryRegistry()
         {
             BrowserFactories = new List<IWebDriverFactory>();
             if (SeleniumTestsConfiguration.StartChromeDriver) RegisterBrowserFactory(new DefaultChromeWebDriverFactory());
@@ -18,7 +18,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public List<IWebDriverFactory> BrowserFactories { get; }
 
-        public void RegisterBrowserFactoryMehtod(Func<IWebDriver> func)
+        public void RegisterBrowserFactoryMethod(Func<IWebDriver> func)
         {
             BrowserFactories.Add(new WebDriverFactoryMethodWrapper(func));
         }

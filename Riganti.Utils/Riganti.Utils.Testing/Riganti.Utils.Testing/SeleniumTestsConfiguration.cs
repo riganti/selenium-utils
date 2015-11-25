@@ -56,7 +56,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public static bool StartChromeDriver { get; }
         public static bool StartInternetExplorerDriver { get; }
         public static bool StartFirefoxDriver { get; }
-        public static int TestAttemps { get; }
+        public static int TestAttemps { get; } = 2;
 
         private static bool TryParseBool(string value)
         {
