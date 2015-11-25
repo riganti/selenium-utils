@@ -128,7 +128,6 @@ namespace WebApplication1.Tests
         [TestMethod]
         public void CollectionCheckClass()
         {
-            ExpectException(typeof(NoSuchElementException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("NoParentTest.aspx");

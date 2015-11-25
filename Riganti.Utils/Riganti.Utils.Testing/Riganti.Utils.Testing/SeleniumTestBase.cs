@@ -1,22 +1,25 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
 using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using OpenQA.Selenium;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
     public class SeleniumTestBase : ITestBase
     {
+
         public TestContext TestContext { get; set; }
         private WebDriverFacotryRegistry factory;
         private string screenshotsFolderPath;
         private string CurrentSubSection { get; set; }
         private Type ExpectedExceptionType { get; set; }
         protected IWebDriver LatestLiveWebDriver { get; set; }
-
         public string ScreenshotsFolderPath
         {
             get
@@ -43,6 +46,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             CheckAvailableWebDriverFactories();
             foreach (var browserFactory in BrowserFactories)
             {
+
                 string browserName;
                 Exception exception;
 
@@ -76,6 +80,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                         action(helper);
                     }
 <<<<<<< HEAD
+
 
                     if (!isExpected)
 =======
@@ -118,15 +123,21 @@ namespace Riganti.Utils.Testing.SeleniumCore
             WriteLine($"Testing of section succesfully completed.");
         }
 
+
+
+
+
         protected virtual void TakeScreenshot(int attemptNumber, BrowserWrapper browserWrapper)
         {  // make screenshot
             try
             {
+
                 LogCurrentlyPerformedAction("Taking screenshot");
 
                 var filename = Path.Combine(ScreenshotsFolderPath, $"{TestContext.FullyQualifiedTestClassName}_{TestContext.TestName}" + attemptNumber + ".png");
                 browserWrapper.TakeScreenshot(filename);
                 TestContext.AddResultFile(filename);
+
             }
             catch
             {
@@ -140,10 +151,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (Debugger.IsAttached)
             {
                 Debugger.Log(1, Debugger.DefaultCategory, message);
-                
             }
-        }
 
+        }
         public virtual void Log(string message)
         {
             WriteLine(message);
