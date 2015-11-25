@@ -33,7 +33,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             set { screenshotsFolderPath = value; }
         }
 
-        public WebDriverFacotryRegistry Factory => WebDriverFacotryRegistry.Default.Clone();
+        public WebDriverFacotryRegistry Factory => factory ?? (factory = new WebDriverFacotryRegistry());
 
         protected virtual List<IWebDriverFactory> BrowserFactories => Factory.BrowserFactories;
         private BrowserWrapper helper;
@@ -68,9 +68,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
             {
                 attemptNumber++;
                 exception = null;
-                using (var browser = browserFactory.CreateNewInstance())
-                {
-                    helper = new BrowserWrapper(browser.Driver, this);
+                var browser = LatestLiveWebDriver = browserFactory.CreateNewInstance();
+                helper = new BrowserWrapper(browser, this);
                     browserName = browser.GetType().Name;
 
                     WriteLine($"Testing browser '{browserName}' attempt no. {attemptNumber}");
@@ -79,13 +78,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                     {
                         action(helper);
                     }
-<<<<<<< HEAD
-
-
-                    if (!isExpected)
-=======
                     catch (Exception ex)
->>>>>>> refs/remotes/origin/pr/1
                     {
                         bool isExpected = false;
                         if (ExpectedExceptionType != null)
@@ -101,6 +94,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
                             exception = ex;
                         }
                     }
+                finally
+                {
+                    helper.Dispose();
                 }
             }
             while (exception != null && attemptNumber == SeleniumTestsConfiguration.TestAttemps);

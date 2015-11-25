@@ -68,7 +68,6 @@
     <Compile Include="ISeleniumWrapper.cs" />
     <Compile Include="ITestBase.cs" />
     <Compile Include="IWebBrowserFactory.cs" />
-    <Compile Include="PoolingDriverFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleniumTestBase.cs" />
     <Compile Include="SeleniumTestsConfiguration.cs" />
