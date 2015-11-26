@@ -102,6 +102,81 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
+        public string GetJsElementPropertyValue(string elementPropertyName)
+        {
+            var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"return (arguments || [{}])[0]['" + elementPropertyName + "'];", WebElement);
+            return obj?.ToString();
+        }
+
+        /// <summary>
+        /// Inserts javascript to the site and returns value of innerText/textContent property of this element. 
+        /// </summary>
+        public string GetJsInnerText(bool trim = true)
+        {
+            var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"var ________xcaijciajsicjaisjciasjicjasicjaijcias______ = (arguments || [{}])[0];return ________xcaijciajsicjaisjciasjicjasicjaijcias______['innerText'] || ________xcaijciajsicjaisjciasjicjasicjaijcias______['textContent'];", WebElement);
+            return trim ? obj?.ToString().Trim(): obj?.ToString();
+        }
+
+        /// <summary>
+        /// This check-method inserts javascript to the site and checks returned value of innerText/textContent property of specific element. 
+        /// </summary>
+        public virtual ElementWrapper CheckIfJsPropertyInnerTextEquals(string text, bool caseSensitive = true, bool trim = true)
+        {
+            var value = GetJsInnerText(trim);
+            if (!string.Equals(text, value,
+                caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
+            {
+                throw new UnexpectedElementStateException($"Element contains incorrect content in innerText/textContent property. Expected content: '{text}', Provided content: '{value}' \r\n Element selector: {FullSelector} \r\n");
+            }
+            return this;
+        }
+        /// <summary>
+        /// This check-method inserts javascript to the site and checks returned value of innerText/textContent property of specific element. 
+        /// </summary>
+        public virtual ElementWrapper CheckIfJsPropertyInnerText(Func<string, bool> expression, string messsage = null, bool trim = true)
+        {
+            var value = GetJsInnerText(trim);
+            if (!expression(value))
+            {
+                throw new UnexpectedElementStateException($"Element contains incorrect content in innerText property of element. Provided content: '{value}' \r\n Element selector: {FullSelector} \r\n{messsage ?? ""}");
+            }
+            return this;
+        }
+
+
+        /// <summary>
+        /// Inserts javascript to the site and returns value of innerHTML property of this element. 
+        /// </summary>
+        public string GetJsInnerHtml()
+        {
+            return GetJsElementPropertyValue("innerHTML");
+        }
+        /// <summary>
+        /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element. 
+        /// </summary>
+        public virtual ElementWrapper CheckIfJsPropertyInnerHtmlEquals(string text, bool caseSensitive = true, bool trim = true)
+        {
+            var value = GetJsInnerHtml();
+            if (!string.Equals(text, value,
+                caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
+            {
+                throw new UnexpectedElementStateException($"Element contains incorrect content in innerHTML property. Expected content: '{text}', Provided content: '{value}' \r\n Element selector: {FullSelector} \r\n");
+            }
+            return this;
+        }
+        /// <summary>
+        /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element. 
+        /// </summary>
+        public virtual ElementWrapper CheckIfJsPropertyInnerHtml(Func<string, bool> expression, string messsage = null)
+        {
+            var value = GetJsInnerHtml();
+            if (!expression(value))
+            {
+                throw new UnexpectedElementStateException($"Element contains incorrect content in innerHTML property of element. Provided content: '{value}' \r\n Element selector: {FullSelector} \r\n{messsage ?? ""}");
+            }
+            return this;
+        }
+
         public ElementWrapper CheckTagName(Func<string, bool> expression, string message = null)
         {
             if (!expression(GetTagName()))

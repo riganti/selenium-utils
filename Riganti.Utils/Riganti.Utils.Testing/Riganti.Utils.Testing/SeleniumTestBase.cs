@@ -3,13 +3,13 @@ using OpenQA.Selenium;
 using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
     public class SeleniumTestBase : ITestBase
     {
+        public List<ILogger> Loggers { get; protected set; } = new List<ILogger>();
         public TestContext TestContext { get; set; }
         private WebDriverFactoryRegistry factory;
         private string screenshotsFolderPath;
@@ -132,10 +132,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         protected virtual void WriteLine(string message)
         {
-            TestContext?.WriteLine(message);
-            if (Debugger.IsAttached)
+            foreach (var logger in Loggers)
             {
-                Debugger.Log(1, Debugger.DefaultCategory, message);
+                logger.WriteLine(message);
             }
         }
 

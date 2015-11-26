@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -101,11 +102,11 @@ namespace WebApplication1.Tests
             {
                 browser.NavigateToUrl("/Checkboxes.aspx");
                 browser.First("#checkbox1").Wait(1200)
-                                            .CheckIfIsChecked()
-                                            .Wait(1200)
-                                            .Click()
-                                            .Wait(1200)
-                                            .CheckIfIsNotChecked();
+                                           .CheckIfIsChecked()
+                                           .Wait(1200)
+                                           .Click()
+                                           .Wait(1200)
+                                           .CheckIfIsNotChecked();
 
                 browser.First("#checkbox2").CheckIfIsNotChecked()
                                             .Wait(1200)
@@ -292,11 +293,33 @@ namespace WebApplication1.Tests
                 browser.First("#button").CheckIfText(s=> s.ToLower().Contains("text"));
                 browser.First("#input").CheckIfText(s => s.Contains("text"));
                 browser.First("#area").CheckIfText(s => s.Contains("text"));
+            });
+        }
 
+        [TestMethod]
+        public void JsInnerTextTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("JsTestSite.aspx");
+                var elm = browser.First("#hiddenElement");
+                Assert.IsTrue(string.Equals( elm.GetJsInnerText()?.Trim(),  "InnerText", StringComparison.OrdinalIgnoreCase));
+                elm.CheckIfJsPropertyInnerText(c => c == "InnerText")
+                    .CheckIfJsPropertyInnerTextEquals("InnerText", false);
+            });
+        }
 
+        [TestMethod]
+        public void JsInnerHtmlTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("JsHtmlTest.aspx");
+                var elm = browser.First("#htmlTest");
+                Assert.IsTrue(string.Equals(elm.GetJsInnerHtml()?.Trim(), "<span></span>", StringComparison.OrdinalIgnoreCase));
+                elm.CheckIfJsPropertyInnerHtmlEquals("<span></span>")
+                    .CheckIfJsPropertyInnerHtml(c => c == "<span></span>");
             });
         }
     }
-
-   
 }

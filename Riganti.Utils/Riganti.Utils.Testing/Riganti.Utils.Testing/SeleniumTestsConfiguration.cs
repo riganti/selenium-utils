@@ -15,24 +15,27 @@ namespace Riganti.Utils.Testing.SeleniumCore
             foreach (var key in keys)
             {
                 var value = ConfigurationManager.AppSettings[key];
-                if (string.Equals(key, GetSettingsKey("chromedriver"), StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(key, GetSettingsKey("ChromeDriver"), StringComparison.OrdinalIgnoreCase))
                 {
                     StartChromeDriver = TryParseBool(value);
                 }
-                if (string.Equals(key, GetSettingsKey("InternetExplorerDriver"), StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(key, GetSettingsKey("InternetExplorerDriver"), StringComparison.OrdinalIgnoreCase) || string.Equals(key, GetSettingsKey("IeDriver"), StringComparison.OrdinalIgnoreCase))
                 {
                     StartInternetExplorerDriver = TryParseBool(value);
                 }
-                if (string.Equals(key, GetSettingsKey("firefoxdriver"), StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(key, GetSettingsKey("FirefoxDriver"), StringComparison.OrdinalIgnoreCase))
                 {
                     StartFirefoxDriver = TryParseBool(value);
                 }
-                if (string.Equals(key, GetSettingsKey("baseurl"), StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(key, GetSettingsKey("BaseUrl"), StringComparison.OrdinalIgnoreCase))
                 {
                     BaseUrl = value;
                 }
-
-                if (string.Equals(key, GetSettingsKey("testattemptscount"), StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(key, GetSettingsKey("FastMode"), StringComparison.OrdinalIgnoreCase))
+                {
+                    FastMode = TryParseBool(value, true);
+                }
+                if (string.Equals(key, GetSettingsKey("TestAttemptsCount"), StringComparison.OrdinalIgnoreCase))
                 {
                     try
                     {
@@ -50,6 +53,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
         }
 
+        public static bool FastMode { get; set; } = true;
+
         public static string BaseUrl { get; set; }
 
         public const string ConfigurationAppSettingsKeyPrefix = "selenium:";
@@ -58,10 +63,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public static bool StartFirefoxDriver { get; }
         public static int TestAttemps { get; } = 2;
 
-        private static bool TryParseBool(string value)
+        private static bool TryParseBool(string value, bool defaultValue = false)
         {
             bool tmp;
-            bool.TryParse(value, out tmp);
+            if (!bool.TryParse(value, out tmp))
+            {
+                tmp = defaultValue;
+            }
             return tmp;
         }
 

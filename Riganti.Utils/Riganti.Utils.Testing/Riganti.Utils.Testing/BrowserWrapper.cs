@@ -346,9 +346,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public void FireJsBlur()
         {
-            var jsExecutor = browser as IJavaScriptExecutor;
-            jsExecutor?.ExecuteScript("if(document.activeElement && document.activeElement.blur) {document.activeElement.blur()}");
+            GetJavaScriptExecutor()?.ExecuteScript("if(document.activeElement && document.activeElement.blur) {document.activeElement.blur()}");
         }
+
+        public IJavaScriptExecutor GetJavaScriptExecutor()
+        {
+            return browser as IJavaScriptExecutor;
+        }
+
 
         public void SendKeys(string selector, string text)
         {

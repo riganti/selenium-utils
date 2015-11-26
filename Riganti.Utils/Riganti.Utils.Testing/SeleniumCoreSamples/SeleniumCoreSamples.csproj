@@ -74,6 +74,8 @@
     <Content Include="Alert.aspx" />
     <Content Include="Checkboxes.aspx" />
     <Content Include="FileDialog.aspx" />
+    <Content Include="JsHtmlTest.aspx" />
+    <Content Include="JSTestSite.aspx" />
     <Content Include="NoParentTest.aspx" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
@@ -126,6 +128,20 @@
     </Compile>
     <Compile Include="FileDialog.aspx.designer.cs">
       <DependentUpon>FileDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="JsHtmlTest.aspx.cs">
+      <DependentUpon>JsHtmlTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="JsHtmlTest.aspx.designer.cs">
+      <DependentUpon>JsHtmlTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="JSTestSite.aspx.cs">
+      <DependentUpon>JSTestSite.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="JSTestSite.aspx.designer.cs">
+      <DependentUpon>JSTestSite.aspx</DependentUpon>
     </Compile>
     <Compile Include="NoParentTest.aspx.cs">
       <DependentUpon>NoParentTest.aspx</DependentUpon>
