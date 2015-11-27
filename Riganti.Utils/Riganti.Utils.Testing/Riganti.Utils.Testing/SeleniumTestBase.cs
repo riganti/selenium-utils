@@ -46,7 +46,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 string browserName;
                 Exception exception;
 
-                TryExecuteTest(action, browserFactory, out browserName, out exception);
+                if (!SeleniumTestsConfiguration.DeveloperMode)
+                {
+                    TryExecuteTest(action, browserFactory, out browserName, out exception);
+                }
+                else
+                {
+                    ExecuteTest(action, browserFactory, out browserName, out exception);
+                }
 
                 if (exception != null)
                 {
@@ -54,6 +61,23 @@ namespace Riganti.Utils.Testing.SeleniumCore
                         throw new SeleniumTestFailedException(exception, browserName, ScreenshotsFolderPath);
                     throw new SeleniumTestFailedException(exception, browserName, ScreenshotsFolderPath, CurrentSubSection);
                 }
+            }
+        }
+
+        private void ExecuteTest(Action<BrowserWrapper> action, IWebDriverFactory browserFactory, out string browserName, out Exception exception)
+        {
+            try
+            {
+                exception = null;
+                var browser = LatestLiveWebDriver = browserFactory.CreateNewInstance();
+                wrapper = new BrowserWrapper(browser, this);
+                browserName = browser.GetType().Name;
+                action(wrapper);
+
+            }
+            finally
+            {
+                wrapper.Dispose();
             }
         }
 

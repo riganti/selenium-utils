@@ -12,19 +12,19 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public string Selector { get; }
         public ISeleniumWrapper ParentWrapper { get; set; }
 
-        public string FullSelector => (ParentWrapper == null ? Selector : $"{ParentWrapper.FullSelector} {Selector}").Trim();
+        public string FullSelector => (ParentWrapper == null ? (Selector ?? "") : $"{ParentWrapper.FullSelector} {Selector ?? ""}").Trim();
 
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector)
         {
             this.collection = new List<ElementWrapper>(collection);
             Selector = selector;
-            SetRerefernces(selector);
+            SetRereferences(selector);
         }
         /// <summary>
         /// Sets children reference to Parent wrapper
         /// </summary>
         /// <param name="selector"></param>
-        private void SetRerefernces(string selector)
+        private void SetRereferences(string selector)
         {
             foreach (var ew in collection)
             {
@@ -36,14 +36,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ElementWrapper parentElement)
         {
             this.collection = new List<ElementWrapper>(collection);
-            SetRerefernces(selector);
+            SetRereferences(selector);
             Selector = selector;
             ParentWrapper = parentElement;
         }
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ElementWrapperCollection parentCollection)
         {
             this.collection = new List<ElementWrapper>(collection);
-            SetRerefernces(selector);
+            SetRereferences(selector);
             Selector = selector;
             ParentWrapper = parentCollection;
         }
@@ -106,7 +106,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return collection.Last();
         }
 
-        private List<ElementWrapper> collection;
+        private readonly List<ElementWrapper> collection;
 
         public IEnumerator<ElementWrapper> GetEnumerator()
         {
@@ -165,7 +165,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
             get { return collection[index]; }
             set { collection[index] = value; }
         }
-
+        /// <summary>
+        /// Performs the specified action on each element of the <see cref="Riganti.Utils.Testing.SeleniumCore.ElementWrapperCollection"/>.
+        /// </summary>
+        /// <param name="action">The <see cref="T:System.Action`1"/> delegate to perform on each element of the <see cref="T:System.Collections.Generic.List`1"/>.</param><exception cref="T:System.ArgumentNullException"><paramref name="action"/> is null.</exception>
         public void ForEach(Action<ElementWrapper> action)
         {
             collection.ForEach(action);

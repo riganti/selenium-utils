@@ -82,15 +82,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
         private string GenerateFullSelector()
         {
-            var parentSelector = ParentWrapper.FullSelector;
             var parent = ParentWrapper as ElementWrapperCollection;
             if (parent != null)
             {
                 var index = parent.IndexOf(this);
-                parentSelector = string.IsNullOrWhiteSpace(parent.FullSelector) ? "" : parent.FullSelector.Trim() + $":nth-child({index})";
+                var parentSelector = string.IsNullOrWhiteSpace(parent.FullSelector) ? "" : parent.FullSelector.Trim() + $":nth-child({index})";
                 return $"{parentSelector}".Trim();
             }
-            return $"{Selector}".Trim();
+            return $"{Selector ?? ""}".Trim();
         }
 
         public ElementWrapper CheckTagName(string expectedTagName)
@@ -114,7 +113,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public string GetJsInnerText(bool trim = true)
         {
             var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"var ________xcaijciajsicjaisjciasjicjasicjaijcias______ = (arguments || [{}])[0];return ________xcaijciajsicjaisjciasjicjasicjaijcias______['innerText'] || ________xcaijciajsicjaisjciasjicjasicjaijcias______['textContent'];", WebElement);
-            return trim ? obj?.ToString().Trim(): obj?.ToString();
+            return trim ? obj?.ToString().Trim() : obj?.ToString();
         }
 
         /// <summary>

@@ -35,6 +35,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 {
                     FastMode = TryParseBool(value, true);
                 }
+
+                if (string.Equals(key, GetSettingsKey("DeveloperMode"), StringComparison.OrdinalIgnoreCase))
+                {
+                    DeveloperMode = TryParseBool(value);
+                }
+                
                 if (string.Equals(key, GetSettingsKey("TestAttemptsCount"), StringComparison.OrdinalIgnoreCase))
                 {
                     try
@@ -62,6 +68,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public static bool StartInternetExplorerDriver { get; }
         public static bool StartFirefoxDriver { get; }
         public static int TestAttemps { get; } = 2;
+        public static bool DeveloperMode { get; set; }
 
         private static bool TryParseBool(string value, bool defaultValue = false)
         {
