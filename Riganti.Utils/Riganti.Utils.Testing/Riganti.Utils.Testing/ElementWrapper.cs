@@ -86,7 +86,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (parent != null)
             {
                 var index = parent.IndexOf(this);
-                var parentSelector = string.IsNullOrWhiteSpace(parent.FullSelector) ? "" : parent.FullSelector.Trim() + $":nth-child({index})";
+                var parentSelector = string.IsNullOrWhiteSpace(parent.FullSelector) ? "" : parent.FullSelector.Trim() + $":nth-child({index + 1})";
                 return $"{parentSelector}".Trim();
             }
             return $"{Selector ?? ""}".Trim();
