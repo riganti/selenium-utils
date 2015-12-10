@@ -81,9 +81,50 @@ namespace WebApplication1.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
+                browser.Wait(1000);
                 browser.First("#dis-button").CheckIfHasAttribute("disabled");
+                browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
+            });
+
+            ExpectException(typeof(UnexpectedElementStateException));
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.Wait(1000);
+                browser.First("#dis-button").CheckIfHasNotAttribute("disabled");
+            });
+
+            ExpectException(typeof(UnexpectedElementStateException));
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.Wait(1000);
+                browser.First("#submit-button").CheckIfHasAttribute("disabled");
+            });
+
+        }
+        [TestMethod]
+        public void CheckIfHasAttributeExpectedException()
+        {
+            //ExpectException(typeof(UnexpectedElementStateException));
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.First("#content").CheckIfHasAttribute("title");
             });
         }
+        [TestMethod]
+        public void HasAttributeTest2()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.Wait(1000);
+                browser.First("#dis-button").CheckIfHasAttribute("disabled");
+                browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
+            });
+        }
+
 
         [TestMethod]
         public void CheckAttributeTest()

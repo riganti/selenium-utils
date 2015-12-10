@@ -224,14 +224,16 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
         public bool HasAttribute(string name)
         {
-            return element.GetAttribute(name) != null;
+            bool result = false;
+            var obj = browser.GetJavaScriptExecutor()?.ExecuteScript("return (arguments || [{attributes:[]}])[0]attributes[\"" +  name + "\"] === undefined;", WebElement);
+            bool.TryParse((obj?.ToString() ?? "false"), out result);
+            return result;
         }
         public ElementWrapper CheckIfHasAttribute(string name)
         {
             if (!HasAttribute(name))
             {
                 throw new UnexpectedElementStateException($"Element has not attribute '{name}'. Element selector: '{FullSelector}'.");
-
             }
             return this;
         }

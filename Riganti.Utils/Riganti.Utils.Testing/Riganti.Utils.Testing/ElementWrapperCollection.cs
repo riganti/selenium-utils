@@ -20,6 +20,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Selector = selector;
             SetRereferences(selector);
         }
+
+
+     
+
         /// <summary>
         /// Sets children reference to Parent wrapper
         /// </summary>
@@ -162,7 +166,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public ElementWrapper this[int index]
         {
-            get { return collection[index]; }
+            get { return ElementAt(index); }
             set { collection[index] = value; }
         }
         /// <summary>

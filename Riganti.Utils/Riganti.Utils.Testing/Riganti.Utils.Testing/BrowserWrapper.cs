@@ -18,6 +18,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public IWebDriver Browser => browser;
         public int ActionWaitTime { get; set; } = 100;
 
+
+
         public BrowserWrapper(IWebDriver browser, ITestBase testClass)
         {
             this.browser = browser;
