@@ -225,7 +225,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public bool HasAttribute(string name)
         {
             bool result = false;
-            var obj = browser.GetJavaScriptExecutor()?.ExecuteScript("return (arguments || [{attributes:[]}])[0]attributes[\"" +  name + "\"] === undefined;", WebElement);
+            var obj = browser.GetJavaScriptExecutor()?.ExecuteScript("return (arguments || [{attributes:[]}])[0].attributes[\"" +  name + "\"] !== undefined;", WebElement);
             bool.TryParse((obj?.ToString() ?? "false"), out result);
             return result;
         }

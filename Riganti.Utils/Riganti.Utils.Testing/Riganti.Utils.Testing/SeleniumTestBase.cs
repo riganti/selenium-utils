@@ -117,6 +117,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 {
                     wrapper.Dispose();
                 }
+                if (ExpectedExceptionType != null && exception == null)
+                {
+                    exception = new SeleniumTestFailedException("Test was supposted to fail and it did not.");
+                }
             }
             while (exception != null && attemptNumber < SeleniumTestsConfiguration.TestAttemps);
         }
@@ -149,8 +153,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 TestContext.AddResultFile(filename);
             }
             catch
-            {
-                //ignore
+            { 
+                //ignore 
             }
         }
 

@@ -44,7 +44,6 @@ namespace WebApplication1.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-
                 browser.First("#content").CheckIfHasAttribute("class");
             });
         }
@@ -56,7 +55,6 @@ namespace WebApplication1.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-
                 browser.First("#content").CheckIfHasAttribute("title");
             });
         }
@@ -149,16 +147,7 @@ namespace WebApplication1.Tests
             });
 
         }
-        [TestMethod]
-        public void CheckIfHasAttributeExpectedException()
-        {
-            //ExpectException(typeof(UnexpectedElementStateException));
-            RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
-                browser.First("#content").CheckIfHasAttribute("title");
-            });
-        }
+
         [TestMethod]
         public void HasAttributeTest2()
         {
