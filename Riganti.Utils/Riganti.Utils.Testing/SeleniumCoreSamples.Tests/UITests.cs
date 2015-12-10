@@ -39,6 +39,52 @@ namespace WebApplication1.Tests
         }
 
         [TestMethod]
+        public void CheckIfHasAttribute()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+
+                browser.First("#content").CheckIfHasAttribute("class");
+            });
+        }
+
+        [TestMethod]
+        public void CheckIfHasAttributeExpectedException()
+        {
+            ExpectException(typeof(UnexpectedElementStateException));
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+
+                browser.First("#content").CheckIfHasAttribute("title");
+            });
+        }
+
+        [TestMethod]
+        public void CheckIfHasNotAttribute()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+
+                browser.First("#content").CheckIfHasNotAttribute("title");
+            });
+        }
+
+        [TestMethod]
+        public void CheckIfHasNotAttributeExpectedException()
+        {
+            ExpectException(typeof(UnexpectedElementStateException));
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+
+                browser.First("#content").CheckIfHasNotAttribute("class");
+            });
+        }
+
+        [TestMethod]
         public void GetFullSelector()
         {
             RunInAllBrowsers(browser =>
