@@ -166,7 +166,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public ElementWrapper this[int index]
         {
-            get { return ElementAt(index); }
+            get { return collection[index]; }
             set { collection[index] = value; }
         }
         /// <summary>
