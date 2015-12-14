@@ -116,7 +116,7 @@ namespace WebApplication1.Tests
 
         public void SubSectionAction(BrowserWrapper browser)
         {
-            browser.FindElements("form").FindElements("div").ThrowIfDifferentCountThan(111);
+            browser.FindElements("form").FindElements("div").ThrowIfDifferentCountThan(6);
         }
 
         [TestMethod]
