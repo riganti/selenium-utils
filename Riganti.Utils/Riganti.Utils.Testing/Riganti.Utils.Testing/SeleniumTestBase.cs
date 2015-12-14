@@ -93,13 +93,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 browserName = browser.GetType().Name;
 
                 WriteLine($"Testing browser '{browserName}' attempt no. {attemptNumber}");
-
+                bool exceptionWasThrow = false;
                 try
                 {
                     action(wrapper);
                 }
                 catch (Exception ex)
                 {
+                    exceptionWasThrow = true;
                     bool isExpected = false;
                     if (ExpectedExceptionType != null)
                     {
@@ -117,7 +118,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 {
                     wrapper.Dispose();
                 }
-                if (ExpectedExceptionType != null && exception == null)
+                if (ExpectedExceptionType != null && !exceptionWasThrow)
                 {
                     exception = new SeleniumTestFailedException("Test was supposted to fail and it did not.");
                 }
