@@ -4,6 +4,7 @@ using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using OpenQA.Selenium.Chrome;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {

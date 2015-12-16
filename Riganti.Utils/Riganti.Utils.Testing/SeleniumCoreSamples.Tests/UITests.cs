@@ -366,7 +366,7 @@ namespace WebApplication1.Tests
                 browser.First("#input").CheckIfTextEquals("text", false);
                 browser.First("#area").CheckIfTextEquals("text", false);
 
-                browser.First("#button").CheckIfText(s=> s.ToLower().Contains("text"));
+                browser.First("#button").CheckIfText(s => s.ToLower().Contains("text"));
                 browser.First("#input").CheckIfText(s => s.Contains("text"));
                 browser.First("#area").CheckIfText(s => s.Contains("text"));
             });
@@ -379,7 +379,7 @@ namespace WebApplication1.Tests
             {
                 browser.NavigateToUrl("JsTestSite.aspx");
                 var elm = browser.First("#hiddenElement");
-                Assert.IsTrue(string.Equals( elm.GetJsInnerText()?.Trim(),  "InnerText", StringComparison.OrdinalIgnoreCase));
+                Assert.IsTrue(string.Equals(elm.GetJsInnerText()?.Trim(), "InnerText", StringComparison.OrdinalIgnoreCase));
                 elm.CheckIfJsPropertyInnerText(c => c == "InnerText")
                     .CheckIfJsPropertyInnerTextEquals("InnerText", false);
             });
@@ -395,6 +395,45 @@ namespace WebApplication1.Tests
                 Assert.IsTrue(string.Equals(elm.GetJsInnerHtml()?.Trim(), "<span></span>", StringComparison.OrdinalIgnoreCase));
                 elm.CheckIfJsPropertyInnerHtmlEquals("<span></span>")
                     .CheckIfJsPropertyInnerHtml(c => c == "<span></span>");
+            });
+        }
+
+        [TestMethod]
+        public void ElementAtFirst1()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("elementatfirst.aspx");
+                Assert.AreEqual(
+                                browser
+                                .ElementAt("div > div", 0)
+                                .First("#first0")
+                                .GetInnerText()?.ToLower(), "first0");
+            });
+        }
+
+        [TestMethod]
+        public void ElementAtFirst2()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("elementatfirst.aspx");
+                Assert.AreEqual(browser
+                                .ElementAt("#divs > div", 1)
+                                .First("div")
+                                .GetInnerText()?.ToLower(), "first1");
+            });
+        }
+        [TestMethod]
+        public void ElementAtFirst3()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("elementatfirst.aspx");
+                Assert.AreEqual(browser
+                                .ElementAt("#divs > div", 2)
+                                .ParentElement.First("#first2")
+                                .GetInnerText()?.ToLower(), "first2");
             });
         }
     }

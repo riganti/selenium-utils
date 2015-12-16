@@ -388,6 +388,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public void Dispose()
         {
+            browser.Quit();
             browser.Dispose();
         }
 

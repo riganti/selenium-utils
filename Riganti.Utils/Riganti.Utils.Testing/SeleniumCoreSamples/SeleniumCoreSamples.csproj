@@ -73,6 +73,7 @@
     <Content Include="Confirm.aspx" />
     <Content Include="Alert.aspx" />
     <Content Include="Checkboxes.aspx" />
+    <Content Include="ElementAtFirst.aspx" />
     <Content Include="FileDialog.aspx" />
     <Content Include="JsHtmlTest.aspx" />
     <Content Include="JSTestSite.aspx" />
@@ -121,6 +122,13 @@
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ElementAtFirst.aspx.cs">
+      <DependentUpon>ElementAtFirst.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ElementAtFirst.aspx.designer.cs">
+      <DependentUpon>ElementAtFirst.aspx</DependentUpon>
     </Compile>
     <Compile Include="FileDialog.aspx.cs">
       <DependentUpon>FileDialog.aspx</DependentUpon>

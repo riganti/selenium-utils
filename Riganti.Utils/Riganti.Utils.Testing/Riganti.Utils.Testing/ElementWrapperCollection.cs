@@ -101,7 +101,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             {
                 throw new SequenceCountException($"Index is out of range. Selector: '{FullSelector}', Sequence contains {Count} elements, Current index: '{index}'");
             }
-            return this[index];
+            return collection[index];
         }
 
         public ElementWrapper Last()
@@ -166,7 +166,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public ElementWrapper this[int index]
         {
-            get { return collection[index]; }
+            get { return ElementAt(index); }
             set { collection[index] = value; }
         }
         /// <summary>
