@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByExtension.cs" />
+    <Compile Include="DebuggerLogger.cs" />
     <Compile Include="DefaultChromeWebDriverFactory.cs" />
     <Compile Include="DefaultFirefoxWebDriverFactory.cs" />
     <Compile Include="DefaultInternetExplorerWebDriverFactory.cs" />
@@ -75,8 +76,12 @@
     <Compile Include="FastModeDriverFactoryBase.cs" />
     <Compile Include="IWebDriverFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectBy.cs" />
     <Compile Include="SeleniumTestBase.cs" />
     <Compile Include="SeleniumTestsConfiguration.cs" />
+    <Compile Include="StandardOutputLogger.cs" />
+    <Compile Include="TeamcityLogger.cs" />
+    <Compile Include="TestContextLogger.cs" />
     <Compile Include="WebDriverFacotryRegistry.cs" />
     <Compile Include="WebDriverFactoryMethodWrapper.cs" />
   </ItemGroup>

@@ -3,7 +3,6 @@ using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Riganti.Utils.Testing.SeleniumCore
@@ -17,8 +16,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public IWebDriver Browser => browser;
         public int ActionWaitTime { get; set; } = 100;
-
-
 
         public BrowserWrapper(IWebDriver browser, ITestBase testClass)
         {
@@ -168,6 +165,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             var alert = GetAlert();
             return alert?.Text;
         }
+
         public BrowserWrapper CheckIfAlertTextEquals(string expectedValue, bool caseSensitive = false, bool trim = true)
         {
             var alert = GetAlert();
@@ -201,7 +199,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (alert == null)
                 throw new AlertException("Alert not visible.");
             return alert;
-
         }
 
         public BrowserWrapper CheckIfAlertTextContains(string expectedValue, bool trim = true)
@@ -220,6 +217,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         public BrowserWrapper CheckIfAlertText(Func<string, bool> expression, string message = "")
         {
             var alert = browser.SwitchTo().Alert()?.Text;
@@ -236,22 +234,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Thread.Sleep(ActionWaitTime);
             return this;
         }
+
         public BrowserWrapper DismissAlert()
         {
             browser.SwitchTo().Alert().Dismiss();
             Thread.Sleep(ActionWaitTime);
             return this;
-        }
-
-
-        /// <summary>
-        /// Finds all elements that satisfy the condition of css selector.
-        /// </summary>
-        /// <param name="cssSelector"></param>
-        /// <returns></returns>
-        public ElementWrapperCollection FindElements(string cssSelector)
-        {
-            return browser.FindElements(SelectMethod(cssSelector)).ToElementsList(this, SelectMethod(cssSelector).GetSelector());
         }
 
         public BrowserWrapper Wait(int milliseconds)
@@ -281,35 +269,45 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return browser.FindElements(selector).ToElementsList(this, selector.GetSelector());
         }
 
-        public ElementWrapper FirstOrDefault(string selector)
+        /// <summary>
+        /// Finds all elements that satisfy the condition of css selector.
+        /// </summary>
+        /// <param name="cssSelector"></param>
+        /// <returns></returns>
+        public ElementWrapperCollection FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
-            var elms = FindElements(selector);
+            return browser.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)).ToElementsList(this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector());
+        }
+
+        public ElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
+        {
+            var elms = FindElements(selector, tmpSelectMethod);
             return elms.FirstOrDefault();
         }
 
-        public ElementWrapper First(string selector)
+        public ElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return ThrowIfIsNull(FirstOrDefault(selector), $"Element not found. Selector: {selector}");
+            return ThrowIfIsNull(FirstOrDefault(selector, tmpSelectMethod), $"Element not found. Selector: {selector}");
         }
 
-        public ElementWrapper SingleOrDefault(string selector)
+        public ElementWrapper SingleOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return FindElements(selector).SingleOrDefault();
+            return FindElements(selector, tmpSelectMethod).SingleOrDefault();
         }
 
-        public ElementWrapper Single(string selector)
+        public ElementWrapper Single(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return FindElements(selector).Single();
+            return FindElements(selector, tmpSelectMethod).Single();
         }
 
-        public bool IsDisplayed(string selector)
+        public bool IsDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return FindElements(selector).All(s => s.IsDisplayed());
+            return FindElements(selector, tmpSelectMethod).All(s => s.IsDisplayed());
         }
 
-        public ElementWrapperCollection CheckIfIsDisplayed(string selector)
+        public ElementWrapperCollection CheckIfIsDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var collection = FindElements(selector);
+            var collection = FindElements(selector, tmpSelectMethod);
             var result = collection.All(s => s.IsDisplayed());
             if (!result)
             {
@@ -319,9 +317,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return collection;
         }
 
-        public ElementWrapperCollection CheckIfIsNotDisplayed(string selector)
+        public ElementWrapperCollection CheckIfIsNotDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var collection = FindElements(selector);
+            var collection = FindElements(selector, tmpSelectMethod);
             var result = collection.All(s => s.IsDisplayed()) && collection.Any();
             if (result)
             {
@@ -331,19 +329,19 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return collection;
         }
 
-        public ElementWrapper ElementAt(string selector, int index)
+        public ElementWrapper ElementAt(string selector, int index, Func<string, By> tmpSelectMethod = null)
         {
-            return FindElements(selector).ElementAt(index);
+            return FindElements(selector, tmpSelectMethod).ElementAt(index);
         }
 
-        public ElementWrapper Last(string selector)
+        public ElementWrapper Last(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return FindElements(selector).Last();
+            return FindElements(selector, tmpSelectMethod).Last();
         }
 
-        public ElementWrapper LastOrDefault(string selector)
+        public ElementWrapper LastOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return FindElements(selector).LastOrDefault();
+            return FindElements(selector, tmpSelectMethod).LastOrDefault();
         }
 
         public void FireJsBlur()
@@ -356,15 +354,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return browser as IJavaScriptExecutor;
         }
 
-
-        public void SendKeys(string selector, string text)
+        public void SendKeys(string selector, string text, Func<string, By> tmpSelectMethod = null)
         {
-            FindElements(selector).ForEach(s => s.SendKeys(text));
+            FindElements(selector, tmpSelectMethod).ForEach(s => s.SendKeys(text));
         }
 
-        public void ClearElementsContent(string selector)
+        public void ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            FindElements(selector).ForEach(s => s.Clear());
+            FindElements(selector, tmpSelectMethod).ForEach(s => s.Clear());
         }
 
         public T ThrowIfIsNull<T>(T obj, string message)
@@ -394,7 +391,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         #region CheckUrl
 
-        //TODO: 
+        //TODO:
         //public BrowserWrapper CheckUrlEquals(string url, params UriComponents[] criteria)
         //{
         //    UriComponents? finalCriteria = UriComponents.AbsoluteUri;
@@ -420,10 +417,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
         //    return this;
         //}
 
-
-
-
-
         public BrowserWrapper CheckUrl(Func<string, bool> expression, string message = null)
         {
             if (!expression(CurrentUrl))
@@ -435,7 +428,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         #endregion CheckUrl
 
-
         #region FileUploadDialog
 
         /// <summary>
@@ -445,7 +437,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <param name="fullFileName">Full path to file that is intended to be uploaded.</param>
         public virtual BrowserWrapper FileUploadDialogSelect(ElementWrapper fileUploadOpener, string fullFileName)
         {
-            // open file dialog 
+            // open file dialog
             fileUploadOpener.Click();
 
             // write the full path to the dialog
@@ -460,12 +452,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             System.Windows.Forms.SendKeys.SendWait("{Enter}");
         }
+
         public virtual void SendEscKey()
         {
             System.Windows.Forms.SendKeys.SendWait("{ESC}");
         }
-        #endregion
 
+        #endregion FileUploadDialog
 
         #region Frames support
 
@@ -473,6 +466,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             //TODO: add support of frame scopes
         }
-        #endregion
+
+        #endregion Frames support
     }
 }

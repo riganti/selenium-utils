@@ -4,13 +4,12 @@ using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using OpenQA.Selenium.Chrome;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
     public class SeleniumTestBase : ITestBase
     {
-        public List<ILogger> Loggers { get; protected set; } = new List<ILogger>();
+        public List<ILogger> Loggers { get; protected set; }
         public TestContext TestContext { get; set; }
         private WebDriverFactoryRegistry factory;
         private string screenshotsFolderPath;
@@ -29,6 +28,15 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 return screenshotsFolderPath;
             }
             set { screenshotsFolderPath = value; }
+        }
+
+        public SeleniumTestBase()
+        {
+            Loggers = new List<ILogger>();
+            if (SeleniumTestsConfiguration.StandardOutputLogger) Loggers.Add(new StandardOutputLogger());
+            if (SeleniumTestsConfiguration.TeamcityLogger) Loggers.Add(new TeamcityLogger());
+            if (SeleniumTestsConfiguration.DebuggerLogger) Loggers.Add(new DebuggerLogger());
+            if (SeleniumTestsConfiguration.TestContextLogger) Loggers.Add(new TestContextLogger(this));
         }
 
         public WebDriverFactoryRegistry Factory => factory ?? (factory = new WebDriverFactoryRegistry());
@@ -74,7 +82,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 wrapper = new BrowserWrapper(browser, this);
                 browserName = browser.GetType().Name;
                 action(wrapper);
-
             }
             finally
             {
@@ -155,8 +162,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 TestContext.AddResultFile(filename);
             }
             catch
-            { 
-                //ignore 
+            {
+                //ignore
             }
         }
 

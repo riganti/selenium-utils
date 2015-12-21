@@ -1,13 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riganti.Utils.Testing.SeleniumCore;
-using System.Threading;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using Riganti.Utils.Testing.SeleniumCore;
 using Riganti.Utils.Testing.SeleniumCore.Exceptions;
+using System;
+using System.IO;
+using System.Threading;
 
 namespace WebApplication1.Tests
 {
@@ -145,7 +142,6 @@ namespace WebApplication1.Tests
                 browser.Wait(1000);
                 browser.First("#submit-button").CheckIfHasAttribute("disabled");
             });
-
         }
 
         [TestMethod]
@@ -159,7 +155,6 @@ namespace WebApplication1.Tests
                 browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
             });
         }
-
 
         [TestMethod]
         public void CheckAttributeTest()
@@ -211,6 +206,7 @@ namespace WebApplication1.Tests
                 var parent = browser.First("html").ParentElement;
             });
         }
+
         [TestMethod]
         public void UrlComparationTest1()
         {
@@ -230,9 +226,9 @@ namespace WebApplication1.Tests
 
                 browser.First("#button").Click();
                 browser.CheckIfAlertTextEquals("confirm test");
-
             });
         }
+
         [TestMethod]
         [ExpectedException(typeof(SeleniumTestFailedException))]
         public void AlertTest2()
@@ -245,6 +241,7 @@ namespace WebApplication1.Tests
                 browser.CheckIfAlertTextEquals("Confirm test", true);
             });
         }
+
         [TestMethod]
         public void AlertTest3()
         {
@@ -256,6 +253,7 @@ namespace WebApplication1.Tests
                 browser.CheckIfAlertTextContains("confirm");
             });
         }
+
         [TestMethod]
         public void AlertTest4()
         {
@@ -264,9 +262,9 @@ namespace WebApplication1.Tests
                 browser.NavigateToUrl("/Alert.aspx");
                 browser.First("#button").Click();
                 browser.CheckIfAlertText(s => s.EndsWith("test"), "alert text doesn't end with 'test.'");
-
             });
         }
+
         [TestMethod]
         public void ExpectedExceptionTest()
         {
@@ -276,7 +274,6 @@ namespace WebApplication1.Tests
                 browser.NavigateToUrl("/Alert.aspx");
                 browser.First("#button").Click();
                 browser.CheckIfAlertText(s => s.EndsWith("test."), "alert text doesn't end with 'test.'");
-
             });
         }
 
@@ -307,6 +304,7 @@ namespace WebApplication1.Tests
                 browser.DismissAlert().First("#message").CheckIfInnerTextEquals("Dismiss", false);
             });
         }
+
         [TestMethod]
         public void SelectMethodTest()
         {
@@ -333,10 +331,8 @@ namespace WebApplication1.Tests
                 a.SetBrowserSelectMethod();
                 a.First("#c");
             });
-
-
-
         }
+
         [TestMethod]
         public void FileDialogTest()
         {
@@ -347,12 +343,10 @@ namespace WebApplication1.Tests
                 var tempFile = Path.GetTempFileName();
                 File.WriteAllText(tempFile, "test content");
 
-
                 browser.FileUploadDialogSelect(browser.First("input[type=file]"), tempFile);
                 browser.First("input[type=file]").CheckAttribute("value", string.IsNullOrWhiteSpace);
 
                 File.Delete(tempFile);
-
             });
         }
 
@@ -424,6 +418,7 @@ namespace WebApplication1.Tests
                                 .GetInnerText()?.ToLower(), "first1");
             });
         }
+
         [TestMethod]
         public void ElementAtFirst3()
         {
@@ -434,6 +429,19 @@ namespace WebApplication1.Tests
                                 .ElementAt("#divs > div", 2)
                                 .ParentElement.First("#first2")
                                 .GetInnerText()?.ToLower(), "first2");
+            });
+        }
+
+        [TestMethod]
+        public void First()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("TemporarySelector.aspx");
+                browser.SelectMethod = s => SelectBy.CssSelector(s, "[data-ui='{0}']");
+                browser.First("p", By.TagName).CheckIfTextEquals("p");
+                browser.First("id", By.Id).CheckIfTextEquals("id");
+                browser.First("id").CheckIfTextEquals("data");
             });
         }
     }

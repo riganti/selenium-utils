@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium.Internal;
+﻿using OpenQA.Selenium;
 using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Collections;
@@ -21,9 +21,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             SetRereferences(selector);
         }
 
-
-     
-
         /// <summary>
         /// Sets children reference to Parent wrapper
         /// </summary>
@@ -44,6 +41,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Selector = selector;
             ParentWrapper = parentElement;
         }
+
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ElementWrapperCollection parentCollection)
         {
             this.collection = new List<ElementWrapper>(collection);
@@ -51,7 +49,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Selector = selector;
             ParentWrapper = parentCollection;
         }
-
 
         public ElementWrapperCollection ThrowIfSequenceEmpty()
         {
@@ -169,6 +166,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             get { return ElementAt(index); }
             set { collection[index] = value; }
         }
+
         /// <summary>
         /// Performs the specified action on each element of the <see cref="Riganti.Utils.Testing.SeleniumCore.ElementWrapperCollection"/>.
         /// </summary>
@@ -178,16 +176,16 @@ namespace Riganti.Utils.Testing.SeleniumCore
             collection.ForEach(action);
         }
 
-        public ElementWrapperCollection FindElements(string selector)
+        public ElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var results = collection.SelectMany(item => item.FindElements(selector));
+            var results = collection.SelectMany(item => item.FindElements(selector, tmpSelectMethod));
 
             return new ElementWrapperCollection(results, selector, this);
         }
 
-        public ElementWrapper First(string selector)
+        public ElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var element = FirstOrDefault(selector);
+            var element = FirstOrDefault(selector, tmpSelectMethod);
             if (element != null)
             {
                 return element;
@@ -195,10 +193,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             throw new EmptySequenceException($"Sequence does not contain element with selector: '{FullSelector}'");
         }
 
-        public ElementWrapper FirstOrDefault(string selector)
+        public ElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return collection.Select(item => item.FirstOrDefault(selector)).FirstOrDefault(element => element != null);
+            return collection.Select(item => item.FirstOrDefault(selector, tmpSelectMethod)).FirstOrDefault(element => element != null);
         }
-
     }
 }

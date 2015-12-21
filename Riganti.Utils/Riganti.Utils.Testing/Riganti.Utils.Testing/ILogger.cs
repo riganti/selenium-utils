@@ -1,3 +1,5 @@
+using OpenQA.Selenium.Safari.Internal;
+
 namespace Riganti.Utils.Testing.SeleniumCore
 {
     public interface ILogger

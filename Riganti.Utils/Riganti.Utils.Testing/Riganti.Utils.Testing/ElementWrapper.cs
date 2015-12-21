@@ -335,53 +335,53 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
 
 
-
         /// <summary>
         /// Finds all elements that satisfy the condition of css selector.
         /// </summary>
         /// <param name="selector"></param>
+        /// <param name="tmpSelectMethod"> This select method is used only for selection of elements in this query. Not in the future.</param>
         /// <returns></returns>
-        public virtual ElementWrapperCollection FindElements(string selector)
+        public virtual ElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var collection = element.FindElements(SelectMethod(selector)).ToElementsList(browser, selector, this);
+            var collection = element.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList(browser, selector, this);
             collection.ParentWrapper = this;
             return collection;
         }
 
-        public virtual ElementWrapper FirstOrDefault(string selector)
+        public virtual ElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var elms = FindElements(selector);
+            var elms = FindElements(selector, tmpSelectMethod);
             return elms.FirstOrDefault();
         }
 
-        public virtual ElementWrapper First(string selector)
+        public virtual ElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return ThrowIfIsNull(FirstOrDefault(selector), $"Element not found. Selector: {selector}");
+            return ThrowIfIsNull(FirstOrDefault(selector, tmpSelectMethod), $"Element not found. Selector: {selector}");
         }
 
-        public virtual ElementWrapper SingleOrDefault(string selector)
+        public virtual ElementWrapper SingleOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return FindElements(selector).SingleOrDefault();
+            return FindElements(selector, tmpSelectMethod).SingleOrDefault();
         }
 
-        public virtual ElementWrapper Single(string selector)
+        public virtual ElementWrapper Single(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return FindElements(selector).Single();
+            return FindElements(selector, tmpSelectMethod).Single();
         }
 
-        public virtual ElementWrapper ElementAt(string selector, int index)
+        public virtual ElementWrapper ElementAt(string selector, int index, Func<string, By> tmpSelectMethod = null)
         {
-            return FindElements(selector).ElementAt(index);
+            return FindElements(selector, tmpSelectMethod).ElementAt(index);
         }
 
-        public virtual ElementWrapper Last(string selector)
+        public virtual ElementWrapper Last(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return FindElements(selector).Last();
+            return FindElements(selector, tmpSelectMethod).Last();
         }
 
-        public virtual ElementWrapper LastOrDefault(string selector)
+        public virtual ElementWrapper LastOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return FindElements(selector).LastOrDefault();
+            return FindElements(selector, tmpSelectMethod).LastOrDefault();
         }
 
         public T ThrowIfIsNull<T>(T obj, string message)

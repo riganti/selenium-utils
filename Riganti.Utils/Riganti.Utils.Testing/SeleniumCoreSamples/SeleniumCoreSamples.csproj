@@ -91,6 +91,7 @@
     <Content Include="SelectMethod.aspx" />
     <Content Include="Site2.aspx" />
     <Content Include="Sub\site2.aspx" />
+    <Content Include="TemporarySelector.aspx" />
     <Content Include="Text.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -179,6 +180,13 @@
     </Compile>
     <Compile Include="Sub\site2.aspx.designer.cs">
       <DependentUpon>site2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TemporarySelector.aspx.cs">
+      <DependentUpon>TemporarySelector.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TemporarySelector.aspx.designer.cs">
+      <DependentUpon>TemporarySelector.aspx</DependentUpon>
     </Compile>
     <Compile Include="Text.aspx.cs">
       <DependentUpon>Text.aspx</DependentUpon>
