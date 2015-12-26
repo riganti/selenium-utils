@@ -5,6 +5,7 @@ using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.IO;
 using System.Threading;
+using System.Web.UI.WebControls;
 
 namespace WebApplication1.Tests
 {
@@ -444,5 +445,102 @@ namespace WebApplication1.Tests
                 browser.First("id").CheckIfTextEquals("data");
             });
         }
+        [TestMethod]
+        [ExpectedException(typeof(SeleniumTestFailedException))]
+        public void ElementContained_NoElement_ExpectedFailure()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("ElementContained.aspx");
+                browser.First("#no").CheckIfContainsElement("span");
+            });
+        }
+
+        [TestMethod]
+        public void ElementContained_NoElement()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("ElementContained.aspx");
+                browser.First("#no").CheckIfNotContainsElement("span");
+            });
+        }
+        [TestMethod]
+        public void ElementContained_OneElement_ExpectedFailure()
+        {
+            try
+            {
+                RunInAllBrowsers(browser =>
+                {
+                    browser.NavigateToUrl("ElementContained.aspx");
+                    browser.First("#one").CheckIfNotContainsElement("span");
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("children"))
+                {
+                    throw;
+                }
+            }
+        }
+
+        [TestMethod]
+        public void ElementContained_OneElement()
+        {
+           
+            RunInAllBrowsers(browser =>
+                {
+                    browser.NavigateToUrl("ElementContained.aspx");
+                    browser.First("#one").CheckIfContainsElement("span");
+                });
+
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+                var message = ex.ToString();
+
+                if (message.Contains("child") || !message.Contains("2"))
+                {
+                    throw;
+                }
+            }
+        }
+        [TestMethod]
+        public void ElementContained_TwoElement_ExpectedFailure()
+        {
+            try
+            {
+                RunInAllBrowsers(browser =>
+                {
+                    browser.NavigateToUrl("ElementContained.aspx");
+                    browser.First("#two").CheckIfNotContainsElement("span");
+                });
+            }
+            catch (Exception ex)
+            {
+                var message = ex.ToString();
+                if (!message.Contains("children") || !message.Contains("2"))
+                {
+                    throw;
+                }
+            }
+        }
+
+        [TestMethod]
+        public void ElementContained_TwoElement()
+        {
+          
+                RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("ElementContained.aspx");
+                browser.First("#two").CheckIfContainsElement("span");
+            });
+
+          
+        }
+
     }
 }

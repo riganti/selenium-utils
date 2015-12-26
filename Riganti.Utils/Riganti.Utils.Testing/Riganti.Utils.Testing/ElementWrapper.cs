@@ -101,6 +101,28 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
+        public ElementWrapper CheckIfContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null )
+        {
+            if (FindElements(cssSelector, tmpSelectMethod).Count == 0)
+            {
+                throw new EmptySequenceException($"This element ('{FullSelector}') does not contain child selectable by '{cssSelector}'.");
+
+            }
+            return this;
+        }
+
+
+        public ElementWrapper CheckIfNotContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
+        {
+            var count = FindElements(cssSelector, tmpSelectMethod).Count;
+            if (count != 0)
+            {
+                var children = count == 1 ? "child" : $"children ({count})"; 
+                throw new MoreElementsInSequenceException($"This element ('{FullSelector}') contains {children} selectable by '{cssSelector}' and should not.");
+            }
+            return this;
+        }
+
         public string GetJsElementPropertyValue(string elementPropertyName)
         {
             var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"return (arguments || [{}])[0]['" + elementPropertyName + "'];", WebElement);
