@@ -18,14 +18,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             this.collection = new List<ElementWrapper>(collection);
             Selector = selector;
-            SetRereferences(selector);
+            SetReferences(selector);
         }
 
         /// <summary>
         /// Sets children reference to Parent wrapper
         /// </summary>
         /// <param name="selector"></param>
-        private void SetRereferences(string selector)
+        private void SetReferences(string selector)
         {
             foreach (var ew in collection)
             {
@@ -37,7 +37,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ElementWrapper parentElement)
         {
             this.collection = new List<ElementWrapper>(collection);
-            SetRereferences(selector);
+            SetReferences(selector);
             Selector = selector;
             ParentWrapper = parentElement;
         }
@@ -45,7 +45,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ElementWrapperCollection parentCollection)
         {
             this.collection = new List<ElementWrapper>(collection);
-            SetRereferences(selector);
+            SetReferences(selector);
             Selector = selector;
             ParentWrapper = parentCollection;
         }
