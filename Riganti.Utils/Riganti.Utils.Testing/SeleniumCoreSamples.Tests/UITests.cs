@@ -191,6 +191,7 @@ namespace WebApplication1.Tests
         [TestMethod]
         public void NoParentTest()
         {
+            ExpectException(typeof(NoSuchElementException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("NoParentTest.aspx");
@@ -198,19 +199,11 @@ namespace WebApplication1.Tests
             });
         }
 
-        [TestMethod]
-        public void CollectionCheckClass()
-        {
-            RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("NoParentTest.aspx");
-                var parent = browser.First("html").ParentElement;
-            });
-        }
 
         [TestMethod]
         public void UrlComparationTest1()
         {
+            
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/NoParentTest.aspx");
@@ -345,7 +338,7 @@ namespace WebApplication1.Tests
                 File.WriteAllText(tempFile, "test content");
 
                 browser.FileUploadDialogSelect(browser.First("input[type=file]"), tempFile);
-                browser.First("input[type=file]").CheckAttribute("value", string.IsNullOrWhiteSpace);
+                browser.First("input[type=file]").CheckAttribute("value", s => !string.IsNullOrWhiteSpace(s));
 
                 File.Delete(tempFile);
             });

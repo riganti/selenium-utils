@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="ByExtension.cs" />
     <Compile Include="DebuggerLogger.cs" />
+    <Compile Include="DebugLogger.cs" />
     <Compile Include="DefaultChromeWebDriverFactory.cs" />
     <Compile Include="DefaultFirefoxWebDriverFactory.cs" />
     <Compile Include="DefaultInternetExplorerWebDriverFactory.cs" />
@@ -69,16 +70,26 @@
     <Compile Include="Exceptions\SequenceCountException.cs" />
     <Compile Include="Exceptions\UnexpectedElementStateException.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="ChromeFastModeDriver.cs" />
+    <Compile Include="FastModeWebDriverFactoryMethodWrapper.cs" />
+    <Compile Include="FastModeWebDriverFactoryRegistry.cs" />
+    <Compile Include="FirefoxFastModeDriver.cs" />
+    <Compile Include="InternetExplorerFastModeDriver.cs" />
+    <Compile Include="FirefoxFastModeFactoryBase.cs" />
+    <Compile Include="IFastModeFactory.cs" />
     <Compile Include="ILogger.cs" />
+    <Compile Include="InternetExplorerFastModeFactoryBase.cs" />
     <Compile Include="IReusableWebDriver.cs" />
     <Compile Include="ISeleniumWrapper.cs" />
+    <Compile Include="ISelfCleanUpWebDriver.cs" />
     <Compile Include="ITestBase.cs" />
-    <Compile Include="FastModeDriverFactoryBase.cs" />
+    <Compile Include="ChromeFastModeFactoryBase.cs" />
     <Compile Include="IWebDriverFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectBy.cs" />
     <Compile Include="SeleniumTestBase.cs" />
     <Compile Include="SeleniumTestsConfiguration.cs" />
+    <Compile Include="SelfCleanUpWebDriver.cs" />
     <Compile Include="StandardOutputLogger.cs" />
     <Compile Include="TeamcityLogger.cs" />
     <Compile Include="TestContextLogger.cs" />

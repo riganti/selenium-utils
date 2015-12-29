@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
-    public class SeleniumTestsConfiguration
+    public static class SeleniumTestsConfiguration
     {
         static SeleniumTestsConfiguration()
         {
@@ -23,6 +23,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 CheckAndSetTeamcityLogger(key, value);
                 CheckAndSetTestContextLogger(key, value);
                 CheckAndSetDebuggerLogger(key, value);
+                CheckAndSetDebugLogger(key, value);
             }
         }
 
@@ -42,7 +43,15 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 TestContextLogger = TryParseBool(value);
             }
         }
-        
+
+        private static void CheckAndSetDebugLogger(string key, string value)
+        {
+            if (string.Equals(key, GetSettingsKey("DebugLogger"), StringComparison.OrdinalIgnoreCase))
+            {
+                DebugLoggerContainedKey = true;
+                DebugLogger = TryParseBool(value);
+            }
+        }
 
         private static void CheckAndSetDebuggerLogger(string key, string value)
         {
@@ -77,8 +86,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 }
                 if (TestAttemps <= 0)
                 {
-                    throw new ConfigurationErrorsException(
-                        $@"Value of '{ConfigurationAppSettingsKeyPrefix}TestAttemptsCount' must be greater than 0.");
+                    throw new ConfigurationErrorsException($@"Value of '{ConfigurationAppSettingsKeyPrefix}TestAttemptsCount' must be greater than 0.");
                 }
             }
         }
@@ -146,6 +154,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public static bool StartFirefoxDriver { get; set; }
         public static int TestAttemps { get; set; } = 2;
         public static bool DeveloperMode { get; set; }
+        public static bool DebugLogger { get; set; }
+        public static bool DebugLoggerContainedKey { get; set; }
         public static bool DebuggerLogger { get; set; }
         public static bool TeamcityLogger { get; set; }
         public static bool TestContextLogger { get; set; }
@@ -162,7 +172,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return tmp;
         }
 
-        private static string GetSettingsKey(string key)
+        public static string GetSettingsKey(string key)
         {
             return $"{ConfigurationAppSettingsKeyPrefix}{key}";
         }

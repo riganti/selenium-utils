@@ -387,6 +387,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             browser.Quit();
             browser.Dispose();
+            SeleniumTestBase.Log("Wrapper dispose");
         }
 
         #region CheckUrl

@@ -1,9 +1,9 @@
 namespace Riganti.Utils.Testing.SeleniumCore
 {
-    public interface IReusableWebDriver
+    public interface IFastModeFactory: IWebDriverFactory
     {
         void Clear();
-        void Recreate();
         void Dispose();
+        void Recreate();
     }
 }

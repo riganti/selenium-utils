@@ -1,8 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {

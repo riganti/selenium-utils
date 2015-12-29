@@ -10,7 +10,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
         public void WriteLine(string message)
         {
-            TestBase.TestContext?.WriteLine(message);
+            TestBase?.TestContext?.WriteLine(message);
         }
     }
 }

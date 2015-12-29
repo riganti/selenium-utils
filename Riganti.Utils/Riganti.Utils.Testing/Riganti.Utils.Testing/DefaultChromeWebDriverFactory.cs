@@ -11,6 +11,5 @@ namespace Riganti.Utils.Testing.SeleniumCore
             options.AddArgument("test-type");
             return new ChromeDriver(options);
         }
-
     }
 }
