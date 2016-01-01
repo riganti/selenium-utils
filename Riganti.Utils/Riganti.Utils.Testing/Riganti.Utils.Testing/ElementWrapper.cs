@@ -92,7 +92,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return $"{Selector ?? ""}".Trim();
         }
 
-        public ElementWrapper CheckTagName(string expectedTagName)
+        public virtual ElementWrapper CheckTagName(string expectedTagName)
         {
             if (!string.Equals(GetTagName(), expectedTagName, StringComparison.OrdinalIgnoreCase))
             {
@@ -101,7 +101,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public ElementWrapper CheckIfContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null )
+        public virtual ElementWrapper CheckIfContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             if (FindElements(cssSelector, tmpSelectMethod).Count == 0)
             {
@@ -112,18 +112,18 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
 
 
-        public ElementWrapper CheckIfNotContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
+        public virtual ElementWrapper CheckIfNotContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             var count = FindElements(cssSelector, tmpSelectMethod).Count;
             if (count != 0)
             {
-                var children = count == 1 ? "child" : $"children ({count})"; 
+                var children = count == 1 ? "child" : $"children ({count})";
                 throw new MoreElementsInSequenceException($"This element ('{FullSelector}') contains {children} selectable by '{cssSelector}' and should not.");
             }
             return this;
         }
 
-        public string GetJsElementPropertyValue(string elementPropertyName)
+        public virtual string GetJsElementPropertyValue(string elementPropertyName)
         {
             var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"return (arguments || [{}])[0]['" + elementPropertyName + "'];", WebElement);
             return obj?.ToString();
@@ -132,7 +132,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// Inserts javascript to the site and returns value of innerText/textContent property of this element. 
         /// </summary>
-        public string GetJsInnerText(bool trim = true)
+        public virtual string GetJsInnerText(bool trim = true)
         {
             var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"var ________xcaijciajsicjaisjciasjicjasicjaijcias______ = (arguments || [{}])[0];return ________xcaijciajsicjaisjciasjicjasicjaijcias______['innerText'] || ________xcaijciajsicjaisjciasjicjasicjaijcias______['textContent'];", WebElement);
             return trim ? obj?.ToString().Trim() : obj?.ToString();
@@ -247,7 +247,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public bool HasAttribute(string name)
         {
             bool result = false;
-            var obj = browser.GetJavaScriptExecutor()?.ExecuteScript("return (arguments || [{attributes:[]}])[0].attributes[\"" +  name + "\"] !== undefined;", WebElement);
+            var obj = browser.GetJavaScriptExecutor()?.ExecuteScript("return (arguments || [{attributes:[]}])[0].attributes[\"" + name + "\"] !== undefined;", WebElement);
             bool.TryParse((obj?.ToString() ?? "false"), out result);
             return result;
         }
@@ -474,6 +474,35 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (IsChecked())
             {
                 throw new UnexpectedElementStateException($"Element is checked and should NOT be. \r\n Element selector: {Selector} \r\n");
+            }
+            return this;
+        }
+
+        public virtual ElementWrapper CheckIfValue(string value, bool caseInsensitive = false, bool trimValue = true)
+        {
+            var tag = GetTagName();
+            string elementValue = null;
+            //input
+            if (tag == "input")
+            {
+                elementValue = element.GetAttribute("value");
+
+            }
+            //textarea
+            if (tag == "textarea")
+            {
+                elementValue = GetInnerText();
+            }
+
+            if (trimValue)
+            {
+                elementValue = elementValue?.Trim();
+                value = value.Trim();
+            }
+            if (!string.Equals(value, elementValue,
+                caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
+            {
+                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{elementValue}' \r\n Element selector: {FullSelector} \r\n");
             }
             return this;
         }

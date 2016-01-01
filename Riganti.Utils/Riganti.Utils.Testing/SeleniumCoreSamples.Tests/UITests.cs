@@ -534,6 +534,22 @@ namespace WebApplication1.Tests
 
           
         }
+        [TestMethod]
+        public void CheckValueTest()
+        {
 
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("valuetest.aspx");
+                browser.First("#input-radio").CheckIfValue("radio1");
+                browser.First("#input-radio2").CheckIfValue("radio2");
+                browser.First("#checkbox1").CheckIfValue("checkboxvalue1");
+                browser.First("#checkbox2").CheckIfValue("checkboxvalue2");
+                browser.First("#area").CheckIfValue("areavalue");
+                browser.First("#input-text").CheckIfValue("text1");
+                browser.First("#input-text").CheckIfValue("texT1", true);
+                browser.First("#input-text").CheckIfValue("   texT1   ", true);
+            });
+        }
     }
 }

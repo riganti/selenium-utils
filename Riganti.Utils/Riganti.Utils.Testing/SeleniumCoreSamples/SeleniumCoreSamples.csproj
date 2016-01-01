@@ -94,6 +94,7 @@
     <Content Include="Sub\site2.aspx" />
     <Content Include="TemporarySelector.aspx" />
     <Content Include="Text.aspx" />
+    <Content Include="ValueTest.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +203,13 @@
     </Compile>
     <Compile Include="Text.aspx.designer.cs">
       <DependentUpon>Text.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ValueTest.aspx.cs">
+      <DependentUpon>ValueTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ValueTest.aspx.designer.cs">
+      <DependentUpon>ValueTest.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
