@@ -26,7 +26,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 var env = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
                 if (env.Contains("(x86)"))
                 {
-                    env = env.Replace("(x68)", "").Trim();
+                    env = env.Replace("(x86)", "").Trim();
                 }
                 var firefox = "Mozilla Firefox\\Firefox.exe";
                 if (File.Exists(Path.Combine(env, firefox)))
