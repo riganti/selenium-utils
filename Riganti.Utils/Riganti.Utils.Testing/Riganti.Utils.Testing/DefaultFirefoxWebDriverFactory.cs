@@ -7,15 +7,27 @@ namespace Riganti.Utils.Testing.SeleniumCore
 {
     public class DefaultFirefoxWebDriverFactory : IWebDriverFactory
     {
+        private static string pathToFirefoxBinary;
+
         public IWebDriver CreateNewInstance()
         {
+            if (!string.IsNullOrWhiteSpace(pathToFirefoxBinary))
+            {
+                return AlternativeInstance();
+            }
+
             try
             {
                 return new FirefoxDriver();
             }
-            catch (Exception exception)
+            catch
             {
+                SeleniumTestBase.Log("Default location of firefox was not found.");
                 var env = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                if (env.Contains("(x86)"))
+                {
+                    env = env.Replace("(x68)", "").Trim();
+                }
                 var firefox = "Mozilla Firefox\\Firefox.exe";
                 if (File.Exists(Path.Combine(env, firefox)))
                 {
@@ -33,7 +45,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         private static IWebDriver AlternativeInstance(string env, string firefox)
         {
-            return new FirefoxDriver(new FirefoxBinary(Path.Combine(env, firefox)), null);
+            pathToFirefoxBinary = Path.Combine(env, firefox);
+            SeleniumTestBase.Log($"Setting up new firefox binary file path to {pathToFirefoxBinary}");
+            return AlternativeInstance();
+        }
+
+        private static IWebDriver AlternativeInstance()
+        {
+            return new FirefoxDriver(new FirefoxBinary(pathToFirefoxBinary), null);
         }
     }
 }

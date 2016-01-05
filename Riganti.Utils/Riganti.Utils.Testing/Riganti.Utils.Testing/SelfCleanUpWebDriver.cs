@@ -50,10 +50,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public void Dispose()
         {
-            SeleniumTestBase.Log("Closing driver.");
-            driver.Close();
-            driver.Quit();
-            driver.Dispose();
+            if (driver != null)
+            {
+                SeleniumTestBase.Log("Closing driver.");
+                driver.Close();
+                driver.Quit();
+                driver.Dispose();
+            }
         }
     }
 }
