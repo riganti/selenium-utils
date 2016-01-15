@@ -155,6 +155,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 {
                     if (browserFactory is IFastModeFactory)
                     {
+                        Log("TryExecuteTest: clean only");
                         ((IFastModeFactory)browserFactory).Clear();
                     }
                     else
@@ -167,7 +168,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                     exception = new SeleniumTestFailedException("Test was supposted to fail and it did not.");
                 }
             }
-            while (exception != null && attemptNumber < SeleniumTestsConfiguration.TestAttemps);
+            while (exception != null && attemptNumber < SeleniumTestsConfiguration.TestAttemps + (SeleniumTestsConfiguration.FastMode ? 1 : 0));
         }
 
         private void CheckAvailableWebDriverFactories()
@@ -180,11 +181,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual void RunTestSubSection(string subSectionName, Action<BrowserWrapper> action)
         {
-            WriteLine($"Starts testing of section: {subSectionName}");
+            Log($"Starts testing of section: {subSectionName}", 5);
             CurrentSubSection = subSectionName;
             action(wrapper);
             CurrentSubSection = null;
-            WriteLine($"Testing of section succesfully completed.");
+            Log($"Testing of section succesfully completed.", 5);
         }
 
         protected virtual void TakeScreenshot(int attemptNumber, BrowserWrapper browserWrapper)
@@ -210,10 +211,15 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 logger.WriteLine(message);
             });
         }
-
-        public static void Log(string message)
+        /// <summary>
+        /// Writes messages to registered loggers.
+        /// </summary>
+        /// <param name="message">message that is going to be written by logger</param>
+        /// <param name="priority">Priority of message. 0 - the highest, 10 - the lowest = internal system log message level</param>
+        public static void Log(string message, int priority = 0)
         {
-            WriteLine(message);
+            if (SeleniumTestsConfiguration.LoggingPriorityMaximum >= priority)
+                WriteLine(message);
         }
 
         public virtual void Log(Exception exception)
@@ -223,7 +229,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         protected virtual void LogCurrentlyPerformedAction(string actionName)
         {
-            WriteLine($"Currently performing: {actionName}");
+            Log($"Currently performing: {actionName}", 10);
         }
 
         protected void ExpectException(Type type, bool allowDerivedTypes = false)
@@ -240,6 +246,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
         public virtual void AfterSpecificBrowserTestEnds(IWebDriver browser)
         {
+        }
+
+        [TestCleanup]
+        public virtual void TestCleanUp()
+        {
+            AllowDerivedExceptionTypes = false;
         }
     }
 }

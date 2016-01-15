@@ -24,8 +24,21 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 CheckAndSetTestContextLogger(key, value);
                 CheckAndSetDebuggerLogger(key, value);
                 CheckAndSetDebugLogger(key, value);
+                CheckAndSetLoggingPriorityMaximum(key, value);
+
             }
         }
+
+        private static void CheckAndSetLoggingPriorityMaximum(string key, string value)
+        {
+
+            if (string.Equals(key, GetSettingsKey("LoggingPriorityMaximum"), StringComparison.OrdinalIgnoreCase))
+            {
+                LoggingPriorityMaximum = TryParseInt(value, 10);
+            }
+        }
+
+        
 
         #region check functions
 
@@ -159,6 +172,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public static bool DebuggerLogger { get; set; }
         public static bool TeamcityLogger { get; set; }
         public static bool TestContextLogger { get; set; }
+        public static int LoggingPriorityMaximum { get; set; }
 
         #endregion Properties
 
@@ -171,7 +185,18 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return tmp;
         }
-
+        private static int TryParseInt(string value, int defaultValue = 0)
+        {
+            int max;
+            if (int.TryParse(value, out max))
+            {
+                return max;
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
         public static string GetSettingsKey(string key)
         {
             return $"{ConfigurationAppSettingsKeyPrefix}{key}";

@@ -56,6 +56,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 driver.Close();
                 driver.Quit();
                 driver.Dispose();
+                driver = null;
             }
         }
     }
