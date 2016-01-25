@@ -240,6 +240,15 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return CheckAttribute("class", value, caseInsensitive, trimValue);
         }
 
+        public virtual ElementWrapper CheckIfHasClass(string value, bool caseInsensitive = false)
+        {
+            return CheckAttribute("class", p => p.Split(' ').Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)));
+        }
+        public virtual ElementWrapper CheckIfHasNotClass(string value, bool caseInsensitive = false)
+        {
+            return CheckAttribute("class", p => !p.Split(' ').Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)));
+        }
+
         public string GetAttribute(string name)
         {
             return element.GetAttribute(name);
