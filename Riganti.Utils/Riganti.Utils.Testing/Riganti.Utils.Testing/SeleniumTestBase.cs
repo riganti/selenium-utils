@@ -12,6 +12,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
     public class SeleniumTestBase : ITestBase
     {
         public static readonly FastModeWebDriverFactoryRegistry FastModeFactoryRegistry;
+        private static int testsIndexer = 0;
         static SeleniumTestBase()
         {
             FastModeFactoryRegistry = new FastModeWebDriverFactoryRegistry();
@@ -70,6 +71,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         protected virtual void RunInAllBrowsers(Action<BrowserWrapper> action)
         {
+            Log("Test no.: " + testsIndexer++);
             CheckAvailableWebDriverFactories();
             foreach (var browserFactory in BrowserFactories)
             {
@@ -169,6 +171,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 }
             }
             while (exception != null && attemptNumber < SeleniumTestsConfiguration.TestAttemps + (SeleniumTestsConfiguration.FastMode ? 1 : 0));
+            if (exception != null)
+            {
+                (browserFactory as IFastModeFactory)?.Recreate();
+            }
         }
 
         private void CheckAvailableWebDriverFactories()
@@ -252,6 +258,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public virtual void TestCleanUp()
         {
             AllowDerivedExceptionTypes = false;
+            ExpectedExceptionType = null;
+        }
+        [ClassCleanup]
+        public virtual void TotalCleanUp()
+        {
+            if (SeleniumTestsConfiguration.FastMode)
+                FastModeFactoryRegistry.Dispose();
         }
     }
 }

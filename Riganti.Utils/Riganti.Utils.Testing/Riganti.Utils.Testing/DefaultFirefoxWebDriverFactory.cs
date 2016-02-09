@@ -13,12 +13,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (!string.IsNullOrWhiteSpace(pathToFirefoxBinary))
             {
-                return AlternativeInstance();
+                return PrepareDriver(AlternativeInstance());
             }
 
             try
             {
-                return new FirefoxDriver();
+                return PrepareDriver(new FirefoxDriver());
             }
             catch
             {
@@ -31,13 +31,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 var firefox = "Mozilla Firefox\\Firefox.exe";
                 if (File.Exists(Path.Combine(env, firefox)))
                 {
-                    return AlternativeInstance(env, firefox);
+                    return PrepareDriver(AlternativeInstance(env, firefox));
                 }
 
                 env = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
                 if (File.Exists(Path.Combine(env, firefox)))
                 {
-                    return AlternativeInstance(env, firefox);
+                    return PrepareDriver(AlternativeInstance(env, firefox));
                 }
                 throw;
             }
@@ -47,12 +47,20 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             pathToFirefoxBinary = Path.Combine(env, firefox);
             SeleniumTestBase.Log($"Setting up new firefox binary file path to {pathToFirefoxBinary}");
-            return AlternativeInstance();
+            return PrepareDriver(AlternativeInstance());
         }
 
         private static IWebDriver AlternativeInstance()
         {
-            return new FirefoxDriver(new FirefoxBinary(pathToFirefoxBinary), null);
+            return PrepareDriver(new FirefoxDriver(new FirefoxBinary(pathToFirefoxBinary), null));
+        }
+
+        public static IWebDriver PrepareDriver(IWebDriver driver)
+        {
+
+            driver.SetDefaultTimeouts();
+            return driver;
+
         }
     }
 }

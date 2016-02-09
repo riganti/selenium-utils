@@ -22,10 +22,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             this.browser = browser;
             this.testClass = testClass;
             SetCssSelector();
-            var timeouts = browser.Manage().Timeouts();
-            timeouts.SetPageLoadTimeout(TimeSpan.FromSeconds(15));
-            timeouts.ImplicitlyWait(TimeSpan.FromMilliseconds(150));
-        }
+      }
 
         public void SetTimeouts(TimeSpan pageLoadTimeout, TimeSpan implicitlyWait)
         {
@@ -36,7 +33,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         private Func<string, By> selectMethodFunc;
 
-        [Obsolete]
+        [Obsolete("use SelectMethod", true)]
         public virtual Func<string, By> SelectorPreprocessMethod
         {
             get { return SelectMethod; }
@@ -438,14 +435,23 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <param name="fullFileName">Full path to file that is intended to be uploaded.</param>
         public virtual BrowserWrapper FileUploadDialogSelect(ElementWrapper fileUploadOpener, string fullFileName)
         {
-            // open file dialog
-            fileUploadOpener.Click();
 
-            // write the full path to the dialog
-            System.Windows.Forms.SendKeys.SendWait(fullFileName);
-            Wait();
-            SendEnterKey();
-            Wait();
+            if (fileUploadOpener.GetTagName() == "input" && fileUploadOpener.HasAttribute("type") && fileUploadOpener.GetAttribute("type") == "file")
+            {
+                fileUploadOpener.SendKeys(fullFileName);
+
+            }
+            else
+            {
+                // open file dialog
+                fileUploadOpener.Click();
+
+                // write the full path to the dialog
+                System.Windows.Forms.SendKeys.SendWait(fullFileName);
+                Wait();
+                SendEnterKey();
+                Wait();
+            }
             return this;
         }
 

@@ -84,6 +84,7 @@
     <Compile Include="ISelfCleanUpWebDriver.cs" />
     <Compile Include="ITestBase.cs" />
     <Compile Include="ChromeFastModeFactoryBase.cs" />
+    <Compile Include="IWebDriverExtensions.cs" />
     <Compile Include="IWebDriverFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectBy.cs" />

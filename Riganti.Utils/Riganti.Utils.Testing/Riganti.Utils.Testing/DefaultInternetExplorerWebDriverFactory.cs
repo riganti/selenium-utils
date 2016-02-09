@@ -7,7 +7,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
     {
         public IWebDriver CreateNewInstance()
         {
-            return new InternetExplorerDriver();
+            var driver = new InternetExplorerDriver();
+            driver.SetDefaultTimeouts();
+            return driver;
         }
     }
 }

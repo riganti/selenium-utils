@@ -203,7 +203,7 @@ namespace WebApplication1.Tests
         [TestMethod]
         public void UrlComparationTest1()
         {
-            
+
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/NoParentTest.aspx");
@@ -439,13 +439,15 @@ namespace WebApplication1.Tests
             });
         }
         [TestMethod]
-        [ExpectedException(typeof(SeleniumTestFailedException))]
+        //[ExpectedException(typeof(SeleniumTestFailedException))]
         public void ElementContained_NoElement_ExpectedFailure()
         {
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("ElementContained.aspx");
-                browser.First("#no").CheckIfContainsElement("span");
+
+                var a = browser.First("#no");
+                a.CheckIfContainsElement("span");
             });
         }
 
@@ -481,7 +483,7 @@ namespace WebApplication1.Tests
         [TestMethod]
         public void ElementContained_OneElement()
         {
-           
+
             RunInAllBrowsers(browser =>
                 {
                     browser.NavigateToUrl("ElementContained.aspx");
@@ -525,14 +527,14 @@ namespace WebApplication1.Tests
         [TestMethod]
         public void ElementContained_TwoElement()
         {
-          
-                RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("ElementContained.aspx");
-                browser.First("#two").CheckIfContainsElement("span");
-            });
 
-          
+            RunInAllBrowsers(browser =>
+        {
+            browser.NavigateToUrl("ElementContained.aspx");
+            browser.First("#two").CheckIfContainsElement("span");
+        });
+
+
         }
         [TestMethod]
         public void CheckValueTest()

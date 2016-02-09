@@ -1,4 +1,4 @@
-using System;
+using System.Net;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Extensions;
@@ -53,6 +53,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (driver != null)
             {
                 SeleniumTestBase.Log("Closing driver.");
+                ExpectedConditions.AlertIsPresent()(Driver)?.Dismiss();
                 driver.Close();
                 driver.Quit();
                 driver.Dispose();

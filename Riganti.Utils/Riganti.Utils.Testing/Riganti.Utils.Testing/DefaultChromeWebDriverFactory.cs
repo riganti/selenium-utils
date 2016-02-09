@@ -9,8 +9,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             var options = new ChromeOptions();
             options.AddArgument("test-type");
-            return new ChromeDriver(options);
+            var driver = new ChromeDriver(options);
+            driver.SetDefaultTimeouts();
+            return driver;
         }
-        
+
     }
 }

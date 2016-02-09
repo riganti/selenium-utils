@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
-    public class FastModeWebDriverFactoryRegistry 
+    public class FastModeWebDriverFactoryRegistry
     {
         public List<IWebDriverFactory> BrowserFactories { get; }
 
@@ -32,7 +32,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         ~FastModeWebDriverFactoryRegistry()
         {
-            BrowserFactories.ForEach(b=> (b as IFastModeFactory)?.Dispose());
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+
+            BrowserFactories.ForEach(b => (b as IFastModeFactory)?.Dispose());
         }
     }
 }
