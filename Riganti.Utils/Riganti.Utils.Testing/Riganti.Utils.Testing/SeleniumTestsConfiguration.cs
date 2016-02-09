@@ -25,20 +25,16 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 CheckAndSetDebuggerLogger(key, value);
                 CheckAndSetDebugLogger(key, value);
                 CheckAndSetLoggingPriorityMaximum(key, value);
-
             }
         }
 
         private static void CheckAndSetLoggingPriorityMaximum(string key, string value)
         {
-
             if (string.Equals(key, GetSettingsKey("LoggingPriorityMaximum"), StringComparison.OrdinalIgnoreCase))
             {
                 LoggingPriorityMaximum = TryParseInt(value, 10);
             }
         }
-
-        
 
         #region check functions
 
@@ -49,6 +45,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 TeamcityLogger = TryParseBool(value);
             }
         }
+
         private static void CheckAndSetTestContextLogger(string key, string value)
         {
             if (string.Equals(key, GetSettingsKey("TestContextLogger"), StringComparison.OrdinalIgnoreCase))
@@ -83,7 +80,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
 
         public static bool StandardOutputLogger { get; set; }
-
 
         private static void CheckAndSetTestAtampsCount(string key, string value)
         {
@@ -149,9 +145,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (string.Equals(key, GetSettingsKey("DeveloperMode"), StringComparison.OrdinalIgnoreCase))
             {
-                DeveloperMode = TryParseBool(value);
+                PlainMode = DeveloperMode = TryParseBool(value);
             }
         }
+
+        public static bool PlainMode { get; set; }
 
         #endregion check functions
 
@@ -176,7 +174,69 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         #endregion Properties
 
-        private static bool TryParseBool(string value, bool defaultValue = false)
+        /// <summary>
+        /// Check if key exists in appSettings and try to convert value and set it.
+        /// </summary>
+        /// <typeparam name="T">Supported types are only string, bool, int and double.</typeparam>
+        /// <param name="setFunction">Delegate which is called after getting value to set value.</param>
+        public static void CheckAndSet<T>(string key, T defaultValue, Action<T> setFunction, bool isKeyCaseSensitive = true)
+        {
+            var filteredKey = ConfigurationManager.AppSettings.AllKeys.FirstOrDefault(s => s.Equals(key, isKeyCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase));
+
+            //if null set default value
+            if (filteredKey == null)
+            {
+                if (defaultValue != null)
+                {
+                    setFunction(defaultValue);
+                }
+                return;
+            }
+            // for bool
+            if (typeof(T) == typeof(bool))
+            {
+                setFunction((T)(object)TryParseBool(ConfigurationManager.AppSettings[filteredKey], (defaultValue as bool?) ?? false));
+                return;
+            }
+            //for string
+            if (typeof(T) == typeof(string))
+            {
+                var value = (T)(object)ConfigurationManager.AppSettings[filteredKey];
+                if (value == null)
+                {
+                    value = defaultValue;
+                }
+                setFunction(value);
+                return;
+            }
+            // for int
+            if (typeof(T) == typeof(int))
+            {
+                setFunction((T)(object)TryParseInt(ConfigurationManager.AppSettings[filteredKey], (defaultValue as int?) ?? 0));
+                return;
+            }
+            // for double
+            if (typeof(T) == typeof(double))
+            {
+                setFunction((T)(object)TryParseDouble(ConfigurationManager.AppSettings[filteredKey], (defaultValue as double?) ?? 0));
+                return;
+            }
+        }
+
+        private static double TryParseDouble(string value, double defaultValue = 0)
+        {
+            double max;
+            if (double.TryParse(value, out max))
+            {
+                return max;
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
+
+        public static bool TryParseBool(string value, bool defaultValue = false)
         {
             bool tmp;
             if (!bool.TryParse(value, out tmp))
@@ -185,7 +245,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return tmp;
         }
-        private static int TryParseInt(string value, int defaultValue = 0)
+
+        public static int TryParseInt(string value, int defaultValue = 0)
         {
             int max;
             if (int.TryParse(value, out max))
@@ -197,6 +258,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 return defaultValue;
             }
         }
+
         public static string GetSettingsKey(string key)
         {
             return $"{ConfigurationAppSettingsKeyPrefix}{key}";

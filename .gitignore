@@ -195,3 +195,4 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 /Riganti.Utils/Riganti.Utils.Testing/.nuget
+/Riganti.Utils/Riganti.Utils.Testing/.nuget2
