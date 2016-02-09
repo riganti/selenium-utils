@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
-    public class SeleniumTestBase : ITestBase
+    public abstract class SeleniumTestBase : ITestBase
     {
         public static readonly FastModeWebDriverFactoryRegistry FastModeFactoryRegistry;
         static SeleniumTestBase()
@@ -74,16 +74,16 @@ namespace Riganti.Utils.Testing.SeleniumCore
             foreach (var browserFactory in BrowserFactories)
             {
                 string browserName;
-                Exception exception;
+                Exception exception = null;
 
-                if (!SeleniumTestsConfiguration.DeveloperMode)
+                if (!(SeleniumTestsConfiguration.PlainMode || SeleniumTestsConfiguration.DeveloperMode))
                 {
                     TryExecuteTest(action, browserFactory, out browserName, out exception);
                 }
                 else
                 {
                     //developer mode - it throws exception directly without catch statement
-                    ExecuteTest(action, browserFactory, out browserName, out exception);
+                    ExecuteTest(action, browserFactory, out browserName);
                 }
                 if (exception != null)
                 {
@@ -94,11 +94,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
         }
 
-        private void ExecuteTest(Action<BrowserWrapper> action, IWebDriverFactory browserFactory, out string browserName, out Exception exception)
+        protected virtual void ExecuteTest(Action<BrowserWrapper> action, IWebDriverFactory browserFactory, out string browserName)
         {
             try
             {
-                exception = null;
                 var browser = LatestLiveWebDriver = browserFactory.CreateNewInstance();
                 wrapper = new BrowserWrapper(browser, this);
                 browserName = browser.GetType().Name;
@@ -106,11 +105,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             finally
             {
-                wrapper.Dispose();
+                wrapper?.Dispose();
             }
         }
 
-        private void TryExecuteTest(Action<BrowserWrapper> action, IWebDriverFactory browserFactory, out string browserName, out Exception exception)
+        protected virtual void TryExecuteTest(Action<BrowserWrapper> action, IWebDriverFactory browserFactory, out string browserName, out Exception exception)
         {
             var attemptNumber = 0;
             do
@@ -171,7 +170,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             while (exception != null && attemptNumber < SeleniumTestsConfiguration.TestAttemps + (SeleniumTestsConfiguration.FastMode ? 1 : 0));
         }
 
-        private void CheckAvailableWebDriverFactories()
+        protected virtual void CheckAvailableWebDriverFactories()
         {
             if (BrowserFactories.Count == 0)
             {
