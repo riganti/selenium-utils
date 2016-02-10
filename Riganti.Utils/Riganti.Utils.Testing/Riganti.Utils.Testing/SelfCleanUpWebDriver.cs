@@ -44,7 +44,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             SeleniumTestBase.Log("Recreating driver.");
             Dispose();
             driver = CreateInstance();
-            Driver.Navigate().GoToUrl("about:blank");
         }
 
 

@@ -113,6 +113,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         protected virtual void TryExecuteTest(Action<BrowserWrapper> action, IWebDriverFactory browserFactory, out string browserName, out Exception exception)
         {
+            var exceptions = new List<Exception>();
+
             var attemptNumber = 0;
             do
             {
@@ -149,7 +151,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                     {
                         TakeScreenshot(attemptNumber, wrapper);
                         // fail the test
-                        exception = ex;
+                        exceptions.Add(exception = ex);
                     }
                 }
                 finally
@@ -166,7 +168,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 }
                 if (ExpectedExceptionType != null && !exceptionWasThrow)
                 {
-                    exception = new SeleniumTestFailedException("Test was supposted to fail and it did not.");
+                    exceptions.Add(exception = new SeleniumTestFailedException("Test was supposted to fail and it did not."));
                 }
             }
             while (exception != null && attemptNumber < SeleniumTestsConfiguration.TestAttemps + (SeleniumTestsConfiguration.FastMode ? 1 : 0));

@@ -6,8 +6,6 @@ namespace Riganti.Utils.Testing.SeleniumCore.BrowserStack
 {
     public abstract class BrowserStackBrowserFactoryBase : IBrowserStackDriverFactory
     {
-      
-
         public virtual string BrowserStackHubUrl => "http://hub.browserstack.com/wd/hub/";
 
         public IWebDriver CreateNewInstance()

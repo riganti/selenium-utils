@@ -6,20 +6,27 @@ namespace Riganti.Utils.Testing.SeleniumCore.BrowserStack
     public abstract class BrowserStackTestBase : SeleniumTestBase
     {
         public abstract IEnumerable<IBrowserStackDriverFactory> SetBrowserFactories();
-        protected override List<IWebDriverFactory> BrowserFactories => FactoryRegistry.BrowserFactories;
 
         private void Init()
         {
-            SetBrowserFactories().ToList().ForEach(f => FactoryRegistry.RegisterBrowserFactory(f));
-            if (SeleniumTestsConfiguration.FastMode)
+            if (BrowserStackConfiguration.EnableBrowserStack)
             {
-                SeleniumTestsConfiguration.FastMode = false;
-                Log("FastMode is not supported for BrowserStack. This setting is going to be ignored.");
+                if (BrowserStackConfiguration.BrowserStackOnly)
+                {
+                    FactoryRegistry.Clear();
+                }
+                //add supported browsers
+                SetBrowserFactories().ToList().ForEach(f => FactoryRegistry.RegisterBrowserFactory(f));
+                if (SeleniumTestsConfiguration.FastMode)
+                {
+                    SeleniumTestsConfiguration.FastMode = false;
+                    Log("FastMode is not supported for BrowserStack. This setting is going to be ignored.");
+                }
             }
         }
+
         protected BrowserStackTestBase()
         {
-            SeleniumTestsConfiguration.PlainMode = true;
             Init();
         }
     }

@@ -24,17 +24,17 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public void Clear()
         {
-            Driver.Clear();
+            Driver?.Clear();
         }
 
         public void Dispose()
         {
-            Driver.Dispose();
+            Driver?.Dispose();
         }
 
         public void Recreate()
         {
-            Driver.Recreate();
+            Driver?.Recreate();
         }
     }
 }

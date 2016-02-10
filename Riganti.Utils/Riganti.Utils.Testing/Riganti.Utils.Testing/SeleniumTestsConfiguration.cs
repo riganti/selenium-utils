@@ -25,6 +25,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 CheckAndSetDebuggerLogger(key, value);
                 CheckAndSetDebugLogger(key, value);
                 CheckAndSetLoggingPriorityMaximum(key, value);
+
+
             }
         }
 
@@ -181,6 +183,16 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <param name="setFunction">Delegate which is called after getting value to set value.</param>
         public static void CheckAndSet<T>(string key, T defaultValue, Action<T> setFunction, bool isKeyCaseSensitive = true)
         {
+            setFunction(CheckAndGet(key, defaultValue, isKeyCaseSensitive));
+        }
+
+        /// <summary>
+        /// Check if key exists in appSettings and try to convert value and set it.
+        /// </summary>
+        /// <typeparam name="T">Supported types are only string, bool, int and double.</typeparam>
+        /// <param name="setFunction">Delegate which is called after getting value to set value.</param>
+        public static T CheckAndGet<T>(string key, T defaultValue, bool isKeyCaseSensitive = true)
+        {
             var filteredKey = ConfigurationManager.AppSettings.AllKeys.FirstOrDefault(s => s.Equals(key, isKeyCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase));
 
             //if null set default value
@@ -188,15 +200,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
             {
                 if (defaultValue != null)
                 {
-                    setFunction(defaultValue);
+                    return defaultValue;
                 }
-                return;
             }
             // for bool
             if (typeof(T) == typeof(bool))
             {
-                setFunction((T)(object)TryParseBool(ConfigurationManager.AppSettings[filteredKey], (defaultValue as bool?) ?? false));
-                return;
+                return (T)(object)TryParseBool(ConfigurationManager.AppSettings[filteredKey], (defaultValue as bool?) ?? false);
             }
             //for string
             if (typeof(T) == typeof(string))
@@ -206,21 +216,20 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 {
                     value = defaultValue;
                 }
-                setFunction(value);
-                return;
+                return value;
+
             }
             // for int
             if (typeof(T) == typeof(int))
             {
-                setFunction((T)(object)TryParseInt(ConfigurationManager.AppSettings[filteredKey], (defaultValue as int?) ?? 0));
-                return;
+                return (T)(object)TryParseInt(ConfigurationManager.AppSettings[filteredKey], (defaultValue as int?) ?? 0);
             }
             // for double
             if (typeof(T) == typeof(double))
             {
-                setFunction((T)(object)TryParseDouble(ConfigurationManager.AppSettings[filteredKey], (defaultValue as double?) ?? 0));
-                return;
+                return (T)(object)TryParseDouble(ConfigurationManager.AppSettings[filteredKey], (defaultValue as double?) ?? 0);
             }
+            return defaultValue;
         }
 
         private static double TryParseDouble(string value, double defaultValue = 0)

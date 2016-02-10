@@ -26,7 +26,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             BrowserFactories.Add(factory);
         }
 
-        public void Clear(IWebDriverFactory factory)
+        public void Clear()
         {
             BrowserFactories.Clear();
         }
