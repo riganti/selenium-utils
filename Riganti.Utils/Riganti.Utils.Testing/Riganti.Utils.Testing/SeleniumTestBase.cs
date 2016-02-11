@@ -4,6 +4,7 @@ using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 
@@ -80,6 +81,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
                 if (!(SeleniumTestsConfiguration.PlainMode || SeleniumTestsConfiguration.DeveloperMode))
                 {
+                    CurrentTestExceptions.Clear();
                     TryExecuteTest(action, browserFactory, out browserName, out exception);
                 }
                 else
@@ -90,8 +92,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 if (exception != null)
                 {
                     if (CurrentSubSection == null)
-                        throw new SeleniumTestFailedException(exception, browserName, ScreenshotsFolderPath);
-                    throw new SeleniumTestFailedException(exception, browserName, ScreenshotsFolderPath, CurrentSubSection);
+                        throw new SeleniumTestFailedException(CurrentTestExceptions, browserName, ScreenshotsFolderPath);
+                    throw new SeleniumTestFailedException(CurrentTestExceptions, browserName, ScreenshotsFolderPath, CurrentSubSection);
                 }
             }
         }
@@ -110,10 +112,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 wrapper?.Dispose();
             }
         }
+        protected List<Exception> CurrentTestExceptions = new List<Exception>();
 
         protected virtual void TryExecuteTest(Action<BrowserWrapper> action, IWebDriverFactory browserFactory, out string browserName, out Exception exception)
         {
-            var exceptions = new List<Exception>();
 
             var attemptNumber = 0;
             do
@@ -151,7 +153,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                     {
                         TakeScreenshot(attemptNumber, wrapper);
                         // fail the test
-                        exceptions.Add(exception = ex);
+                        CurrentTestExceptions.Add(exception = ex);
                     }
                 }
                 finally
@@ -168,7 +170,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 }
                 if (ExpectedExceptionType != null && !exceptionWasThrow)
                 {
-                    exceptions.Add(exception = new SeleniumTestFailedException("Test was supposted to fail and it did not."));
+                    CurrentTestExceptions.Add(exception = new SeleniumTestFailedException("Test was supposted to fail and it did not."));
                 }
             }
             while (exception != null && attemptNumber < SeleniumTestsConfiguration.TestAttemps + (SeleniumTestsConfiguration.FastMode ? 1 : 0));

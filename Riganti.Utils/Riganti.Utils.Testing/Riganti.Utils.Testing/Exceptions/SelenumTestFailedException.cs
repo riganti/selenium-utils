@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
 {
     [Serializable]
     public class SeleniumTestFailedException : WebDriverException
     {
+        private readonly List<Exception> innerExceptions;
+
         public SeleniumTestFailedException()
         {
         }
@@ -36,6 +37,19 @@ namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
             this.ScreenshotPath = screenshotsPath;
             this.BrowserName = browserName;
         }
+        public SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsPath) : this($"Test failed in browser '{browserName}'. \r\n Screenshot path: '{screenshotsPath}'.\r\n", innerExceptions.FirstOrDefault())
+        {
+            this.innerExceptions = innerExceptions;
+            this.ScreenshotPath = screenshotsPath;
+            this.BrowserName = browserName;
+        }
+
+        public SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsFolderPath, string screenshotsPath) : this($"Test failed in browser '{browserName}'. \r\n Screenshot path: '{screenshotsPath}'.\r\n", innerExceptions.FirstOrDefault())
+        {
+            this.innerExceptions = innerExceptions;
+            this.ScreenshotPath = screenshotsPath;
+            this.BrowserName = browserName;
+        }
 
         public SeleniumTestFailedException(Exception innerException, string browserName, string screenshotsPath, string currentSubSection) : this($"Test failed in browser '{browserName}'.\r\nTesting Subsection: {currentSubSection}.\r\nScreenshot path: '{screenshotsPath}'. \r\n", innerException)
         {
@@ -48,7 +62,29 @@ namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
 
         public override string ToString()
         {
-            return $"Test failed in browser '{BrowserName}'. \r\n Screenshot path: '{ScreenshotPath}'.\r\n {base.ToString()}";
+            var sb = new StringBuilder();
+            sb.AppendLine($"Test failed in browser '{BrowserName}'.");
+            sb.AppendLine($"Screenshot path: '{ScreenshotPath}'.");
+            sb.AppendLine();
+            sb.Append(base.ToString());
+
+            // add all exceptions to report
+            if (innerExceptions != null && innerExceptions.Count > 1)
+            {
+                sb.AppendLine("-----------  All Exceptions  -----------");
+
+                for (int i = 1; i < innerExceptions.Count; i++)
+                {
+                    sb.AppendLine($"// Exception #{i + 1}");
+                    sb.AppendLine(innerExceptions[i].ToString());
+                    if (i != innerExceptions.Count - 1)
+                    {
+                        sb.AppendLine();
+                        sb.AppendLine();
+                    }
+                }
+            }
+            return sb.ToString();
         }
     }
 }

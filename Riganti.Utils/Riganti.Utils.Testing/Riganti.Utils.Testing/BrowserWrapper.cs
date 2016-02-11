@@ -22,7 +22,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             this.browser = browser;
             this.testClass = testClass;
             SetCssSelector();
-      }
+        }
 
         public void SetTimeouts(TimeSpan pageLoadTimeout, TimeSpan implicitlyWait)
         {
@@ -389,31 +389,16 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         #region CheckUrl
 
-        //TODO:
-        //public BrowserWrapper CheckUrlEquals(string url, params UriComponents[] criteria)
-        //{
-        //    UriComponents? finalCriteria = UriComponents.AbsoluteUri;
-
-        //    if (criteria.Any())
-        //    {
-        //        finalCriteria = criteria[0];
-        //        if (criteria.Length > 1)
-        //        {
-        //            for (int i = 1; i < criteria.Length; i++)
-        //            {
-        //                finalCriteria = finalCriteria | criteria[i];
-        //            }
-        //        }
-        //    }
-        //    var uri1 = new Uri(CurrentUrl, UriKind.RelativeOrAbsolute);
-        //    var uri2 = new Uri(url, UriKind.RelativeOrAbsolute);
-        //    if (Uri.Compare(uri1, uri2, (UriComponents)finalCriteria, UriFormat.Unescaped, StringComparison.OrdinalIgnoreCase) != 0)
-        //    {
-        //        throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}', Expected url: '{url}'.");
-        //    }
-
-        //    return this;
-        //}
+        public BrowserWrapper CheckUrlEquals(string url)
+        {
+            var uri1 = new Uri(CurrentUrl, UriKind.RelativeOrAbsolute);
+            var uri2 = new Uri(url, UriKind.RelativeOrAbsolute);
+            if (uri1 != uri2)
+            {
+                throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}', Expected url: '{url}'.");
+            }
+            return this;
+        }
 
         public BrowserWrapper CheckUrl(Func<string, bool> expression, string message = null)
         {
@@ -421,6 +406,41 @@ namespace Riganti.Utils.Testing.SeleniumCore
             {
                 throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}'. " + (message ?? ""));
             }
+            return this;
+        }
+
+        public BrowserWrapper CheckUrl(string url, UriKind urlKind, params UriComponents[] components)
+        {
+            var currentUri = new Uri(CurrentUrl);
+            //support relative domain
+            //(new Uri() cannot parse the url correctly when the host is missing
+            if (urlKind == UriKind.Relative)
+            {
+                url = url.StartsWith("/") ? $"http://example.com{url}" : $"http://example.com/{url}";
+            }
+
+            if (urlKind == UriKind.Absolute && url.StartsWith("//"))
+            {
+                if (!string.IsNullOrWhiteSpace(currentUri.Scheme))
+                {
+                    url = currentUri.Scheme + ":" + url;
+                }
+            }
+
+            var expectedUri = new Uri(url, UriKind.Absolute);
+
+            if (components.Length == 0)
+            {
+                throw new BrowserLocationException($"Function CheckUrlCheckUrl(string, UriKind, params UriComponents) has to have one UriComponents at least.");
+            }
+            UriComponents finalComponent = components[0];
+            components.ToList().ForEach(s => finalComponent |= s);
+
+            if (Uri.Compare(currentUri, expectedUri, finalComponent, UriFormat.SafeUnescaped, StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}'. Expected url: '{url}'");
+            }
+
             return this;
         }
 
@@ -435,11 +455,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <param name="fullFileName">Full path to file that is intended to be uploaded.</param>
         public virtual BrowserWrapper FileUploadDialogSelect(ElementWrapper fileUploadOpener, string fullFileName)
         {
-
             if (fileUploadOpener.GetTagName() == "input" && fileUploadOpener.HasAttribute("type") && fileUploadOpener.GetAttribute("type") == "file")
             {
                 fileUploadOpener.SendKeys(fullFileName);
-
             }
             else
             {
