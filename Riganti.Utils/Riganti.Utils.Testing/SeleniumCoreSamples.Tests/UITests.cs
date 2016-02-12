@@ -201,7 +201,7 @@ namespace WebApplication1.Tests
 
 
         [TestMethod]
-        public void UrlComparationTest1()
+        public void UrlComparisonTest1()
         {
 
             RunInAllBrowsers(browser =>
@@ -439,9 +439,9 @@ namespace WebApplication1.Tests
             });
         }
         [TestMethod]
-        //[ExpectedException(typeof(SeleniumTestFailedException))]
         public void ElementContained_NoElement_ExpectedFailure()
         {
+            ExpectException(typeof(EmptySequenceException));
             RunInAllBrowsers(browser =>
             {
                 Log($"RunInAllBrowsers : BrowserID = {browser.Browser.GetDriverId()}"); 
