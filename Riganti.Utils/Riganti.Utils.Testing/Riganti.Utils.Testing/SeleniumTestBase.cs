@@ -139,7 +139,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 WriteLine($"Attamp #{attemptNumber} starts....");
                 exception = null;
                 var browser = LatestLiveWebDriver = browserFactory.CreateNewInstance();
-                Log($"TryExecuteTest : BrowserID = {browser.GetDriverId()}");
 
                 wrapper = new BrowserWrapper(browser, this);
                 browserName = browser.GetType().Name;
@@ -149,9 +148,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 try
                 {
                     BeforeSpecificBrowserTestStarts(browser);
-                    Log("Execution of user test starting.");
+                    Log("Execution of user test starting.", 10);
                     testBody(wrapper);
-                    Log("Execution of user test ended.");
+                    Log("Execution of user test ended.", 10);
                     AfterSpecificBrowserTestEnds(browser);
                 }
                 catch (Exception ex)
@@ -162,13 +161,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
                     {
                         isExpected = ex.GetType() == ExpectedExceptionType || (AllowDerivedExceptionTypes && ExpectedExceptionType.IsInstanceOfType(ex));
                     }
-                    Log("Test is expected to drop: " + isExpected);
+                    Log("Test is expected to drop: " + isExpected, 10);
                     if (!isExpected)
                     {
                         TakeScreenshot(attemptNumber, wrapper);
                         // fail the test
                         CurrentTestExceptions.Add(exception = ex);
-                        Log("Test attemp was not successfull! - TEST ATTAMP FAILED");
+                        Log("Test attemp was not successfull! - TEST ATTAMP FAILED", 10);
                     }
                     if (attemptNumber < attampsMaximum)
                     {
@@ -196,12 +195,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (browserFactory is IFastModeFactory)
             {
-                Log("TryExecuteTest: Cleaning browser");
+                Log("TryExecuteTest: Cleaning browser", 10);
                 ((IFastModeFactory)browserFactory).Clear();
             }
             else
             {
-                Log("TryExecuteTest: Cleaning browser");
+                Log("TryExecuteTest: Cleaning browser", 10);
                 wrapper.Dispose();
             }
         }
@@ -210,7 +209,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (browserFactory is IFastModeFactory)
             {
-                Log("TryExecuteTest: Recreating");
+                Log("TryExecuteTest: Recreating", 10);
                 ((IFastModeFactory)browserFactory).Recreate();
             }
             else
@@ -223,7 +222,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (browserFactory is IFastModeFactory)
             {
-                Log("TryExecuteTest: Disposing");
+                Log("TryExecuteTest: Disposing", 10);
                 ((IFastModeFactory)browserFactory).Dispose();
             }
             else
@@ -291,7 +290,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         protected virtual void LogCurrentlyPerformedAction(string actionName)
         {
-            Log($"Currently performing: {actionName}", 10);
+            Log($"Currently performing: {actionName}", 9);
         }
 
         protected void ExpectException(Type type, bool allowDerivedTypes = false)

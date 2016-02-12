@@ -34,7 +34,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (string.Equals(key, GetSettingsKey("LoggingPriorityMaximum"), StringComparison.OrdinalIgnoreCase))
             {
-                LoggingPriorityMaximum = TryParseInt(value, 10);
+                LoggingPriorityMaximum = TryParseInt(value, 9);
             }
         }
 

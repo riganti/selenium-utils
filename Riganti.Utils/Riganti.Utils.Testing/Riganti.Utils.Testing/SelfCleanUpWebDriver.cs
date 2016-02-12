@@ -16,7 +16,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             {
                 if (driver != null) return driver;
                  driver = CreateInstance();
-                SeleniumTestBase.Log("SelfCleanUpWebDriver : Driver ID = " + driver.GetDriverId());
                 return driver;
             }
         }

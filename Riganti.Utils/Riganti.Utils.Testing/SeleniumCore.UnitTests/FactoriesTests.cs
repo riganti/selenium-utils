@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.SeleniumCore;
+using System;
 
 namespace SeleniumCore.UnitTests
 {
@@ -12,27 +12,17 @@ namespace SeleniumCore.UnitTests
         {
             var factory = new ChromeFastModeFactoryBase();
             var inst1 = factory.CreateNewInstance();
-            var inst1Id = inst1.GetDriverId();
-            
+
             factory.Recreate();
 
             var inst2 = factory.CreateNewInstance();
-            var inst2Id = inst2.GetDriverId();
 
-            inst2.Dispose();
 
-            if (inst2Id == inst1Id)
+            if (inst1 == inst2)
             {
                 throw new Exception("Instances are same! Recreating instance failed.");
             }
-
-
-
-
-
-
-
-
+            inst2.Dispose();
         }
     }
 }
