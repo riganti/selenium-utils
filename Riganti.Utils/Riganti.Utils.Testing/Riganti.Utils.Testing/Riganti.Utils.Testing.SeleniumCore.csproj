@@ -94,6 +94,7 @@
     <Compile Include="StandardOutputLogger.cs" />
     <Compile Include="TeamcityLogger.cs" />
     <Compile Include="TestContextLogger.cs" />
+    <Compile Include="UrlKind.cs" />
     <Compile Include="WebDriverFacotryRegistry.cs" />
     <Compile Include="WebDriverFactoryMethodWrapper.cs" />
   </ItemGroup>

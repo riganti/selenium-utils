@@ -409,17 +409,17 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public BrowserWrapper CheckUrl(string url, UriKind urlKind, params UriComponents[] components)
+        public BrowserWrapper CheckUrl(string url, UrlKind urlKind, params UriComponents[] components)
         {
             var currentUri = new Uri(CurrentUrl);
             //support relative domain
             //(new Uri() cannot parse the url correctly when the host is missing
-            if (urlKind == UriKind.Relative)
+            if (urlKind == UrlKind.Relative)
             {
                 url = url.StartsWith("/") ? $"http://example.com{url}" : $"http://example.com/{url}";
             }
 
-            if (urlKind == UriKind.Absolute && url.StartsWith("//"))
+            if (urlKind == UrlKind.Absolute && url.StartsWith("//"))
             {
                 if (!string.IsNullOrWhiteSpace(currentUri.Scheme))
                 {

@@ -27,7 +27,7 @@ namespace SeleniumCore.UnitTests
         public void HostUrlMatchTest()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("https://localhost:12345/", UriKind.Absolute, UriComponents.Host);
+            browser.CheckUrl("https://localhost:12345/", UrlKind.Absolute, UriComponents.Host);
         }
 
         [TestMethod]
@@ -35,21 +35,21 @@ namespace SeleniumCore.UnitTests
         public void HostUrlMatchTest2()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("https://localhosst:12345/", UriKind.Absolute, UriComponents.Host);
+            browser.CheckUrl("https://localhosst:12345/", UrlKind.Absolute, UriComponents.Host);
         }
 
         [TestMethod]
         public void PathUrlMatchTest2()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("/path1/path2", UriKind.Relative, UriComponents.Path);
+            browser.CheckUrl("/path1/path2", UrlKind.Relative, UriComponents.Path);
         }
 
         [TestMethod]
         public void PathUrlMatchTest3()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("https://localhost:12345/path1/path2", UriKind.Absolute, UriComponents.Path);
+            browser.CheckUrl("https://localhost:12345/path1/path2", UrlKind.Absolute, UriComponents.Path);
         }
 
         [ExpectedException(typeof(BrowserLocationException))]
@@ -57,21 +57,21 @@ namespace SeleniumCore.UnitTests
         public void PathUrlMatchTest4()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("https://localhost:12345/path1/path2/nonon", UriKind.Absolute, UriComponents.Path);
+            browser.CheckUrl("https://localhost:12345/path1/path2/nonon", UrlKind.Absolute, UriComponents.Path);
         }
 
         [TestMethod]
         public void PathUrlMatchTest()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("/path1/path2", UriKind.Relative, UriComponents.Path);
+            browser.CheckUrl("/path1/path2", UrlKind.Relative, UriComponents.Path);
         }
 
         [TestMethod]
         public void PathAndHostUrlMatchTest()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("//localhost/path1/path2", UriKind.Absolute, UriComponents.Path, UriComponents.Host);
+            browser.CheckUrl("//localhost/path1/path2", UrlKind.Absolute, UriComponents.Path, UriComponents.Host);
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace SeleniumCore.UnitTests
         public void PathAndHostUrlMatchTest2()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("//localhost/path10/path2", UriKind.Absolute, UriComponents.Path, UriComponents.Host);
+            browser.CheckUrl("//localhost/path10/path2", UrlKind.Absolute, UriComponents.Path, UriComponents.Host);
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace SeleniumCore.UnitTests
         public void PathAndHostUrlMatchTest4()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("//localhosta/path1/path2", UriKind.Absolute, UriComponents.Path, UriComponents.Host);
+            browser.CheckUrl("//localhosta/path1/path2", UrlKind.Absolute, UriComponents.Path, UriComponents.Host);
         }
 
         [TestMethod]
@@ -95,49 +95,49 @@ namespace SeleniumCore.UnitTests
         public void PathAndHostUrlMatchTest3()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("//localhost0/path10/path2", UriKind.Absolute, UriComponents.Path, UriComponents.Host);
+            browser.CheckUrl("//localhost0/path10/path2", UrlKind.Absolute, UriComponents.Path, UriComponents.Host);
         }
 
         [TestMethod]
         public void PathHostAndPortUrlMatchTest()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("//localhost:12345/path1/path2", UriKind.Absolute, UriComponents.Path, UriComponents.HostAndPort);
+            browser.CheckUrl("//localhost:12345/path1/path2", UrlKind.Absolute, UriComponents.Path, UriComponents.HostAndPort);
         }
 
         [TestMethod]
         public void QueryUrlMatchTest()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("//localhost:12345/path1/path2?query=1", UriKind.Relative, UriComponents.Query);
+            browser.CheckUrl("//localhost:12345/path1/path2?query=1", UrlKind.Relative, UriComponents.Query);
         }
 
         [TestMethod]
         public void QueryUrlMatchTest2()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("?query=1", UriKind.Relative, UriComponents.Query);
+            browser.CheckUrl("?query=1", UrlKind.Relative, UriComponents.Query);
         }
 
         [TestMethod]
         public void FragmentUrlMatchTest()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("//localhost:12345/path1/path2#fragment", UriKind.Absolute, UriComponents.Fragment);
+            browser.CheckUrl("//localhost:12345/path1/path2#fragment", UrlKind.Absolute, UriComponents.Fragment);
         }
 
         [TestMethod]
         public void FragmentUrlMatchTest2()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("#fragment", UriKind.Relative, UriComponents.Fragment);
+            browser.CheckUrl("#fragment", UrlKind.Relative, UriComponents.Fragment);
         }
 
         [TestMethod]
         public void SchemaUrlMatchTest()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("https://ex.com/", UriKind.Absolute, UriComponents.Scheme);
+            browser.CheckUrl("https://ex.com/", UrlKind.Absolute, UriComponents.Scheme);
         }
 
         [TestMethod]
@@ -145,14 +145,14 @@ namespace SeleniumCore.UnitTests
         public void SchemaUrlMatchTest2()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("http://ex.com/", UriKind.Absolute, UriComponents.Scheme);
+            browser.CheckUrl("http://ex.com/", UrlKind.Absolute, UriComponents.Scheme);
         }
 
         [TestMethod]
         public void PortUrlMatchTest()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("//localhost:12345", UriKind.Absolute, UriComponents.Port);
+            browser.CheckUrl("//localhost:12345", UrlKind.Absolute, UriComponents.Port);
         }
 
         [TestMethod]
@@ -160,7 +160,7 @@ namespace SeleniumCore.UnitTests
         public void PortUrlMatchTest2()
         {
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
-            browser.CheckUrl("https://ex.com/", UriKind.Absolute, UriComponents.Port);
+            browser.CheckUrl("https://ex.com/", UrlKind.Absolute, UriComponents.Port);
         }
     }
 }
