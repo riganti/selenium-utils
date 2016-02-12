@@ -10,6 +10,7 @@ namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
     [Serializable]
     public class SeleniumTestFailedException : WebDriverException
     {
+        private readonly string CurrentSubSection;
         private readonly List<Exception> innerExceptions;
 
         public SeleniumTestFailedException()
@@ -44,7 +45,7 @@ namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
             this.BrowserName = browserName;
         }
 
-        public SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsFolderPath, string screenshotsPath) : this($"Test failed in browser '{browserName}'. \r\n Screenshot path: '{screenshotsPath}'.\r\n", innerExceptions.FirstOrDefault())
+        public SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsPath, string currentSubsection) : this($"Test failed in browser '{browserName}'.\r\nTesting Subsection: {currentSubsection}.\r\n Screenshot path: '{screenshotsPath}'.\r\n", innerExceptions.FirstOrDefault())
         {
             this.innerExceptions = innerExceptions;
             this.ScreenshotPath = screenshotsPath;
@@ -53,6 +54,7 @@ namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
 
         public SeleniumTestFailedException(Exception innerException, string browserName, string screenshotsPath, string currentSubSection) : this($"Test failed in browser '{browserName}'.\r\nTesting Subsection: {currentSubSection}.\r\nScreenshot path: '{screenshotsPath}'. \r\n", innerException)
         {
+            this.CurrentSubSection = currentSubSection;
             this.ScreenshotPath = screenshotsPath;
             this.BrowserName = browserName;
         }
@@ -67,13 +69,14 @@ namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
             sb.AppendLine($"Screenshot path: '{ScreenshotPath}'.");
             sb.AppendLine();
             sb.Append(base.ToString());
-
+            sb.AppendLine();
+            sb.AppendLine();
             // add all exceptions to report
             if (innerExceptions != null && innerExceptions.Count > 1)
             {
                 sb.AppendLine("-----------  All Exceptions  -----------");
 
-                for (int i = 1; i < innerExceptions.Count; i++)
+                for (int i = 0; i < innerExceptions.Count; i++)
                 {
                     sb.AppendLine($"// Exception #{i + 1}");
                     sb.AppendLine(innerExceptions[i].ToString());

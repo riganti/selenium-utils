@@ -2,9 +2,7 @@
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 
@@ -14,6 +12,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
     {
         public static readonly FastModeWebDriverFactoryRegistry FastModeFactoryRegistry;
         private static int testsIndexer = 0;
+
         static SeleniumTestBase()
         {
             FastModeFactoryRegistry = new FastModeWebDriverFactoryRegistry();
@@ -29,7 +28,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 Loggers.Add(new DebugLogger());
             }
         }
-
 
         public static List<ILogger> Loggers { get; protected set; }
         public TestContext TestContext { get; set; }
@@ -68,7 +66,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         private BrowserWrapper wrapper;
 
         /// <summary>
-        /// Runs the specified action in all configured browsers.
+        /// Runs the specified testBody in all configured browsers.
         /// </summary>
         protected virtual void RunInAllBrowsers(Action<BrowserWrapper> action)
         {
@@ -91,42 +89,57 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 }
                 if (exception != null)
                 {
+                    Exception throwException;
                     if (CurrentSubSection == null)
-                        throw new SeleniumTestFailedException(CurrentTestExceptions, browserName, ScreenshotsFolderPath);
-                    throw new SeleniumTestFailedException(CurrentTestExceptions, browserName, ScreenshotsFolderPath, CurrentSubSection);
+                    {
+                        throwException = new SeleniumTestFailedException(CurrentTestExceptions, browserName, ScreenshotsFolderPath);
+                    }
+                    else
+                    {
+                        throwException = new SeleniumTestFailedException(CurrentTestExceptions, browserName, ScreenshotsFolderPath, CurrentSubSection);
+                    }
+
+                    Log("\r\n\r\n\r\n\r\nException logging: \r\n\r\n");
+                    Log(throwException);
+                    throw throwException;
                 }
             }
         }
 
-        protected virtual void ExecuteTest(Action<BrowserWrapper> action, IWebDriverFactory browserFactory, out string browserName)
+        /// <summary>
+        /// Executes test withnout caching exceptions
+        /// </summary>
+        /// <param name="testBody">Test to execute</param>
+        /// <param name="browserFactory"></param>
+        /// <param name="browserName"></param>
+        protected virtual void ExecuteTest(Action<BrowserWrapper> testBody, IWebDriverFactory browserFactory, out string browserName)
         {
             try
             {
                 var browser = LatestLiveWebDriver = browserFactory.CreateNewInstance();
                 wrapper = new BrowserWrapper(browser, this);
                 browserName = browser.GetType().Name;
-                action(wrapper);
+                testBody(wrapper);
             }
             finally
             {
                 wrapper?.Dispose();
             }
         }
+
         protected List<Exception> CurrentTestExceptions = new List<Exception>();
 
-        protected virtual void TryExecuteTest(Action<BrowserWrapper> action, IWebDriverFactory browserFactory, out string browserName, out Exception exception)
+        protected virtual void TryExecuteTest(Action<BrowserWrapper> testBody, IWebDriverFactory browserFactory, out string browserName, out Exception exception)
         {
-
             var attemptNumber = 0;
+            var attampsMaximum = SeleniumTestsConfiguration.TestAttemps + (SeleniumTestsConfiguration.FastMode ? 1 : 0);
             do
             {
                 attemptNumber++;
+                WriteLine($"Attamp #{attemptNumber} starts....");
                 exception = null;
                 var browser = LatestLiveWebDriver = browserFactory.CreateNewInstance();
-                if (attemptNumber > 1)
-                {
-                    (browserFactory as IFastModeFactory)?.Recreate();
-                }
+                Log($"TryExecuteTest : BrowserID = {browser.GetDriverId()}");
 
                 wrapper = new BrowserWrapper(browser, this);
                 browserName = browser.GetType().Name;
@@ -136,9 +149,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 try
                 {
                     BeforeSpecificBrowserTestStarts(browser);
-                    action(wrapper);
+                    Log("Execution of user test starting.");
+                    testBody(wrapper);
+                    Log("Execution of user test ended.");
                     AfterSpecificBrowserTestEnds(browser);
-
                 }
                 catch (Exception ex)
                 {
@@ -148,35 +162,73 @@ namespace Riganti.Utils.Testing.SeleniumCore
                     {
                         isExpected = ex.GetType() == ExpectedExceptionType || (AllowDerivedExceptionTypes && ExpectedExceptionType.IsInstanceOfType(ex));
                     }
-
+                    Log("Test is expected to drop: " + isExpected);
                     if (!isExpected)
                     {
                         TakeScreenshot(attemptNumber, wrapper);
                         // fail the test
                         CurrentTestExceptions.Add(exception = ex);
+                        Log("Test attemp was not successfull! - TEST ATTAMP FAILED");
+                    }
+                    if (attemptNumber < attampsMaximum)
+                    {
+                        RecreateBrowsers(browserFactory);
+                    }
+                    else
+                    {
+                        DisposeBrowsers(browserFactory);
                     }
                 }
                 finally
                 {
-                    if (browserFactory is IFastModeFactory)
-                    {
-                        Log("TryExecuteTest: clean only");
-                        ((IFastModeFactory)browserFactory).Clear();
-                    }
-                    else
-                    {
-                        wrapper.Dispose();
-                    }
+                    if (!exceptionWasThrow)
+                        CleanBrowsers(browserFactory);
                 }
                 if (ExpectedExceptionType != null && !exceptionWasThrow)
                 {
                     CurrentTestExceptions.Add(exception = new SeleniumTestFailedException("Test was supposted to fail and it did not."));
                 }
             }
-            while (exception != null && attemptNumber < SeleniumTestsConfiguration.TestAttemps + (SeleniumTestsConfiguration.FastMode ? 1 : 0));
-            if (exception != null)
+            while (exception != null && attemptNumber < attampsMaximum);
+        }
+
+        private void CleanBrowsers(IWebDriverFactory browserFactory)
+        {
+            if (browserFactory is IFastModeFactory)
             {
-                (browserFactory as IFastModeFactory)?.Recreate();
+                Log("TryExecuteTest: Cleaning browser");
+                ((IFastModeFactory)browserFactory).Clear();
+            }
+            else
+            {
+                Log("TryExecuteTest: Cleaning browser");
+                wrapper.Dispose();
+            }
+        }
+
+        private void RecreateBrowsers(IWebDriverFactory browserFactory)
+        {
+            if (browserFactory is IFastModeFactory)
+            {
+                Log("TryExecuteTest: Recreating");
+                ((IFastModeFactory)browserFactory).Recreate();
+            }
+            else
+            {
+                wrapper.Dispose();
+            }
+        }
+
+        private void DisposeBrowsers(IWebDriverFactory browserFactory)
+        {
+            if (browserFactory is IFastModeFactory)
+            {
+                Log("TryExecuteTest: Disposing");
+                ((IFastModeFactory)browserFactory).Dispose();
+            }
+            else
+            {
+                wrapper.Dispose();
             }
         }
 
@@ -220,6 +272,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 logger.WriteLine(message);
             });
         }
+
         /// <summary>
         /// Writes messages to registered loggers.
         /// </summary>
@@ -249,10 +302,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public bool AllowDerivedExceptionTypes { get; set; }
 
-
         public virtual void BeforeSpecificBrowserTestStarts(IWebDriver browser)
         {
         }
+
         public virtual void AfterSpecificBrowserTestEnds(IWebDriver browser)
         {
         }
@@ -263,6 +316,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             AllowDerivedExceptionTypes = false;
             ExpectedExceptionType = null;
         }
+
         [ClassCleanup]
         public virtual void TotalCleanUp()
         {

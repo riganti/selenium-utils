@@ -5,8 +5,6 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Policy;
 using System.Threading;
 
 namespace Riganti.Utils.Testing.SeleniumCore
@@ -30,19 +28,19 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public IWebElement WebElement => element;
 
         public BrowserWrapper BrowserWrapper => browser;
+
         /// <summary>
         /// Parent wrapper
         /// </summary>
         public ISeleniumWrapper ParentWrapper { get; set; }
 
-
         private Func<string, By> selectMethod = null;
+
         public Func<string, By> SelectMethod
         {
             get { return selectMethod ?? browser.SelectMethod; }
             set { selectMethod = value; }
         }
-
 
         public ElementWrapper ParentElement
         {
@@ -55,7 +53,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 }
                 catch (Exception ex)
                 {
-
                     throw new NoSuchElementException($"Parent element of '{FullSelector}' was not found!", ex);
                 }
                 if (parent == null)
@@ -69,17 +66,18 @@ namespace Riganti.Utils.Testing.SeleniumCore
             element = webElement;
             browser = browserWrapper;
             SelectMethod = browser.SelectMethod;
-
         }
 
         public void SetCssSelectMethod()
         {
             selectMethod = By.CssSelector;
         }
+
         public void SetBrowserSelectMethod()
         {
             selectMethod = null;
         }
+
         private string GenerateFullSelector()
         {
             var parent = ParentWrapper as ElementWrapperCollection;
@@ -106,11 +104,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (FindElements(cssSelector, tmpSelectMethod).Count == 0)
             {
                 throw new EmptySequenceException($"This element ('{FullSelector}') does not contain child selectable by '{cssSelector}'.");
-
             }
             return this;
         }
-
 
         public virtual ElementWrapper CheckIfNotContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
@@ -130,7 +126,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
 
         /// <summary>
-        /// Inserts javascript to the site and returns value of innerText/textContent property of this element. 
+        /// Inserts javascript to the site and returns value of innerText/textContent property of this element.
         /// </summary>
         public virtual string GetJsInnerText(bool trim = true)
         {
@@ -139,7 +135,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
 
         /// <summary>
-        /// This check-method inserts javascript to the site and checks returned value of innerText/textContent property of specific element. 
+        /// This check-method inserts javascript to the site and checks returned value of innerText/textContent property of specific element.
         /// </summary>
         public virtual ElementWrapper CheckIfJsPropertyInnerTextEquals(string text, bool caseSensitive = true, bool trim = true)
         {
@@ -151,8 +147,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         /// <summary>
-        /// This check-method inserts javascript to the site and checks returned value of innerText/textContent property of specific element. 
+        /// This check-method inserts javascript to the site and checks returned value of innerText/textContent property of specific element.
         /// </summary>
         public virtual ElementWrapper CheckIfJsPropertyInnerText(Func<string, bool> expression, string messsage = null, bool trim = true)
         {
@@ -164,16 +161,16 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-
         /// <summary>
-        /// Inserts javascript to the site and returns value of innerHTML property of this element. 
+        /// Inserts javascript to the site and returns value of innerHTML property of this element.
         /// </summary>
         public string GetJsInnerHtml()
         {
             return GetJsElementPropertyValue("innerHTML");
         }
+
         /// <summary>
-        /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element. 
+        /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element.
         /// </summary>
         public virtual ElementWrapper CheckIfJsPropertyInnerHtmlEquals(string text, bool caseSensitive = true, bool trim = true)
         {
@@ -185,8 +182,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         /// <summary>
-        /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element. 
+        /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element.
         /// </summary>
         public virtual ElementWrapper CheckIfJsPropertyInnerHtml(Func<string, bool> expression, string messsage = null)
         {
@@ -216,6 +214,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         public virtual ElementWrapper CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true)
         {
             var attribute = element.GetAttribute(attributeName);
@@ -231,10 +230,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         public virtual ElementWrapper CheckClassAttribute(Func<string, bool> expression, string messsage = "")
         {
             return CheckAttribute("class", expression, messsage);
         }
+
         public virtual ElementWrapper CheckClassAttribute(string value, bool caseInsensitive = false, bool trimValue = true)
         {
             return CheckAttribute("class", value, caseInsensitive, trimValue);
@@ -244,6 +245,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             return CheckAttribute("class", p => p.Split(' ').Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)));
         }
+
         public virtual ElementWrapper CheckIfHasNotClass(string value, bool caseInsensitive = false)
         {
             return CheckAttribute("class", p => !p.Split(' ').Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)));
@@ -253,6 +255,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             return element.GetAttribute(name);
         }
+
         public bool HasAttribute(string name)
         {
             bool result = false;
@@ -260,6 +263,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             bool.TryParse((obj?.ToString() ?? "false"), out result);
             return result;
         }
+
         public ElementWrapper CheckIfHasAttribute(string name)
         {
             if (!HasAttribute(name))
@@ -268,6 +272,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         public ElementWrapper CheckIfHasNotAttribute(string name)
         {
             if (HasAttribute(name))
@@ -295,6 +300,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         public virtual ElementWrapper CheckIfTextEquals(string text, bool caseSensitive = true, bool trim = true)
         {
             if (!string.Equals(text, GetText(),
@@ -346,11 +352,19 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-
         public virtual string GetTagName()
         {
             return element.TagName.ToLower(CultureInfo.InvariantCulture).Trim().ToLower();
         }
+
+        /// <summary>
+        /// Submits this element to the web server.
+        /// </summary>
+        /// <remarks>
+        /// If this current element is a form, or an element within a form,
+        ///             then this will be submitted to the web server. If this causes the current
+        ///             page to change, then this method will block until the new page is loaded.
+        /// </remarks>
 
         public virtual ElementWrapper Submit()
         {
@@ -364,7 +378,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             element.SendKeys(text);
             Wait();
         }
-
 
         /// <summary>
         /// Finds all elements that satisfy the condition of css selector.
@@ -431,7 +444,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual string GetText()
         {
-
             string[] valueElements = new[] { "input", "textarea" };
             if (valueElements.Contains(element.TagName.Trim().ToLower()))
             {
@@ -470,6 +482,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         public virtual ElementWrapper CheckIfIsChecked()
         {
             if (!IsChecked())
@@ -478,6 +491,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         public virtual ElementWrapper CheckIfIsNotChecked()
         {
             if (IsChecked())
@@ -495,7 +509,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (tag == "input")
             {
                 elementValue = element.GetAttribute("value");
-
             }
             //textarea
             if (tag == "textarea")
@@ -527,8 +540,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             bool.TryParse(value, out tmp);
             return tmp;
         }
-
-
 
         public virtual ElementWrapper CheckIfIsEnabled()
         {
@@ -612,17 +623,17 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 Thread.Sleep(ActionWaitTime);
             return this;
         }
+
         public virtual ElementWrapper Wait(int milliseconds)
         {
             Thread.Sleep(milliseconds);
             return this;
         }
+
         public virtual ElementWrapper Wait(TimeSpan interval)
         {
             Thread.Sleep(interval);
             return this;
         }
     }
-
-
 }

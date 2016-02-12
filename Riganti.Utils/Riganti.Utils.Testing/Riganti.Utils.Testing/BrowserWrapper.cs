@@ -84,18 +84,39 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return result == 0;
         }
 
+        /// <summary>
+        /// Clicks on element.
+        /// </summary>
         public void Click(string selector)
         {
             First(selector).Click();
             Thread.Sleep(100);
         }
 
-        public void Submit(string selector)
+        /// <summary>
+        /// Submits this element to the web server.
+        /// </summary>
+        /// <remarks>
+        /// If this current element is a form, or an element within a form,
+        ///             then this will be submitted to the web server. If this causes the current
+        ///             page to change, then this method will block until the new page is loaded.
+        /// </remarks>
+        public BrowserWrapper Submit(string selector)
         {
             First(selector).Submit();
             Thread.Sleep(100);
+            return this;
         }
 
+        /// <summary>
+        /// Navigates to specific url.
+        /// </summary>
+        /// <param name="url">url to navigate </param>
+        /// <remarks>
+        /// If url is ABSOLUTE, browser is navigated directly to url.
+        /// If url is RELATIVE, browser is navigated to url combined from base url and relative url.
+        /// Base url is specified in test configuration. (This is NOT url host of current page!)
+        /// </remarks>
         public void NavigateToUrl(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
@@ -132,26 +153,42 @@ namespace Riganti.Utils.Testing.SeleniumCore
             browser.Navigate().GoToUrl(navigateUrl);
         }
 
+        /// <summary>
+        /// Redirects to base url specified in test configuration
+        /// </summary>
         public void NavigateToUrl()
         {
             NavigateToUrl(null);
         }
 
+        /// <summary>
+        /// Redirects to page back in Browser history
+        /// </summary>
         public void NavigateBack()
         {
             browser.Navigate().Back();
         }
 
+        /// <summary>
+        /// Redirects to page forward in Browser history
+        /// </summary>
         public void NavigateForward()
         {
             browser.Navigate().Forward();
         }
 
+        /// <summary>
+        /// Reloads current page.
+        /// </summary>
         public void Refresh()
         {
             browser.Navigate().Refresh();
         }
 
+        /// <summary>
+        /// Forcibly ends test.
+        /// </summary>
+        /// <param name="message">Test failure message</param>
         public void DropTest(string message)
         {
             throw new WebDriverException($"Test forcibly dropped: {message}");
@@ -276,31 +313,43 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return browser.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)).ToElementsList(this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector());
         }
 
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
+
         public ElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var elms = FindElements(selector, tmpSelectMethod);
             return elms.FirstOrDefault();
         }
 
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
+
         public ElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return ThrowIfIsNull(FirstOrDefault(selector, tmpSelectMethod), $"Element not found. Selector: {selector}");
         }
+
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
         public ElementWrapper SingleOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).SingleOrDefault();
         }
 
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
+
         public ElementWrapper Single(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).Single();
         }
 
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
+
         public bool IsDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).All(s => s.IsDisplayed());
         }
+
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
         public ElementWrapperCollection CheckIfIsDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
@@ -314,6 +363,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return collection;
         }
 
+        ///<summary>Provides elements that satisfies the selector condition at specific position.</summary>
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
         public ElementWrapperCollection CheckIfIsNotDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var collection = FindElements(selector, tmpSelectMethod);
@@ -326,16 +377,23 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return collection;
         }
 
+        ///<summary>Provides elements that satisfies the selector condition at specific position.</summary>
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
+
         public ElementWrapper ElementAt(string selector, int index, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).ElementAt(index);
         }
+
+        ///<summary>Provides the last element that satisfies the selector condition.</summary>
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
         public ElementWrapper Last(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).Last();
         }
 
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
         public ElementWrapper LastOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).LastOrDefault();
@@ -351,16 +409,27 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return browser as IJavaScriptExecutor;
         }
 
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
+
         public void SendKeys(string selector, string text, Func<string, By> tmpSelectMethod = null)
         {
             FindElements(selector, tmpSelectMethod).ForEach(s => s.SendKeys(text));
         }
 
+        /// <summary>
+        /// Removes content from selected elements
+        /// </summary>
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
         public void ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null)
         {
             FindElements(selector, tmpSelectMethod).ForEach(s => s.Clear());
         }
 
+        /// <summary>
+        /// Throws exception when provided object is null
+        /// </summary>
+        /// <param name="obj">Tested object</param>
+        /// <param name="message">Failure message</param>
         public T ThrowIfIsNull<T>(T obj, string message)
         {
             if (obj == null)
@@ -380,6 +449,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             ((ITakesScreenshot)browser).GetScreenshot().SaveAsFile(filename, format ?? ImageFormat.Png);
         }
 
+        /// <summary>
+        /// Closes the current browser
+        /// </summary>
         public void Dispose()
         {
             browser.Quit();
@@ -389,6 +461,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         #region CheckUrl
 
+        /// <summary>
+        /// Checks exact match with CurrentUrl
+        /// </summary>
+        /// <param name="url">This url is compared with CurrentUrl.</param>
         public BrowserWrapper CheckUrlEquals(string url)
         {
             var uri1 = new Uri(CurrentUrl, UriKind.RelativeOrAbsolute);
@@ -400,6 +476,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
+        /// <summary>
+        /// Checks if CurrentUrl satisfies the condition defined by lamda expression
+        /// </summary>
+        /// <param name="expression">The condition</param>
+        /// <param name="message">Failure message</param>
         public BrowserWrapper CheckUrl(Func<string, bool> expression, string message = null)
         {
             if (!expression(CurrentUrl))
@@ -409,6 +490,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
+        /// <summary>
+        /// Checks url by its parts
+        /// </summary>
+        /// <param name="url">This url is compared with CurrentUrl.</param>
+        /// <param name="urlKind">Determine whether url parameter contains relative or absolute path.</param>
+        /// <param name="components">Determine what parts of urls are compared.</param>
         public BrowserWrapper CheckUrl(string url, UrlKind urlKind, params UriComponents[] components)
         {
             var currentUri = new Uri(CurrentUrl);

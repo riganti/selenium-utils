@@ -444,6 +444,7 @@ namespace WebApplication1.Tests
         {
             RunInAllBrowsers(browser =>
             {
+                Log($"RunInAllBrowsers : BrowserID = {browser.Browser.GetDriverId()}"); 
                 browser.NavigateToUrl("ElementContained.aspx");
 
                 var a = browser.First("#no");
