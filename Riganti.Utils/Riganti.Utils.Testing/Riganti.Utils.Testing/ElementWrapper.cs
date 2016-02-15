@@ -313,6 +313,15 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+        public virtual ElementWrapper CheckIfTextNotEquals(string text, bool caseSensitive = true, bool trim = true)
+        {
+            if (string.Equals(text, GetText(),
+                caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
+            {
+                throw new UnexpectedElementStateException($"Element contains wrong content. Content cannot contain: '{text}', Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n");
+            }
+            return this;
+        }
 
         public virtual ElementWrapper CheckIfText(Func<string, bool> expression, string messsage = null)
         {
