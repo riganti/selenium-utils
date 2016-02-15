@@ -7,7 +7,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
     {
         public IWebDriver CreateNewInstance()
         {
-            var driver = new InternetExplorerDriver();
+            InternetExplorerOptions options = new InternetExplorerOptions { BrowserCommandLineArguments = "-private" };
+            var driver = new InternetExplorerDriver(options);
             driver.SetDefaultTimeouts();
             return driver;
         }

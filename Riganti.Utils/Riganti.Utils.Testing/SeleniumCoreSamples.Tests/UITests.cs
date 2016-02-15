@@ -5,7 +5,6 @@ using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.IO;
 using System.Threading;
-using System.Web.UI.WebControls;
 
 namespace WebApplication1.Tests
 {
@@ -199,11 +198,9 @@ namespace WebApplication1.Tests
             });
         }
 
-
         [TestMethod]
         public void UrlComparisonTest1()
         {
-
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/NoParentTest.aspx");
@@ -380,9 +377,9 @@ namespace WebApplication1.Tests
             {
                 browser.NavigateToUrl("JsHtmlTest.aspx");
                 var elm = browser.First("#htmlTest");
-                Assert.IsTrue(string.Equals(elm.GetJsInnerHtml()?.Trim(), "<span></span>", StringComparison.OrdinalIgnoreCase));
-                elm.CheckIfJsPropertyInnerHtmlEquals("<span></span>")
-                    .CheckIfJsPropertyInnerHtml(c => c == "<span></span>");
+                var content = elm.GetJsInnerHtml()?.Trim() ?? "";
+                Assert.IsTrue(content.Contains("<span>") && content.Contains("</span>"));
+                elm.CheckIfJsPropertyInnerHtml(c => c.Contains("<span>") && c.Contains("</span>"));
             });
         }
 
@@ -438,6 +435,7 @@ namespace WebApplication1.Tests
                 browser.First("id").CheckIfTextEquals("data");
             });
         }
+
         [TestMethod]
         public void ElementContained_NoElement_ExpectedFailure()
         {
@@ -460,6 +458,7 @@ namespace WebApplication1.Tests
                 browser.First("#no").CheckIfNotContainsElement("span");
             });
         }
+
         [TestMethod]
         public void ElementContained_OneElement_ExpectedFailure()
         {
@@ -483,7 +482,6 @@ namespace WebApplication1.Tests
         [TestMethod]
         public void ElementContained_OneElement()
         {
-
             RunInAllBrowsers(browser =>
                 {
                     browser.NavigateToUrl("ElementContained.aspx");
@@ -503,6 +501,7 @@ namespace WebApplication1.Tests
                 }
             }
         }
+
         [TestMethod]
         public void ElementContained_TwoElement_ExpectedFailure()
         {
@@ -527,19 +526,16 @@ namespace WebApplication1.Tests
         [TestMethod]
         public void ElementContained_TwoElement()
         {
-
             RunInAllBrowsers(browser =>
         {
             browser.NavigateToUrl("ElementContained.aspx");
             browser.First("#two").CheckIfContainsElement("span");
         });
-
-
         }
+
         [TestMethod]
         public void CheckValueTest()
         {
-
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("valuetest.aspx");
@@ -552,6 +548,21 @@ namespace WebApplication1.Tests
                 browser.First("#input-text").CheckIfValue("texT1", true);
                 browser.First("#input-text").CheckIfValue("   texT1   ", true);
             });
+        }
+
+        [TestMethod]
+        public void CookieTest()
+        {
+            Action<BrowserWrapper> test =  browser =>
+            {
+                browser.NavigateToUrl("CookiesTest.aspx");
+                browser.First("#CookieIndicator").CheckIfTextEquals("False");
+                browser.Click("#SetCookies");
+                browser.NavigateToUrl("CookiesTest.aspx");
+                browser.First("#CookieIndicator").CheckIfTextEquals("True");
+            };
+            RunInAllBrowsers(test);
+            RunInAllBrowsers(test);
         }
     }
 }

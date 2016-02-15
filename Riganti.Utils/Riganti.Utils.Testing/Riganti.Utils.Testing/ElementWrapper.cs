@@ -172,6 +172,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element.
         /// </summary>
+        /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Be sure that all browsers you are using are generate the same result to prevent unexpected results of this method.</remarks>
         public virtual ElementWrapper CheckIfJsPropertyInnerHtmlEquals(string text, bool caseSensitive = true, bool trim = true)
         {
             var value = GetJsInnerHtml();
@@ -186,6 +187,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element.
         /// </summary>
+        /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Be sure that all browsers you are using are generate the same result to prevent unexpected results of this method.</remarks>
+
         public virtual ElementWrapper CheckIfJsPropertyInnerHtml(Func<string, bool> expression, string messsage = null)
         {
             var value = GetJsInnerHtml();
