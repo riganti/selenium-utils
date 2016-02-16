@@ -76,7 +76,9 @@
     <Content Include="ElementAtFirst.aspx" />
     <Content Include="ElementContained.aspx" />
     <Content Include="FileDialog.aspx" />
+    <Content Include="JavaScript.js" />
     <Content Include="JsHtmlTest.aspx" />
+    <Content Include="JSPropertySetTest.aspx" />
     <Content Include="JSTestSite.aspx" />
     <Content Include="NoParentTest.aspx" />
     <Content Include="packages.config" />
@@ -153,6 +155,13 @@
     </Compile>
     <Compile Include="JsHtmlTest.aspx.designer.cs">
       <DependentUpon>JsHtmlTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="JSPropertySetTest.aspx.cs">
+      <DependentUpon>JSPropertySetTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="JSPropertySetTest.aspx.designer.cs">
+      <DependentUpon>JSPropertySetTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="JSTestSite.aspx.cs">
       <DependentUpon>JSTestSite.aspx</DependentUpon>

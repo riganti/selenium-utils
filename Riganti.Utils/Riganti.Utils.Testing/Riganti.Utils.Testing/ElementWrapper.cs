@@ -124,6 +124,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
             var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"return (arguments || [{}])[0]['" + elementPropertyName + "'];", WebElement);
             return obj?.ToString();
         }
+        /// <summary>
+        /// Inserts javascript to the site and returns value of innerText/textContent property of this element.
+        /// </summary>
+        public virtual ElementWrapper SetJsElementProperty(string propertyName, object propertyValue)
+        {
+            browser.GetJavaScriptExecutor()?.ExecuteScript(" var a = (arguments || [{}, null, null]);    var element = a[0];    var propertyName = a[1];    var propertyValue = a[2]; element[propertyName] = propertyValue;", WebElement, propertyName, propertyValue);
+            return this;
+        }
 
         /// <summary>
         /// Inserts javascript to the site and returns value of innerText/textContent property of this element.
@@ -133,6 +141,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
             var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"var ________xcaijciajsicjaisjciasjicjasicjaijcias______ = (arguments || [{}])[0];return ________xcaijciajsicjaisjciasjicjasicjaijcias______['innerText'] || ________xcaijciajsicjaisjciasjicjasicjaijcias______['textContent'];", WebElement);
             return trim ? obj?.ToString().Trim() : obj?.ToString();
         }
+
+
 
         /// <summary>
         /// This check-method inserts javascript to the site and checks returned value of innerText/textContent property of specific element.
