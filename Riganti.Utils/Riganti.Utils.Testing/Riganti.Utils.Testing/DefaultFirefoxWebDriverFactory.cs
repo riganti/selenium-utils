@@ -1,7 +1,7 @@
-using System;
-using System.IO;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
+using System;
+using System.IO;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
@@ -18,7 +18,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
             try
             {
-                return PrepareDriver(new FirefoxDriver());
+                return PrepareDriver(new FirefoxDriver(GetProfile()));
             }
             catch
             {
@@ -52,15 +52,23 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         private static IWebDriver AlternativeInstance()
         {
-            return PrepareDriver(new FirefoxDriver(new FirefoxBinary(pathToFirefoxBinary), null));
+            return PrepareDriver(new FirefoxDriver(new FirefoxBinary(pathToFirefoxBinary), GetProfile()));
         }
 
         public static IWebDriver PrepareDriver(IWebDriver driver)
         {
-
             driver.SetDefaultTimeouts();
             return driver;
+        }
 
+        public static FirefoxProfile GetProfile()
+        {
+            var profile = new FirefoxProfile();
+            profile.SetPreference("browser.privatebrowsing.autostart", true);
+            profile.SetPreference("browser.privatebrowsing.dont_prompt_on_enter", true);
+            profile.AcceptUntrustedCertificates = true;
+            profile.DeleteAfterUse = true;
+            return profile;
         }
     }
 }

@@ -377,9 +377,9 @@ namespace WebApplication1.Tests
             {
                 browser.NavigateToUrl("JsHtmlTest.aspx");
                 var elm = browser.First("#htmlTest");
-                Assert.IsTrue(string.Equals(elm.GetJsInnerHtml()?.Trim(), "<span></span>", StringComparison.OrdinalIgnoreCase));
-                elm.CheckIfJsPropertyInnerHtmlEquals("<span></span>")
-                    .CheckIfJsPropertyInnerHtml(c => c == "<span></span>");
+                var content = elm.GetJsInnerHtml()?.Trim() ?? "";
+                Assert.IsTrue(content.Contains("<span>") && content.Contains("</span>"));
+                elm.CheckIfJsPropertyInnerHtml(c => c.Contains("<span>") && c.Contains("</span>"));
             });
         }
 
@@ -442,7 +442,6 @@ namespace WebApplication1.Tests
             ExpectException(typeof(EmptySequenceException));
             RunInAllBrowsers(browser =>
             {
-                Log($"RunInAllBrowsers : BrowserID = {browser.Browser.GetDriverId()}");
                 browser.NavigateToUrl("ElementContained.aspx");
 
                 var a = browser.First("#no");
@@ -528,10 +527,10 @@ namespace WebApplication1.Tests
         public void ElementContained_TwoElement()
         {
             RunInAllBrowsers(browser =>
-                {
-                    browser.NavigateToUrl("ElementContained.aspx");
-                    browser.First("#two").CheckIfContainsElement("span");
-                });
+        {
+            browser.NavigateToUrl("ElementContained.aspx");
+            browser.First("#two").CheckIfContainsElement("span");
+        });
         }
 
         [TestMethod]
@@ -563,6 +562,41 @@ namespace WebApplication1.Tests
                 input.CheckIfValue(inputValue);
                 Assert.AreEqual(input.GetJsElementPropertyValue("value"), inputValue);
             });
+        }
+
+        [TestMethod]
+        public void CookieTest()
+        {
+            Action<BrowserWrapper> test = browser =>
+           {
+               browser.NavigateToUrl("CookiesTest.aspx");
+               browser.First("#CookieIndicator").CheckIfTextEquals("False");
+               browser.Click("#SetCookies");
+               browser.NavigateToUrl("CookiesTest.aspx");
+               browser.First("#CookieIndicator").CheckIfTextEquals("True");
+           };
+            RunInAllBrowsers(test);
+            RunInAllBrowsers(test);
+        }
+
+        [TestMethod]
+        public void TextNotEquals()
+        {
+            RunInAllBrowsers(browser =>
+           {
+               browser.NavigateToUrl("CookiesTest.aspx");
+               var label = browser.First("#CookieIndicator");
+               label.CheckIfTextNotEquals("True");
+               label.CheckIfTextEquals("False");
+               try
+               {
+                   label.CheckIfTextNotEquals("False");
+                   throw new Exception("Exception was expected.");
+               }
+               catch (UnexpectedElementStateException ex)
+               {
+               }
+           });
         }
     }
 }

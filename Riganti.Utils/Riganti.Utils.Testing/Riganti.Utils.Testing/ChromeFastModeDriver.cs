@@ -1,6 +1,4 @@
-using System.Runtime.CompilerServices;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
@@ -8,10 +6,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
     {
         protected override IWebDriver CreateInstance()
         {
-            var driver = new DefaultChromeWebDriverFactory().CreateNewInstance();
-            SeleniumTestBase.Log("ChromeFastModeDriver : DriverId = " + driver.GetDriverId());
-            return driver;
+            return new DefaultChromeWebDriverFactory().CreateNewInstance();
         }
-        
     }
 }
