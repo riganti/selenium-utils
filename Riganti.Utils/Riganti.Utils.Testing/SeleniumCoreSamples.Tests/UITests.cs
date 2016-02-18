@@ -598,5 +598,72 @@ namespace WebApplication1.Tests
                }
            });
         }
+
+        [TestMethod]
+        public void CheckHyperLink()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("hyperlink.aspx");
+                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "/path/test?query=test#fragment", UrlKind.Relative, UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#RelativeLink", "/path/test?query=test#fragment", UrlKind.Relative, UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#RelativeLink", "/path/test?query=test#fragment", UrlKind.Relative, UriComponents.AbsoluteUri);
+                browser.CheckIfHyperLinkEquals("#RelativeLink", "path/test?query=test#fragmentasd", UrlKind.Relative, UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#RelativeLink", "path/test?query=test#fragment", UrlKind.Relative, UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.google.com/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.google.com/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.AbsoluteUri);
+                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "//localhost:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "//localhostads:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.PathAndQuery);
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void CheckHyperLink_Failure1()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("hyperlink.aspx");
+                browser.CheckIfHyperLinkEquals("#RelativeLink", "/path0/test?query=test#fragment", UrlKind.Relative, UriComponents.PathAndQuery);
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void CheckHyperLink_Failure2()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("hyperlink.aspx");
+                browser.CheckIfHyperLinkEquals("#RelativeLink", "https://www.google.com/path/test?query=test#fragment", UrlKind.Absolute);
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void CheckHyperLink_Failure3()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("hyperlink.aspx");
+                browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.googles.com/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.AbsoluteUri);
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void CheckHyperLink_Failure4()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("hyperlink.aspx");
+                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "https://localhost:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.AbsoluteUri);
+            });
+        }
+        
     }
 }

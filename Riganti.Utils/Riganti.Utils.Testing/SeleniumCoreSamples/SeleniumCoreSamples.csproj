@@ -77,6 +77,7 @@
     <Content Include="ElementAtFirst.aspx" />
     <Content Include="ElementContained.aspx" />
     <Content Include="FileDialog.aspx" />
+    <Content Include="HyperLink.aspx" />
     <Content Include="JavaScript.js" />
     <Content Include="JsHtmlTest.aspx" />
     <Content Include="JSPropertySetTest.aspx" />
@@ -156,6 +157,13 @@
     </Compile>
     <Compile Include="FileDialog.aspx.designer.cs">
       <DependentUpon>FileDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HyperLink.aspx.cs">
+      <DependentUpon>HyperLink.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HyperLink.aspx.designer.cs">
+      <DependentUpon>HyperLink.aspx</DependentUpon>
     </Compile>
     <Compile Include="JsHtmlTest.aspx.cs">
       <DependentUpon>JsHtmlTest.aspx</DependentUpon>

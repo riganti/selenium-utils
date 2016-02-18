@@ -3,7 +3,6 @@ using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Threading;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
@@ -87,10 +86,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// Clicks on element.
         /// </summary>
-        public void Click(string selector)
+        public BrowserWrapper Click(string selector)
         {
             First(selector).Click();
-            Thread.Sleep(100);
+            Wait();
+            return this;
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public BrowserWrapper Submit(string selector)
         {
             First(selector).Submit();
-            Thread.Sleep(100);
+            Wait();
             return this;
         }
 
@@ -125,12 +125,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 {
                     throw new InvalidRedirectException();
                 }
+                SeleniumTestBase.Log($"Start navigation to: {SeleniumTestsConfiguration.BaseUrl}", 10);
                 browser.Navigate().GoToUrl(SeleniumTestsConfiguration.BaseUrl);
                 return;
             }
             //redirect if is absolute
             if (Uri.IsWellFormedUriString(url, UriKind.Absolute) || url.StartsWith("//"))
             {
+                SeleniumTestBase.Log($"Start navigation to: {url}", 10);
                 browser.Navigate().GoToUrl(url);
                 return;
             }
@@ -141,7 +143,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (url.StartsWith("/"))
             {
                 builder.Path = url;
-                browser.Navigate().GoToUrl(builder.ToString());
+                var urlToNavigate = builder.ToString();
+                SeleniumTestBase.Log($"Start navigation to: {urlToNavigate}", 10);
+                browser.Navigate().GoToUrl(urlToNavigate);
                 return;
             }
             // setup fragments (join urls)
@@ -150,6 +154,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             builder.Path = path + url;
 
             var navigateUrl = builder.ToString();
+            SeleniumTestBase.Log($"Start navigation to: {navigateUrl}", 10);
             browser.Navigate().GoToUrl(navigateUrl);
         }
 
@@ -265,20 +270,20 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public BrowserWrapper ConfirmAlert()
         {
             browser.SwitchTo().Alert().Accept();
-            Thread.Sleep(ActionWaitTime);
+            Wait();
             return this;
         }
 
         public BrowserWrapper DismissAlert()
         {
             browser.SwitchTo().Alert().Dismiss();
-            Thread.Sleep(ActionWaitTime);
+            Wait();
             return this;
         }
 
         public BrowserWrapper Wait(int milliseconds)
         {
-            Thread.Sleep(milliseconds);
+            Wait();
             return this;
         }
 
@@ -289,7 +294,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public BrowserWrapper Wait(TimeSpan interval)
         {
-            Thread.Sleep(interval);
+            Wait();
             return this;
         }
 
@@ -326,6 +331,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public ElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return ThrowIfIsNull(FirstOrDefault(selector, tmpSelectMethod), $"Element not found. Selector: {selector}");
+        }
+
+        public BrowserWrapper ForEach(string selector, Action<ElementWrapper> action, Func<string, By> tmpSelectMethod = null)
+        {
+            FindElements(selector, tmpSelectMethod).ForEach(action);
+            return this;
         }
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
@@ -399,9 +410,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return FindElements(selector, tmpSelectMethod).LastOrDefault();
         }
 
-        public void FireJsBlur()
+        public BrowserWrapper FireJsBlur()
         {
             GetJavaScriptExecutor()?.ExecuteScript("if(document.activeElement && document.activeElement.blur) {document.activeElement.blur()}");
+            return this;
         }
 
         public IJavaScriptExecutor GetJavaScriptExecutor()
@@ -411,18 +423,20 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
-        public void SendKeys(string selector, string text, Func<string, By> tmpSelectMethod = null)
+        public BrowserWrapper SendKeys(string selector, string text, Func<string, By> tmpSelectMethod = null)
         {
-            FindElements(selector, tmpSelectMethod).ForEach(s => s.SendKeys(text));
+            FindElements(selector, tmpSelectMethod).ForEach(s => { s.SendKeys(text); s.Wait(); });
+            return this;
         }
 
         /// <summary>
         /// Removes content from selected elements
         /// </summary>
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
-        public void ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null)
+        public BrowserWrapper ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            FindElements(selector, tmpSelectMethod).ForEach(s => s.Clear());
+            FindElements(selector, tmpSelectMethod).ForEach(s => { s.Clear(); s.Wait(); });
+            return this;
         }
 
         /// <summary>
@@ -456,7 +470,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             browser.Quit();
             browser.Dispose();
-            SeleniumTestBase.Log("Wrapper dispose");
+            SeleniumTestBase.Log("IWebDriver was disposed.");
         }
 
         #region CheckUrl
@@ -545,29 +559,33 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (fileUploadOpener.GetTagName() == "input" && fileUploadOpener.HasAttribute("type") && fileUploadOpener.GetAttribute("type") == "file")
             {
                 fileUploadOpener.SendKeys(fullFileName);
+                Wait();
             }
             else
             {
                 // open file dialog
                 fileUploadOpener.Click();
-
+                Wait();
                 // write the full path to the dialog
                 System.Windows.Forms.SendKeys.SendWait(fullFileName);
                 Wait();
                 SendEnterKey();
-                Wait();
             }
             return this;
         }
 
-        public virtual void SendEnterKey()
+        public virtual BrowserWrapper SendEnterKey()
         {
             System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            Wait();
+            return this;
         }
 
-        public virtual void SendEscKey()
+        public virtual BrowserWrapper SendEscKey()
         {
             System.Windows.Forms.SendKeys.SendWait("{ESC}");
+            Wait();
+            return this;
         }
 
         #endregion FileUploadDialog
@@ -580,5 +598,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
 
         #endregion Frames support
+
+        public BrowserWrapper CheckIfHyperLinkEquals(string selector, string url, UrlKind kind, params UriComponents[] components)
+        {
+            ForEach(selector, element =>
+                {
+                    element.CheckIfHyperLinkEquals(url, kind, components);
+                });
+            return this;
+        }
     }
 }

@@ -124,6 +124,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"return (arguments || [{}])[0]['" + elementPropertyName + "'];", WebElement);
             return obj?.ToString();
         }
+
         /// <summary>
         /// Inserts javascript to the site and returns value of innerText/textContent property of this element.
         /// </summary>
@@ -141,8 +142,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"var ________xcaijciajsicjaisjciasjicjasicjaijcias______ = (arguments || [{}])[0];return ________xcaijciajsicjaisjciasjicjasicjaijcias______['innerText'] || ________xcaijciajsicjaisjciasjicjasicjaijcias______['textContent'];", WebElement);
             return trim ? obj?.ToString().Trim() : obj?.ToString();
         }
-
-
 
         /// <summary>
         /// This check-method inserts javascript to the site and checks returned value of innerText/textContent property of specific element.
@@ -323,6 +322,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         public virtual ElementWrapper CheckIfTextNotEquals(string text, bool caseSensitive = true, bool trim = true)
         {
             if (string.Equals(text, GetText(),
@@ -655,6 +655,45 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public virtual ElementWrapper Wait(TimeSpan interval)
         {
             Thread.Sleep(interval);
+            return this;
+        }
+
+        public ElementWrapper CheckIfHyperLinkEquals(string url, UrlKind kind, params UriComponents[] components)
+        {
+            if (components.Length == 0)
+            {
+                components = new UriComponents[1];
+                components[0] = kind == UrlKind.Relative ? UriComponents.PathAndQuery : UriComponents.AbsoluteUri;
+            }
+
+            var providedHref = new Uri(WebElement.GetAttribute("href"));
+            if (kind == UrlKind.Relative)
+            {
+                var host = SeleniumTestsConfiguration.BaseUrl;
+                if (string.IsNullOrWhiteSpace(host))
+                {
+                    host = "http://example.com/";
+                }
+                else if (!host.EndsWith("/"))
+                {
+                    host += "/";
+                }
+                url = host + (url.StartsWith("/") ? url.Substring(1) : url);
+            }
+            if (kind == UrlKind.Absolute && url.StartsWith("//"))
+            {
+                url = providedHref.Scheme + ":" + url;
+            }
+            var expectedHref = new Uri(url);
+            UriComponents finalComponent = components[0];
+            components.ToList().ForEach(s => finalComponent |= s);
+
+            if (Uri.Compare(providedHref, expectedHref, finalComponent, UriFormat.SafeUnescaped,
+                    StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                throw new UnexpectedElementStateException($"Link '{FullSelector}' provided value '{providedHref}' of attribute href. Provided value does not match with expected value '{url}'.");
+            }
+
             return this;
         }
     }
