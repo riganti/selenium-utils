@@ -607,7 +607,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
-
+        /// <summary>
+        /// Checks whether element contains some text.
+        /// </summary>
         public virtual ElementWrapper CheckIfDoesNotContainsText()
         {
             if (!string.IsNullOrWhiteSpace(GetInnerText()))
@@ -616,48 +618,68 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
-
+        /// <summary>
+        /// Indicates whether element is visible.
+        /// </summary>
         public bool IsDisplayed()
         {
             return element.Displayed;
         }
-
+        /// <summary>
+        /// Indicates whether element is selected.
+        /// </summary>
         public bool IsSelected()
         {
             return element.Selected;
         }
-
+        /// <summary>
+        /// Indicates whether element is enabled.
+        /// </summary>
         public bool IsEnabled()
         {
             return element.Enabled;
         }
-
+        /// <summary>
+        /// Removes content of element.
+        /// </summary>
         public ElementWrapper Clear()
         {
             element.Clear();
             Wait();
             return this;
         }
-
+        /// <summary>
+        /// Waits the ActionWaitTime before next step.
+        /// </summary>
         public virtual ElementWrapper Wait()
         {
             if (ActionWaitTime != 0)
                 Thread.Sleep(ActionWaitTime);
             return this;
         }
-
+        /// <summary>
+        /// Waits the specified time before next step.
+        /// </summary>
         public virtual ElementWrapper Wait(int milliseconds)
         {
             Thread.Sleep(milliseconds);
             return this;
         }
-
+        /// <summary>
+        /// Waits the specified time before next step.
+        /// </summary>
         public virtual ElementWrapper Wait(TimeSpan interval)
         {
             Thread.Sleep(interval);
             return this;
         }
-
+        /// <summary>
+        /// Checks href value of element A (hyperlink)
+        /// </summary>
+        /// <param name="url">Expected value of href.</param>
+        /// <param name="kind">Type of url of expected href.</param>
+        /// <param name="components">Determines what parts of url should be compared.</param>
+        /// <returns></returns>
         public ElementWrapper CheckIfHyperLinkEquals(string url, UrlKind kind, params UriComponents[] components)
         {
             if (components.Length == 0)

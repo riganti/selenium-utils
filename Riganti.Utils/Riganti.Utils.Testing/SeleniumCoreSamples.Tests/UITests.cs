@@ -664,6 +664,16 @@ namespace WebApplication1.Tests
                 browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "https://localhost:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.AbsoluteUri);
             });
         }
-        
+
+        [TestMethod]
+        public void SingleExceptionTest()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("hyperlink.aspx");
+                browser.Single("asdasd");
+            });
+        }
     }
 }
