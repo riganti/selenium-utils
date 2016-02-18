@@ -607,5 +607,18 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 });
             return this;
         }
+
+        public BrowserWrapper WaitFor(Func<bool> condition, int maxTimeout, string failureMessage)
+        {
+            var now = DateTime.Now;
+            while (!condition())
+            {
+                if (DateTime.Now.Subtract(now).Milliseconds > maxTimeout)
+                {
+                    throw new SeleniumTestFailedException(failureMessage);
+                }
+            }
+            return this;
+        }
     }
 }

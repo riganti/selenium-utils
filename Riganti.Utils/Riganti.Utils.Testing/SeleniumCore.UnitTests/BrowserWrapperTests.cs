@@ -162,5 +162,23 @@ namespace SeleniumCore.UnitTests
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
             browser.CheckUrl("https://ex.com/", UrlKind.Absolute, UriComponents.Port);
         }
+
+        [TestMethod]
+        public void WaitForTest()
+        {
+            var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
+            int i = 0;
+            browser.WaitFor(() => i++==10,500,"Test failed");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(SeleniumTestFailedException))]
+
+        public void WaitForTest2()
+        {
+            var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
+            int i = 0;
+            browser.WaitFor(() => i == 10, 500, "Test failed");
+        }
     }
 }
