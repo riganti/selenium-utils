@@ -666,6 +666,7 @@ namespace WebApplication1.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(EmptySequenceException))]
         public void SingleExceptionTest()
         {
             SeleniumTestsConfiguration.DeveloperMode = true;

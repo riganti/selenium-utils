@@ -3,6 +3,7 @@ using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Threading;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
@@ -283,7 +284,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public BrowserWrapper Wait(int milliseconds)
         {
-            Wait();
+           Thread.Sleep(milliseconds);
             return this;
         }
 
@@ -294,7 +295,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public BrowserWrapper Wait(TimeSpan interval)
         {
-            Wait();
+           Thread.Sleep((int) interval.TotalMilliseconds);
             return this;
         }
 
