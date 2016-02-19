@@ -132,7 +132,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         protected virtual void TryExecuteTest(Action<BrowserWrapper> testBody, IWebDriverFactory browserFactory, out string browserName, out Exception exception)
         {
             var attemptNumber = 0;
-            var attampsMaximum = SeleniumTestsConfiguration.TestAttemps + (SeleniumTestsConfiguration.FastMode ? 1 : 0);
+            var attampsMaximum = SeleniumTestsConfiguration.TestAttempts + (SeleniumTestsConfiguration.FastMode ? 1 : 0);
             do
             {
                 attemptNumber++;
@@ -147,11 +147,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 bool exceptionWasThrow = false;
                 try
                 {
-                    BeforeSpecificBrowserTestStarts(browser);
+                    BeforeSpecificBrowserTestStarts(wrapper);
                     Log("Execution of user test starting.", 10);
                     testBody(wrapper);
                     Log("Execution of user test ended.", 10);
-                    AfterSpecificBrowserTestEnds(browser);
+                    AfterSpecificBrowserTestEnds(wrapper);
                 }
                 catch (Exception ex)
                 {
@@ -190,6 +190,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             while (exception != null && attemptNumber < attampsMaximum);
         }
+
 
         private void CleanBrowsers(IWebDriverFactory browserFactory)
         {
@@ -301,11 +302,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public bool AllowDerivedExceptionTypes { get; set; }
 
-        public virtual void BeforeSpecificBrowserTestStarts(IWebDriver browser)
+        public virtual void BeforeSpecificBrowserTestStarts(BrowserWrapper browser)
         {
         }
 
-        public virtual void AfterSpecificBrowserTestEnds(IWebDriver browser)
+        public virtual void AfterSpecificBrowserTestEnds(BrowserWrapper browser)
         {
         }
 

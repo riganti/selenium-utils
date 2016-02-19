@@ -17,7 +17,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public string Selector { get; set; }
         public string FullSelector => GenerateFullSelector();
 
-        public static int ActionTimeout { get; set; } = 400;
+        public static int ActionTimeout { get; set; } = SeleniumTestsConfiguration.ActionTimeout;
 
         public int ActionWaitTime
         {
@@ -665,6 +665,34 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Thread.Sleep(milliseconds);
             return this;
         }
+
+
+        /// <summary>
+        /// Waits until the condition is true.
+        /// </summary>
+        /// <param name="condition">Expression that determine whether test should wait or continue</param>
+        /// <param name="maxTimeout">If condition is not reached in this timeout (ms) test is dropped.</param>
+        /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
+        public ElementWrapper WaitFor(Func< ElementWrapper, bool> condition, int maxTimeout, string failureMessage)
+        {
+            if (condition == null)
+            {
+                throw new NullReferenceException("Condition cannot be null.");
+            }
+            var now = DateTime.UtcNow;
+            // ReSharper disable once LoopVariableIsNeverChangedInsideLoop
+            while (!condition(this))
+            {
+                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
+                {
+                    throw new SeleniumTestFailedException(failureMessage);
+                }
+                Wait(100);
+            }
+            return this;
+        }
+
+
         /// <summary>
         /// Waits the specified time before next step.
         /// </summary>
