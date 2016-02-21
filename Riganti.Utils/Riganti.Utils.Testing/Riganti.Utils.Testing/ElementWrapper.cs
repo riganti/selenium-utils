@@ -506,13 +506,15 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
 
         public virtual ElementWrapper CheckIfIsChecked()
+    {
+        if (this.CheckTagName("input"))
         {
-            if (!IsChecked())
-            {
-                throw new UnexpectedElementStateException($"Element is NOT checked and should be. \r\n Element selector: {Selector} \r\n");
-            }
-            return this;
+            if (!this.IsChecked())
+               throw new UnexpectedElementStateException(string.Format("Element is NOT checked and should be. \r\n Element selector: {0} \r\n", (object)this.Selector));
         }
+      else throw new UnexpectedElementStateException(string.Format("Input element type checkbox is required. \r\n Element selector: {0} \r\n", (object) this.Selector));
+      return this;
+    }
 
         public virtual ElementWrapper CheckIfIsNotChecked()
         {
