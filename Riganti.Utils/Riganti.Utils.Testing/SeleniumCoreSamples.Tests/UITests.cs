@@ -676,6 +676,77 @@ namespace WebApplication1.Tests
                 browser.Single("asdasd");
             });
         }
-      
+
+        [TestMethod]
+        public void IsNotCheckedTest()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.Single("#checkbox2").CheckIfIsNotChecked();
+            });
+        }
+
+        [TestMethod]
+        public void IsCheckedTest()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.Single("#checkbox1").CheckIfIsChecked();
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void CheckIfIsChecked_TypeTest()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.Single("#textbox1").CheckIfIsChecked();
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void CheckIfIsNotChecked_TypeTest()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.Single("#textbox1").CheckIfIsNotChecked();
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void CheckIfIsChecked_TagnameTest()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.Single("#span1").CheckIfIsChecked();
+            });
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void CheckIfIsNotChecked_TagnameTest()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.Single("#span1").CheckIfIsChecked();
+            });
+        }
+
     }
 }
