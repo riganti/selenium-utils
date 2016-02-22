@@ -84,6 +84,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return result == 0;
         }
 
+        /// <summary>
+        /// Compates current Url and given url.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="urlKind"></param>
+        /// <param name="components"></param>
+        /// <returns></returns>
         public bool CompareUrl(string url, UrlKind urlKind, params UriComponents[] components)
         {
             var currentUri = new Uri(CurrentUrl);
@@ -111,12 +118,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             UriComponents finalComponent = components[0];
             components.ToList().ForEach(s => finalComponent |= s);
 
-            if (Uri.Compare(currentUri, expectedUri, finalComponent, UriFormat.SafeUnescaped, StringComparison.OrdinalIgnoreCase) != 0)
-            {
-                return false;
-            }
-
-            return true;
+            return Uri.Compare(currentUri, expectedUri, finalComponent, UriFormat.SafeUnescaped, StringComparison.OrdinalIgnoreCase) == 0;
         }
 
         /// <summary>
