@@ -90,13 +90,18 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return $"{Selector ?? ""}".Trim();
         }
 
-        public virtual ElementWrapper CheckTagName(string expectedTagName)
+        public virtual ElementWrapper CheckTagName(string expectedTagName, string failureMessage = null)
         {
             if (!string.Equals(GetTagName(), expectedTagName, StringComparison.OrdinalIgnoreCase))
             {
-                throw new UnexpectedElementStateException($"Element has wrong tagName. Expected value: '{expectedTagName}', Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n");
+                throw new UnexpectedElementStateException(failureMessage ?? $"Element has wrong tagName. Expected value: '{expectedTagName}', Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n");
             }
             return this;
+        }
+
+        public virtual ElementWrapper CheckIfTagName(string expectedTagName, string failureMessage = null)
+        {
+            return CheckTagName(expectedTagName, failureMessage);
         }
 
         public virtual ElementWrapper CheckIfContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
@@ -139,7 +144,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         public virtual string GetJsInnerText(bool trim = true)
         {
-            var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"var ________xcaijciajsicjaisjciasjicjasicjaijcias______ = (arguments || [{}])[0];return ________xcaijciajsicjaisjciasjicjasicjaijcias______['innerText'] || ________xcaijciajsicjaisjciasjicjasicjaijcias______['textContent'];", WebElement);
+            var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"var a = (arguments || [{}])[0];return a['innerText'] || a['textContent'];", WebElement);
             return trim ? obj?.ToString().Trim() : obj?.ToString();
         }
 
@@ -173,6 +178,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// Inserts javascript to the site and returns value of innerHTML property of this element.
         /// </summary>
+        /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Comparison of raw html strings is NOT recommended.</remarks>
         public string GetJsInnerHtml()
         {
             return GetJsElementPropertyValue("innerHTML");
@@ -181,7 +187,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element.
         /// </summary>
-        /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Be sure that all browsers you are using are generate the same result to prevent unexpected results of this method.</remarks>
+        /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Be sure that all browsers you are using are generating the same result to prevent unexpected results of this method.</remarks>
         public virtual ElementWrapper CheckIfJsPropertyInnerHtmlEquals(string text, bool caseSensitive = true, bool trim = true)
         {
             var value = GetJsInnerHtml();
@@ -208,6 +214,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
+        /// <summary>
+        /// Checks name of tag
+        /// </summary>
         public ElementWrapper CheckTagName(Func<string, bool> expression, string message = null)
         {
             if (!expression(GetTagName()))
@@ -215,6 +224,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 throw new UnexpectedElementStateException($"Element has wrong tagName. Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n { (message ?? "")}");
             }
             return this;
+        }
+
+        /// <summary>
+        /// Checks name of tag
+        /// </summary>
+        public ElementWrapper CheckIfTagName(Func<string, bool> expression, string message = null)
+        {
+            return CheckTagName(expression, message);
         }
 
         public virtual ElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression, string message = null)
@@ -227,7 +244,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public virtual ElementWrapper CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true)
+        public virtual ElementWrapper CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
         {
             var attribute = element.GetAttribute(attributeName);
             if (trimValue)
@@ -238,7 +255,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (!string.Equals(value, attribute,
                 caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
             {
-                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
+                throw new UnexpectedElementStateException(failureMessage ?? $"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
             }
             return this;
         }
@@ -342,28 +359,30 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
+        /// <summary>
+        /// Sets current option of element &lt;select&gt;.
+        /// </summary>
+        /// <param name="index">Index of  &lt;option&gt; that should be selected.</param>
         public virtual ElementWrapper Select(int index)
         {
-            var selectElm = new SelectElement(element);
-            selectElm.SelectByIndex(index);
-            Wait();
-            return this;
+            return Select(e => e.SelectByIndex(index));
         }
 
+        /// <summary>
+        /// Sets current option of element &lt;select&gt;.
+        /// </summary>
+        /// <param name="value">Value of  &lt;option&gt; that should be selected.</param>
         public virtual ElementWrapper Select(string value)
         {
-            var selectElm = new SelectElement(element);
-            selectElm.SelectByValue(value);
-            Wait();
-            return this;
+            return Select(e => e.SelectByValue(value));
         }
 
+        /// <summary>
+        /// Sets current option of element &lt;select&gt;.
+        /// </summary>
         public virtual ElementWrapper Select(Action<SelectElement> process)
         {
-            var selectElm = new SelectElement(element);
-            process(selectElm);
-            Wait();
-            return this;
+            return PerformActionOnSelectElement(process);
         }
 
         public virtual ElementWrapper PerformActionOnSelectElement(Action<SelectElement> process)
@@ -414,42 +433,66 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return collection;
         }
 
+        /// <summary>
+        /// Returns first element that satisfies the selector.
+        /// </summary>
         public virtual ElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var elms = FindElements(selector, tmpSelectMethod);
             return elms.FirstOrDefault();
         }
 
+        /// <summary>
+        /// Returns first element that satisfies the selector. Throws exception when no element is found.
+        /// </summary>
         public virtual ElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return ThrowIfIsNull(FirstOrDefault(selector, tmpSelectMethod), $"Element not found. Selector: {selector}");
         }
 
+        /// <summary>
+        /// Returns one element and throws exception when more then one element is found.
+        /// </summary>
         public virtual ElementWrapper SingleOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).SingleOrDefault();
         }
 
+        /// <summary>
+        /// Returns one element and throws exception when no element or more then one element is found.
+        /// </summary>
         public virtual ElementWrapper Single(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).Single();
         }
 
+        /// <summary>
+        /// Returns one element from collection at specified position and throws exception when collection contains less elements then is expected.
+        /// </summary>
         public virtual ElementWrapper ElementAt(string selector, int index, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).ElementAt(index);
         }
 
+        /// <summary>
+        /// Returns last element from collection and Throws exception when the collection is empty.
+        /// </summary>
         public virtual ElementWrapper Last(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).Last();
         }
 
+        /// <summary>
+        /// Returns last element from collection or null when collection is empty.
+        /// </summary>
         public virtual ElementWrapper LastOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).LastOrDefault();
         }
 
+        /// <summary>
+        /// Throws exception when provided object is null.
+        /// </summary>
         public T ThrowIfIsNull<T>(T obj, string message)
         {
             if (obj == null)
@@ -483,7 +526,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             element.Click();
             Wait();
-
             return this;
         }
 
@@ -507,18 +549,18 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual ElementWrapper CheckIfIsChecked()
         {
-            CheckTagName("input");
-            CheckAttribute("type", "checkbox");
+            CheckTagName("input", "Function CheckIfIsNotChecked() can be used on input element only.");
+            CheckAttribute("type", "checkbox", failureMessage: "Input element must be type of checkbox.");
 
-            if (!this.IsChecked())
-               throw new UnexpectedElementStateException(string.Format("Element is NOT checked and should be. \r\n Element selector: {0} \r\n", (object)this.Selector));
-             return this;
-    }
+            if (!IsChecked())
+                throw new UnexpectedElementStateException($"Element is NOT checked and should be. \r\n Element selector: {Selector} \r\n");
+            return this;
+        }
 
         public virtual ElementWrapper CheckIfIsNotChecked()
         {
-            CheckTagName("input");
-            CheckAttribute("type", "checkbox");
+            CheckTagName("input", "Function CheckIfIsNotChecked() can be used on input element only.");
+            CheckAttribute("type", "checkbox", failureMessage: "Input element must be type of checkbox.");
 
             if (IsChecked())
             {
@@ -611,6 +653,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         /// <summary>
         /// Checks whether element contains some text.
         /// </summary>
@@ -622,6 +665,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         /// <summary>
         /// Indicates whether element is visible.
         /// </summary>
@@ -629,6 +673,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             return element.Displayed;
         }
+
         /// <summary>
         /// Indicates whether element is selected.
         /// </summary>
@@ -636,6 +681,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             return element.Selected;
         }
+
         /// <summary>
         /// Indicates whether element is enabled.
         /// </summary>
@@ -643,6 +689,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             return element.Enabled;
         }
+
         /// <summary>
         /// Removes content of element.
         /// </summary>
@@ -652,6 +699,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Wait();
             return this;
         }
+
         /// <summary>
         /// Waits the ActionWaitTime before next step.
         /// </summary>
@@ -661,6 +709,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 Thread.Sleep(ActionWaitTime);
             return this;
         }
+
         /// <summary>
         /// Waits the specified time before next step.
         /// </summary>
@@ -670,14 +719,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-
         /// <summary>
         /// Waits until the condition is true.
         /// </summary>
         /// <param name="condition">Expression that determine whether test should wait or continue</param>
         /// <param name="maxTimeout">If condition is not reached in this timeout (ms) test is dropped.</param>
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
-        public ElementWrapper WaitFor(Func< ElementWrapper, bool> condition, int maxTimeout, string failureMessage)
+        public ElementWrapper WaitFor(Func<ElementWrapper, bool> condition, int maxTimeout, string failureMessage)
         {
             if (condition == null)
             {
@@ -691,11 +739,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 {
                     throw new SeleniumTestFailedException(failureMessage);
                 }
-                Wait(100);
+                Wait(200);
             }
             return this;
         }
-
 
         /// <summary>
         /// Waits the specified time before next step.
@@ -705,6 +752,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Thread.Sleep(interval);
             return this;
         }
+
         /// <summary>
         /// Checks href value of element A (hyperlink)
         /// </summary>
