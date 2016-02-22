@@ -84,6 +84,41 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return result == 0;
         }
 
+        public bool CompareUrl(string url, UrlKind urlKind, params UriComponents[] components)
+        {
+            var currentUri = new Uri(CurrentUrl);
+            //support relative domain
+            //(new Uri() cannot parse the url correctly when the host is missing
+            if (urlKind == UrlKind.Relative)
+            {
+                url = url.StartsWith("/") ? $"http://example.com{url}" : $"http://example.com/{url}";
+            }
+
+            if (urlKind == UrlKind.Absolute && url.StartsWith("//"))
+            {
+                if (!string.IsNullOrWhiteSpace(currentUri.Scheme))
+                {
+                    url = currentUri.Scheme + ":" + url;
+                }
+            }
+
+            var expectedUri = new Uri(url, UriKind.Absolute);
+
+            if (components.Length == 0)
+            {
+                throw new BrowserLocationException($"Function CheckUrlCheckUrl(string, UriKind, params UriComponents) has to have one UriComponents at least.");
+            }
+            UriComponents finalComponent = components[0];
+            components.ToList().ForEach(s => finalComponent |= s);
+
+            if (Uri.Compare(currentUri, expectedUri, finalComponent, UriFormat.SafeUnescaped, StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Clicks on element.
         /// </summary>
@@ -513,36 +548,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <param name="components">Determine what parts of urls are compared.</param>
         public BrowserWrapper CheckUrl(string url, UrlKind urlKind, params UriComponents[] components)
         {
-            var currentUri = new Uri(CurrentUrl);
-            //support relative domain
-            //(new Uri() cannot parse the url correctly when the host is missing
-            if (urlKind == UrlKind.Relative)
-            {
-                url = url.StartsWith("/") ? $"http://example.com{url}" : $"http://example.com/{url}";
-            }
-
-            if (urlKind == UrlKind.Absolute && url.StartsWith("//"))
-            {
-                if (!string.IsNullOrWhiteSpace(currentUri.Scheme))
-                {
-                    url = currentUri.Scheme + ":" + url;
-                }
-            }
-
-            var expectedUri = new Uri(url, UriKind.Absolute);
-
-            if (components.Length == 0)
-            {
-                throw new BrowserLocationException($"Function CheckUrlCheckUrl(string, UriKind, params UriComponents) has to have one UriComponents at least.");
-            }
-            UriComponents finalComponent = components[0];
-            components.ToList().ForEach(s => finalComponent |= s);
-
-            if (Uri.Compare(currentUri, expectedUri, finalComponent, UriFormat.SafeUnescaped, StringComparison.OrdinalIgnoreCase) != 0)
+            if (!CompareUrl(url,urlKind,components))
             {
                 throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}'. Expected url: '{url}'");
             }
-
             return this;
         }
 

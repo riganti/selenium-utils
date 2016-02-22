@@ -162,5 +162,12 @@ namespace SeleniumCore.UnitTests
             var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
             browser.CheckUrl("https://ex.com/", UrlKind.Absolute, UriComponents.Port);
         }
+
+        [TestMethod]
+        public void CompareUrlTest()
+        {
+            var browser = new BrowserWrapper(new MockIWebDriver(), new MockITestBase());
+            Assert.IsTrue(browser.CompareUrl("//localhost:12345", UrlKind.Absolute, UriComponents.Port));
+        }
     }
 }
