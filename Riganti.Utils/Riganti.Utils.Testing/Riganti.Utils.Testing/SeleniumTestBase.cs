@@ -228,7 +228,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             else
             {
-                wrapper.Dispose();
+                wrapper?.Dispose();
             }
         }
 

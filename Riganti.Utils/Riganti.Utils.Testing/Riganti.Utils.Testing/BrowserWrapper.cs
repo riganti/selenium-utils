@@ -224,6 +224,19 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
+        public bool HasAlert()
+        {
+            try
+            {
+                GetAlert();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
         public IAlert GetAlert()
         {
             IAlert alert;
@@ -284,7 +297,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public BrowserWrapper Wait(int milliseconds)
         {
-           Thread.Sleep(milliseconds);
+            Thread.Sleep(milliseconds);
             return this;
         }
 
@@ -295,7 +308,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public BrowserWrapper Wait(TimeSpan interval)
         {
-           Thread.Sleep((int) interval.TotalMilliseconds);
+            Thread.Sleep((int)interval.TotalMilliseconds);
             return this;
         }
 
@@ -619,7 +632,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (condition == null)
             {
-                throw  new NullReferenceException("Condition cannot be null.");
+                throw new NullReferenceException("Condition cannot be null.");
             }
             var now = DateTime.UtcNow;
             while (!condition())
