@@ -85,6 +85,42 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
 
         /// <summary>
+        /// Compates current Url and given url.
+        /// </summary>
+        /// <param name="url">This url is compared with CurrentUrl.</param>
+        /// <param name="urlKind">Determine whether url parameter contains relative or absolute path.</param>
+        /// <param name="components">Determine what parts of urls are compared.</param>
+        public bool CompareUrl(string url, UrlKind urlKind, params UriComponents[] components)
+        {
+            var currentUri = new Uri(CurrentUrl);
+            //support relative domain
+            //(new Uri() cannot parse the url correctly when the host is missing
+            if (urlKind == UrlKind.Relative)
+            {
+                url = url.StartsWith("/") ? $"{currentUri.Scheme}://{currentUri.Host}{url}" : $"{currentUri.Scheme}://{currentUri.Host}/{url}";
+            }
+
+            if (urlKind == UrlKind.Absolute && url.StartsWith("//"))
+            {
+                if (!string.IsNullOrWhiteSpace(currentUri.Scheme))
+                {
+                    url = currentUri.Scheme + ":" + url;
+                }
+            }
+
+            var expectedUri = new Uri(url, UriKind.Absolute);
+
+            if (components.Length == 0)
+            {
+                throw new BrowserLocationException($"Function CheckUrlCheckUrl(string, UriKind, params UriComponents) has to have one UriComponents at least.");
+            }
+            UriComponents finalComponent = components[0];
+            components.ToList().ForEach(s => finalComponent |= s);
+
+            return Uri.Compare(currentUri, expectedUri, finalComponent, UriFormat.SafeUnescaped, StringComparison.OrdinalIgnoreCase) == 0;
+        }
+
+        /// <summary>
         /// Clicks on element.
         /// </summary>
         public BrowserWrapper Click(string selector)
@@ -253,7 +289,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 throw new AlertException("Alert not visible.");
             return alert;
         }
-
+        /// <summary>
+        /// Checks if modal dialog (Alert) contains specified text as a part of provided text from the dialog.
+        /// </summary>
         public BrowserWrapper CheckIfAlertTextContains(string expectedValue, bool trim = true)
         {
             var alert = GetAlert();
@@ -270,7 +308,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
-
+        /// <summary>
+        /// Checks if modal dialog (Alert) text equals with specified text.
+        /// </summary>
         public BrowserWrapper CheckIfAlertText(Func<string, bool> expression, string message = "")
         {
             var alert = browser.SwitchTo().Alert()?.Text;
@@ -280,32 +320,42 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
-
+        /// <summary>
+        /// Confirms modal dialog (Alert).
+        /// </summary>
         public BrowserWrapper ConfirmAlert()
         {
             browser.SwitchTo().Alert().Accept();
             Wait();
             return this;
         }
-
+        /// <summary>
+        /// Dismisses modal dialog (Alert).
+        /// </summary>
         public BrowserWrapper DismissAlert()
         {
             browser.SwitchTo().Alert().Dismiss();
             Wait();
             return this;
         }
-
+        /// <summary>
+        /// Waits specified time in milliseconds.
+        /// </summary>
         public BrowserWrapper Wait(int milliseconds)
         {
             Thread.Sleep(milliseconds);
             return this;
         }
-
+        /// <summary>
+        /// Waits time specified by ActionWaitType property.
+        /// </summary>
         public BrowserWrapper Wait()
         {
             return Wait(ActionWaitTime);
         }
-
+        /// <summary>
+        /// Waits specified time.
+        /// </summary>
         public BrowserWrapper Wait(TimeSpan interval)
         {
             Thread.Sleep((int)interval.TotalMilliseconds);
@@ -495,7 +545,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <param name="url">This url is compared with CurrentUrl.</param>
         public BrowserWrapper CheckUrlEquals(string url)
         {
-            var uri1 = new Uri(CurrentUrl, UriKind.RelativeOrAbsolute);
+            var uri1 = new Uri(CurrentUrl, UriKind.Absolute);
             var uri2 = new Uri(url, UriKind.RelativeOrAbsolute);
             if (uri1 != uri2)
             {
@@ -526,36 +576,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <param name="components">Determine what parts of urls are compared.</param>
         public BrowserWrapper CheckUrl(string url, UrlKind urlKind, params UriComponents[] components)
         {
-            var currentUri = new Uri(CurrentUrl);
-            //support relative domain
-            //(new Uri() cannot parse the url correctly when the host is missing
-            if (urlKind == UrlKind.Relative)
-            {
-                url = url.StartsWith("/") ? $"http://example.com{url}" : $"http://example.com/{url}";
-            }
-
-            if (urlKind == UrlKind.Absolute && url.StartsWith("//"))
-            {
-                if (!string.IsNullOrWhiteSpace(currentUri.Scheme))
-                {
-                    url = currentUri.Scheme + ":" + url;
-                }
-            }
-
-            var expectedUri = new Uri(url, UriKind.Absolute);
-
-            if (components.Length == 0)
-            {
-                throw new BrowserLocationException($"Function CheckUrlCheckUrl(string, UriKind, params UriComponents) has to have one UriComponents at least.");
-            }
-            UriComponents finalComponent = components[0];
-            components.ToList().ForEach(s => finalComponent |= s);
-
-            if (Uri.Compare(currentUri, expectedUri, finalComponent, UriFormat.SafeUnescaped, StringComparison.OrdinalIgnoreCase) != 0)
+            if (!CompareUrl(url,urlKind,components))
             {
                 throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}'. Expected url: '{url}'");
             }
-
             return this;
         }
 
