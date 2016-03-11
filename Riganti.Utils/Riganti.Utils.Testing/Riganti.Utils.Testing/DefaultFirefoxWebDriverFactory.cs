@@ -18,7 +18,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
             try
             {
-                return PrepareDriver(new FirefoxDriver(GetProfile()));
+                return PrepareDriver(new FirefoxDriverWrapper(GetProfile()));
             }
             catch
             {
@@ -52,7 +52,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         private static IWebDriver AlternativeInstance()
         {
-            return PrepareDriver(new FirefoxDriver(new FirefoxBinary(pathToFirefoxBinary), GetProfile()));
+            return PrepareDriver(new FirefoxDriverWrapper(new FirefoxBinary(pathToFirefoxBinary), GetProfile()));
         }
 
         public static IWebDriver PrepareDriver(IWebDriver driver)
@@ -71,4 +71,53 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return profile;
         }
     }
+
+    public class FirefoxDriverWrapper : FirefoxDriver,  IWebDriverWrapper 
+    {
+
+        public FirefoxDriverWrapper()
+        {
+            SeleniumTestBase.LogDriverId(this, "CTOR - FirefoxDriver");
+        }
+
+        public FirefoxDriverWrapper(FirefoxProfile profile) : base(profile)
+        {
+            SeleniumTestBase.LogDriverId(this, "CTOR - FirefoxDriver");
+        }
+
+        public FirefoxDriverWrapper(ICapabilities capabilities) : base(capabilities)
+        {
+            SeleniumTestBase.LogDriverId(this, "CTOR - FirefoxDriver");
+        }
+
+        public FirefoxDriverWrapper(FirefoxBinary binary, FirefoxProfile profile) : base(binary, profile)
+        {
+            SeleniumTestBase.LogDriverId(this, "CTOR - FirefoxDriver");
+        }
+
+        public FirefoxDriverWrapper(FirefoxBinary binary, FirefoxProfile profile, TimeSpan commandTimeout) : base(binary, profile, commandTimeout)
+        {
+            SeleniumTestBase.LogDriverId(this, "CTOR - FirefoxDriver");
+        }
+
+        public FirefoxDriverWrapper(FirefoxOptions options) : base(options)
+        {
+            SeleniumTestBase.LogDriverId(this, "CTOR - FirefoxDriver");
+        }
+
+        public FirefoxDriverWrapper(FirefoxDriverService service) : base(service)
+        {
+            SeleniumTestBase.LogDriverId(this, "CTOR - FirefoxDriver");
+        }
+
+        public FirefoxDriverWrapper(FirefoxDriverService service, FirefoxOptions options, TimeSpan commandTimeout) : base(service, options, commandTimeout)
+        {
+            SeleniumTestBase.LogDriverId(this, "CTOR - FirefoxDriver");
+        }
+
+        public Guid DriverId { get; } = Guid.NewGuid();
+
+        public bool Disposed { get; set; }
+    }
+
 }

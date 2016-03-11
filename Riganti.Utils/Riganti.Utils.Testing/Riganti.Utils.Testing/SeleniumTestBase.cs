@@ -70,16 +70,16 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         protected virtual void RunInAllBrowsers(Action<BrowserWrapper> action)
         {
-            Log("Test no.: " + testsIndexer++);
+            Log("Test no.: " + testsIndexer++, 10);
             CheckAvailableWebDriverFactories();
             foreach (var browserFactory in BrowserFactories)
             {
                 string browserName;
                 Exception exception = null;
 
+                CurrentTestExceptions.Clear();
                 if (!(SeleniumTestsConfiguration.PlainMode || SeleniumTestsConfiguration.DeveloperMode))
                 {
-                    CurrentTestExceptions.Clear();
                     TryExecuteTest(action, browserFactory, out browserName, out exception);
                 }
                 else
@@ -123,7 +123,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             finally
             {
-                wrapper?.Dispose();
+                DisposeBrowsers(browserFactory);
             }
         }
 
@@ -139,6 +139,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 WriteLine($"Attamp #{attemptNumber} starts....");
                 exception = null;
                 var browser = LatestLiveWebDriver = browserFactory.CreateNewInstance();
+                LogDriverId(browser, "Driver creation - TryExecuteTest");
 
                 wrapper = new BrowserWrapper(browser, this);
                 browserName = browser.GetType().Name;
@@ -190,7 +191,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             while (exception != null && attemptNumber < attampsMaximum);
         }
-
 
         private void CleanBrowsers(IWebDriverFactory browserFactory)
         {
@@ -287,6 +287,15 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public virtual void Log(Exception exception)
         {
             WriteLine(exception.ToString());
+        }
+
+        public static void LogDriverId(IWebDriver browser, string checkpoint)
+        {
+            var driver = browser as IWebDriverWrapper;
+            if (driver != null)
+            {
+                Log($"GUID: {driver.DriverId}      | Disposed: {driver.Disposed} | Checkpoint:{checkpoint}", 10);
+            }
         }
 
         protected virtual void LogCurrentlyPerformedAction(string actionName)

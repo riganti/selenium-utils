@@ -9,8 +9,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             var options = new ChromeOptions();
             options.AddArgument("test-type");
-            options.AddArgument("-incognito");
-            var driver = new ChromeDriver(options);
+            if (SeleniumTestsConfiguration.ChromeDriverIncognito)
+            {
+                options.AddArgument("-incognito");
+            }
+
+            var driver = new ChromeDriverWrapper(options);
             driver.SetDefaultTimeouts();
             return driver;
         }

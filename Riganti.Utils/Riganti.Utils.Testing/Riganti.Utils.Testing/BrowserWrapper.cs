@@ -534,6 +534,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             browser.Quit();
             browser.Dispose();
+            if (browser is IWebDriverWrapper)
+            {
+                ((IWebDriverWrapper) browser).Disposed = true;
+                SeleniumTestBase.LogDriverId(browser, "Dispose - ChromeDriver");
+            }
+          
             SeleniumTestBase.Log("IWebDriver was disposed.");
         }
 
@@ -576,7 +582,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <param name="components">Determine what parts of urls are compared.</param>
         public BrowserWrapper CheckUrl(string url, UrlKind urlKind, params UriComponents[] components)
         {
-            if (!CompareUrl(url,urlKind,components))
+            if (!CompareUrl(url, urlKind, components))
             {
                 throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}'. Expected url: '{url}'");
             }

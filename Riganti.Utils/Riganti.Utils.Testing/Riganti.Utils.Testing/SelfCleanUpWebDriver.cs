@@ -1,8 +1,6 @@
-using System.Net;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
-using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace Riganti.Utils.Testing.SeleniumCore
 {
@@ -15,7 +13,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             get
             {
                 if (driver != null) return driver;
-                 driver = CreateInstance();
+                driver = CreateInstance();
                 return driver;
             }
         }
@@ -42,22 +40,28 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public void Recreate()
         {
-            SeleniumTestBase.Log("Recreating driver.");
+            SeleniumTestBase.LogDriverId(driver, "Recreation - SelfCleanUpWebDriver (OLD)");
             Dispose();
             driver = CreateInstance();
+            SeleniumTestBase.LogDriverId(driver, "Recreation - SelfCleanUpWebDriver (NEW)");
         }
-
 
         public void Dispose()
         {
             if (driver != null)
             {
-                SeleniumTestBase.Log("Closing driver.");
-                ExpectedConditions.AlertIsPresent()(Driver)?.Dismiss();
-                driver.Close();
-                driver.Quit();
-                driver.Dispose();
-                driver = null;
+                try
+                {
+                  SeleniumTestBase.LogDriverId(driver, "Dispose    - SelfCleanUpWebDriver");
+                    ExpectedConditions.AlertIsPresent()(Driver)?.Dismiss();
+                    driver.Close();
+                    driver.Quit();
+                    driver.Dispose();
+                    driver = null;
+                }
+                catch (Exception)
+                {
+                }
             }
         }
     }

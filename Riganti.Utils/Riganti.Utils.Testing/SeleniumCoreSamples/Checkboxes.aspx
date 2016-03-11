@@ -12,6 +12,8 @@
         <asp:CheckBox Text="text" Checked="True" ID="checkbox1"  ClientIDMode="Static" runat="server" />
         <asp:CheckBox Text="text" ID="checkbox2"  ClientIDMode="Static" runat="server" />
         <asp:TextBox runat="server" ID="textbox1" ClientIDMode="Static"></asp:TextBox>
+        <asp:RadioButton runat="server" Id="RadioChecked" Checked="true" ClientIDMode="Static" />
+        <asp:RadioButton runat="server" Id="RadioNotChecked" Checked="false" ClientIDMode="Static" />
         <span id="span1"></span>
     </div>
     </form>

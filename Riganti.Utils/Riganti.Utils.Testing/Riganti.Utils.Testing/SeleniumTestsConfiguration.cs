@@ -33,7 +33,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
             // modes
             CheckAndSet(GetSettingsKey("FastMode"), true, value => FastMode = value, false);
-            CheckAndSet(GetSettingsKey("DeveloperMode"), true, value => { DeveloperMode = PlainMode = value; }, false);
+            CheckAndSet(GetSettingsKey("DeveloperMode"), false, value => { DeveloperMode = PlainMode = value; }, false);
+
+            // chrome driver settings
+            CheckAndSet(GetSettingsKey("ChromeDriverIncognito"), false, value => { ChromeDriverIncognito  = value; }, false);
+            
+
         }
 
         #region Properties
@@ -59,6 +64,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public static bool TeamcityLogger { get; set; }
         public static bool TestContextLogger { get; set; }
         public static int LoggingPriorityMaximum { get; set; }
+        public static bool ChromeDriverIncognito { get; set; }
 
         #endregion Properties
 

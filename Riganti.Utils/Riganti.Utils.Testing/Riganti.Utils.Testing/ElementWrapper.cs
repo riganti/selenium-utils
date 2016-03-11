@@ -260,6 +260,22 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
+        public virtual ElementWrapper CheckAttribute(string attributeName, string[] allowedValues, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
+        {
+            var attribute = element.GetAttribute(attributeName);
+            if (trimValue)
+            {
+                attribute = attribute.Trim();
+                allowedValues = allowedValues.Select(s => s.Trim()).ToArray();
+            }
+            if (allowedValues.All(v => !string.Equals(v, attribute,
+                caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal)))
+            {
+                throw new UnexpectedElementStateException(failureMessage ?? $"Attribute contains unexpected value. Expected value: '{string.Concat("|", allowedValues)}', Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
+            }
+            return this;
+        }
+
         public virtual ElementWrapper CheckClassAttribute(Func<string, bool> expression, string messsage = "")
         {
             return CheckAttribute("class", expression, messsage);
@@ -550,7 +566,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public virtual ElementWrapper CheckIfIsChecked()
         {
             CheckTagName("input", "Function CheckIfIsNotChecked() can be used on input element only.");
-            CheckAttribute("type", "checkbox", failureMessage: "Input element must be type of checkbox.");
+            CheckAttribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox.");
 
             if (!IsChecked())
                 throw new UnexpectedElementStateException($"Element is NOT checked and should be. \r\n Element selector: {Selector} \r\n");
@@ -560,7 +576,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public virtual ElementWrapper CheckIfIsNotChecked()
         {
             CheckTagName("input", "Function CheckIfIsNotChecked() can be used on input element only.");
-            CheckAttribute("type", "checkbox", failureMessage: "Input element must be type of checkbox.");
+            CheckAttribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox or radio.");
 
             if (IsChecked())
             {
@@ -599,7 +615,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         private bool IsChecked()
         {
-            return TryParseBool(element.GetAttribute("checked"));
+            return WebElement.Selected;
         }
 
         private bool TryParseBool(string value)

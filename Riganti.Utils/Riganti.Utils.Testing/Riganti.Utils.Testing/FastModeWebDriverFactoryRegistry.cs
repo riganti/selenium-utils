@@ -18,7 +18,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
         }
 
-
         public void RegisterBrowserFactoryMethod(Func<ISelfCleanUpWebDriver> func)
         {
             BrowserFactories.Add(new FastModeWebDriverFactoryMethodWrapper(func));
@@ -32,12 +31,18 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         ~FastModeWebDriverFactoryRegistry()
         {
-            Dispose();
+            try
+            {
+                Dispose();
+            }
+            catch
+            {
+                //ignore
+            }
         }
 
         public void Dispose()
         {
-
             BrowserFactories.ForEach(b => (b as IFastModeFactory)?.Dispose());
         }
     }
