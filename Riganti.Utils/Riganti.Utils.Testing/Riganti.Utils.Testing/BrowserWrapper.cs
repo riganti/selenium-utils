@@ -678,5 +678,59 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
+        /// <summary>
+        /// Checks if browser can access given Url (browser returns status code 2??).
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="urlKind"></param>
+        /// <returns></returns>
+        public BrowserWrapper CheckIfUrlIsAccessible(string url, UrlKind urlKind)
+        {
+            var currentUri = new Uri(CurrentUrl);
+
+            if (urlKind == UrlKind.Relative)
+            {
+                url = GetAbsoluteUrl(url);
+            }
+
+            if (urlKind == UrlKind.Absolute && url.StartsWith("//"))
+            {
+                if (!string.IsNullOrWhiteSpace(currentUri.Scheme))
+                {
+                    url = currentUri.Scheme + ":" + url;
+                }
+            }
+
+
+            HttpWebResponse response = null;
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "HEAD";
+
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+            }
+            catch (WebException e)
+            {
+                throw new SeleniumTestFailedException($"Unable to access {url}! {e.Status}");
+            }
+            finally
+            {
+                response?.Close();
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Transforms relative Url to absolute. Uses base URL.
+        /// </summary>
+        /// <param name="relativeUrl"></param>
+        /// <returns></returns>
+        public string GetAbsoluteUrl(string relativeUrl)
+        {
+            var currentUri = new Uri(SeleniumTestsConfiguration.BaseUrl);
+            return relativeUrl.StartsWith("/") ? $"{currentUri.Scheme}://{currentUri.Host}:{currentUri.Port}{relativeUrl}" : $"{currentUri.Scheme}://{currentUri.Host}:{currentUri.Port}/{relativeUrl}";
+        }
     }
 }

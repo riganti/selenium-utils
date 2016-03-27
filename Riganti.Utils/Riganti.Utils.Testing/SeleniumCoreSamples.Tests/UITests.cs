@@ -656,6 +656,26 @@ namespace WebApplication1.Tests
             });
         }
 
-   
+        [TestMethod]
+        public void CheckIfUrlExistsTest()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.CheckIfUrlIsAccessible("hyperlink.aspx",UrlKind.Relative);
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(SeleniumTestFailedException))]
+        public void CheckIfUrlExistsTest2()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.CheckIfUrlIsAccessible("NonExistent359.aspx", UrlKind.Relative);
+            });
+        }
+
     }
 }
