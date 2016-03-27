@@ -732,5 +732,16 @@ namespace Riganti.Utils.Testing.SeleniumCore
             var currentUri = new Uri(SeleniumTestsConfiguration.BaseUrl);
             return relativeUrl.StartsWith("/") ? $"{currentUri.Scheme}://{currentUri.Host}:{currentUri.Port}{relativeUrl}" : $"{currentUri.Scheme}://{currentUri.Host}:{currentUri.Port}/{relativeUrl}";
         }
+
+        /// <summary>
+        /// Switches browser tabs.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public BrowserWrapper SwitchToTab(int index)
+        {
+            Browser.SwitchTo().Window(Browser.WindowHandles[index]);
+            return this;
+        }
     }
 }
