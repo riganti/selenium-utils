@@ -3,6 +3,7 @@ using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Net;
 using System.Threading;
 
 namespace Riganti.Utils.Testing.SeleniumCore
@@ -610,6 +611,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 // open file dialog
                 fileUploadOpener.Click();
                 Wait();
+                //Another wait is needed because without it sometimes few chars from file path are skipped.
+                Wait(1000);
                 // write the full path to the dialog
                 System.Windows.Forms.SendKeys.SendWait(fullFileName);
                 Wait();
