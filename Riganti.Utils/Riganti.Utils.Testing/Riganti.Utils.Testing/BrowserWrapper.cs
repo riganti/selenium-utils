@@ -290,6 +290,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 throw new AlertException("Alert not visible.");
             return alert;
         }
+
         /// <summary>
         /// Checks if modal dialog (Alert) contains specified text as a part of provided text from the dialog.
         /// </summary>
@@ -309,6 +310,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         /// <summary>
         /// Checks if modal dialog (Alert) text equals with specified text.
         /// </summary>
@@ -321,6 +323,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return this;
         }
+
         /// <summary>
         /// Confirms modal dialog (Alert).
         /// </summary>
@@ -330,6 +333,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Wait();
             return this;
         }
+
         /// <summary>
         /// Dismisses modal dialog (Alert).
         /// </summary>
@@ -339,6 +343,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Wait();
             return this;
         }
+
         /// <summary>
         /// Waits specified time in milliseconds.
         /// </summary>
@@ -347,6 +352,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Thread.Sleep(milliseconds);
             return this;
         }
+
         /// <summary>
         /// Waits time specified by ActionWaitType property.
         /// </summary>
@@ -354,6 +360,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             return Wait(ActionWaitTime);
         }
+
         /// <summary>
         /// Waits specified time.
         /// </summary>
@@ -537,10 +544,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
             browser.Dispose();
             if (browser is IWebDriverWrapper)
             {
-                ((IWebDriverWrapper) browser).Disposed = true;
+                ((IWebDriverWrapper)browser).Disposed = true;
                 SeleniumTestBase.LogDriverId(browser, "Dispose - ChromeDriver");
             }
-          
+
             SeleniumTestBase.Log("IWebDriver was disposed.");
         }
 
@@ -639,9 +646,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         #region Frames support
 
-        internal void CreateFrameScope(string selector)
+        internal BrowserWrapper GetFrameScope(string selector)
         {
-            //TODO: add support of frame scopes
+            var iframe = First(selector);
+            iframe.CheckTagName("iframe", $"The selected element '{iframe.FullSelector}' is not a iframe element.");
+            var frame = browser.SwitchTo().Frame(iframe.WebElement);
+
+            return new BrowserWrapper(frame, testClass);
         }
 
         #endregion Frames support
@@ -701,7 +712,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
                     url = currentUri.Scheme + ":" + url;
                 }
             }
-
 
             HttpWebResponse response = null;
             var request = (HttpWebRequest)WebRequest.Create(url);
