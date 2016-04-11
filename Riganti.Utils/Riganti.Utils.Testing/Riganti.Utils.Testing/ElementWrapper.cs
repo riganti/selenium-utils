@@ -11,11 +11,17 @@ namespace Riganti.Utils.Testing.SeleniumCore
 {
     public class ElementWrapper : ISeleniumWrapper
     {
+        public ScopeOptions CurrentScope { get; set; }
         private readonly IWebElement element;
         private readonly BrowserWrapper browser;
 
         public string Selector { get; set; }
         public string FullSelector => GenerateFullSelector();
+
+        public void ActivateScope()
+        {
+            ParentWrapper?.ActivateScope();
+        }
 
         public static int ActionTimeout { get; set; } = SeleniumTestsConfiguration.ActionTimeout;
 
@@ -25,7 +31,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
             set { ActionTimeout = value; }
         }
 
-        public IWebElement WebElement => element;
+        public IWebElement WebElement
+        {
+            get
+            {
+                ParentWrapper.ActivateScope();
+                return element;
+            }
+        }
 
         public BrowserWrapper BrowserWrapper => browser;
 
@@ -49,7 +62,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 IWebElement parent;
                 try
                 {
-                    parent = element.FindElement(By.XPath(".."));
+                    parent = WebElement.FindElement(By.XPath(".."));
                 }
                 catch (Exception ex)
                 {
@@ -236,7 +249,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual ElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression, string message = null)
         {
-            var attribute = element.GetAttribute(attributeName);
+            var attribute = WebElement.GetAttribute(attributeName);
             if (!expression(attribute))
             {
                 throw new UnexpectedElementStateException($"Attribute contains unexpected value. Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n {message ?? ""}");
@@ -246,7 +259,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual ElementWrapper CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var attribute = element.GetAttribute(attributeName);
+            var attribute = WebElement.GetAttribute(attributeName);
             if (trimValue)
             {
                 attribute = attribute.Trim();
@@ -262,7 +275,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual ElementWrapper CheckAttribute(string attributeName, string[] allowedValues, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var attribute = element.GetAttribute(attributeName);
+            var attribute = WebElement.GetAttribute(attributeName);
             if (trimValue)
             {
                 attribute = attribute.Trim();
@@ -298,7 +311,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public string GetAttribute(string name)
         {
-            return element.GetAttribute(name);
+            return WebElement.GetAttribute(name);
         }
 
         public bool HasAttribute(string name)
@@ -403,7 +416,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual ElementWrapper PerformActionOnSelectElement(Action<SelectElement> process)
         {
-            var selectElm = new SelectElement(element);
+            var selectElm = new SelectElement(WebElement);
             process(selectElm);
             Wait();
             return this;
@@ -411,7 +424,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual string GetTagName()
         {
-            return element.TagName.ToLower(CultureInfo.InvariantCulture).Trim().ToLower();
+            return WebElement.TagName.ToLower(CultureInfo.InvariantCulture).Trim().ToLower();
         }
 
         /// <summary>
@@ -425,14 +438,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual ElementWrapper Submit()
         {
-            element.Submit();
+            WebElement.Submit();
             Wait();
             return this;
         }
 
         public virtual void SendKeys(string text)
         {
-            element.SendKeys(text);
+            WebElement.SendKeys(text);
             Wait();
         }
 
@@ -444,7 +457,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <returns></returns>
         public virtual ElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var collection = element.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList(browser, selector, this);
+            var collection = WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList(browser, selector, this);
             collection.ParentWrapper = this;
             return collection;
         }
@@ -520,27 +533,27 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual string GetInnerText()
         {
-            return element.Text;
+            return WebElement.Text;
         }
 
         public virtual string GetText()
         {
             string[] valueElements = new[] { "input", "textarea" };
-            if (valueElements.Contains(element.TagName.Trim().ToLower()))
+            if (valueElements.Contains(WebElement.TagName.Trim().ToLower()))
             {
                 return GetAttribute("value");
             }
-            return element.Text;
+            return WebElement.Text;
         }
 
         public Size GetSize(string cssSelector)
         {
-            return element.Size;
+            return WebElement.Size;
         }
 
         public virtual ElementWrapper Click()
         {
-            element.Click();
+            WebElement.Click();
             Wait();
             return this;
         }
@@ -592,7 +605,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             //input
             if (tag == "input")
             {
-                elementValue = element.GetAttribute("value");
+                elementValue = WebElement.GetAttribute("value");
             }
             //textarea
             if (tag == "textarea")
@@ -687,7 +700,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         public bool IsDisplayed()
         {
-            return element.Displayed;
+            return WebElement.Displayed;
         }
 
         /// <summary>
@@ -695,7 +708,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         public bool IsSelected()
         {
-            return element.Selected;
+            return WebElement.Selected;
         }
 
         /// <summary>
@@ -703,7 +716,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         public bool IsEnabled()
         {
-            return element.Enabled;
+            return WebElement.Enabled;
         }
 
         /// <summary>
@@ -711,7 +724,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         public ElementWrapper Clear()
         {
-            element.Clear();
+            WebElement.Clear();
             Wait();
             return this;
         }

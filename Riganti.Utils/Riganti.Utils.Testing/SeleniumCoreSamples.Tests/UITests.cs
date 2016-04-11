@@ -572,7 +572,7 @@ namespace WebApplication1.Tests
                    label.CheckIfTextNotEquals("False");
                    throw new Exception("Exception was expected.");
                }
-               catch (UnexpectedElementStateException ex)
+               catch (UnexpectedElementStateException)
                {
                }
            });

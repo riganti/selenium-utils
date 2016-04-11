@@ -13,6 +13,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public ISeleniumWrapper ParentWrapper { get; set; }
 
         public string FullSelector => (ParentWrapper == null ? (Selector ?? "") : $"{ParentWrapper.FullSelector} {Selector ?? ""}").Trim();
+        public void ActivateScope()
+        {
+            ParentWrapper?.ActivateScope();
+        }
 
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector)
         {

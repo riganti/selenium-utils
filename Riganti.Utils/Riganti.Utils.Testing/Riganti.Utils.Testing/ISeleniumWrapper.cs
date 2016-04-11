@@ -6,5 +6,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
         string Selector { get; }
         ISeleniumWrapper ParentWrapper { get; set; }
         string FullSelector { get; }
+        void ActivateScope();
     }
 }

@@ -117,7 +117,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
             try
             {
                 var browser = LatestLiveWebDriver = browserFactory.CreateNewInstance();
-                wrapper = new BrowserWrapper(browser, this);
+                var scope = new ScopeOptions() { CurrentWindowHandle = browser.CurrentWindowHandle };
+                wrapper = new BrowserWrapper(browser, this, scope);
                 browserName = browser.GetType().Name;
                 testBody(wrapper);
             }
@@ -140,8 +141,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 exception = null;
                 var browser = LatestLiveWebDriver = browserFactory.CreateNewInstance();
                 LogDriverId(browser, "Driver creation - TryExecuteTest");
-
-                wrapper = new BrowserWrapper(browser, this);
+                var scope = new ScopeOptions() { CurrentWindowHandle = browser.CurrentWindowHandle };
+                wrapper = new BrowserWrapper(browser, this, scope);
                 browserName = browser.GetType().Name;
 
                 WriteLine($"Testing browser '{browserName}' attempt no. {attemptNumber}");

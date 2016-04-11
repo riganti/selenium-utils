@@ -15,13 +15,23 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         private readonly ITestBase testClass;
 
-        public IWebDriver Browser => browser;
-        public int ActionWaitTime { get; set; } = 100;
+        public IWebDriver Browser
+        {
+            get
+            {
+                ActivateScope();
+                return browser;
+            }
+        }
 
-        public BrowserWrapper(IWebDriver browser, ITestBase testClass)
+        public int ActionWaitTime { get; set; } = 100;
+        private ScopeOptions ScopeOptions { get; set; }
+
+        public BrowserWrapper(IWebDriver browser, ITestBase testClass, ScopeOptions scope)
         {
             this.browser = browser;
             this.testClass = testClass;
+            ScopeOptions = scope;
             SetCssSelector();
         }
 
@@ -63,7 +73,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// Url of active browser tab.
         /// </summary>
-        public string CurrentUrl => browser.Url;
+        public string CurrentUrl => Browser.Url;
 
         /// <summary>
         /// Gives path of url of active browser tab.
@@ -76,7 +86,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         public bool CompareUrl(string url)
         {
             Uri uri1 = new Uri(url);
-            Uri uri2 = new Uri(browser.Url);
+            Uri uri2 = new Uri(Browser.Url);
 
             var result = Uri.Compare(uri1, uri2,
                 UriComponents.Scheme | UriComponents.Host | UriComponents.PathAndQuery,
@@ -164,14 +174,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
                     throw new InvalidRedirectException();
                 }
                 SeleniumTestBase.Log($"Start navigation to: {SeleniumTestsConfiguration.BaseUrl}", 10);
-                browser.Navigate().GoToUrl(SeleniumTestsConfiguration.BaseUrl);
+                Browser.Navigate().GoToUrl(SeleniumTestsConfiguration.BaseUrl);
                 return;
             }
             //redirect if is absolute
             if (Uri.IsWellFormedUriString(url, UriKind.Absolute) || url.StartsWith("//"))
             {
                 SeleniumTestBase.Log($"Start navigation to: {url}", 10);
-                browser.Navigate().GoToUrl(url);
+                Browser.Navigate().GoToUrl(url);
                 return;
             }
 
@@ -183,7 +193,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 builder.Path = url;
                 var urlToNavigate = builder.ToString();
                 SeleniumTestBase.Log($"Start navigation to: {urlToNavigate}", 10);
-                browser.Navigate().GoToUrl(urlToNavigate);
+                Browser.Navigate().GoToUrl(urlToNavigate);
                 return;
             }
             // setup fragments (join urls)
@@ -193,7 +203,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
             var navigateUrl = builder.ToString();
             SeleniumTestBase.Log($"Start navigation to: {navigateUrl}", 10);
-            browser.Navigate().GoToUrl(navigateUrl);
+            Browser.Navigate().GoToUrl(navigateUrl);
         }
 
         /// <summary>
@@ -209,7 +219,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         public void NavigateBack()
         {
-            browser.Navigate().Back();
+            Browser.Navigate().Back();
         }
 
         /// <summary>
@@ -217,7 +227,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         public void NavigateForward()
         {
-            browser.Navigate().Forward();
+            Browser.Navigate().Forward();
         }
 
         /// <summary>
@@ -225,7 +235,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         public void Refresh()
         {
-            browser.Navigate().Refresh();
+            Browser.Navigate().Refresh();
         }
 
         /// <summary>
@@ -280,7 +290,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             try
 
             {
-                alert = browser.SwitchTo().Alert();
+                alert = Browser.SwitchTo().Alert();
             }
             catch (Exception ex)
             {
@@ -316,7 +326,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         public BrowserWrapper CheckIfAlertText(Func<string, bool> expression, string message = "")
         {
-            var alert = browser.SwitchTo().Alert()?.Text;
+            var alert = Browser.SwitchTo().Alert()?.Text;
             if (!expression(alert))
             {
                 throw new AlertException($"Alert text is not correct. Provided value: '{alert}' \n { message } ");
@@ -329,7 +339,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         public BrowserWrapper ConfirmAlert()
         {
-            browser.SwitchTo().Alert().Accept();
+            Browser.SwitchTo().Alert().Accept();
             Wait();
             return this;
         }
@@ -339,7 +349,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         public BrowserWrapper DismissAlert()
         {
-            browser.SwitchTo().Alert().Dismiss();
+            Browser.SwitchTo().Alert().Dismiss();
             Wait();
             return this;
         }
@@ -377,7 +387,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <returns></returns>
         public ElementWrapperCollection FindElements(By selector)
         {
-            return browser.FindElements(selector).ToElementsList(this, selector.GetSelector());
+            return Browser.FindElements(selector).ToElementsList(this, selector.GetSelector());
         }
 
         /// <summary>
@@ -387,7 +397,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <returns></returns>
         public ElementWrapperCollection FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
-            return browser.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)).ToElementsList(this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector());
+            return Browser.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)).ToElementsList(this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector());
         }
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
@@ -490,7 +500,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public IJavaScriptExecutor GetJavaScriptExecutor()
         {
-            return browser as IJavaScriptExecutor;
+            return Browser as IJavaScriptExecutor;
         }
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
@@ -532,7 +542,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         ///<param name="format">Default value is PNG.</param>
         public void TakeScreenshot(string filename, ImageFormat format = null)
         {
-            ((ITakesScreenshot)browser).GetScreenshot().SaveAsFile(filename, format ?? ImageFormat.Png);
+            ((ITakesScreenshot)Browser).GetScreenshot().SaveAsFile(filename, format ?? ImageFormat.Png);
         }
 
         /// <summary>
@@ -540,12 +550,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         public void Dispose()
         {
-            browser.Quit();
-            browser.Dispose();
-            if (browser is IWebDriverWrapper)
+            Browser.Quit();
+            Browser.Dispose();
+            if (Browser is IWebDriverWrapper)
             {
-                ((IWebDriverWrapper)browser).Disposed = true;
-                SeleniumTestBase.LogDriverId(browser, "Dispose - ChromeDriver");
+                ((IWebDriverWrapper)Browser).Disposed = true;
+                SeleniumTestBase.LogDriverId(Browser, "Dispose - ChromeDriver");
             }
 
             SeleniumTestBase.Log("IWebDriver was disposed.");
@@ -648,11 +658,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         internal BrowserWrapper GetFrameScope(string selector)
         {
+            var options = new ScopeOptions { FrameSelector = selector, Parent = this };
+
             var iframe = First(selector);
             iframe.CheckTagName("iframe", $"The selected element '{iframe.FullSelector}' is not a iframe element.");
             var frame = browser.SwitchTo().Frame(iframe.WebElement);
 
-            return new BrowserWrapper(frame, testClass);
+            return new BrowserWrapper(frame, testClass, options);
         }
 
         #endregion Frames support
@@ -753,5 +765,29 @@ namespace Riganti.Utils.Testing.SeleniumCore
             Browser.SwitchTo().Window(Browser.WindowHandles[index]);
             return this;
         }
+
+        public void ActivateScope()
+        {
+            if (ScopeOptions.Parent != null)
+            {
+                ScopeOptions.Parent.ActivateScope();
+            }
+            else
+            {
+                if (Browser.CurrentWindowHandle == ScopeOptions.CurrentWindowHandle)
+                {
+                    Browser.SwitchTo().Window(ScopeOptions.CurrentWindowHandle);
+                    Browser.SwitchTo().DefaultContent();
+                }
+                Browser.SwitchTo().Frame(ScopeOptions.FrameSelector);
+            }
+        }
+    }
+
+    public class ScopeOptions
+    {
+        public BrowserWrapper Parent { get; set; }
+        public string FrameSelector { get; set; }
+        public string CurrentWindowHandle { get; set; }
     }
 }
