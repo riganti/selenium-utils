@@ -658,7 +658,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         internal BrowserWrapper GetFrameScope(string selector)
         {
-            var options = new ScopeOptions { FrameSelector = selector, Parent = this };
+            var options = new ScopeOptions { FrameSelector = selector, Parent = this, CurrentWindowHandle = browser.CurrentWindowHandle};
 
             var iframe = First(selector);
             iframe.CheckTagName("iframe", $"The selected element '{iframe.FullSelector}' is not a iframe element.");
@@ -768,18 +768,21 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public void ActivateScope()
         {
-            if (ScopeOptions.Parent != null)
+            if (ScopeOptions.Parent != null && ScopeOptions.Parent != this)
             {
                 ScopeOptions.Parent.ActivateScope();
             }
             else
             {
-                if (Browser.CurrentWindowHandle == ScopeOptions.CurrentWindowHandle)
+                if (browser.CurrentWindowHandle != ScopeOptions.CurrentWindowHandle)
                 {
-                    Browser.SwitchTo().Window(ScopeOptions.CurrentWindowHandle);
-                    Browser.SwitchTo().DefaultContent();
+                    browser.SwitchTo().Window(ScopeOptions.CurrentWindowHandle);
+                    browser.SwitchTo().DefaultContent();
                 }
-                Browser.SwitchTo().Frame(ScopeOptions.FrameSelector);
+                if (ScopeOptions.FrameSelector != null)
+                {
+                    browser.SwitchTo().Frame(ScopeOptions.FrameSelector);
+                }
             }
         }
     }
