@@ -697,11 +697,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         /// <summary>
         /// Indicates whether element is visible.
-        /// An element that has zero width and height also counts as non visible.
+        /// An element that has zero width or height also counts as non visible.
         /// </summary>
         public bool IsDisplayed()
         {
-            return WebElement.Displayed && WebElement.Size!=new Size(0,0);
+            return WebElement.Displayed && !(WebElement.Size.Height == 0 || WebElement.Size.Width == 0) ;
         }
 
         /// <summary>
