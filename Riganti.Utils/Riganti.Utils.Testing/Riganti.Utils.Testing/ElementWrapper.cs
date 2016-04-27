@@ -763,28 +763,32 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 throw new NullReferenceException("Condition cannot be null.");
             }
             var now = DateTime.UtcNow;
-            // ReSharper disable once LoopVariableIsNeverChangedInsideLoop
-            try
+
+            bool isConditionMet=false;
+            do
             {
-                while (!condition(this))
+                try
                 {
-                    if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
-                    {
-                        throw new SeleniumTestFailedException(failureMessage);
-                    }
-                    Wait(200);
+                    isConditionMet = condition(this);
                 }
-            }
-            catch (StaleElementReferenceException ex)
-            {
-                if (!ignoreCertainException)
-                    throw;
-            }
-            catch (InvalidElementStateException ex)
-            {
-                if (!ignoreCertainException)
-                    throw;
-            }
+                catch (StaleElementReferenceException)
+                {
+                    if (!ignoreCertainException)
+                        throw;
+                }
+                catch (InvalidElementStateException)
+                {
+                    if (!ignoreCertainException)
+                        throw;
+                }
+
+                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
+                {
+                    throw new SeleniumTestFailedException(failureMessage);
+                }
+                Wait(200);
+            } while (!isConditionMet);
+
             return this;
         }
 

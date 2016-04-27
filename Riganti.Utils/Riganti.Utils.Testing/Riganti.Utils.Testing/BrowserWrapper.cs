@@ -693,27 +693,31 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 throw new NullReferenceException("Condition cannot be null.");
             }
             var now = DateTime.UtcNow;
-            try
+
+            bool isConditionMet = false;
+            do
             {
-                while (!condition())
+                try
                 {
-                    if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
-                    {
-                        throw new SeleniumTestFailedException(failureMessage);
-                    }
-                    Wait(100);
+                    isConditionMet = condition();
                 }
-            }
-            catch (StaleElementReferenceException ex)
-            {
-                if (!ignoreCertainException)
-                    throw;
-            }
-            catch (InvalidElementStateException ex)
-            {
-                if (!ignoreCertainException)
-                    throw;
-            }
+                catch (StaleElementReferenceException)
+                {
+                    if (!ignoreCertainException)
+                        throw;
+                }
+                catch (InvalidElementStateException)
+                {
+                    if (!ignoreCertainException)
+                        throw;
+                }
+
+                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
+                {
+                    throw new SeleniumTestFailedException(failureMessage);
+                }
+                Wait(200);
+            } while (!isConditionMet);
             return this;
         }
 
