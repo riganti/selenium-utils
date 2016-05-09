@@ -11,7 +11,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
 {
     public class ElementWrapper : ISeleniumWrapper
     {
-        public ScopeOptions CurrentScope { get; set; }
         private readonly IWebElement element;
         private readonly BrowserWrapper browser;
 
@@ -20,7 +19,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public void ActivateScope()
         {
-            ParentWrapper?.ActivateScope();
+            ParentWrapper.ActivateScope();
         }
 
         public static int ActionTimeout { get; set; } = SeleniumTestsConfiguration.ActionTimeout;
@@ -59,10 +58,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             get
             {
-                IWebElement parent;
+                ElementWrapper parent;
                 try
                 {
-                    parent = WebElement.FindElement(By.XPath(".."));
+                    parent = First("..", By.XPath);
                 }
                 catch (Exception ex)
                 {
@@ -70,7 +69,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 }
                 if (parent == null)
                     throw new NoSuchElementException($"Parent element of '{FullSelector}' was not found!");
-                return new ElementWrapper(parent, BrowserWrapper);
+                return parent;
             }
         }
 
@@ -230,7 +229,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// Checks name of tag
         /// </summary>
-        public ElementWrapper CheckTagName(Func<string, bool> expression, string message = null)
+        public virtual ElementWrapper CheckTagName(Func<string, bool> expression, string message = null)
         {
             if (!expression(GetTagName()))
             {
@@ -242,11 +241,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// Checks name of tag
         /// </summary>
-        public ElementWrapper CheckIfTagName(Func<string, bool> expression, string message = null)
+        public virtual ElementWrapper CheckIfTagName(Func<string, bool> expression, string message = null)
         {
             return CheckTagName(expression, message);
         }
-
+        /// <param name="attributeName">write name of attribute to check</param>
+        /// <param name="expression">define condition</param>
+        /// <param name="message">When value of the element does not satisfy the condition this fail message is written to the throwen exception in the output.</param>
+        /// <returns></returns>
         public virtual ElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression, string message = null)
         {
             var attribute = WebElement.GetAttribute(attributeName);

@@ -8,17 +8,14 @@ namespace Riganti.Utils.Testing.SeleniumCore
     {
         public static ElementWrapperCollection ToElementsList(this IEnumerable<IWebElement> elements, BrowserWrapper browserWrapper, string selector)
         {
-            return new ElementWrapperCollection(elements.Select(s => new ElementWrapper(s, browserWrapper)), selector);
+            return new ElementWrapperCollection(elements.Select(s => new ElementWrapper(s, browserWrapper)), selector, browserWrapper);
         }
 
         public static ElementWrapperCollection ToElementsList(this IEnumerable<IWebElement> elements, BrowserWrapper browserWrapper, string selector, ElementWrapper elementWrapper)
         {
-            return new ElementWrapperCollection(elements.Select(s => new ElementWrapper(s, browserWrapper)), selector, elementWrapper);
+            return new ElementWrapperCollection(elements.Select(s => new ElementWrapper(s, browserWrapper)), selector, elementWrapper, browserWrapper);
         }
 
-        public static ElementWrapperCollection ToElementsList(this IEnumerable<ElementWrapper> elements, string selector)
-        {
-            return new ElementWrapperCollection(elements, selector);
-        }
+   
     }
 }

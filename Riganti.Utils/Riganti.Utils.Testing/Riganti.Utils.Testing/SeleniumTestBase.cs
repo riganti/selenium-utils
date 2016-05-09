@@ -12,7 +12,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
     {
         public static readonly FastModeWebDriverFactoryRegistry FastModeFactoryRegistry;
         private static int testsIndexer = 0;
-
+        public Guid ActiveScope { get; set; } = Guid.Empty;
         static SeleniumTestBase()
         {
             FastModeFactoryRegistry = new FastModeWebDriverFactoryRegistry();

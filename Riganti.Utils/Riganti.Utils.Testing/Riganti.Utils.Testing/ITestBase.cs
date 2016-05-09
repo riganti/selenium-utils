@@ -7,5 +7,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
     {
         TestContext TestContext { get; set; }
         void Log(Exception exception);
+        Guid ActiveScope { get; set; }
     }
 }

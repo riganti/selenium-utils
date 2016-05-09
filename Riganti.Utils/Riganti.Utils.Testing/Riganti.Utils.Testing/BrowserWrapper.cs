@@ -44,16 +44,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         private Func<string, By> selectMethodFunc;
 
-        [Obsolete("use SelectMethod", true)]
-        public virtual Func<string, By> SelectorPreprocessMethod
-        {
-            get { return SelectMethod; }
-            set
-            {
-                SelectMethod = value;
-            }
-        }
-
         public virtual Func<string, By> SelectMethod
         {
             get { return selectMethodFunc; }
@@ -658,12 +648,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         internal BrowserWrapper GetFrameScope(string selector)
         {
-            var options = new ScopeOptions { FrameSelector = selector, Parent = this, CurrentWindowHandle = browser.CurrentWindowHandle};
+            var options = new ScopeOptions { FrameSelector = selector, Parent = this, CurrentWindowHandle = browser.CurrentWindowHandle };
 
             var iframe = First(selector);
             iframe.CheckTagName("iframe", $"The selected element '{iframe.FullSelector}' is not a iframe element.");
             var frame = browser.SwitchTo().Frame(iframe.WebElement);
-
+            testClass.ActiveScope = options.ScopeId;
             return new BrowserWrapper(frame, testClass, options);
         }
 
@@ -768,29 +758,41 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public void ActivateScope()
         {
+            if (testClass.ActiveScope == ScopeOptions.ScopeId)
+            {
+                return;
+            }
             if (ScopeOptions.Parent != null && ScopeOptions.Parent != this)
             {
                 ScopeOptions.Parent.ActivateScope();
             }
             else
             {
-                if (browser.CurrentWindowHandle != ScopeOptions.CurrentWindowHandle)
+                if (ScopeOptions.CurrentWindowHandle != null && browser.CurrentWindowHandle != ScopeOptions.CurrentWindowHandle)
                 {
                     browser.SwitchTo().Window(ScopeOptions.CurrentWindowHandle);
+                }
+                if (ScopeOptions.Parent == null)
+                {
                     browser.SwitchTo().DefaultContent();
                 }
+
                 if (ScopeOptions.FrameSelector != null)
                 {
                     browser.SwitchTo().Frame(ScopeOptions.FrameSelector);
                 }
             }
+            testClass.ActiveScope = ScopeOptions.ScopeId;
         }
     }
 
     public class ScopeOptions
     {
+        public Guid ScopeId { get; } = Guid.NewGuid();
+
         public BrowserWrapper Parent { get; set; }
         public string FrameSelector { get; set; }
         public string CurrentWindowHandle { get; set; }
+        public Action<IWebDriver> ChangeScope { get; set; } 
     }
 }

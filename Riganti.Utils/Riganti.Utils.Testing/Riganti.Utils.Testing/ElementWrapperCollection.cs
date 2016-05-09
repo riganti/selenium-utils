@@ -11,18 +11,28 @@ namespace Riganti.Utils.Testing.SeleniumCore
     {
         public string Selector { get; }
         public ISeleniumWrapper ParentWrapper { get; set; }
+        public BrowserWrapper BrowserWrapper { get; set; }
 
         public string FullSelector => (ParentWrapper == null ? (Selector ?? "") : $"{ParentWrapper.FullSelector} {Selector ?? ""}").Trim();
+
         public void ActivateScope()
         {
-            ParentWrapper?.ActivateScope();
+            if (ParentWrapper == null)
+            {
+                BrowserWrapper.ActivateScope();
+            }
+            else
+            {
+                ParentWrapper.ActivateScope();
+            }
         }
 
-        public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector)
+        public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, BrowserWrapper browserWrapper)
         {
             this.collection = new List<ElementWrapper>(collection);
             Selector = selector;
             SetReferences(selector);
+            BrowserWrapper = browserWrapper;
         }
 
         /// <summary>
@@ -38,12 +48,13 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
         }
 
-        public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ElementWrapper parentElement)
+        public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ISeleniumWrapper parentElement, BrowserWrapper browserWrapper)
         {
             this.collection = new List<ElementWrapper>(collection);
             SetReferences(selector);
             Selector = selector;
             ParentWrapper = parentElement;
+            BrowserWrapper = browserWrapper;
         }
 
         public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ElementWrapperCollection parentCollection)
@@ -187,6 +198,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return new ElementWrapperCollection(results, selector, this);
         }
 
+        /// <summary>
+        /// Returns first element from sequence. If sequence contains no element, function throws exception.
+        /// </summary>
+        /// <param name="selector"></param>
+        /// <param name="tmpSelectMethod">Defines what type of selector are you want to use only for this query.</param>
+        /// <exception cref="EmptySequenceException"></exception>
         public ElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var element = FirstOrDefault(selector, tmpSelectMethod);
@@ -197,6 +214,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
             throw new EmptySequenceException($"Sequence does not contain element with selector: '{FullSelector}'");
         }
 
+        /// <summary>
+        /// Returns first element from sequence. If sequence contains no element, function returns null.
+        /// </summary>
+        /// <param name="tmpSelectMethod">Defines what type of selector are you want to use only for this query.</param>
         public ElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return collection.Select(item => item.FirstOrDefault(selector, tmpSelectMethod)).FirstOrDefault(element => element != null);

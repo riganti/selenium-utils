@@ -11,5 +11,7 @@ namespace SeleniumCore.UnitTests
         public void Log(Exception exception)
         {
         }
+
+        public Guid ActiveScope { get; set; }
     }
 }
