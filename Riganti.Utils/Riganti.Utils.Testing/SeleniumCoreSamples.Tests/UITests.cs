@@ -31,6 +31,7 @@ namespace WebApplication1.Tests
                 browser.NavigateToUrl();
                 browser.CheckIfIsNotDisplayed("#non-displayed");
                 browser.First("#non-displayed").CheckIfIsNotDisplayed();
+                browser.First("#non-displayed2").CheckIfIsNotDisplayed();
             });
         }
 

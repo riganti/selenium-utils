@@ -699,10 +699,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         /// <summary>
         /// Indicates whether element is visible.
+        /// An element that has zero width or height also counts as non visible.
         /// </summary>
         public bool IsDisplayed()
         {
-            return WebElement.Displayed;
+            return WebElement.Displayed && !(WebElement.Size.Height == 0 || WebElement.Size.Width == 0) ;
         }
 
         /// <summary>
@@ -756,22 +757,40 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <param name="condition">Expression that determine whether test should wait or continue</param>
         /// <param name="maxTimeout">If condition is not reached in this timeout (ms) test is dropped.</param>
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
-        public ElementWrapper WaitFor(Func<ElementWrapper, bool> condition, int maxTimeout, string failureMessage)
+        /// <param name="ignoreCertainException">When StaleElementReferenceException or InvalidElementStateException is thrown than it would be ignored.</param>
+        public ElementWrapper WaitFor(Func<ElementWrapper, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true)
         {
             if (condition == null)
             {
                 throw new NullReferenceException("Condition cannot be null.");
             }
             var now = DateTime.UtcNow;
-            // ReSharper disable once LoopVariableIsNeverChangedInsideLoop
-            while (!condition(this))
+
+            bool isConditionMet=false;
+            do
             {
+                try
+                {
+                    isConditionMet = condition(this);
+                }
+                catch (StaleElementReferenceException)
+                {
+                    if (!ignoreCertainException)
+                        throw;
+                }
+                catch (InvalidElementStateException)
+                {
+                    if (!ignoreCertainException)
+                        throw;
+                }
+
                 if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
                 {
                     throw new SeleniumTestFailedException(failureMessage);
                 }
                 Wait(200);
-            }
+            } while (!isConditionMet);
+
             return this;
         }
 

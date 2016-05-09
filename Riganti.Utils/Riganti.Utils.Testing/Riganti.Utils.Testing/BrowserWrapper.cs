@@ -674,21 +674,40 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <param name="condition">Expression that determine whether test should wait or continue</param>
         /// <param name="maxTimeout">If condition is not reached in this timeout (ms) test is dropped.</param>
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
-        public BrowserWrapper WaitFor(Func<bool> condition, int maxTimeout, string failureMessage)
+        /// <param name="ignoreCertainException">When StaleElementReferenceException or InvalidElementStateException is thrown than it would be ignored.</param>
+        /// <returns></returns>
+        public BrowserWrapper WaitFor(Func<bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true)
         {
             if (condition == null)
             {
                 throw new NullReferenceException("Condition cannot be null.");
             }
             var now = DateTime.UtcNow;
-            while (!condition())
+
+            bool isConditionMet = false;
+            do
             {
+                try
+                {
+                    isConditionMet = condition();
+                }
+                catch (StaleElementReferenceException)
+                {
+                    if (!ignoreCertainException)
+                        throw;
+                }
+                catch (InvalidElementStateException)
+                {
+                    if (!ignoreCertainException)
+                        throw;
+                }
+
                 if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
                 {
                     throw new SeleniumTestFailedException(failureMessage);
                 }
-                Wait(100);
-            }
+                Wait(200);
+            } while (!isConditionMet);
             return this;
         }
 
