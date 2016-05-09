@@ -701,9 +701,18 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// Indicates whether element is visible.
         /// An element that has zero width or height also counts as non visible.
         /// </summary>
+        public bool IsDisplayedAndHasSizeGreaterThanZero()
+
+        {
+            return WebElement.Displayed && !(WebElement.Size.Height == 0 || WebElement.Size.Width == 0);
+        }
+        /// <summary>
+        /// Indicates whether element is visible.
+        /// An element that has zero width or height also counts as non visible.
+        /// </summary>
         public bool IsDisplayed()
         {
-            return WebElement.Displayed && !(WebElement.Size.Height == 0 || WebElement.Size.Width == 0) ;
+            return WebElement.Displayed;
         }
 
         /// <summary>
@@ -766,7 +775,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             var now = DateTime.UtcNow;
 
-            bool isConditionMet=false;
+            bool isConditionMet = false;
             do
             {
                 try
