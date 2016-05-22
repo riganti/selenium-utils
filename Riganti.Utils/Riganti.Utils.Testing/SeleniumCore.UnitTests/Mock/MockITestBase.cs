@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.SeleniumCore;
 
-namespace SeleniumCore.UnitTests
+namespace SeleniumCore.UnitTests.Mock
 {
     public class MockITestBase : ITestBase
     {

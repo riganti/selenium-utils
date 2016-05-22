@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.SeleniumCore;
 
 namespace WebApplication1.Tests
@@ -33,6 +34,27 @@ namespace WebApplication1.Tests
                 elm.First("#child");
 
             });
+        }
+        [TestMethod]
+        public void IFrameExceptionMessageTest()
+        {
+            // test the exception message
+            try
+            {
+                RunInAllBrowsers(browser =>
+                {
+                    browser.NavigateToUrl("frametest1.aspx");
+                    var frame = browser.GetFrameScope("#top");
+                });
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Message.Contains("is not a iframe element"))
+                {
+                    throw;
+                }
+            }
+
         }
     }
 }

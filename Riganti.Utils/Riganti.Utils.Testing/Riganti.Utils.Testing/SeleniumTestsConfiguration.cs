@@ -9,7 +9,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         static SeleniumTestsConfiguration()
         {
             //test's common settings
-            CheckAndSet(GetSettingsKey("ActionTimeout"), 100, value => ActionTimeout = value, false);
+            CheckAndSet(GetSettingsKey("ActionTimeout"), 250, value => ActionTimeout = value, false);
             CheckAndSet(GetSettingsKey("LoggingPriorityMaximum"), 9, value => LoggingPriorityMaximum = value, false);
             CheckAndSet(GetSettingsKey("TestAttemptsCount"), 2, value => TestAttempts = value, false);
             CheckAndSet<string>(GetSettingsKey("BaseUrl"), null, value => BaseUrl = value, false);

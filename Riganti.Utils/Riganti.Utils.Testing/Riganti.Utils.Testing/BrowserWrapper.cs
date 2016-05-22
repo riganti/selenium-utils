@@ -314,12 +314,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// Checks if modal dialog (Alert) text equals with specified text.
         /// </summary>
-        public BrowserWrapper CheckIfAlertText(Func<string, bool> expression, string message = "")
+        public BrowserWrapper CheckIfAlertText(Func<string, bool> expression, string failureMessage = "")
         {
             var alert = Browser.SwitchTo().Alert()?.Text;
             if (!expression(alert))
             {
-                throw new AlertException($"Alert text is not correct. Provided value: '{alert}' \n { message } ");
+                throw new AlertException($"Alert text is not correct. Provided value: '{alert}' \n { failureMessage } ");
             }
             return this;
         }
@@ -572,12 +572,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// Checks if CurrentUrl satisfies the condition defined by lamda expression
         /// </summary>
         /// <param name="expression">The condition</param>
-        /// <param name="message">Failure message</param>
-        public BrowserWrapper CheckUrl(Func<string, bool> expression, string message = null)
+        /// <param name="failureMessage">Failure message</param>
+        public BrowserWrapper CheckUrl(Func<string, bool> expression, string failureMessage = null)
         {
             if (!expression(CurrentUrl))
             {
-                throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}'. " + (message ?? ""));
+                throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}'. " + (failureMessage ?? ""));
             }
             return this;
         }
@@ -646,7 +646,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         #region Frames support
 
-        internal BrowserWrapper GetFrameScope(string selector)
+        public BrowserWrapper GetFrameScope(string selector)
         {
             var options = new ScopeOptions { FrameSelector = selector, Parent = this, CurrentWindowHandle = browser.CurrentWindowHandle };
 
@@ -803,15 +803,5 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             testClass.ActiveScope = ScopeOptions.ScopeId;
         }
-    }
-
-    public class ScopeOptions
-    {
-        public Guid ScopeId { get; } = Guid.NewGuid();
-
-        public BrowserWrapper Parent { get; set; }
-        public string FrameSelector { get; set; }
-        public string CurrentWindowHandle { get; set; }
-        public Action<IWebDriver> ChangeScope { get; set; } 
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using OpenQA.Selenium;
 
-namespace SeleniumCore.UnitTests
+namespace SeleniumCore.UnitTests.Mock
 {
     public class MockIWebDriver : IWebDriver
     {

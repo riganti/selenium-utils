@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ElementSelectionTests.cs" />
     <Compile Include="IframeTests.cs" />
     <Compile Include="IsCheckedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

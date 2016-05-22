@@ -76,6 +76,7 @@
     <Content Include="CookiesTest.aspx" />
     <Content Include="ElementAtFirst.aspx" />
     <Content Include="ElementContained.aspx" />
+    <Content Include="ElementSelectionTest.aspx" />
     <Content Include="ElementVisibilityTests.aspx" />
     <Content Include="FileDialog.aspx" />
     <Content Include="FrameTest1.aspx" />
@@ -153,6 +154,13 @@
     </Compile>
     <Compile Include="ElementContained.aspx.designer.cs">
       <DependentUpon>ElementContained.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ElementSelectionTest.aspx.cs">
+      <DependentUpon>ElementSelectionTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ElementSelectionTest.aspx.designer.cs">
+      <DependentUpon>ElementSelectionTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="ElementVisibilityTests.aspx.cs">
       <DependentUpon>ElementVisibilityTests.aspx</DependentUpon>

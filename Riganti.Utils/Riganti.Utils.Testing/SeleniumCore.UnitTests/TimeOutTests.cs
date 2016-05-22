@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.SeleniumCore;
 using Riganti.Utils.Testing.SeleniumCore.Exceptions;
+using SeleniumCore.UnitTests.Mock;
 
 namespace SeleniumCore.UnitTests
 {

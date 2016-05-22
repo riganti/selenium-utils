@@ -90,6 +90,7 @@
     <Compile Include="IWebDriverFactory.cs" />
     <Compile Include="IWebDriverWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScopeOptions.cs" />
     <Compile Include="SelectBy.cs" />
     <Compile Include="SeleniumTestBase.cs" />
     <Compile Include="SeleniumTestsConfiguration.cs" />

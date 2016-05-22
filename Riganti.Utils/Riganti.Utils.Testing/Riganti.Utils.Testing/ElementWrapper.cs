@@ -53,7 +53,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             get { return selectMethod ?? browser.SelectMethod; }
             set { selectMethod = value; }
         }
-
+        /// <summary>
+        /// Returns html direct parent element.
+        /// </summary>
         public ElementWrapper ParentElement
         {
             get
@@ -72,6 +74,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 return parent;
             }
         }
+        /// <summary>
+        /// Contains direct children of the element.
+        /// </summary>
+        public ElementWrapperCollection Children => FindElements("child::*", By.XPath);
 
         public ElementWrapper(IWebElement webElement, BrowserWrapper browserWrapper)
         {
@@ -177,12 +183,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// This check-method inserts javascript to the site and checks returned value of innerText/textContent property of specific element.
         /// </summary>
-        public virtual ElementWrapper CheckIfJsPropertyInnerText(Func<string, bool> expression, string messsage = null, bool trim = true)
+        public virtual ElementWrapper CheckIfJsPropertyInnerText(Func<string, bool> expression, string failureMesssage = null, bool trim = true)
         {
             var value = GetJsInnerText(trim);
             if (!expression(value))
             {
-                throw new UnexpectedElementStateException($"Element contains incorrect content in innerText property of element. Provided content: '{value}' \r\n Element selector: {FullSelector} \r\n{messsage ?? ""}");
+                throw new UnexpectedElementStateException($"Element contains incorrect content in innerText property of element. Provided content: '{value}' \r\n Element selector: {FullSelector} \r\n{failureMesssage ?? ""}");
             }
             return this;
         }
@@ -216,12 +222,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// </summary>
         /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Be sure that all browsers you are using are generate the same result to prevent unexpected results of this method.</remarks>
 
-        public virtual ElementWrapper CheckIfJsPropertyInnerHtml(Func<string, bool> expression, string messsage = null)
+        public virtual ElementWrapper CheckIfJsPropertyInnerHtml(Func<string, bool> expression, string failureMessage = null)
         {
             var value = GetJsInnerHtml();
             if (!expression(value))
             {
-                throw new UnexpectedElementStateException($"Element contains incorrect content in innerHTML property of element. Provided content: '{value}' \r\n Element selector: {FullSelector} \r\n{messsage ?? ""}");
+                throw new UnexpectedElementStateException($"Element contains incorrect content in innerHTML property of element. Provided content: '{value}' \r\n Element selector: {FullSelector} \r\n{failureMessage ?? ""}");
             }
             return this;
         }
@@ -229,11 +235,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// Checks name of tag
         /// </summary>
-        public virtual ElementWrapper CheckTagName(Func<string, bool> expression, string message = null)
+        public virtual ElementWrapper CheckTagName(Func<string, bool> expression, string failureMessage = null)
         {
             if (!expression(GetTagName()))
             {
-                throw new UnexpectedElementStateException($"Element has wrong tagName. Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n { (message ?? "")}");
+                throw new UnexpectedElementStateException($"Element has wrong tagName. Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n { (failureMessage ?? "")}");
             }
             return this;
         }
@@ -241,20 +247,20 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// Checks name of tag
         /// </summary>
-        public virtual ElementWrapper CheckIfTagName(Func<string, bool> expression, string message = null)
+        public virtual ElementWrapper CheckIfTagName(Func<string, bool> expression, string failureMessage = null)
         {
-            return CheckTagName(expression, message);
+            return CheckTagName(expression, failureMessage);
         }
         /// <param name="attributeName">write name of attribute to check</param>
         /// <param name="expression">define condition</param>
-        /// <param name="message">When value of the element does not satisfy the condition this fail message is written to the throwen exception in the output.</param>
+        /// <param name="failureMessage">When value of the element does not satisfy the condition this fail failureMessage is written to the throwen exception in the output.</param>
         /// <returns></returns>
-        public virtual ElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression, string message = null)
+        public virtual ElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression, string failureMessage = null)
         {
             var attribute = WebElement.GetAttribute(attributeName);
             if (!expression(attribute))
             {
-                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n {message ?? ""}");
+                throw new UnexpectedElementStateException($"Attribute '{attributeName}' contains unexpected value. Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n {failureMessage ?? ""}");
             }
             return this;
         }
@@ -270,7 +276,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             if (!string.Equals(value, attribute,
                 caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
             {
-                throw new UnexpectedElementStateException(failureMessage ?? $"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
+                throw new UnexpectedElementStateException(failureMessage ?? $"Attribute '{attributeName}' contains unexpected value. Expected value: '{value}', Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
             }
             return this;
         }
@@ -291,9 +297,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public virtual ElementWrapper CheckClassAttribute(Func<string, bool> expression, string messsage = "")
+        public virtual ElementWrapper CheckClassAttribute(Func<string, bool> expression, string failureMessage = "")
         {
-            return CheckAttribute("class", expression, messsage);
+            return CheckAttribute("class", expression, failureMessage);
         }
 
         public virtual ElementWrapper CheckClassAttribute(string value, bool caseInsensitive = false, bool trimValue = true)
@@ -303,12 +309,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
 
         public virtual ElementWrapper CheckIfHasClass(string value, bool caseInsensitive = false)
         {
-            return CheckAttribute("class", p => p.Split(' ').Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)));
+            return CheckAttribute("class", p => p.Split(' ').Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
         }
 
         public virtual ElementWrapper CheckIfHasNotClass(string value, bool caseInsensitive = false)
         {
-            return CheckAttribute("class", p => !p.Split(' ').Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)));
+            return CheckAttribute("class", p => !p.Split(' ').Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value should not contain: '{value}'.");
         }
 
         public string GetAttribute(string name)
@@ -352,11 +358,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public virtual ElementWrapper CheckIfInnerText(Func<string, bool> expression, string messsage = null)
+        public virtual ElementWrapper CheckIfInnerText(Func<string, bool> expression, string failureMessage = null)
         {
             if (!expression(GetInnerText()))
             {
-                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetInnerText()}' \r\n Element selector: {FullSelector} \r\n {messsage ?? ""}");
+                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetInnerText()}' \r\n Element selector: {FullSelector} \r\n {failureMessage ?? ""}");
             }
             return this;
         }
@@ -381,11 +387,11 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
-        public virtual ElementWrapper CheckIfText(Func<string, bool> expression, string messsage = null)
+        public virtual ElementWrapper CheckIfText(Func<string, bool> expression, string failureMessage = null)
         {
             if (!expression(GetText()))
             {
-                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n {messsage ?? ""}");
+                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n {failureMessage ?? ""}");
             }
             return this;
         }
@@ -702,7 +708,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// An element that has zero width or height also counts as non visible.
         /// </summary>
         public bool IsDisplayedAndHasSizeGreaterThanZero()
-
         {
             return WebElement.Displayed && !(WebElement.Size.Height == 0 || WebElement.Size.Width == 0);
         }

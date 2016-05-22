@@ -2,6 +2,7 @@
 using Riganti.Utils.Testing.SeleniumCore;
 using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
+using SeleniumCore.UnitTests.Mock;
 
 namespace SeleniumCore.UnitTests
 {
