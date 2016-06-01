@@ -107,7 +107,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             return $"{Selector ?? ""}".Trim();
         }
-
+       
         public virtual ElementWrapper CheckTagName(string expectedTagName, string failureMessage = null)
         {
             if (!string.Equals(GetTagName(), expectedTagName, StringComparison.OrdinalIgnoreCase))
@@ -117,6 +117,26 @@ namespace Riganti.Utils.Testing.SeleniumCore
             return this;
         }
 
+        public virtual ElementWrapper CheckIfTagName(string[] expectedTagNames, string failureMessage = null)
+        {
+            var valid = false;
+
+            foreach (var expectedTagName in expectedTagNames)
+            {
+                if (string.Equals(GetTagName(), expectedTagName, StringComparison.OrdinalIgnoreCase))
+                {
+                    valid = true;
+                }
+            }
+
+            if (!valid)
+            {
+                var allowed = string.Join(", ", expectedTagNames);
+                    throw new UnexpectedElementStateException(failureMessage ?? $"Element has wrong tagName. Expected value: '{allowed}', Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n");
+
+            }
+            return this;
+        }
         public virtual ElementWrapper CheckIfTagName(string expectedTagName, string failureMessage = null)
         {
             return CheckTagName(expectedTagName, failureMessage);

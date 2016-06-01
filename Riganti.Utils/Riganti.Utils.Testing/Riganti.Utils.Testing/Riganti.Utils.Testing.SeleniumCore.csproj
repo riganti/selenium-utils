@@ -63,6 +63,8 @@
     <Compile Include="ElementWrapper.cs" />
     <Compile Include="BrowserWrapper.cs" />
     <Compile Include="ElementWrapperCollection.cs" />
+    <Compile Include="Exceptions\AlertException.cs" />
+    <Compile Include="Exceptions\BrowserException.cs" />
     <Compile Include="Exceptions\BrowserLocationException.cs" />
     <Compile Include="Exceptions\EmptySequenceException.cs" />
     <Compile Include="Exceptions\InvalidRedirectException.cs" />

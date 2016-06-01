@@ -1,4 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using Riganti.Utils.Testing.SeleniumCore;
 using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using SeleniumCore.UnitTests.Mock;
@@ -40,8 +43,6 @@ namespace SeleniumCore.UnitTests
             var i = 0;
             element.WaitFor(elm => i++ == 5, 2000, "test timeouted");
         }
-
-
-
+       
     }
 }

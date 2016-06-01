@@ -651,7 +651,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             var options = new ScopeOptions { FrameSelector = selector, Parent = this, CurrentWindowHandle = browser.CurrentWindowHandle };
 
             var iframe = First(selector);
-            iframe.CheckTagName("iframe", $"The selected element '{iframe.FullSelector}' is not a iframe element.");
+            iframe.CheckIfTagName(new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
             var frame = browser.SwitchTo().Frame(iframe.WebElement);
             testClass.ActiveScope = options.ScopeId;
             return new BrowserWrapper(frame, testClass, options);
@@ -802,6 +802,51 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 }
             }
             testClass.ActiveScope = ScopeOptions.ScopeId;
+        }
+
+        public string GetTitle() => Browser.Title;
+
+        public BrowserWrapper CheckIfTitleEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
+        {
+            var browserTitle = GetTitle();
+            if (trim)
+            {
+                browserTitle = browserTitle.Trim();
+                title = title.Trim();
+            }
+
+            if (!string.Equals(title, browserTitle, comparison))
+            {
+                throw new BrowserException($"Provided content in tab's title is not expected. Expected value: '{title}', provided value: '{browserTitle}'");
+            }
+            return this;
+        }
+        public BrowserWrapper CheckIfTitleNotEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
+        {
+            var browserTitle = GetTitle();
+            if (trim)
+            {
+                browserTitle = browserTitle.Trim();
+                title = title.Trim();
+            }
+
+            if (string.Equals(title, browserTitle, comparison))
+            {
+                throw new BrowserException($"Provided content in tab's title is not expected. Title should NOT to be equal to '{title}', but provided value is '{browserTitle}'");
+            }
+            return this;
+        }
+
+        public BrowserWrapper CheckIfTitle(Func<string, bool> func, string failureMessage = "")
+        {
+            var browserTitle = GetTitle();
+
+
+            if (!func(browserTitle))
+            {
+                throw new BrowserException($"Provided content in tab's title is not expected. Provided content: '{browserTitle}' \r\n{failureMessage}");
+            }
+            return this;
         }
     }
 }

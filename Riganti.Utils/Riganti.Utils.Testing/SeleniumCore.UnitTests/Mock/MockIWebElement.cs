@@ -42,12 +42,12 @@ namespace SeleniumCore.UnitTests.Mock
             return null;
         }
 
-        public string TagName { get; }
-        public string Text { get; }
-        public bool Enabled { get; }
-        public bool Selected { get; }
-        public Point Location { get; }
-        public Size Size { get; }
-        public bool Displayed { get; }
+        public string TagName { get; set; }
+        public string Text { get; set; }
+        public bool Enabled { get; set; }
+        public bool Selected { get; set; }
+        public Point Location { get; set; }
+        public Size Size { get; set; }
+        public bool Displayed { get; set; }
     }
 }
