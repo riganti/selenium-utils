@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SeleniumCore.UnitTests
+namespace Selenium.Core.UnitTests
 {
     [TestClass]
     public class ElementWrapperTests

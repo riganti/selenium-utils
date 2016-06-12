@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
-namespace Riganti.Utils.Testing.SeleniumCore
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public abstract class SeleniumTestBase : ITestBase
     {
@@ -30,13 +30,22 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
 
         public static List<ILogger> Loggers { get; protected set; }
+
+        /// <summary>
+        ///  Used to store information that is provided to tests. (MSTest)
+        /// </summary>
         public TestContext TestContext { get; set; }
         private WebDriverFactoryRegistry factory;
         private string screenshotsFolderPath;
         private string CurrentSubSection { get; set; }
         private Type ExpectedExceptionType { get; set; }
+        /// <summary>
+        /// Latest live driver instance. 
+        /// </summary>
         protected IWebDriver LatestLiveWebDriver { get; set; }
-
+        /// <summary>
+        /// Path to screenshot storage in file system.
+        /// </summary>
         public string ScreenshotsFolderPath
         {
             get
@@ -49,7 +58,9 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
             set { screenshotsFolderPath = value; }
         }
-
+        /// <summary>
+        /// Provides re-try logic, logging mechanism, screenshot storing and other basic functionality of Selenium tests.  
+        /// </summary>
         public SeleniumTestBase()
         {
             if (SeleniumTestsConfiguration.TestContextLogger)
@@ -68,7 +79,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <summary>
         /// Runs the specified testBody in all configured browsers.
         /// </summary>
-        protected virtual void RunInAllBrowsers(Action<BrowserWrapper> action)
+        protected virtual void RunInAllBrowsers(Action<BrowserWrapper> testBody)
         {
             Log("Test no.: " + testsIndexer++, 10);
             CheckAvailableWebDriverFactories();
@@ -80,12 +91,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 CurrentTestExceptions.Clear();
                 if (!(SeleniumTestsConfiguration.PlainMode || SeleniumTestsConfiguration.DeveloperMode))
                 {
-                    TryExecuteTest(action, browserFactory, out browserName, out exception);
+                    TryExecuteTest(testBody, browserFactory, out browserName, out exception);
                 }
                 else
                 {
                     //developer mode - it throws exception directly without catch statement
-                    ExecuteTest(action, browserFactory, out browserName);
+                    ExecuteTest(testBody, browserFactory, out browserName);
                 }
                 if (exception != null)
                 {

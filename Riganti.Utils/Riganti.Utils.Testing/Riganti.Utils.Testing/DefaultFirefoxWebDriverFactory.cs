@@ -3,7 +3,7 @@ using OpenQA.Selenium.Firefox;
 using System;
 using System.IO;
 
-namespace Riganti.Utils.Testing.SeleniumCore
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class DefaultFirefoxWebDriverFactory : IWebDriverFactory
     {

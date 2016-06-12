@@ -2,7 +2,7 @@ using System;
 using System.Runtime.Serialization;
 using OpenQA.Selenium;
 
-namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
+namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
     [Serializable]
     public class AlertException : WebDriverException

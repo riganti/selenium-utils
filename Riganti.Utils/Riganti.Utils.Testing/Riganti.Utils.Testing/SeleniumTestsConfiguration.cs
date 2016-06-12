@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Linq;
 
-namespace Riganti.Utils.Testing.SeleniumCore
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public static class SeleniumTestsConfiguration
     {

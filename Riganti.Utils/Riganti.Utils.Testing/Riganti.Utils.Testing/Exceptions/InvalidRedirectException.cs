@@ -2,7 +2,7 @@ using OpenQA.Selenium;
 using System;
 using System.Runtime.Serialization;
 
-namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
+namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
     [Serializable]
     public class InvalidRedirectException : WebDriverException

@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
+namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
     public class UnexpectedElementStateException : WebDriverException
     {

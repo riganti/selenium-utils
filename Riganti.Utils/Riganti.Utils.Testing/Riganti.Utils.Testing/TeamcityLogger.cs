@@ -1,6 +1,6 @@
 using System;
 
-namespace Riganti.Utils.Testing.SeleniumCore
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class TeamcityLogger : ILogger
     {

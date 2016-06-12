@@ -1,12 +1,12 @@
 ﻿using OpenQA.Selenium;
-using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
-namespace Riganti.Utils.Testing.SeleniumCore
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class BrowserWrapper
     {
@@ -14,6 +14,8 @@ namespace Riganti.Utils.Testing.SeleniumCore
         protected readonly IWebDriver browser;
 
         private readonly ITestBase testClass;
+        public int ActionWaitTime { get; set; } = SeleniumTestsConfiguration.ActionTimeout;
+        public string BaseUrl { get; set; } = SeleniumTestsConfiguration.BaseUrl;
 
         public IWebDriver Browser
         {
@@ -24,7 +26,6 @@ namespace Riganti.Utils.Testing.SeleniumCore
             }
         }
 
-        public int ActionWaitTime { get; set; } = 100;
         private ScopeOptions ScopeOptions { get; set; }
 
         public BrowserWrapper(IWebDriver browser, ITestBase testClass, ScopeOptions scope)
@@ -159,12 +160,12 @@ namespace Riganti.Utils.Testing.SeleniumCore
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                if (string.IsNullOrWhiteSpace(SeleniumTestsConfiguration.BaseUrl))
+                if (string.IsNullOrWhiteSpace(BaseUrl))
                 {
                     throw new InvalidRedirectException();
                 }
-                SeleniumTestBase.Log($"Start navigation to: {SeleniumTestsConfiguration.BaseUrl}", 10);
-                Browser.Navigate().GoToUrl(SeleniumTestsConfiguration.BaseUrl);
+                SeleniumTestBase.Log($"Start navigation to: {BaseUrl}", 10);
+                Browser.Navigate().GoToUrl(BaseUrl);
                 return;
             }
             //redirect if is absolute
@@ -175,7 +176,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
                 return;
             }
 
-            var builder = new UriBuilder(SeleniumTestsConfiguration.BaseUrl);
+            var builder = new UriBuilder(BaseUrl);
 
             // replace url fragments
             if (url.StartsWith("/"))
@@ -760,7 +761,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         /// <returns></returns>
         public string GetAbsoluteUrl(string relativeUrl)
         {
-            var currentUri = new Uri(SeleniumTestsConfiguration.BaseUrl);
+            var currentUri = new Uri(BaseUrl);
             return relativeUrl.StartsWith("/") ? $"{currentUri.Scheme}://{currentUri.Host}:{currentUri.Port}{relativeUrl}" : $"{currentUri.Scheme}://{currentUri.Host}:{currentUri.Port}/{relativeUrl}";
         }
 

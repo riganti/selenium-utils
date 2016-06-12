@@ -1,11 +1,11 @@
 ﻿using OpenQA.Selenium;
-using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
-namespace Riganti.Utils.Testing.SeleniumCore
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class ElementWrapperCollection : ICollection<ElementWrapper>, ISeleniumWrapper
     {
@@ -183,7 +183,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
         }
 
         /// <summary>
-        /// Performs the specified action on each element of the <see cref="Riganti.Utils.Testing.SeleniumCore.ElementWrapperCollection"/>.
+        /// Performs the specified action on each element of the <see cref="ElementWrapperCollection"/>.
         /// </summary>
         /// <param name="action">The <see cref="T:System.Action`1"/> delegate to perform on each element of the <see cref="T:System.Collections.Generic.List`1"/>.</param><exception cref="T:System.ArgumentNullException"><paramref name="action"/> is null.</exception>
         public void ForEach(Action<ElementWrapper> action)

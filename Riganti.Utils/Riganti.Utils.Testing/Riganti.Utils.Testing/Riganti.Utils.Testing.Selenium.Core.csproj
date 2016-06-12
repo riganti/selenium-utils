@@ -7,8 +7,8 @@
     <ProjectGuid>{A02B34DF-6874-4DBD-8ED9-6C73CE4120AB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Riganti.Utils.Testing.SeleniumCore</RootNamespace>
-    <AssemblyName>Riganti.Utils.Testing.SeleniumCore</AssemblyName>
+    <RootNamespace>Riganti.Utils.Testing.Selenium.Core</RootNamespace>
+    <AssemblyName>Riganti.Utils.Testing.Selenium.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

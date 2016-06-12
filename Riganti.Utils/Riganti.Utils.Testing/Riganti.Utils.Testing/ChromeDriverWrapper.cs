@@ -1,7 +1,7 @@
 using System;
 using OpenQA.Selenium.Chrome;
 
-namespace Riganti.Utils.Testing.SeleniumCore
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class ChromeDriverWrapper : ChromeDriver, IWebDriverWrapper
     {

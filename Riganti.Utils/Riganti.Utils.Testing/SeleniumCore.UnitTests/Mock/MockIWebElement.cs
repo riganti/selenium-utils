@@ -2,7 +2,7 @@
 using System.Drawing;
 using OpenQA.Selenium;
 
-namespace SeleniumCore.UnitTests.Mock
+namespace Selenium.Core.UnitTests.Mock
 {
     public class MockIWebElement : IWebElement
     {

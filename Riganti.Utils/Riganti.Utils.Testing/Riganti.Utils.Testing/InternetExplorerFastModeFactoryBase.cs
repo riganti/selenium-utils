@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace Riganti.Utils.Testing.SeleniumCore
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public sealed class InternetExplorerFastModeFactoryBase : IFastModeFactory
     {

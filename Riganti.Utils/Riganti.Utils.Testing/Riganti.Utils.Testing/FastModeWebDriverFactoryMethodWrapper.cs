@@ -2,7 +2,7 @@ using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
-namespace Riganti.Utils.Testing.SeleniumCore
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class FastModeWebDriverFactoryMethodWrapper : IFastModeFactory, ISelfCleanUpWebDriver
     {

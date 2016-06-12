@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DotvvmUITests.cs" />
     <Compile Include="ElementSelectionTests.cs" />
     <Compile Include="IframeTests.cs" />
     <Compile Include="IsCheckedTests.cs" />
@@ -72,9 +73,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Riganti.Utils.Testing\Riganti.Utils.Testing.SeleniumCore.csproj">
+    <ProjectReference Include="..\Riganti.Utils.Testing\Riganti.Utils.Testing.Selenium.Core.csproj">
       <Project>{a02b34df-6874-4dbd-8ed9-6c73ce4120ab}</Project>
-      <Name>Riganti.Utils.Testing.SeleniumCore</Name>
+      <Name>Riganti.Utils.Testing.Selenium.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

@@ -2,7 +2,7 @@ using OpenQA.Selenium;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Riganti.Utils.Testing.SeleniumCore
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public static class Extensions
     {

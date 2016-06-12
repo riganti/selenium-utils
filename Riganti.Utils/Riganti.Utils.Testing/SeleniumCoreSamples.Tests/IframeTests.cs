@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riganti.Utils.Testing.SeleniumCore;
+using Riganti.Utils.Testing.Selenium.Core;
 
 namespace WebApplication1.Tests
 {

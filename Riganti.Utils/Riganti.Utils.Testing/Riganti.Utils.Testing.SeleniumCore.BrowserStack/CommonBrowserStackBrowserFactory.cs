@@ -1,7 +1,8 @@
 using OpenQA.Selenium.Remote;
 using System;
+using Riganti.Utils.Testing.Selenium.Core;
 
-namespace Riganti.Utils.Testing.SeleniumCore.BrowserStack
+namespace Riganti.Utils.Testing.Selenium.BrowserStack
 {
     public class CommonBrowserStackBrowserFactory : BrowserStackBrowserFactoryBase
     {

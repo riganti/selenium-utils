@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riganti.Utils.Testing.SeleniumCore;
+using Riganti.Utils.Testing.Selenium.Core;
 using System;
 
-namespace SeleniumCore.UnitTests
+namespace Selenium.Core.UnitTests
 {
     [TestClass]
     public class FactoriesTests

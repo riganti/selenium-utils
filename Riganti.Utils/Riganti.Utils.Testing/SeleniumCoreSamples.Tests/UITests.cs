@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using Riganti.Utils.Testing.SeleniumCore;
-using Riganti.Utils.Testing.SeleniumCore.Exceptions;
+using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.IO;
 using System.Threading;

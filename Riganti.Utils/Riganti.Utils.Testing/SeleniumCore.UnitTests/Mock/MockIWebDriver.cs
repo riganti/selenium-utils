@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using OpenQA.Selenium;
-using Riganti.Utils.Testing.SeleniumCore;
+using Riganti.Utils.Testing.Selenium.Core;
 
-namespace SeleniumCore.UnitTests.Mock
+namespace Selenium.Core.UnitTests.Mock
 {
     public class MockIWebDriver : IWebDriver
     {

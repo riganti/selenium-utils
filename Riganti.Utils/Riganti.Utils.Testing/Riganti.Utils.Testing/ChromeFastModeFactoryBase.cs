@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System;
 
-namespace Riganti.Utils.Testing.SeleniumCore
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public sealed class ChromeFastModeFactoryBase : IFastModeFactory
     {

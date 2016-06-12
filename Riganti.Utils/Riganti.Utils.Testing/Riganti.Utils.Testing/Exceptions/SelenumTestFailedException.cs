@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Riganti.Utils.Testing.SeleniumCore.Exceptions
+namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
     [Serializable]
     public class SeleniumTestFailedException : WebDriverException

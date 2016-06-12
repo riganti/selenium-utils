@@ -1,13 +1,13 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using Riganti.Utils.Testing.SeleniumCore.Exceptions;
 using System;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
-namespace Riganti.Utils.Testing.SeleniumCore
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class ElementWrapper : ISeleniumWrapper
     {
@@ -84,7 +84,10 @@ namespace Riganti.Utils.Testing.SeleniumCore
             element = webElement;
             browser = browserWrapper;
             SelectMethod = browser.SelectMethod;
+            BaseUrl= browser.BaseUrl;
         }
+
+        public string BaseUrl { get; set; }
 
         public void SetCssSelectMethod()
         {
@@ -855,7 +858,7 @@ namespace Riganti.Utils.Testing.SeleniumCore
             var providedHref = new Uri(WebElement.GetAttribute("href"));
             if (kind == UrlKind.Relative)
             {
-                var host = SeleniumTestsConfiguration.BaseUrl;
+                var host = BaseUrl;
                 if (string.IsNullOrWhiteSpace(host))
                 {
                     host = "http://example.com/";

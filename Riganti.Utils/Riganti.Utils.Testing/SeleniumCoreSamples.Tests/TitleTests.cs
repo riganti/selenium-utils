@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riganti.Utils.Testing.SeleniumCore;
-using Riganti.Utils.Testing.SeleniumCore.Exceptions;
+using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace WebApplication1.Tests
 {
@@ -37,6 +37,7 @@ namespace WebApplication1.Tests
         {
             RunInAllBrowsers(browser =>
             {
+
                 browser.NavigateToUrl();
                 browser.CheckIfTitleEquals("This is title           ", trim: false);
             });

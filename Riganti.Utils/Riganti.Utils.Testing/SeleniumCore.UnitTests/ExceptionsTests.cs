@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riganti.Utils.Testing.SeleniumCore.Exceptions;
+using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 
-namespace SeleniumCore.UnitTests
+namespace Selenium.Core.UnitTests
 {
     [TestClass]
     public class ExceptionsTests

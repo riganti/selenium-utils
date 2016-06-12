@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Riganti.Utils.Testing.Selenium.Core;
 
-namespace Riganti.Utils.Testing.SeleniumCore.BrowserStack
+namespace Riganti.Utils.Testing.Selenium.BrowserStack
 {
     public static class BrowserStackConfiguration
     {
