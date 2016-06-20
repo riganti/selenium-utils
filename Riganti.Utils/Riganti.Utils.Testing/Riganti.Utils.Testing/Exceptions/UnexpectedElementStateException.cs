@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
+    [Serializable]
     public class UnexpectedElementStateException : WebDriverException
     {
         public UnexpectedElementStateException()

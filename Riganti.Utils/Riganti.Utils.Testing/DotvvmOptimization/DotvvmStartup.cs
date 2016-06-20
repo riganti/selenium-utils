@@ -36,7 +36,7 @@ namespace Selenium.DotVVM.Samples
 
         private void RegisterRoutes(DotvvmRouteTable routeTable)
         {
-            routeTable.Add("Default", "", "Views/default.dothtml");
+            routeTable.Add("DefaultRoute", "", "Views/default.dothtml");
         }
 
         private void RegisterResources(DotvvmRouteTable routeTable)

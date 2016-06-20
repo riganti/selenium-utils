@@ -269,6 +269,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
                 var filename = Path.Combine(ScreenshotsFolderPath, $"{TestContext.FullyQualifiedTestClassName}_{TestContext.TestName}" + attemptNumber + ".png");
                 browserWrapper.TakeScreenshot(filename);
+                LogCurrentlyPerformedAction($"Screenshot saved to: {filename}");
                 TestContext.AddResultFile(filename);
             }
             catch

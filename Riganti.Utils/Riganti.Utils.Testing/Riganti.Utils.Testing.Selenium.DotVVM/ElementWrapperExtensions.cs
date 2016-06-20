@@ -11,18 +11,65 @@ namespace Riganti.Utils.Testing.Selenium.DotVVM
     {
         public static ElementWrapper UploadFile(this ElementWrapper element, string fullFileName)
         {
-
             if (element.BrowserWrapper.IsDotvvmPage())
             {
-                
+                SeleniumTestBase.Log("Selenium.DotVVM : Uploading file", 10);
+                var name = element.GetTagName();
+                if (name == "a" && element.HasAttribute("onclick") && (element.GetAttribute("onclick")?.Contains("showUploadDialog") ?? false))
+                {
+                    return UploadFileByA(element, fullFileName);
+                }
+
+                if (name == "div" && element.FindElements("iframe", SelectBy.CssSelector).Count == 1)
+                {
+                    return UploadFileByDiv(element, fullFileName);
+                }
+                else
+                {
+                    SeleniumTestBase.Log("Selenium.DotVVM : Cannot identify DotVVM scenario. Uploading over standard procedure.", 10);
+
+                    element.BrowserWrapper.FileUploadDialogSelect(element, fullFileName);
+                    return element;
+                }
             }
-            else
-            {
-                element.BrowserWrapper.FileUploadDialogSelect(element, fullFileName);
-            }
+
+            element.BrowserWrapper.FileUploadDialogSelect(element, fullFileName);
             return element;
         }
 
+        private static ElementWrapper UploadFileByDiv(ElementWrapper element, string fullFileName)
+        {
+            element.BrowserWrapper.GetJavaScriptExecutor()
+           .ExecuteScript("dotvvm.fileUpload.createUploadId(arguments[0])", element.First("a", SelectBy.CssSelector).WebElement);
+
+            var iframe = element.First("iframe", SelectBy.CssSelector);
+            element.BrowserWrapper.Browser.SwitchTo().Frame(iframe.WebElement);
+
+            var fileInput = element.BrowserWrapper._GetInternalWebDriver()
+                .FindElement(SelectBy.CssSelector("input[type=file]"));
+            fileInput.SendKeys(fullFileName);
+
+            element.Wait(element.ActionWaitTime);
+            element.ActivateScope();
+            return element;
+        }
+
+        private static ElementWrapper UploadFileByA(ElementWrapper element, string fullFileName)
+        {
+            element.BrowserWrapper.GetJavaScriptExecutor()
+                .ExecuteScript("dotvvm.fileUpload.createUploadId(arguments[0])", element.WebElement);
+
+            var iframe = element.ParentElement.ParentElement.First("iframe", SelectBy.CssSelector);
+            element.BrowserWrapper.Browser.SwitchTo().Frame(iframe.WebElement);
+
+            var fileInput = element.BrowserWrapper._GetInternalWebDriver()
+                .FindElement(SelectBy.CssSelector("input[type=file]"));
+            fileInput.SendKeys(fullFileName);
+
+            element.Wait(element.ActionWaitTime);
+            element.ActivateScope();
+            return element;
+        }
     }
     public static class BrowserWrapperExtensions
     {
@@ -31,10 +78,10 @@ namespace Riganti.Utils.Testing.Selenium.DotVVM
             try
             {
                 return string.Equals("true",
-                    browser.GetJavaScriptExecutor().ExecuteScript("dotvvm instanceof DotVVM").ToString(),
+                    browser.GetJavaScriptExecutor().ExecuteScript("return dotvvm instanceof DotVVM").ToString(),
                     StringComparison.OrdinalIgnoreCase);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }

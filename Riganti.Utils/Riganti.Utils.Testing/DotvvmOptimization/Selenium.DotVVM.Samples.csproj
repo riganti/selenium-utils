@@ -38,8 +38,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotVVM.Framework, Version=1.0.0.9, Culture=neutral, PublicKeyToken=23f3607db32275da, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotVVM.1.0.0.9-rc2\lib\net451\DotVVM.Framework.dll</HintPath>
+    <Reference Include="DotVVM.Framework, Version=1.0.0.12, Culture=neutral, PublicKeyToken=23f3607db32275da, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotVVM.1.0.0.12-rc2\lib\net451\DotVVM.Framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeAnalysis, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -105,6 +105,7 @@
     <Compile Include="DotvvmStartup.cs" />
     <Compile Include="ViewModels\DefaultViewModel.cs" />
     <Compile Include="ViewModels\FileUploadViewModel.cs" />
+    <Compile Include="ViewModels\RouteDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />

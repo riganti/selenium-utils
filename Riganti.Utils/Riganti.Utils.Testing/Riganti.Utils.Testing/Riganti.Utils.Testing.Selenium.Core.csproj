@@ -72,6 +72,7 @@
     <Compile Include="Exceptions\SelenumTestFailedException.cs" />
     <Compile Include="Exceptions\SequenceCountException.cs" />
     <Compile Include="Exceptions\UnexpectedElementStateException.cs" />
+    <Compile Include="Exceptions\WaitBlockException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ChromeFastModeDriver.cs" />
     <Compile Include="FastModeWebDriverFactoryMethodWrapper.cs" />

@@ -7,6 +7,10 @@ using System.Text;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
+    /// <summary>
+    /// This exception is thrown only from execution block in SeleniumTestBase. Indicates that test failed.
+    /// </summary>
+    /// <remarks>DEVELOPER INFO: DO NOT USE THIS EXCEPTION TO DROP TEST EXECUTION!!! THIS EXCEPTION IS FOR SeleniumTestBase CLASS ONLY!!!</remarks> 
     [Serializable]
     public class SeleniumTestFailedException : WebDriverException
     {

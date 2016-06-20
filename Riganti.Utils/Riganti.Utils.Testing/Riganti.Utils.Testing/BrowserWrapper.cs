@@ -1,10 +1,10 @@
 ﻿using OpenQA.Selenium;
+using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
@@ -169,30 +169,34 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 return;
             }
             //redirect if is absolute
-            if (Uri.IsWellFormedUriString(url, UriKind.Absolute) || url.StartsWith("//"))
+            if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
             {
                 SeleniumTestBase.Log($"Start navigation to: {url}", 10);
                 Browser.Navigate().GoToUrl(url);
                 return;
             }
-
+            //redirect absolute with same schema
+            if (url.StartsWith("//"))
+            {
+                var schema = new Uri(CurrentUrl).Scheme;
+                var navigateUrltmp = $"{schema}:{url}";
+                SeleniumTestBase.Log($"Start navigation to: {navigateUrltmp}", 10);
+                Browser.Navigate().GoToUrl(navigateUrltmp);
+                return;
+            }
             var builder = new UriBuilder(BaseUrl);
 
             // replace url fragments
             if (url.StartsWith("/"))
             {
-                builder.Path = url;
-                var urlToNavigate = builder.ToString();
+                builder.Path = "";
+                var urlToNavigate = builder.ToString().TrimEnd('/') + "/" + url.TrimStart('/');
                 SeleniumTestBase.Log($"Start navigation to: {urlToNavigate}", 10);
                 Browser.Navigate().GoToUrl(urlToNavigate);
                 return;
             }
-            // setup fragments (join urls)
-            var path = builder.Path;
-            path = path + (path.EndsWith("/") ? "" : "/");
-            builder.Path = path + url;
 
-            var navigateUrl = builder.ToString();
+            var navigateUrl = builder.ToString().TrimEnd('/') + "/" + url.TrimStart('/');
             SeleniumTestBase.Log($"Start navigation to: {navigateUrl}", 10);
             Browser.Navigate().GoToUrl(navigateUrl);
         }
@@ -676,8 +680,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="maxTimeout">If condition is not reached in this timeout (ms) test is dropped.</param>
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
         /// <param name="ignoreCertainException">When StaleElementReferenceException or InvalidElementStateException is thrown than it would be ignored.</param>
-        /// <returns></returns>
-        public BrowserWrapper WaitFor(Func<bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true)
+        /// <param name="checkInterval">Interval in miliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
+        public BrowserWrapper WaitFor(Func<bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500)
         {
             if (condition == null)
             {
@@ -686,6 +690,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             var now = DateTime.UtcNow;
 
             bool isConditionMet = false;
+            Exception ex = null;
             do
             {
                 try
@@ -705,10 +710,49 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
                 if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
                 {
-                    throw new SeleniumTestFailedException(failureMessage);
+                    throw new WaitBlockException(failureMessage);
                 }
-                Wait(200);
+                Wait(checkInterval);
             } while (!isConditionMet);
+            return this;
+        }
+
+        /// <summary>
+        /// Repeats execution of the action until the action is executed without exception.
+        /// </summary>
+        /// <param name="maxTimeout">If condition is not reached in this timeout (ms) test is dropped.</param>
+        /// <param name="checkInterval">Interval in miliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
+        public BrowserWrapper WaitFor(Action action, int maxTimeout, int checkInterval = 500, string failureMessage = null)
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+            var now = DateTime.UtcNow;
+
+            Exception exceptionThrown = null;
+            do
+            {
+                try
+                {
+                    action();
+                    exceptionThrown = null;
+                }
+                catch (Exception ex)
+                {
+                    exceptionThrown = ex;
+                }
+
+                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
+                {
+                    if (failureMessage != null)
+                    {
+                        throw new WaitBlockException(failureMessage, exceptionThrown);
+                    }
+                    throw exceptionThrown;
+                }
+                Wait(checkInterval);
+            } while (exceptionThrown != null);
             return this;
         }
 
@@ -736,6 +780,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
 
             HttpWebResponse response = null;
+            SeleniumTestBase.Log($"CheckIfUrlIsAccessible: Checking of url: '{url}'", 10);
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
 
@@ -745,7 +790,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
             catch (WebException e)
             {
-                throw new SeleniumTestFailedException($"Unable to access {url}! {e.Status}");
+                throw new WebException($"Unable to access {url}! {e.Status}", e);
             }
             finally
             {
@@ -775,7 +820,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             Browser.SwitchTo().Window(Browser.WindowHandles[index]);
             return this;
         }
-
+        
         public void ActivateScope()
         {
             if (testClass.ActiveScope == ScopeOptions.ScopeId)
@@ -822,6 +867,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
             return this;
         }
+
         public BrowserWrapper CheckIfTitleNotEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
         {
             var browserTitle = GetTitle();
@@ -842,12 +888,20 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             var browserTitle = GetTitle();
 
-
             if (!func(browserTitle))
             {
                 throw new BrowserException($"Provided content in tab's title is not expected. Provided content: '{browserTitle}' \r\n{failureMessage}");
             }
             return this;
+        }
+
+        /// <summary>
+        /// Returns WebDriver withnout scope activation. Be carefull!!! This is unsecure!
+        /// </summary>
+        public IWebDriver _GetInternalWebDriver()
+        {
+            testClass.ActiveScope = Guid.Empty;
+            return browser;
         }
     }
 }

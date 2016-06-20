@@ -455,7 +455,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual string GetTagName()
         {
-            return WebElement.TagName.ToLower(CultureInfo.InvariantCulture).Trim().ToLower();
+            return WebElement.TagName.Trim().ToLower(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -795,7 +795,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="maxTimeout">If condition is not reached in this timeout (ms) test is dropped.</param>
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
         /// <param name="ignoreCertainException">When StaleElementReferenceException or InvalidElementStateException is thrown than it would be ignored.</param>
-        public ElementWrapper WaitFor(Func<ElementWrapper, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true)
+        /// <param name="checkInterval">Interval in miliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
+        public ElementWrapper WaitFor(Func<ElementWrapper, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500)
         {
             if (condition == null)
             {
@@ -823,9 +824,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
                 if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
                 {
-                    throw new SeleniumTestFailedException(failureMessage);
+                    throw new WaitBlockException(failureMessage);
                 }
-                Wait(200);
+                Wait(checkInterval);
             } while (!isConditionMet);
 
             return this;

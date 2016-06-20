@@ -8,5 +8,13 @@
     <title></title>
 </head>
 <body>
+    Routes:
+    <ul>
+        <dot:Repeater DataSource="{value: Routes}">
+            <ItemTemplate>
+                <li><a href="{value: Url}">{{value:  Name}}</a></li>
+            </ItemTemplate>
+        </dot:Repeater>
+    </ul>
 </body>
 </html>
