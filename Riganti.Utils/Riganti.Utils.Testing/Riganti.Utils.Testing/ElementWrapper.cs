@@ -193,6 +193,20 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual ElementWrapper CheckIfIsClickable()
         {
+            bool a = IsClickable();
+            if (!a)
+                throw new UnexpectedElementStateException($"The element '{FullSelector}' is not clickable.");
+            return this;
+        }
+        public virtual ElementWrapper CheckIfIsNotClickable()
+        {
+            bool a = IsClickable();
+            if (!a)
+                throw new UnexpectedElementStateException($"The element '{FullSelector}' is clickable and should not be.");
+            return this;
+        }
+        private bool IsClickable()
+        {
             var obj = this.browser.GetJavaScriptExecutor().ExecuteScript(@"
                 if(arguments.length === 0) {
                     throw ""Function CheckIfIsClickable requires element in arguments."";
@@ -210,9 +224,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 return top === elm;
             ", this.WebElement);
             var a = (bool)obj;
-            if (!a)
-                throw new Exception("Not-clickable");
-            return this;
+            return a;
         }
 
         /// <summary>
