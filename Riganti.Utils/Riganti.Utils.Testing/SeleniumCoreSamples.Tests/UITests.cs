@@ -31,7 +31,7 @@ namespace WebApplication1.Tests
                 browser.NavigateToUrl();
                 browser.CheckIfIsNotDisplayed("#non-displayed");
                 browser.First("#non-displayed").CheckIfIsNotDisplayed();
-                browser.First("#non-displayed2").CheckIfIsNotDisplayed();
+                browser.First("#displayed-zero-draw-rec").CheckIfIsDisplayed();
             });
         }
 
@@ -46,9 +46,9 @@ namespace WebApplication1.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException), AllowDerivedTypes = true)]
         public void CheckIfHasAttributeExpectedException()
         {
-            ExpectException(typeof(UnexpectedElementStateException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
@@ -68,9 +68,9 @@ namespace WebApplication1.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfHasNotAttributeExpectedException()
         {
-            ExpectException(typeof(UnexpectedElementStateException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
@@ -107,14 +107,12 @@ namespace WebApplication1.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                RunTestSubSection(nameof(SubSectionAction), SubSectionAction);
+#pragma warning disable CS0612 // Type or member is obsolete
+                RunTestSubSection("Test Subsection", (b) => {});
+#pragma warning restore CS0612 // Type or member is obsolete
             });
         }
 
-        public void SubSectionAction(BrowserWrapper browser)
-        {
-            browser.FindElements("form").FindElements("div").ThrowIfDifferentCountThan(6);
-        }
 
         [TestMethod]
         public void HasAttributeTest()
@@ -126,16 +124,24 @@ namespace WebApplication1.Tests
                 browser.First("#dis-button").CheckIfHasAttribute("disabled");
                 browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
             });
+        }
 
-            ExpectException(typeof(UnexpectedElementStateException));
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void HasAttributeTest2()
+        {
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.Wait(1000);
                 browser.First("#dis-button").CheckIfHasNotAttribute("disabled");
             });
+        }
 
-            ExpectException(typeof(UnexpectedElementStateException));
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void HasAttributeTest3()
+        {
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
@@ -145,7 +151,7 @@ namespace WebApplication1.Tests
         }
 
         [TestMethod]
-        public void HasAttributeTest2()
+        public void HasAttributeTest4()
         {
             RunInAllBrowsers(browser =>
             {
@@ -166,11 +172,10 @@ namespace WebApplication1.Tests
             });
         }
 
-    
         [TestMethod]
+        [ExpectedException(typeof(NoSuchElementException))]
         public void NoParentTest()
         {
-            ExpectException(typeof(NoSuchElementException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("NoParentTest.aspx");
@@ -201,7 +206,7 @@ namespace WebApplication1.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(SeleniumTestFailedException))]
+        [ExpectedException(typeof(AlertException))]
         public void AlertTest2()
         {
             RunInAllBrowsers(browser =>
@@ -237,9 +242,9 @@ namespace WebApplication1.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(AlertException))]
         public void ExpectedExceptionTest()
         {
-            ExpectException(typeof(WebDriverException), true);
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
@@ -249,6 +254,7 @@ namespace WebApplication1.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(AlertException))]
         public void ExpectedExceptionTest2()
         {
             ExpectException(typeof(AlertException));
@@ -417,9 +423,9 @@ namespace WebApplication1.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(EmptySequenceException))]
         public void ElementContained_NoElement_ExpectedFailure()
         {
-            ExpectException(typeof(EmptySequenceException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("ElementContained.aspx");
@@ -663,7 +669,7 @@ namespace WebApplication1.Tests
             SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
-                browser.CheckIfUrlIsAccessible("hyperlink.aspx",UrlKind.Relative);
+                browser.CheckIfUrlIsAccessible("hyperlink.aspx", UrlKind.Relative);
             });
         }
 
@@ -671,12 +677,12 @@ namespace WebApplication1.Tests
         [ExpectedException(typeof(SeleniumTestFailedException))]
         public void CheckIfUrlExistsTest2()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
+            SeleniumTestsConfiguration.DeveloperMode = false;
+            SeleniumTestsConfiguration.PlainMode = false;
             RunInAllBrowsers(browser =>
             {
                 browser.CheckIfUrlIsAccessible("NonExistent359.aspx", UrlKind.Relative);
             });
         }
-
     }
 }

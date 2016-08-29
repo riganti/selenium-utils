@@ -28,7 +28,7 @@
         <div id="non-displayed" style="display: none;">
             Invisible element
         </div>
-        <div id="non-displayed2" style="width: 0px;height: 0px" >
+        <div id="displayed-zero-draw-rec" style="width: 0px;height: 0px" >
             Invisible element
         </div>
         

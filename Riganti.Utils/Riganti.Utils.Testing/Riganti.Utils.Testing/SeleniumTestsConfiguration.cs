@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Riganti.Utils.Testing.Selenium.Core
@@ -42,28 +43,74 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 
         #region Properties
-
+        /// <summary>
+        /// Sets default timeout between element actions (Click, SendKeys etc..)
+        /// </summary>
         public static int ActionTimeout { get; set; }
 
         public static bool PlainMode { get; set; }
-
+        /// <summary>
+        /// When FastMode=true the test base class do not close the browser after each test. It tries to reuse the opened browsers as much as possible. After all tests are finished the base class closes all opened drivers (browsers).
+        /// </summary>
+        /// <remarks>
+        /// The FastMode clears cookies, storages, etc. after every test method run. When test method throws exception, driver is disposed and test method is retried.
+        /// </remarks>
         public static bool FastMode { get; set; } = true;
-
+        /// <summary>
+        /// BaseUrl is used for <see cref="BrowserWrapper.NavigateToUrl(string)"/> mehtod. You can specify base url and then you can use relative addresses in tests.
+        /// </summary>
         public static string BaseUrl { get; set; }
+        /// <summary>
+        /// When StandardOutputLogger=true then the <see cref="SeleniumTestBase.Log(string,int)" /> method writes to standard output by <see cref="Console.Write()"/>
+        /// </summary>
         public static bool StandardOutputLogger { get; set; }
-
+        /// <summary>
+        /// Configuration prefix for appSettings in app.config
+        /// </summary>
         public const string ConfigurationAppSettingsKeyPrefix = "selenium:";
+        /// <summary>
+        /// Adds Chrome Driver with default settings to list of browsers.
+        /// </summary>
         public static bool StartChromeDriver { get; set; }
+        /// <summary>
+        /// Adds IE Driver with default settings to list of browsers.
+        /// </summary>
         public static bool StartInternetExplorerDriver { get; set; }
+        /// <summary>
+        /// Adds Firefox Driver with default settings to list of browsers.
+        /// </summary>
         public static bool StartFirefoxDriver { get; set; }
+        /// <summary>
+        /// Determines how many times test is tried to execute when it fails.
+        /// </summary>
         public static int TestAttempts { get; set; } = 2;
+        /// <summary>
+        /// Changes the Execution plan. TestAttempts, ExpectedException is ignored. All thrown exceptions are NOT wrapped. Use only when creating tests. DO NOT USE FOR CONTINUES INTEGRATION. 
+        /// </summary>
         public static bool DeveloperMode { get; set; }
+        /// <summary>
+        /// When DebugLogger=true then the <see cref="SeleniumTestBase.Log(string,int)" /> method writes to debug output by <see cref="Debug.Write()"/>
+        /// </summary>
         public static bool DebugLogger { get; set; }
         public static bool DebugLoggerContainedKey { get; set; }
+        /// <summary>
+        /// When DebuggerLogger=true then the <see cref="SeleniumTestBase.Log(string,int)" /> method writes to debugger output by <see cref="Debugger.Write()"/>
+        /// </summary>
         public static bool DebuggerLogger { get; set; }
+        /// <summary>
+        /// When TeamcityLogger=true then the <see cref="SeleniumTestBase.Log(string,int)" /> method wrappes all messages for integration with TeamCity
+        /// </summary>
         public static bool TeamcityLogger { get; set; }
+        /// <summary>
+        /// When DebuggerLogger=true then the <see cref="SeleniumTestBase.Log(string,int)" /> method writes to Test Context output by <see cref="TestContext.Write()"/>
+        /// </summary>
         public static bool TestContextLogger { get; set; }
+        /// <summary>
+        /// Sets maximum priority of logged messages to be written by <see cref="SeleniumTestBase.Log(string,int)" /> method.
+        /// </summary>
+        /// <remarks>The priority of internal log messages is 10.</remarks>
         public static int LoggingPriorityMaximum { get; set; }
+        /// <remarks>Sets whether default settings for Chrome Driver includes Incognito mode.</remarks>
         public static bool ChromeDriverIncognito { get; set; }
 
         #endregion Properties

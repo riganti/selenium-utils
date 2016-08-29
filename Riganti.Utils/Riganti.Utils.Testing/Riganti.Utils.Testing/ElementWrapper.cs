@@ -1,11 +1,11 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
@@ -53,6 +53,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             get { return selectMethod ?? browser.SelectMethod; }
             set { selectMethod = value; }
         }
+
         /// <summary>
         /// Returns html direct parent element.
         /// </summary>
@@ -74,6 +75,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 return parent;
             }
         }
+
         /// <summary>
         /// Contains direct children of the element.
         /// </summary>
@@ -84,7 +86,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             element = webElement;
             browser = browserWrapper;
             SelectMethod = browser.SelectMethod;
-            BaseUrl= browser.BaseUrl;
+            BaseUrl = browser.BaseUrl;
         }
 
         public string BaseUrl { get; set; }
@@ -110,7 +112,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
             return $"{Selector ?? ""}".Trim();
         }
-       
+
         public virtual ElementWrapper CheckTagName(string expectedTagName, string failureMessage = null)
         {
             if (!string.Equals(GetTagName(), expectedTagName, StringComparison.OrdinalIgnoreCase))
@@ -135,11 +137,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
             if (!valid)
             {
                 var allowed = string.Join(", ", expectedTagNames);
-                    throw new UnexpectedElementStateException(failureMessage ?? $"Element has wrong tagName. Expected value: '{allowed}', Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n");
-
+                throw new UnexpectedElementStateException(failureMessage ?? $"Element has wrong tagName. Expected value: '{allowed}', Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n");
             }
             return this;
         }
+
         public virtual ElementWrapper CheckIfTagName(string expectedTagName, string failureMessage = null)
         {
             return CheckTagName(expectedTagName, failureMessage);
@@ -187,6 +189,30 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             var obj = browser.GetJavaScriptExecutor()?.ExecuteScript(@"var a = (arguments || [{}])[0];return a['innerText'] || a['textContent'];", WebElement);
             return trim ? obj?.ToString().Trim() : obj?.ToString();
+        }
+
+        public virtual ElementWrapper CheckIfIsClickable()
+        {
+            var obj = this.browser.GetJavaScriptExecutor().ExecuteScript(@"
+                if(arguments.length === 0) {
+                    throw ""Function CheckIfIsClickable requires element in arguments."";
+                }
+                var elm = arguments[0];
+                var rec = elm.getBoundingClientRect();
+
+                // is not visible
+                if (rec.width === 0 || rec.height === 0)
+                {
+                    return false;
+                }
+                //check if is on top
+                var top = document.elementFromPoint(rec.left, rec.top);
+                return top === elm;
+            ", this.WebElement);
+            var a = (bool)obj;
+            if (!a)
+                throw new Exception("Not-clickable");
+            return this;
         }
 
         /// <summary>
@@ -274,6 +300,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             return CheckTagName(expression, failureMessage);
         }
+
         /// <param name="attributeName">write name of attribute to check</param>
         /// <param name="expression">define condition</param>
         /// <param name="failureMessage">When value of the element does not satisfy the condition this fail failureMessage is written to the throwen exception in the output.</param>
@@ -584,6 +611,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual ElementWrapper Click()
         {
+            CheckIfIsClickable();
             WebElement.Click();
             Wait();
             return this;
@@ -734,6 +762,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             return WebElement.Displayed && !(WebElement.Size.Height == 0 || WebElement.Size.Width == 0);
         }
+
         /// <summary>
         /// Indicates whether element is visible.
         /// An element that has zero width or height also counts as non visible.

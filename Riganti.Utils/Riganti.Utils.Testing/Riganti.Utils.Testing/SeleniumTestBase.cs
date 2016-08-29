@@ -123,6 +123,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="testBody">Test to execute</param>
         /// <param name="browserFactory"></param>
         /// <param name="browserName"></param>
+        /// <remarks>The ExpectException is ignored.</remarks>
         protected virtual void ExecuteTest(Action<BrowserWrapper> testBody, IWebDriverFactory browserFactory, out string browserName)
         {
             try
@@ -251,7 +252,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 throw new Exception("Factory doesn't contains drivers! Enable one driver at least to start UI Tests!");
             }
         }
-
+        [Obsolete]
         public virtual void RunTestSubSection(string subSectionName, Action<BrowserWrapper> action)
         {
             Log($"Starts testing of section: {subSectionName}", 5);
@@ -315,7 +316,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             Log($"Currently performing: {actionName}", 9);
         }
-
+        /// <summary>
+        /// This method registers type of exception which is expected to be thrown during <see cref="RunInAllBrowsers"/> method execution. Call this method before  <see cref="RunInAllBrowsers"/>.
+        /// </summary>
+        /// <param name="type">expected exception to be thrown</param>
+        /// <param name="allowDerivedTypes"></param>
+        /// <remarks>This functionality is not supported in Developer Mode!</remarks>
         protected void ExpectException(Type type, bool allowDerivedTypes = false)
         {
             AllowDerivedExceptionTypes = allowDerivedTypes;
