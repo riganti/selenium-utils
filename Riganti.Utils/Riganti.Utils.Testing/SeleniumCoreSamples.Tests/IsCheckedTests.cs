@@ -2,7 +2,7 @@
 using Riganti.Utils.Testing.Selenium.Core;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
-namespace WebApplication1.Tests
+namespace SeleniumCore.Samples.Tests
 {
     [TestClass]
     public class IsCheckedTests : SeleniumTestBase

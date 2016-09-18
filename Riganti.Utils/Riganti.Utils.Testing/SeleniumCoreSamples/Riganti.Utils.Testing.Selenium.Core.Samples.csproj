@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ClickTest.aspx" />
     <Content Include="Confirm.aspx" />
     <Content Include="Alert.aspx" />
     <Content Include="Checkboxes.aspx" />
@@ -106,6 +107,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClickTest.aspx.cs">
+      <DependentUpon>ClickTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClickTest.aspx.designer.cs">
+      <DependentUpon>ClickTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Confirm.aspx.cs">
       <DependentUpon>Confirm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

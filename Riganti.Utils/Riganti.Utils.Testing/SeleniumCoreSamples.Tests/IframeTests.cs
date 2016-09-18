@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.Selenium.Core;
 
-namespace WebApplication1.Tests
+namespace SeleniumCore.Samples.Tests
 {
     [TestClass]
     public class IframeTests : SeleniumTestBase

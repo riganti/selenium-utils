@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.IO;
+using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
-using System;
-using System.IO;
-using System.Threading;
 
-namespace WebApplication1.Tests
+namespace SeleniumCore.Samples.Tests
 {
     [TestClass]
-    public class UiTests : SeleniumTestBase
+    public class FunctionsUiTests : SeleniumTestBase
     {
         [TestMethod]
         public void CheckIfIsDisplayed()
