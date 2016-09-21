@@ -716,7 +716,21 @@ namespace Riganti.Utils.Testing.Selenium.Core
             } while (!isConditionMet);
             return this;
         }
-
+        public BrowserWrapper WaitFor(Action checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500)
+        {
+            return WaitFor(() =>
+            {
+                try
+                {
+                    checkExpression();
+                }
+                catch
+                {
+                    return false;
+                }
+                return true;
+            }, maxTimeout, failureMessage, true, checkInterval);
+        }
         /// <summary>
         /// Repeats execution of the action until the action is executed without exception.
         /// </summary>
