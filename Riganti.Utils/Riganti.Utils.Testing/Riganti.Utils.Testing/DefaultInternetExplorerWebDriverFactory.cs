@@ -7,7 +7,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
     {
         public IWebDriver CreateNewInstance()
         {
-            InternetExplorerOptions options = new InternetExplorerOptions { BrowserCommandLineArguments = "-private" };
+            InternetExplorerOptions options = new InternetExplorerOptions
+            {
+                BrowserCommandLineArguments = "-private",
+                IgnoreZoomLevel =  false,
+                EnableNativeEvents = true, 
+                RequireWindowFocus = true
+            };
             var driver = new InternetExplorerDriverWrapper(options);
             driver.SetDefaultTimeouts();
             return driver;

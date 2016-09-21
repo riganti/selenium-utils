@@ -3,6 +3,10 @@ using System;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
+    /// <summary>
+    /// Wraps IEDriver.
+    /// </summary>
+    /// <remarks>This class can track lifecycle of the driver. Needed for FastMode.</remarks>
     public class InternetExplorerDriverWrapper : InternetExplorerDriver, IWebDriverWrapper
     {
         public InternetExplorerDriverWrapper()
