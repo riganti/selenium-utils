@@ -14,6 +14,7 @@ namespace WebApplication1
         protected void SetCookies_OnClick(object sender, EventArgs e)
         {
             Response.Cookies.Add(new HttpCookie("cookie1", "asdasdasd"));
+            CookieIndicator.Text = true.ToString();
         }
     }
 }

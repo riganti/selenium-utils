@@ -220,7 +220,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
                     return false;
                 }
                 //check if is on top
-                var top = document.elementFromPoint(rec.left, rec.top);
+
+                var top = document.elementFromPoint(rec.left + (rec.width / 2), rec.top + (rec.height / 2));
                 return top === elm;
             ", this.WebElement);
             var a = (bool)obj;
