@@ -6,8 +6,8 @@
     <ProjectGuid>{8D76F2B3-7158-451E-AE48-A2722EDEDADF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SeleniumCore.Samples.Tests</RootNamespace>
-    <AssemblyName>SeleniumCore.Samples.Tests</AssemblyName>
+    <RootNamespace>Riganti.Utils.Testing.Selenium.Core.Samples.Tests</RootNamespace>
+    <AssemblyName>Riganti.Utils.Testing.Selenium.Core.Samples.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
