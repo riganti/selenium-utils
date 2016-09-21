@@ -49,7 +49,7 @@ namespace SeleniumCore.Samples.Tests
             }
             catch (Exception ex)
             {
-                if (!ex.Message.Contains("is not a iframe element"))
+                if (!ex.ToString().Contains("is not a iframe element"))
                 {
                     throw;
                 }
