@@ -87,6 +87,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             browser = browserWrapper;
             SelectMethod = browser.SelectMethod;
             BaseUrl = browser.BaseUrl;
+            ActionTimeout = browserWrapper.ActionWaitTime;
         }
 
         public string BaseUrl { get; set; }

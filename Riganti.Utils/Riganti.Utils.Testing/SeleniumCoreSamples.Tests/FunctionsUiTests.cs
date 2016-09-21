@@ -556,16 +556,10 @@ namespace SeleniumCore.Samples.Tests
             Action<BrowserWrapper> test = browser =>
            {
                browser.NavigateToUrl("CookiesTest.aspx");
-               browser.Wait(2000);
                browser.First("#CookieIndicator").CheckIfTextEquals("False");
-               browser.Wait(2000);
-               browser.Click("#SetCookies");
-               browser.Wait(2000);
+               browser.Click("#SetCookies").Wait();
                browser.NavigateToUrl("CookiesTest.aspx");
-               browser.Wait(2000);
                browser.First("#CookieIndicator").CheckIfTextEquals("True");
-               browser.Wait(2000);
-               browser.Wait(2000);
            };
             RunInAllBrowsers(test);
             RunInAllBrowsers(test);
