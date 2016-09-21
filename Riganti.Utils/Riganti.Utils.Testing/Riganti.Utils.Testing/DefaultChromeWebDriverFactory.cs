@@ -12,6 +12,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             if (SeleniumTestsConfiguration.ChromeDriverIncognito)
             {
                 options.AddArgument("-incognito");
+                options.AddArgument("--disable-extensions");
             }
 
             var driver = new ChromeDriverWrapper(options);
