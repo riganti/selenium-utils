@@ -7,7 +7,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class DefaultFirefoxWebDriverFactory : IWebDriverFactory
     {
-        private static string pathToFirefoxBinary;
+        private static string pathToFirefoxBinary { get; set; }
 
         public IWebDriver CreateNewInstance()
         {
@@ -85,17 +85,26 @@ namespace Riganti.Utils.Testing.Selenium.Core
             SeleniumTestBase.LogDriverId(this, "CTOR - FirefoxDriver");
         }
 
+#pragma warning disable 618
+        [Obsolete]
         public FirefoxDriverWrapper(ICapabilities capabilities) : base(capabilities)
+#pragma warning restore 618
         {
             SeleniumTestBase.LogDriverId(this, "CTOR - FirefoxDriver");
         }
 
+#pragma warning disable 618
+        [Obsolete]
         public FirefoxDriverWrapper(FirefoxBinary binary, FirefoxProfile profile) : base(binary, profile)
+#pragma warning restore 618
         {
             SeleniumTestBase.LogDriverId(this, "CTOR - FirefoxDriver");
         }
 
+#pragma warning disable 618
+        [Obsolete]
         public FirefoxDriverWrapper(FirefoxBinary binary, FirefoxProfile profile, TimeSpan commandTimeout) : base(binary, profile, commandTimeout)
+#pragma warning restore 618
         {
             SeleniumTestBase.LogDriverId(this, "CTOR - FirefoxDriver");
         }
