@@ -89,6 +89,7 @@
     <Content Include="JSTestSite.aspx" />
     <Content Include="NoParentTest.aspx" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\FileSystem.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
