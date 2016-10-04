@@ -1,13 +1,3 @@
-# Rebranding !!
-Our test-utils becomes selenium-utils!
-
-We want to build more libs based on Selenium Core. 
-Currently we have integration for BrowserStack and in the future we plan new lib for easier testing of DotVVM apps. <br/>
-Unfortunatly, this brings some breaking changes.
-
-##Breaking changes:
-- namespace `Riganti.Utils.Testing.SeleniumCore` changed to `Riganti.Utils.Testing.Selenium.Core`
-- namespace `Riganti.Utils.Testing.SeleniumCore.BrowserStack` changed to `Riganti.Utils.Testing.Selenium.BrowserStack`
 
 
 
@@ -20,6 +10,10 @@ Creation of tests full of Assert.AssertationFunc() was not acceptable for us. Th
 To simplify testing and reading of these tests we are using `CheckIfSomething` functions.
 
 These functions throws meaningful exceptions when something goes wrong. The exceptions usualy contains informations about css selector of element, expected value and provided value etc.
+
+##Breaking changes:
+- namespace `Riganti.Utils.Testing.SeleniumCore` changed to `Riganti.Utils.Testing.Selenium.Core`
+- namespace `Riganti.Utils.Testing.SeleniumCore.BrowserStack` changed to `Riganti.Utils.Testing.Selenium.BrowserStack`
 
 
 
