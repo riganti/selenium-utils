@@ -10,9 +10,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
             InternetExplorerOptions options = new InternetExplorerOptions
             {
                 BrowserCommandLineArguments = "-private",
-                IgnoreZoomLevel =  false,
-                EnableNativeEvents = true, 
-                RequireWindowFocus = true,
+                //IgnoreZoomLevel =  false,
+                //EnableNativeEvents = true, 
+                //RequireWindowFocus = true,
             };
             var driver = new InternetExplorerDriverWrapper(options);
             driver.SetDefaultTimeouts();
