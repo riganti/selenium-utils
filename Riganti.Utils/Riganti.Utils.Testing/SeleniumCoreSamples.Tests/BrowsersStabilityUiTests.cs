@@ -12,7 +12,7 @@ namespace SeleniumCore.Samples.Tests
     public class BrowsersStabilityUiTests : SeleniumTestBase
     {
         [TestMethod]
-        public void ElementChildrenSelection()
+        public void ButtonClickTest()
         {
             RunInAllBrowsers(browser =>
             {

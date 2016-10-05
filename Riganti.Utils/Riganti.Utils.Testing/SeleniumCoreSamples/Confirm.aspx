@@ -18,15 +18,14 @@
                     e.preventDefault();
                     var span = document.querySelector("#message");
                     if (confirm("confirm test")) {
-                        span.innerText = "Accept";
+                        span.textContent = span.innerText = "Accept";
+                        
                     } else {
-                        span.innerText = "Dismiss";
+                        span.textContent = span.innerText = "Dismiss";
                     }
-
                     return null;
                 }
                 document.getElementById("button").onclick = click;
-
             </script>
         </div>
     </form>
