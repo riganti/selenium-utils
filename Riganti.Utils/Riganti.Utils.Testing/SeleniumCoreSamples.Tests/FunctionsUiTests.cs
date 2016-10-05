@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
+using System;
+using System.IO;
+using System.Threading;
 
 namespace SeleniumCore.Samples.Tests
 {
@@ -87,7 +87,7 @@ namespace SeleniumCore.Samples.Tests
                 browser.NavigateToUrl();
                 TestContext.WriteLine(
                     browser.First("#displayed").FindElements("div p")
-                    .FullSelector);
+                        .FullSelector);
             });
         }
 
@@ -108,11 +108,10 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl();
 #pragma warning disable CS0612 // Type or member is obsolete
-                RunTestSubSection("Test Subsection", (b) => {});
+                RunTestSubSection("Test Subsection", (b) => { });
 #pragma warning restore CS0612 // Type or member is obsolete
             });
         }
-
 
         [TestMethod]
         public void HasAttributeTest()
@@ -206,7 +205,6 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(AlertException))]
         public void AlertTest2()
         {
             RunInAllBrowsers(browser =>
@@ -214,7 +212,13 @@ namespace SeleniumCore.Samples.Tests
                 browser.NavigateToUrl("/Alert.aspx");
 
                 browser.First("#button").Click();
-                browser.CheckIfAlertTextEquals("Confirm test", true);
+                try
+                {
+                    browser.CheckIfAlertTextEquals("Confirm test", true);
+                }
+                catch (AlertException)
+                {
+                }
             });
         }
 
@@ -350,7 +354,8 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl("JsTestSite.aspx");
                 var elm = browser.First("#hiddenElement");
-                Assert.IsTrue(string.Equals(elm.GetJsInnerText()?.Trim(), "InnerText", StringComparison.OrdinalIgnoreCase));
+                Assert.IsTrue(string.Equals(elm.GetJsInnerText()?.Trim(), "InnerText",
+                    StringComparison.OrdinalIgnoreCase));
                 elm.CheckIfJsPropertyInnerText(c => c == "InnerText")
                     .CheckIfJsPropertyInnerTextEquals("InnerText", false);
             });
@@ -376,10 +381,10 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl("elementatfirst.aspx");
                 Assert.AreEqual(
-                                browser
-                                .ElementAt("div > div", 0)
-                                .First("#first0")
-                                .GetInnerText()?.ToLower(), "first0");
+                    browser
+                        .ElementAt("div > div", 0)
+                        .First("#first0")
+                        .GetInnerText()?.ToLower(), "first0");
             });
         }
 
@@ -390,9 +395,9 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl("elementatfirst.aspx");
                 Assert.AreEqual(browser
-                                .ElementAt("#divs > div", 1)
-                                .First("div")
-                                .GetInnerText()?.ToLower(), "first1");
+                    .ElementAt("#divs > div", 1)
+                    .First("div")
+                    .GetInnerText()?.ToLower(), "first1");
             });
         }
 
@@ -403,9 +408,9 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl("elementatfirst.aspx");
                 Assert.AreEqual(browser
-                                .ElementAt("#divs > div", 2)
-                                .ParentElement.First("#first2")
-                                .GetInnerText()?.ToLower(), "first2");
+                    .ElementAt("#divs > div", 2)
+                    .ParentElement.First("#first2")
+                    .GetInnerText()?.ToLower(), "first2");
             });
         }
 
@@ -469,10 +474,10 @@ namespace SeleniumCore.Samples.Tests
         public void ElementContained_OneElement()
         {
             RunInAllBrowsers(browser =>
-                {
-                    browser.NavigateToUrl("ElementContained.aspx");
-                    browser.First("#one").CheckIfContainsElement("span");
-                });
+            {
+                browser.NavigateToUrl("ElementContained.aspx");
+                browser.First("#one").CheckIfContainsElement("span");
+            });
 
             try
             {
@@ -513,10 +518,10 @@ namespace SeleniumCore.Samples.Tests
         public void ElementContained_TwoElement()
         {
             RunInAllBrowsers(browser =>
-        {
-            browser.NavigateToUrl("ElementContained.aspx");
-            browser.First("#two").CheckIfContainsElement("span");
-        });
+            {
+                browser.NavigateToUrl("ElementContained.aspx");
+                browser.First("#two").CheckIfContainsElement("span");
+            });
         }
 
         [TestMethod]
@@ -554,13 +559,13 @@ namespace SeleniumCore.Samples.Tests
         public void CookieTest()
         {
             Action<BrowserWrapper> test = browser =>
-           {
-               browser.NavigateToUrl("CookiesTest.aspx");
-               browser.First("#CookieIndicator").CheckIfTextEquals("False");
-               browser.Click("#SetCookies").Wait();
-               browser.NavigateToUrl("CookiesTest.aspx");
-               browser.First("#CookieIndicator").CheckIfTextEquals("True");
-           };
+            {
+                browser.NavigateToUrl("CookiesTest.aspx");
+                browser.First("#CookieIndicator").CheckIfTextEquals("False");
+                browser.Click("#SetCookies").Wait();
+                browser.NavigateToUrl("CookiesTest.aspx");
+                browser.First("#CookieIndicator").CheckIfTextEquals("True");
+            };
             RunInAllBrowsers(test);
             RunInAllBrowsers(test);
         }
@@ -569,20 +574,20 @@ namespace SeleniumCore.Samples.Tests
         public void TextNotEquals()
         {
             RunInAllBrowsers(browser =>
-           {
-               browser.NavigateToUrl("CookiesTest.aspx");
-               var label = browser.First("#CookieIndicator");
-               label.CheckIfTextNotEquals("True");
-               label.CheckIfTextEquals("False");
-               try
-               {
-                   label.CheckIfTextNotEquals("False");
-                   throw new Exception("Exception was expected.");
-               }
-               catch (UnexpectedElementStateException)
-               {
-               }
-           });
+            {
+                browser.NavigateToUrl("CookiesTest.aspx");
+                var label = browser.First("#CookieIndicator");
+                label.CheckIfTextNotEquals("True");
+                label.CheckIfTextEquals("False");
+                try
+                {
+                    label.CheckIfTextNotEquals("False");
+                    throw new Exception("Exception was expected.");
+                }
+                catch (UnexpectedElementStateException)
+                {
+                }
+            });
         }
 
         [TestMethod]
@@ -591,15 +596,24 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "/path/test?query=test#fragment", UrlKind.Relative, UriComponents.PathAndQuery);
-                browser.CheckIfHyperLinkEquals("#RelativeLink", "/path/test?query=test#fragment", UrlKind.Relative, UriComponents.PathAndQuery);
-                browser.CheckIfHyperLinkEquals("#RelativeLink", "/path/test?query=test#fragment", UrlKind.Relative, UriComponents.AbsoluteUri);
-                browser.CheckIfHyperLinkEquals("#RelativeLink", "path/test?query=test#fragmentasd", UrlKind.Relative, UriComponents.PathAndQuery);
-                browser.CheckIfHyperLinkEquals("#RelativeLink", "path/test?query=test#fragment", UrlKind.Relative, UriComponents.PathAndQuery);
-                browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.google.com/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.PathAndQuery);
-                browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.google.com/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.AbsoluteUri);
-                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "//localhost:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.PathAndQuery);
-                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "//localhostads:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "/path/test?query=test#fragment", UrlKind.Relative,
+                    UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#RelativeLink", "/path/test?query=test#fragment", UrlKind.Relative,
+                    UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#RelativeLink", "/path/test?query=test#fragment", UrlKind.Relative,
+                    UriComponents.AbsoluteUri);
+                browser.CheckIfHyperLinkEquals("#RelativeLink", "path/test?query=test#fragmentasd", UrlKind.Relative,
+                    UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#RelativeLink", "path/test?query=test#fragment", UrlKind.Relative,
+                    UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.google.com/path/test?query=test#fragment",
+                    UrlKind.Absolute, UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.google.com/path/test?query=test#fragment",
+                    UrlKind.Absolute, UriComponents.AbsoluteUri);
+                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "//localhost:1234/path/test?query=test#fragment",
+                    UrlKind.Absolute, UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema",
+                    "//localhostads:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.PathAndQuery);
             });
         }
 
@@ -611,7 +625,8 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEquals("#RelativeLink", "/path0/test?query=test#fragment", UrlKind.Relative, UriComponents.PathAndQuery);
+                browser.CheckIfHyperLinkEquals("#RelativeLink", "/path0/test?query=test#fragment", UrlKind.Relative,
+                    UriComponents.PathAndQuery);
             });
         }
 
@@ -623,7 +638,8 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEquals("#RelativeLink", "https://www.google.com/path/test?query=test#fragment", UrlKind.Absolute);
+                browser.CheckIfHyperLinkEquals("#RelativeLink", "https://www.google.com/path/test?query=test#fragment",
+                    UrlKind.Absolute);
             });
         }
 
@@ -635,19 +651,25 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.googles.com/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.AbsoluteUri);
+                browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.googles.com/path/test?query=test#fragment",
+                    UrlKind.Absolute, UriComponents.AbsoluteUri);
             });
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
+
         public void CheckHyperLink_Failure4()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "https://localhost:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.AbsoluteUri);
+                try
+                {
+                    browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "https://localhost:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.AbsoluteUri);
+                }
+                catch (UnexpectedElementStateException)
+                {
+                }
             });
         }
 
