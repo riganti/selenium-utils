@@ -26,12 +26,13 @@ This make you able to define how many times the test is retried in case of failu
 ## Recommended configuration
 This configuration is tested on CI servers.
 
-- Selenium.WebDriver.dll =2.53.1
-- Selenium.Support.dll =2.53.1 
-- Chrome =52
+- Selenium.WebDriver.dll = 2.53.1
+- Selenium.Support.dll = 2.53.1 
+- Chrome = 50.0.2661.75 m (64-bit)
 - Firefox =38
-- ChromeDriver.exe =2.22
+- ChromeDriver.exe =2.22.397933
 - IEDriverServer.exe =2.53.1
+- IE 11 => 11.0.9600.18450
 
 **Do not use Selenium.Support.dll 3.0.0-Beta-\*. Compatible ChromeDriver.exe contains bugs with alerts and SwitchTo().**
 
