@@ -22,6 +22,21 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual void Clear()
         {
+            try
+            {
+                ExecuteCleanup();
+            }
+            catch (Exception ex)
+            {
+                SeleniumTestBase.Log(ex.ToString());
+                SeleniumTestBase.Log("Browser cleaning failed! Recreating the browser.");
+                Recreate();
+                SeleniumTestBase.Log("New browser instance created.");
+            }
+        }
+
+        private void ExecuteCleanup()
+        {
             SeleniumTestBase.Log("Cleaning session");
             ExpectedConditions.AlertIsPresent()(Driver)?.Dismiss();
             Driver.Manage().Cookies.DeleteAllCookies();
@@ -52,7 +67,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 try
                 {
-                  SeleniumTestBase.LogDriverId(driver, "Dispose    - SelfCleanUpWebDriver");
+                    SeleniumTestBase.LogDriverId(driver, "Dispose    - SelfCleanUpWebDriver");
                     ExpectedConditions.AlertIsPresent()(Driver)?.Dismiss();
                     driver.Close();
                     driver.Quit();
