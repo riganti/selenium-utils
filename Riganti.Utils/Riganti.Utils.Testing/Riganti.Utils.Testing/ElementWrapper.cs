@@ -625,7 +625,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual ElementWrapper Click()
         {
-            CheckIfIsClickable();
             WebElement.Click();
             Wait();
             return this;
