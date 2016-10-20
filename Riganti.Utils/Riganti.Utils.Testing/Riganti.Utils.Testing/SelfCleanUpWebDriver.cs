@@ -69,13 +69,15 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 {
                     SeleniumTestBase.LogDriverId(driver, "Dispose    - SelfCleanUpWebDriver");
                     ExpectedConditions.AlertIsPresent()(Driver)?.Dismiss();
-                    driver.Close();
-                    driver.Quit();
                     driver.Dispose();
-                    driver = null;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    //ignore
+                }
+                finally
+                {
+                    driver = null;
                 }
             }
         }

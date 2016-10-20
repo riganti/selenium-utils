@@ -151,6 +151,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 attemptNumber++;
                 WriteLine($"Attamp #{attemptNumber} starts....");
                 exception = null;
+                bool exceptionWasThrow = false;
+
                 var browser = LatestLiveWebDriver = browserFactory.CreateNewInstance();
                 LogDriverId(browser, "Driver creation - TryExecuteTest");
                 var scope = new ScopeOptions() { CurrentWindowHandle = browser.CurrentWindowHandle };
@@ -158,7 +160,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 browserName = browser.GetType().Name;
 
                 WriteLine($"Testing browser '{browserName}' attempt no. {attemptNumber}");
-                bool exceptionWasThrow = false;
+                
                 try
                 {
                     BeforeSpecificBrowserTestStarts(wrapper);
@@ -183,7 +185,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                         CurrentTestExceptions.Add(exception = ex);
                         Log("Test attemp was not successfull! - TEST ATTAMP FAILED", 10);
                     }
-                    if (attemptNumber < attampsMaximum)
+                  if (attemptNumber < attampsMaximum)
                     {
                         RecreateBrowsers(browserFactory);
                     }
@@ -273,9 +275,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 LogCurrentlyPerformedAction($"Screenshot saved to: {filename}");
                 TestContext.AddResultFile(filename);
             }
-            catch
+            catch(Exception ex)
             {
-                //ignore
+                Log($"Screenshot CANNOT be saved!",10);
+                Log(ex);
             }
         }
 
