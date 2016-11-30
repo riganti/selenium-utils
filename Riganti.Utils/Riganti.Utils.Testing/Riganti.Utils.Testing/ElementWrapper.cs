@@ -199,6 +199,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 throw new UnexpectedElementStateException($"The element '{FullSelector}' is not clickable.");
             return this;
         }
+
         public virtual ElementWrapper CheckIfIsNotClickable()
         {
             bool a = IsClickable();
@@ -206,6 +207,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 throw new UnexpectedElementStateException($"The element '{FullSelector}' is clickable and should not be.");
             return this;
         }
+
         private bool IsClickable()
         {
             var obj = this.browser.GetJavaScriptExecutor().ExecuteScript(@"
@@ -272,6 +274,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public virtual ElementWrapper CheckIfJsPropertyInnerHtmlEquals(string text, bool caseSensitive = true, bool trim = true)
         {
             var value = GetJsInnerHtml();
+            if (trim)
+            {
+                value = value?.Trim();
+            }
             if (!string.Equals(text, value,
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
             {
@@ -433,7 +439,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual ElementWrapper CheckIfTextEquals(string text, bool caseSensitive = true, bool trim = true)
         {
-            if (!string.Equals(text, trim ? GetText().Trim() : GetText(),
+            if (!string.Equals(text, GetTrimmedText(trim),
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
             {
                 throw new UnexpectedElementStateException($"Element contains wrong content. Expected content: '{text}', Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n");
@@ -441,9 +447,21 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
+        private string GetTrimmedText(bool trim)
+        {
+            if (trim)
+            {
+                return GetText()?.Trim();
+            }
+            else
+            {
+                return GetText();
+            }
+        }
+
         public virtual ElementWrapper CheckIfTextNotEquals(string text, bool caseSensitive = true, bool trim = true)
         {
-            if (string.Equals(text, GetText(),
+            if (string.Equals(text, GetTrimmedText(trim),
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
             {
                 throw new UnexpectedElementStateException($"Element contains wrong content. Content cannot contain: '{text}', Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n");
@@ -873,6 +891,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
             return this;
         }
+
         public ElementWrapper WaitFor(Action<ElementWrapper> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500)
         {
             return WaitFor(elm =>
