@@ -442,7 +442,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public ElementWrapperCollection CheckIfIsDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var collection = FindElements(selector, tmpSelectMethod);
-            var result = collection.All(s => s.IsDisplayed());
+            var result = collection.ThrowIfSequenceEmpty().All(s => s.IsDisplayed());
             if (!result)
             {
                 var index = collection.IndexOf(collection.First(s => !s.IsDisplayed()));

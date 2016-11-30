@@ -433,7 +433,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual ElementWrapper CheckIfTextEquals(string text, bool caseSensitive = true, bool trim = true)
         {
-            if (!string.Equals(text, GetText(),
+            if (!string.Equals(text, trim ? GetText().Trim() : GetText(),
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
             {
                 throw new UnexpectedElementStateException($"Element contains wrong content. Expected content: '{text}', Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n");
@@ -881,7 +881,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 {
                     checkExpression(elm);
                 }
-                catch 
+                catch
                 {
                     return false;
                 }

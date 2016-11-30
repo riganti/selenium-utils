@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>Riganti.Utils.Testing.Selenium.DotVVM</id>
+        <version>0.1.0-pre</version>
+        <authors>RIGANTI</authors>
+        <licenseUrl>https://github.com/riganti/selenium-utils/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/riganti/selenium-utils</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Adds support for DotVVM to Riganti.Utils.Testing.Selenium.</description>
+        <summary />
+        <language />
+        <tags>selenium UI Testing Riganti</tags>
+        <dependencies>
+            <group targetFramework=".NETFramework4.5.0">
+                <dependency id="Riganti.Utils.Testing.Selenium.Core" version="1.0.0-beta" />
+                <dependency id="Selenium.Support" version="2.53.1" />
+                <dependency id="Selenium.WebDriver" version="2.53.1" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Riganti.Utils.Testing.Selenium.DotVVM\bin\release\Riganti.Utils.Testing.Selenium.DotVVM.dll" target="lib\net45\Riganti.Utils.Testing.Selenium.DotVVM.dll" />
+    </files>
+</package>
