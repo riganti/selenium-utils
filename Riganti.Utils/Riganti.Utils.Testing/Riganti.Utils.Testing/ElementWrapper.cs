@@ -962,5 +962,74 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
             return this;
         }
+
+        public ElementWrapper ScrollTo(ElementWrapper element)
+        {
+            var javascript = @"
+            function findPosition(element) {
+                var curtop = 0;
+                if (element.offsetParent) {
+                    do {
+                        curtop += element.offsetTop;
+                    } while (element = element.offsetParent);
+                return [curtop];
+                }
+            }
+
+            window.scroll(0,findPosition(arguments[0]));
+        ";
+            var executor = element.BrowserWrapper.GetJavaScriptExecutor();
+            executor.ExecuteScript(javascript, element.WebElement);
+            return this;
+        }
+
+        public ElementWrapper CheckIfIsElementInView(ElementWrapper element)
+        {
+            if (!IsElementInView(element))
+            {
+                throw new UnexpectedElementStateException($"Element is not in browser view. {element.ToString()}");
+            }
+            return this;
+        }
+
+        public ElementWrapper CheckIfIsElementNotInView(ElementWrapper element)
+        {
+            if (IsElementInView(element))
+            {
+                throw new UnexpectedElementStateException($"Element is in browser view. {element.ToString()}");
+            }
+            return this;
+        }
+
+        public bool IsElementInView(ElementWrapper element)
+        {
+            var executor = element.BrowserWrapper.GetJavaScriptExecutor();
+
+            var result = executor.ExecuteScript(@"
+function elementInViewport2(el) {
+  var top = el.offsetTop;
+  var left = el.offsetLeft;
+  var width = el.offsetWidth;
+  var height = el.offsetHeight;
+
+  while(el.offsetParent) {
+    el = el.offsetParent;
+    top += el.offsetTop;
+    left += el.offsetLeft;
+  }
+
+  return (
+    top < (window.pageYOffset + window.innerHeight) &&
+    left < (window.pageXOffset + window.innerWidth) &&
+    (top + height) > window.pageYOffset &&
+    (left + width) > window.pageXOffset
+  );
+}
+
+return elementInViewport2(arguments[0]);
+                ", element.WebElement);
+
+            return (bool)result;
+        }
     }
 }
