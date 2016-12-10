@@ -102,6 +102,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
             selectMethod = null;
         }
 
+        public ElementWrapper SendEnterKey()
+        {
+            SendKeys(Keys.Enter);
+            return this;
+        }
+
         private string GenerateFullSelector()
         {
             var parent = ParentWrapper as ElementWrapperCollection;
@@ -533,10 +539,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        public virtual void SendKeys(string text)
+        public virtual ElementWrapper SendKeys(string text)
         {
             WebElement.SendKeys(text);
             Wait();
+            return this;
         }
 
         /// <summary>
