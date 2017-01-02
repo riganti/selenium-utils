@@ -8,6 +8,9 @@ using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
+    /// <summary>
+    /// This class represents the funcation of UI tests based on selenium. Provides logging, re-try logic, screenshots, etc.. 
+    /// </summary>
     public abstract class SeleniumTestBase : ITestBase
     {
         public static readonly FastModeWebDriverFactoryRegistry FastModeFactoryRegistry;
