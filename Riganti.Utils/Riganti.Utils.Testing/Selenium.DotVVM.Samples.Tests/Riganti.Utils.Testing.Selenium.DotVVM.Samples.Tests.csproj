@@ -75,6 +75,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Core.MSTestIntegration\Riganti.Utils.Testing.Selenium.Core.MSTestIntegration.csproj">
+      <Project>{6adc4a33-e56b-4e62-bef7-3abef7e4bf95}</Project>
+      <Name>Riganti.Utils.Testing.Selenium.Core.MSTestIntegration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.DotVVM\Riganti.Utils.Testing.Selenium.DotVVM.csproj">
       <Project>{32dec30e-6649-4cb0-aa94-bb839f72cfa6}</Project>
       <Name>Riganti.Utils.Testing.Selenium.DotVVM</Name>

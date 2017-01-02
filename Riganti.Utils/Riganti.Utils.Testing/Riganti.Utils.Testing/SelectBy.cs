@@ -28,7 +28,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return by;
         }
 
-
+        /// <summary>
+        /// Returns implementation of <see cref="OpenQA.Selenium.By"/> which takes css selector. 
+        /// </summary>
+      
         public static SelectBy CssSelector(string cssSelectorToFind, string formatString)
         {
             if (cssSelectorToFind == null)
@@ -45,7 +48,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 
         public string FormatString { get; set; }
-
+        /// <summary>
+        /// Returns implementation of <see cref="OpenQA.Selenium.By"/> which takes name of html tag. 
+        /// </summary>
         public new static SelectBy TagName(string tagNameToFind)
         {
             if (tagNameToFind == null)

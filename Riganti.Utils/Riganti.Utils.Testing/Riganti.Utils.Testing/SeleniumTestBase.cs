@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Schema;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core
@@ -34,7 +34,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         ///  Used to store information that is provided to tests. (MSTest)
         /// </summary>
-        public TestContext TestContext { get; set; }
+        public virtual ITestContext TestContext { get; set; }
+
         private WebDriverFactoryRegistry factory;
         private string screenshotsFolderPath;
         private string CurrentSubSection { get; set; }
@@ -341,16 +342,16 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
         }
 
-        [TestCleanup]
         public virtual void TestCleanUp()
         {
             AllowDerivedExceptionTypes = false;
             ExpectedExceptionType = null;
+            Log("Test cleanup.");
         }
 
-        [ClassCleanup]
         public virtual void TotalCleanUp()
         {
+            Log("Class cleanup.");
             if (SeleniumTestsConfiguration.FastMode)
                 FastModeFactoryRegistry.Dispose();
         }

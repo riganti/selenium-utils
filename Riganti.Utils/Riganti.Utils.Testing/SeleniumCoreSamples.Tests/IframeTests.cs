@@ -5,7 +5,7 @@ using Riganti.Utils.Testing.Selenium.Core;
 namespace SeleniumCore.Samples.Tests
 {
     [TestClass]
-    public class IframeTests : SeleniumTestBase
+    public class IframeTests : SeleniumTest
     {
         [TestMethod]
         public void IFrameTest()

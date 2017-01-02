@@ -9,7 +9,7 @@ using Riganti.Utils.Testing.Selenium.Core;
 namespace SeleniumCore.Samples.Tests
 {
     [TestClass]
-    public class BrowsersStabilityUiTests : SeleniumTestBase
+    public class BrowsersStabilityUiTests : SeleniumTest
     {
         [TestMethod]
         public void ButtonClickTest()

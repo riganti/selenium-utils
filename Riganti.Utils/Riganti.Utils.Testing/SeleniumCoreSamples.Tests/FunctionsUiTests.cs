@@ -9,7 +9,7 @@ using System.Threading;
 namespace SeleniumCore.Samples.Tests
 {
     [TestClass]
-    public class FunctionsUiTests : SeleniumTestBase
+    public class FunctionsUiTests : SeleniumTest
     {
         [TestMethod]
         public void CheckIfIsDisplayed()
@@ -119,7 +119,6 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                browser.Wait(1000);
                 browser.First("#dis-button").CheckIfHasAttribute("disabled");
                 browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
             });
@@ -132,7 +131,6 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                browser.Wait(1000);
                 browser.First("#dis-button").CheckIfHasNotAttribute("disabled");
             });
         }
@@ -144,7 +142,6 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                browser.Wait(1000);
                 browser.First("#submit-button").CheckIfHasAttribute("disabled");
             });
         }
@@ -155,7 +152,6 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                browser.Wait(1000);
                 browser.First("#dis-button").CheckIfHasAttribute("disabled");
                 browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
             });

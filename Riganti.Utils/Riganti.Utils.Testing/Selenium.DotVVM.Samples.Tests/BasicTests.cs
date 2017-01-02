@@ -10,8 +10,7 @@ using System.IO;
 
 namespace Selenium.DotVVM.Samples.Tests
 {
-    [TestClass]
-    public class BasicTests : SeleniumTestBase
+    public class BasicTests : SeleniumTest
     {
         [TestMethod]
         public void DetectDotvvm()
@@ -40,9 +39,15 @@ namespace Selenium.DotVVM.Samples.Tests
                 browser.First("#FUpload").UploadFile(tempPath);
 
 
-                browser.Wait(4000);
-                browser.First("#FUpload .dotvvm-upload-files").CheckIfInnerTextEquals("1 files", false);
+                browser.WaitFor(() =>
+                {
+                    browser.First("#FUpload .dotvvm-upload-files").CheckIfInnerTextEquals("1 files", false);
+
+                }, 4000, "File upload failed.");
             });
         }
+
+
     }
+
 }

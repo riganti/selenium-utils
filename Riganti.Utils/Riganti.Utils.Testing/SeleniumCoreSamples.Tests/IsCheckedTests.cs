@@ -5,7 +5,7 @@ using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 namespace SeleniumCore.Samples.Tests
 {
     [TestClass]
-    public class IsCheckedTests : SeleniumTestBase
+    public class IsCheckedTests : SeleniumTest
     {
         [TestMethod]
         public void IsNotCheckedTest()

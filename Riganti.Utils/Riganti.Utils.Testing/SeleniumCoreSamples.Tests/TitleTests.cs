@@ -6,7 +6,7 @@ namespace SeleniumCore.Samples.Tests
 {
 
     [TestClass]
-    public class TitleTests : SeleniumTestBase
+    public class TitleTests : SeleniumTest
     {
         [TestMethod]
         public void CheckIfTitleEquals()

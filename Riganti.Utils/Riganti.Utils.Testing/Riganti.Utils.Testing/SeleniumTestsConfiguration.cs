@@ -115,6 +115,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         #endregion Properties
 
+        #region  Func
+
+        
+
+
         /// <summary>
         /// Check if key exists in appSettings and try to convert value and set it.
         /// </summary>
@@ -130,7 +135,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         /// <typeparam name="T">Supported types are only string, bool, int and double.</typeparam>
         /// <param name="setFunction">Delegate which is called after getting value to set value.</param>
-        public static T CheckAndGet<T>(string key, T defaultValue, bool isKeyCaseSensitive = true)
+        public static T CheckAndGet<T>(string key, T defaultValue, bool isKeyCaseSensitive = true) 
         {
             var filteredKey = ConfigurationManager.AppSettings.AllKeys.FirstOrDefault(s => s.Equals(key, isKeyCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase));
 
@@ -210,5 +215,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             return $"{ConfigurationAppSettingsKeyPrefix}{key}";
         }
+        #endregion
+
     }
 }

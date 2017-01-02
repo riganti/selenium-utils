@@ -4,7 +4,7 @@ using Riganti.Utils.Testing.Selenium.Core;
 namespace SeleniumCore.Samples.Tests
 {
     [TestClass]
-    public class ElementSelectionTests : SeleniumTestBase
+    public class ElementSelectionTests : SeleniumTest
     {
         [TestMethod]
         public void ElementChildrenSelection()
