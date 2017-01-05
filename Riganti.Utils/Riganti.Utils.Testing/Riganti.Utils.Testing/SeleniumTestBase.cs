@@ -145,7 +145,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 
         protected List<Exception> CurrentTestExceptions = new List<Exception>();
-
+        /// <summary>
+        /// Executes test in specified browser with re-try logic, logging and screenshots in case of failure.
+        /// </summary>
+        /// <param name="testBody">Test to execute.</param>
+        /// <param name="browserFactory">Factory of specific browser.</param>
+        /// <param name="browserName">Name of the browser.</param>
+        /// <param name="exception">Exception with details of failure.</param>
         protected virtual void TryExecuteTest(Action<BrowserWrapper> testBody, IWebDriverFactory browserFactory, out string browserName, out Exception exception)
         {
             var attemptNumber = 0;
@@ -164,7 +170,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 browserName = browser.GetType().Name;
 
                 WriteLine($"Testing browser '{browserName}' attempt no. {attemptNumber}");
-                
+
                 try
                 {
                     BeforeSpecificBrowserTestStarts(wrapper);
@@ -189,7 +195,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                         CurrentTestExceptions.Add(exception = ex);
                         Log("Test attemp was not successfull! - TEST ATTAMP FAILED", 10);
                     }
-                  if (attemptNumber < attampsMaximum)
+                    if (attemptNumber < attampsMaximum)
                     {
                         RecreateBrowsers(browserFactory);
                     }
@@ -279,9 +285,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 LogCurrentlyPerformedAction($"Screenshot saved to: {filename}");
                 TestContext.AddResultFile(filename);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Log($"Screenshot CANNOT be saved!",10);
+                Log($"Screenshot CANNOT be saved!", 10);
                 Log(ex);
             }
         }
