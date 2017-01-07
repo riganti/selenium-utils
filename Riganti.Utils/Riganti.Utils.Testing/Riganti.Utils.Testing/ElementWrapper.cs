@@ -643,7 +643,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return WebElement.Text;
         }
 
-        public Size GetSize(string cssSelector)
+        public Size GetSize()
         {
             return WebElement.Size;
         }
