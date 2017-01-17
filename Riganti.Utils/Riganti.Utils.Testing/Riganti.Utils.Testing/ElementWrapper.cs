@@ -1038,5 +1038,19 @@ return elementInViewport2(arguments[0]);
 
             return (bool)result;
         }
+
+        /// <summary>
+        /// Drag this element and drop to dropToElement with offsetX and offsetY.
+        /// </summary>
+        /// <param name="dropToElement"></param>
+        /// <param name="offsetX"></param>
+        /// <param name="offsetY"></param>
+        /// <returns></returns>
+        public ElementWrapper DropTo(ElementWrapper dropToElement, int offsetX = 0, int offsetY = 0)
+        {
+            BrowserWrapper.DragAndDrop(this, dropToElement, offsetX, offsetY);
+            return this;
+        }
     }
+
 }

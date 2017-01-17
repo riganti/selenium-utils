@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using OpenQA.Selenium.Interactions;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
@@ -910,12 +911,30 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 
         /// <summary>
-        /// Returns WebDriver withnout scope activation. Be carefull!!! This is unsecure!
+        /// Returns WebDriver without scope activation. Be carefull!!! This is unsecure!
         /// </summary>
         public IWebDriver _GetInternalWebDriver()
         {
             testClass.ActiveScope = Guid.Empty;
             return browser;
+        }
+
+        /// <summary>
+        /// Drag on element dragOnElement and drop to dropToElement with offsetX and offsetY.
+        /// </summary>
+        /// <param name="dragOnElement"></param>
+        /// <param name="dropToElement"></param>
+        /// <param name="offsetX"></param>
+        /// <param name="offsetY"></param>
+        /// <returns></returns>
+        public BrowserWrapper DragAndDrop(ElementWrapper dragOnElement, ElementWrapper dropToElement, int offsetX = 0, int offsetY = 0)
+        {
+            var builder = new Actions(_GetInternalWebDriver());
+            var from = dragOnElement.WebElement;
+            var to = dropToElement.WebElement;
+            var dragAndDrop = builder.ClickAndHold(from).MoveToElement(to, offsetX, offsetY).Release(to).Build();
+            dragAndDrop.Perform();
+            return this;
         }
     }
 }
