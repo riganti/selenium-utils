@@ -75,6 +75,7 @@
     <Compile Include="Mock\MockITestBase.cs" />
     <Compile Include="Mock\MockIWebDriver.cs" />
     <Compile Include="Mock\MockIWebElement.cs" />
+    <Compile Include="ProcessTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TimeOutTests.cs" />
   </ItemGroup>

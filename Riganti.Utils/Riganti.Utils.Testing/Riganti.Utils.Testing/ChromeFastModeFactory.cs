@@ -3,7 +3,7 @@ using System;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    public sealed class ChromeFastModeFactoryBase : IFastModeFactory
+    public sealed class ChromeFastModeFactory : IFastModeFactory
     {
         private static ChromeFastModeDriver Driver { get; set; }
         private static readonly object Locker = new object();

@@ -32,13 +32,16 @@ namespace Riganti.Utils.Testing.Selenium.Core
             CheckAndSet(GetSettingsKey("FirefoxDriver"), false, value => StartFirefoxDriver = value, false);
             StartInternetExplorerDriver = CheckAndGet(GetSettingsKey("InternetExplorerDriver"), false, false) || CheckAndGet(GetSettingsKey("IeDriver"), false, false);
 
+
             // modes
             CheckAndSet(GetSettingsKey("FastMode"), true, value => FastMode = value, false);
             CheckAndSet(GetSettingsKey("DeveloperMode"), false, value => { DeveloperMode = PlainMode = value; }, false);
+            
+            //advanced
+            CheckAndSet(GetSettingsKey("TryToKillWhenNotResponding"), false, value => { TryToKillWhenNotResponding = value; }, false);
 
             // chrome driver settings
-            CheckAndSet(GetSettingsKey("ChromeDriverIncognito"), false, value => { ChromeDriverIncognito  = value; }, false);
-            
+            CheckAndSet(GetSettingsKey("ChromeDriverIncognito"), false, value => { ChromeDriverIncognito = value; }, false);
 
         }
 
@@ -48,6 +51,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public static int ActionTimeout { get; set; }
 
+        /// <summary>
+        /// Internal developer mode for tests. 
+        /// </summary>
         public static bool PlainMode { get; set; }
         /// <summary>
         /// When FastMode=true the test base class do not close the browser after each test. It tries to reuse the opened browsers as much as possible. After all tests are finished the base class closes all opened drivers (browsers).
@@ -112,19 +118,23 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public static int LoggingPriorityMaximum { get; set; }
         /// <remarks>Sets whether default settings for Chrome Driver includes Incognito mode.</remarks>
         public static bool ChromeDriverIncognito { get; set; }
+        public static bool TryToKillWhenNotResponding { get; set; }
 
         #endregion Properties
 
         #region  Func
 
-        
+
 
 
         /// <summary>
         /// Check if key exists in appSettings and try to convert value and set it.
         /// </summary>
         /// <typeparam name="T">Supported types are only string, bool, int and double.</typeparam>
+        /// <param name="key">It's value of appSettings key attribute.</param>
         /// <param name="setFunction">Delegate which is called after getting value to set value.</param>
+        /// <param name="isKeyCaseSensitive">Indicates whather recognition of key is case sensitive.</param>
+        /// <param name="defaultValue">Default value when key is not in appSettings section.</param>
         public static void CheckAndSet<T>(string key, T defaultValue, Action<T> setFunction, bool isKeyCaseSensitive = true)
         {
             setFunction(CheckAndGet(key, defaultValue, isKeyCaseSensitive));
@@ -134,8 +144,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// Check if key exists in appSettings and try to convert value and set it.
         /// </summary>
         /// <typeparam name="T">Supported types are only string, bool, int and double.</typeparam>
-        /// <param name="setFunction">Delegate which is called after getting value to set value.</param>
-        public static T CheckAndGet<T>(string key, T defaultValue, bool isKeyCaseSensitive = true) 
+        public static T CheckAndGet<T>(string key, T defaultValue, bool isKeyCaseSensitive = true)
         {
             var filteredKey = ConfigurationManager.AppSettings.AllKeys.FirstOrDefault(s => s.Equals(key, isKeyCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase));
 

@@ -1,13 +1,17 @@
-using System;
 using OpenQA.Selenium.Chrome;
+using System;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
+    
+    /// <summary>Provides a mechanism to write tests against Chrome</summary>
     public class ChromeDriverWrapper : ChromeDriver, IWebDriverWrapper
     {
+        /// <summary>
+        /// Gets unique id of instance of this browser.
+        /// </summary>
         public Guid DriverId { get; } = Guid.NewGuid();
         public bool Disposed { get; set; }
-
 
         public ChromeDriverWrapper()
         {
@@ -48,8 +52,5 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             SeleniumTestBase.LogDriverId(this, "CTOR - ChromeDriver");
         }
-
-
-
     }
 }

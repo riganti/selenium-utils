@@ -264,6 +264,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 throw new Exception("Factory doesn't contains drivers! Enable one driver at least to start UI Tests!");
             }
         }
+
         [Obsolete]
         public virtual void RunTestSubSection(string subSectionName, Action<BrowserWrapper> action)
         {
@@ -273,7 +274,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
             CurrentSubSection = null;
             Log($"Testing of section succesfully completed.", 5);
         }
-
+        /// <summary>
+        /// Takes screenshot by call to WebDriver.
+        /// </summary>
+        /// <param name="attemptNumber">Number of test iteration.</param>
+        /// <param name="browserWrapper">Browser to take screenshot from.</param>
         protected virtual void TakeScreenshot(int attemptNumber, BrowserWrapper browserWrapper)
         {  // make screenshot
             try
@@ -315,7 +320,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             WriteLine(exception.ToString());
         }
-
+        /// <summary>
+        /// Log driver id for better debugging output when some driver is stuck.
+        /// </summary>
+        /// <param name="browser">Browser to be logged.</param>
+        /// <param name="checkpoint">Name of point where you are logging from.</param>
         public static void LogDriverId(IWebDriver browser, string checkpoint)
         {
             var driver = browser as IWebDriverWrapper;

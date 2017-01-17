@@ -12,7 +12,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             BrowserFactories = new List<IWebDriverFactory>();
             if (SeleniumTestsConfiguration.FastMode)
             {
-                if (SeleniumTestsConfiguration.StartChromeDriver) RegisterBrowserFactory(new ChromeFastModeFactoryBase());
+                if (SeleniumTestsConfiguration.StartChromeDriver) RegisterBrowserFactory(new ChromeFastModeFactory());
                 if (SeleniumTestsConfiguration.StartInternetExplorerDriver) RegisterBrowserFactory(new InternetExplorerFastModeFactoryBase());
                 if (SeleniumTestsConfiguration.StartFirefoxDriver) RegisterBrowserFactory(new FirefoxFastModeFactoryBase());
             }

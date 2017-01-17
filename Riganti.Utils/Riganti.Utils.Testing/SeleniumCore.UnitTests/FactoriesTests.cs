@@ -10,7 +10,7 @@ namespace Selenium.Core.UnitTests
         [TestMethod]
         public void ChromeFastModeFactoryRecreateTest()
         {
-            var factory = new ChromeFastModeFactoryBase();
+            var factory = new ChromeFastModeFactory();
             var inst1 = factory.CreateNewInstance();
 
             factory.Recreate();

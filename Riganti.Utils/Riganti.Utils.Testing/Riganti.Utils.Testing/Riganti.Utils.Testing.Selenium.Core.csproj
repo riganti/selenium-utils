@@ -103,7 +103,7 @@
     <Compile Include="ISeleniumWrapper.cs" />
     <Compile Include="ISelfCleanUpWebDriver.cs" />
     <Compile Include="ITestBase.cs" />
-    <Compile Include="ChromeFastModeFactoryBase.cs" />
+    <Compile Include="ChromeFastModeFactory.cs" />
     <Compile Include="ITestContext.cs" />
     <Compile Include="IWebDriverExtensions.cs" />
     <Compile Include="IWebDriverFactory.cs" />
