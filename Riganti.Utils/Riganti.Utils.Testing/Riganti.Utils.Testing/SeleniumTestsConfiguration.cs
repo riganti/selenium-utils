@@ -25,6 +25,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
             CheckAndSet(GetSettingsKey("TestContextLogger"), false, value => TestContextLogger = value, false);
             CheckAndSet(GetSettingsKey("StandardOutputLogger"), false, value => StandardOutputLogger = value, false);
             CheckAndSet(GetSettingsKey("DebugLogger"), false, value => DebugLogger = value, false);
+            CheckAndSet(GetSettingsKey("TraceLogger"), false, value => TraceLogger = value, false);
+            
             DebugLoggerContainedKey = ConfigurationManager.AppSettings.AllKeys.Any(s => string.Equals(GetSettingsKey("DebugLogger"), s, StringComparison.OrdinalIgnoreCase));
 
             //drivers
