@@ -40,7 +40,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 //ignore
             }
         }
-
+        /// <summary>
+        /// Destroys all browser instances.
+        /// </summary>
         public void Dispose()
         {
             BrowserFactories.ForEach(b => (b as IFastModeFactory)?.Dispose());

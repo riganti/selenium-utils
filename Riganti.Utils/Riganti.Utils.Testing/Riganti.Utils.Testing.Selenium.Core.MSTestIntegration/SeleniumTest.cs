@@ -17,12 +17,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public TestContext TestContext { get; set; }
 
-        [TestCleanup]
-        public override void TestCleanUp()
-        {
-            base.TestCleanUp();
-        }
-
         [ClassCleanup]
         public override void TotalCleanUp()
         {

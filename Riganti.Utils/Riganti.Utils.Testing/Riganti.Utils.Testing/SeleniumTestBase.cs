@@ -1,16 +1,15 @@
 ﻿using OpenQA.Selenium;
+using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Xml.Schema;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
-using System.Diagnostics;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
     /// <summary>
-    /// This class represents the funcation of UI tests based on selenium. Provides logging, re-try logic, screenshots, etc.. 
+    /// This class represents the funcation of UI tests based on selenium. Provides logging, re-try logic, screenshots, etc..
     /// </summary>
     public abstract class SeleniumTestBase : ITestBase
     {
@@ -18,11 +17,14 @@ namespace Riganti.Utils.Testing.Selenium.Core
         ///  Factory to create drivers that supports FastMode (cleaning and re-using the same browser for more tests)
         /// </summary>
         public static readonly FastModeWebDriverFactoryRegistry FastModeFactoryRegistry;
+
         private static int testsIndexer = 0;
+
         /// <summary>
-        /// Unique ID of the scope/frame/window. 
+        /// Unique ID of the scope/frame/window.
         /// </summary>
         public Guid ActiveScope { get; set; } = Guid.Empty;
+
         static SeleniumTestBase()
         {
             FastModeFactoryRegistry = new FastModeWebDriverFactoryRegistry();
@@ -38,6 +40,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 Loggers.Add(new DebugLogger());
             }
         }
+
         /// <summary>
         /// Collection of implementations of logging mechanisms.
         /// </summary>
@@ -52,10 +55,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
         private string screenshotsFolderPath;
         private string CurrentSubSection { get; set; }
         private Type ExpectedExceptionType { get; set; }
+
         /// <summary>
-        /// Latest live driver instance. 
+        /// Latest live driver instance.
         /// </summary>
         protected IWebDriver LatestLiveWebDriver { get; set; }
+
         /// <summary>
         /// Path to screenshot storage in file system.
         /// </summary>
@@ -71,8 +76,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
             set { screenshotsFolderPath = value; }
         }
+
         /// <summary>
-        /// Provides re-try logic, logging mechanism, screenshot storing and other basic functionality of Selenium tests.  
+        /// Provides re-try logic, logging mechanism, screenshot storing and other basic functionality of Selenium tests.
         /// </summary>
         public SeleniumTestBase()
         {
@@ -83,6 +89,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 Loggers.Add(new TestContextLogger(this));
             }
         }
+
         /// <summary>
         /// Place to store browser factories, that does NOT support FastMode.
         /// </summary>
@@ -92,6 +99,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// Place to store browser factories, that does NOT support FastMode.
         /// </summary>
         protected virtual List<IWebDriverFactory> BrowserFactories => SeleniumTestsConfiguration.FastMode ? FastModeFactoryRegistry.BrowserFactories : FactoryRegistry.BrowserFactories;
+
         private BrowserWrapper wrapper;
 
         /// <summary>
@@ -133,6 +141,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                     throw throwException;
                 }
             }
+            TestCleanUp();
         }
 
         /// <summary>
@@ -159,6 +168,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 
         protected List<Exception> CurrentTestExceptions = new List<Exception>();
+
         /// <summary>
         /// Executes test in specified browser with re-try logic, logging and screenshots in case of failure.
         /// </summary>
@@ -173,7 +183,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             do
             {
                 attemptNumber++;
-                WriteLine($"Attamp #{attemptNumber} starts....");
+                WriteLine($"Attamp #{attemptNumber} starts.");
                 exception = null;
                 bool exceptionWasThrow = false;
 
@@ -288,6 +298,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             CurrentSubSection = null;
             Log($"Testing of section succesfully completed.", 5);
         }
+
         /// <summary>
         /// Takes screenshot by call to WebDriver.
         /// </summary>
@@ -311,24 +322,31 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
-        protected static void WriteLine(string message, TraceLevel level = TraceLevel.Info)
+        /// <summary>
+        /// Writes debug informations via loggers.
+        /// </summary>
+        protected static void WriteLine(string message, TraceLevel level = TraceLevel.Verbose)
         {
             Loggers.ForEach(logger =>
             {
-                logger.WriteLine(message, TraceLevel.Error);
+                logger.WriteLine(message, level);
             });
         }
 
         /// <summary>
         /// Writes messages to registered loggers.
         /// </summary>
-        /// <param name="message">message that is going to be written by logger</param>
+        /// <param name="message">Message that is going to be written by logger.</param>
         /// <param name="priority">Priority of message. 0 - the highest, 10 - the lowest = internal system log message level</param>
-        public static void Log(string message, int priority = 0)
+        /// <param name="level">Severity of a information.</param>
+        public static void Log(string message, int priority = 0, TraceLevel level = TraceLevel.Verbose)
         {
             if (SeleniumTestsConfiguration.LoggingPriorityMaximum >= priority)
-                WriteLine(message);
+            {
+                WriteLine(message, level);
+            }
         }
+
         /// <summary>
         /// Writes exception to registered loggers.
         /// </summary>
@@ -336,6 +354,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             WriteLine(exception.ToString(), System.Diagnostics.TraceLevel.Error);
         }
+
         /// <summary>
         /// Log driver id for better debugging output when some driver is stuck.
         /// </summary>
@@ -354,6 +373,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             Log($"Currently performing: {actionName}", 9);
         }
+
         /// <summary>
         /// This method registers type of exception which is expected to be thrown during <see cref="RunInAllBrowsers"/> method execution. Call this method before  <see cref="RunInAllBrowsers"/>.
         /// </summary>
@@ -376,6 +396,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
         }
 
+        /// <summary>
+        /// Clears global variables dependent on specific tests.
+        /// </summary>
+        /// <remarks>Automatically called on the end of <see cref="RunInAllBrowsers"/>.</remarks>
         public virtual void TestCleanUp()
         {
             AllowDerivedExceptionTypes = false;
@@ -383,6 +407,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
             Log("Test cleanup.");
         }
 
+        /// <summary>
+        /// Cleans all browsers.
+        /// </summary>
         public virtual void TotalCleanUp()
         {
             Log("Class cleanup.");

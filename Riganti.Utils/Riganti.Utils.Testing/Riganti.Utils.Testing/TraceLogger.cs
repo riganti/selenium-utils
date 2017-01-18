@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 
 namespace Riganti.Utils.Testing.Selenium.Core
@@ -15,7 +14,25 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="level">message importance</param>
         public void WriteLine(string message, TraceLevel level)
         {
-            Trace.WriteLine(message, "SeleniumTest");
+            switch (level)
+            {
+                case TraceLevel.Error:
+                    Trace.TraceError(message);
+                    break;
+
+                case TraceLevel.Info:
+                case TraceLevel.Verbose:
+                    Trace.TraceInformation(message);
+                    break;
+
+                case TraceLevel.Warning:
+                    Trace.TraceWarning(message);
+                    break;
+
+                default:
+                    Trace.WriteLine(message, "SeleniumTest");
+                    break;
+            }
         }
     }
 }
