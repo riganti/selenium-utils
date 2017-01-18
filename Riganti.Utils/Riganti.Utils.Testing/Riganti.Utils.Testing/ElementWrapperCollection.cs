@@ -10,9 +10,17 @@ namespace Riganti.Utils.Testing.Selenium.Core
     public class ElementWrapperCollection : ICollection<ElementWrapper>, ISeleniumWrapper
     {
         public string Selector { get; }
+        /// <summary>
+        ///         
+        /// </summary>
         public ISeleniumWrapper ParentWrapper { get; set; }
+        /// <summary>
+        /// Wrapper of a current browser. 
+        /// </summary>
         public BrowserWrapper BrowserWrapper { get; set; }
-
+        /// <summary>
+        /// Selector construced by provided partail selectors in a test. 
+        /// </summary>
         public string FullSelector => (ParentWrapper == null ? (Selector ?? "") : $"{ParentWrapper.FullSelector} {Selector ?? ""}").Trim();
 
         public void ActivateScope()
@@ -82,12 +90,18 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
             return this;
         }
-
+        /// <summary>
+        /// Throws exception when lenght of a sequence is empty or the sequence contains more then one element.
+        /// </summary>
+        /// <returns></returns>
         public ElementWrapperCollection ThrowIfEmptyOrMoreThanOne()
         {
             return ThrowIfSequenceEmpty().ThrowIfSequenceContainsMoreThanOneElement();
         }
-
+        /// <summary>
+        /// Throws exception when lenght of sequence is different then specified number.
+        /// </summary>
+        /// <param name="count">expected sequence lenght</param>
         public ElementWrapperCollection ThrowIfDifferentCountThan(int count)
         {
             if (Count != count)
@@ -96,17 +110,25 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
             return this;
         }
-
+        /// <summary>
+        /// Returns a single, specific web element of a sequence, or null value if that element is not found.
+        /// </summary>
         public ElementWrapper SingleOrDefault()
         {
             return ThrowIfSequenceContainsMoreThanOneElement()?[0];
         }
-
+        /// <summary>
+        /// Returns the only web element of a sequence, and throws an exception if there is not exactly one element in the sequence.
+        /// </summary>
         public ElementWrapper Single()
         {
+
             return ThrowIfEmptyOrMoreThanOne()?[0];
         }
-
+        /// <summary>
+        /// Returns the element at a specified index in a sequence.
+        /// </summary>
+        /// <param name="index">position of web element to return</param>
         public ElementWrapper ElementAt(int index)
         {
             if (Count <= index || index < 0)
@@ -115,7 +137,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
             return collection[index];
         }
-
+        /// <summary>
+        /// Returns last web element of a sequence.
+        /// </summary>
+        /// <returns></returns>
         public ElementWrapper Last()
         {
             ThrowIfSequenceEmpty();

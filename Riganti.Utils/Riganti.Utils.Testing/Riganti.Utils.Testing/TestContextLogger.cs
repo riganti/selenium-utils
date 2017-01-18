@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class TestContextLogger : ILogger
@@ -8,7 +10,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             TestBase = test;
         }
-        public void WriteLine(string message)
+        public void WriteLine(string message, TraceLevel level)
         {
             TestBase?.TestContext?.WriteLine(message);
         }

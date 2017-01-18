@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Schema;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
+using System.Diagnostics;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
@@ -13,8 +14,14 @@ namespace Riganti.Utils.Testing.Selenium.Core
     /// </summary>
     public abstract class SeleniumTestBase : ITestBase
     {
+        /// <summary>
+        ///  Factory to create drivers that supports FastMode (cleaning and re-using the same browser for more tests)
+        /// </summary>
         public static readonly FastModeWebDriverFactoryRegistry FastModeFactoryRegistry;
         private static int testsIndexer = 0;
+        /// <summary>
+        /// Unique ID of the scope/frame/window. 
+        /// </summary>
         public Guid ActiveScope { get; set; } = Guid.Empty;
         static SeleniumTestBase()
         {
@@ -24,14 +31,16 @@ namespace Riganti.Utils.Testing.Selenium.Core
             if (SeleniumTestsConfiguration.TeamcityLogger) Loggers.Add(new TeamcityLogger());
             if (SeleniumTestsConfiguration.DebuggerLogger) Loggers.Add(new DebuggerLogger());
             if (SeleniumTestsConfiguration.DebugLogger) Loggers.Add(new DebugLogger());
-
+            if (SeleniumTestsConfiguration.TraceLogger) Loggers.Add(new TraceLogger());
             //default logger
             if (Loggers.Count == 0 && !SeleniumTestsConfiguration.DebugLoggerContainedKey)
             {
                 Loggers.Add(new DebugLogger());
             }
         }
-
+        /// <summary>
+        /// Collection of implementations of logging mechanisms.
+        /// </summary>
         public static List<ILogger> Loggers { get; protected set; }
 
         /// <summary>
@@ -74,9 +83,14 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 Loggers.Add(new TestContextLogger(this));
             }
         }
-
+        /// <summary>
+        /// Place to store browser factories, that does NOT support FastMode.
+        /// </summary>
         public WebDriverFactoryRegistry FactoryRegistry => factory ?? (factory = new WebDriverFactoryRegistry());
 
+        /// <summary>
+        /// Place to store browser factories, that does NOT support FastMode.
+        /// </summary>
         protected virtual List<IWebDriverFactory> BrowserFactories => SeleniumTestsConfiguration.FastMode ? FastModeFactoryRegistry.BrowserFactories : FactoryRegistry.BrowserFactories;
         private BrowserWrapper wrapper;
 
@@ -297,11 +311,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
-        protected static void WriteLine(string message)
+        protected static void WriteLine(string message, TraceLevel level = TraceLevel.Info)
         {
             Loggers.ForEach(logger =>
             {
-                logger.WriteLine(message);
+                logger.WriteLine(message, TraceLevel.Error);
             });
         }
 
@@ -315,10 +329,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
             if (SeleniumTestsConfiguration.LoggingPriorityMaximum >= priority)
                 WriteLine(message);
         }
-
+        /// <summary>
+        /// Writes exception to registered loggers.
+        /// </summary>
         public virtual void Log(Exception exception)
         {
-            WriteLine(exception.ToString());
+            WriteLine(exception.ToString(), System.Diagnostics.TraceLevel.Error);
         }
         /// <summary>
         /// Log driver id for better debugging output when some driver is stuck.
