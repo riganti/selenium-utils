@@ -85,7 +85,7 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                TestContext.WriteLine(
+                Context.WriteLine(
                     browser.First("#displayed").FindElements("div p")
                         .FullSelector);
             });

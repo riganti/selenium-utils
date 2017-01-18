@@ -6,7 +6,7 @@ namespace Selenium.Core.UnitTests.Mock
 {
     public class MockITestBase : ITestBase
     {
-        public ITestContext TestContext { get; set; }
+        public ITestContext Context { get; set; }
 
         public void Log(Exception exception)
         {

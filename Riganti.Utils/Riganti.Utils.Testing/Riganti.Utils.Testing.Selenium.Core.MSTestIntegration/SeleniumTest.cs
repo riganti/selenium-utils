@@ -9,13 +9,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
     {
         private ITestContext testContext;
 
-        public override ITestContext TestContext
+        public override ITestContext Context
         {
-            get { return testContext ?? (testContext = TestingContext?.Wrap()); }
+            get { return testContext ?? (testContext = TestContext?.Wrap()); }
             set { testContext = value; }
         }
 
-        public TestContext TestingContext { get; set; }
+        public TestContext TestContext { get; set; }
 
         [TestCleanup]
         public override void TestCleanUp()

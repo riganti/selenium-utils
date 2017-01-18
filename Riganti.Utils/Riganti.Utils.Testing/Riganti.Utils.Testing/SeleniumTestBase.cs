@@ -46,7 +46,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         ///  Used to store information that is provided to tests. (MSTest)
         /// </summary>
-        public virtual ITestContext TestContext { get; set; }
+        public virtual ITestContext Context { get; set; }
 
         private WebDriverFactoryRegistry factory;
         private string screenshotsFolderPath;
@@ -65,7 +65,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 if (string.IsNullOrWhiteSpace(screenshotsFolderPath))
                 {
-                    screenshotsFolderPath = TestContext.TestDeploymentDir;
+                    screenshotsFolderPath = Context.TestDeploymentDir;
                 }
                 return screenshotsFolderPath;
             }
@@ -299,10 +299,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 LogCurrentlyPerformedAction("Taking screenshot");
 
-                var filename = Path.Combine(ScreenshotsFolderPath, $"{TestContext.FullyQualifiedTestClassName}_{TestContext.TestName}" + attemptNumber + ".png");
+                var filename = Path.Combine(ScreenshotsFolderPath, $"{Context.FullyQualifiedTestClassName}_{Context.TestName}" + attemptNumber + ".png");
                 browserWrapper.TakeScreenshot(filename);
                 LogCurrentlyPerformedAction($"Screenshot saved to: {filename}");
-                TestContext.AddResultFile(filename);
+                Context.AddResultFile(filename);
             }
             catch (Exception ex)
             {

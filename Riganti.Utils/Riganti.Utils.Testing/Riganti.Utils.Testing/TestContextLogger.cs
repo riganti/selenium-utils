@@ -12,7 +12,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
         public void WriteLine(string message, TraceLevel level)
         {
-            TestBase?.TestContext?.WriteLine(message);
+            TestBase?.Context?.WriteLine(message);
         }
     }
 }
