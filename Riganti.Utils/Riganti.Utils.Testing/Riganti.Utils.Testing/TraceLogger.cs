@@ -34,5 +34,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
                     break;
             }
         }
+        public void OnTestFinished(ITestContext context)
+        {
+            //ignore
+        }
     }
 }

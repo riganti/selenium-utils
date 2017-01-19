@@ -4,7 +4,7 @@ using Riganti.Utils.Testing.Selenium.Core;
 
 namespace Selenium.Core.UnitTests.Mock
 {
-    public class MockITestBase : ITestBase
+    public class MockISeleniumTest : ISeleniumTest
     {
         public ITestContext Context { get; set; }
 
@@ -12,6 +12,6 @@ namespace Selenium.Core.UnitTests.Mock
         {
         }
 
-        public Guid ActiveScope { get; set; }
+        public Guid CurrentScope { get; set; }
     }
 }

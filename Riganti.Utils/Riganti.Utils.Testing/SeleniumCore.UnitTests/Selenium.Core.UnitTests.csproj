@@ -72,7 +72,7 @@
     <Compile Include="ElementWrapperTests.cs" />
     <Compile Include="ExceptionsTests.cs" />
     <Compile Include="FactoriesTests.cs" />
-    <Compile Include="Mock\MockITestBase.cs" />
+    <Compile Include="Mock\MockISeleniumTest.cs" />
     <Compile Include="Mock\MockIWebDriver.cs" />
     <Compile Include="Mock\MockIWebElement.cs" />
     <Compile Include="ProcessTests.cs" />

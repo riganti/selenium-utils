@@ -16,5 +16,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="message">Text to write.</param>
         /// <param name="level">Message information level.</param>
         void WriteLine(string message, TraceLevel level);
+
+        /// <summary>
+        /// This method is called when test finished.
+        /// </summary>
+        void OnTestFinished(ITestContext context);
     }
+
 }

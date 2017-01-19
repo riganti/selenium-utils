@@ -99,7 +99,7 @@
     <Compile Include="IReusableWebDriver.cs" />
     <Compile Include="ISeleniumWrapper.cs" />
     <Compile Include="ISelfCleanUpWebDriver.cs" />
-    <Compile Include="ITestBase.cs" />
+    <Compile Include="ISeleniumTest.cs" />
     <Compile Include="ChromeFastModeFactory.cs" />
     <Compile Include="ITestContext.cs" />
     <Compile Include="IWebDriverExtensions.cs" />

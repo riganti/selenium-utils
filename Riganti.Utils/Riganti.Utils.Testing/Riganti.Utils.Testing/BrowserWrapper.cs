@@ -14,7 +14,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         // ReSharper disable once InconsistentNaming
         protected readonly IWebDriver browser;
 
-        private readonly ITestBase testClass;
+        private readonly ISeleniumTest testClass;
         public int ActionWaitTime { get; set; } = SeleniumTestsConfiguration.ActionTimeout;
         public string BaseUrl { get; set; } = SeleniumTestsConfiguration.BaseUrl;
 
@@ -29,7 +29,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         private ScopeOptions ScopeOptions { get; set; }
 
-        public BrowserWrapper(IWebDriver browser, ITestBase testClass, ScopeOptions scope)
+        public BrowserWrapper(IWebDriver browser, ISeleniumTest testClass, ScopeOptions scope)
         {
             this.browser = browser;
             this.testClass = testClass;
@@ -390,7 +390,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// Finds all elements that satisfy the condition of css selector.
         /// </summary>
         /// <param name="cssSelector"></param>
-        /// <returns></returns>
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
         public ElementWrapperCollection FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             return Browser.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)).ToElementsList(this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector());
@@ -411,6 +411,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return ThrowIfIsNull(FirstOrDefault(selector, tmpSelectMethod), $"Element not found. Selector: {selector}");
         }
 
+        /// <summary>
+        /// Performs specified action on each element from a sequence.
+        /// </summary>
+        /// <param name="selector">Selector to find a sequence of elements.</param>
+        /// <param name="action">Action to perform on each element of a sequence.</param>
+        /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
         public BrowserWrapper ForEach(string selector, Action<ElementWrapper> action, Func<string, By> tmpSelectMethod = null)
         {
             FindElements(selector, tmpSelectMethod).ForEach(action);
@@ -424,6 +430,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return FindElements(selector, tmpSelectMethod).SingleOrDefault();
         }
 
+
+        /// <summary>
+        /// Returns one element and throws exception when no element or more then one element is found.
+        /// </summary>
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
         public ElementWrapper Single(string selector, Func<string, By> tmpSelectMethod = null)
@@ -659,7 +669,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             var iframe = First(selector);
             iframe.CheckIfTagName(new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
             var frame = browser.SwitchTo().Frame(iframe.WebElement);
-            testClass.ActiveScope = options.ScopeId;
+            testClass.CurrentScope = options.ScopeId;
             return new BrowserWrapper(frame, testClass, options);
         }
 
@@ -835,13 +845,15 @@ namespace Riganti.Utils.Testing.Selenium.Core
             Browser.SwitchTo().Window(Browser.WindowHandles[index]);
             return this;
         }
-        
+
         public void ActivateScope()
         {
-            if (testClass.ActiveScope == ScopeOptions.ScopeId)
+            
+            if (testClass.CurrentScope == ScopeOptions.ScopeId)
             {
                 return;
             }
+
             if (ScopeOptions.Parent != null && ScopeOptions.Parent != this)
             {
                 ScopeOptions.Parent.ActivateScope();
@@ -862,7 +874,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                     browser.SwitchTo().Frame(ScopeOptions.FrameSelector);
                 }
             }
-            testClass.ActiveScope = ScopeOptions.ScopeId;
+            testClass.CurrentScope = ScopeOptions.ScopeId;
         }
 
         public string GetTitle() => Browser.Title;
@@ -915,7 +927,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public IWebDriver _GetInternalWebDriver()
         {
-            testClass.ActiveScope = Guid.Empty;
+            testClass.CurrentScope = Guid.Empty;
             return browser;
         }
 

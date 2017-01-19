@@ -9,5 +9,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
             Debug.WriteLine(message, "Test");
             Debug.Flush();
         }
+
+        public void OnTestFinished(ITestContext context)
+        {
+            //ignore
+        }
     }
 }

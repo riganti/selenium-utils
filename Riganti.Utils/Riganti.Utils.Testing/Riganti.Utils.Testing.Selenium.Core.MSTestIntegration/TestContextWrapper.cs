@@ -5,7 +5,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 {
     internal class TestContextWrapper : ITestContext
     {
-        private TestContext context;
+        private readonly TestContext context;
 
         public TestContextWrapper(TestContext context)
         {

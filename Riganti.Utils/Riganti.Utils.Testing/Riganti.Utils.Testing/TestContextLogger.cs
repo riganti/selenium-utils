@@ -2,9 +2,12 @@ using System.Diagnostics;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
+    /// <summary>
+    /// Logger that writes incomming messages into TestContext.
+    /// </summary>
     public class TestContextLogger : ILogger
     {
-        public SeleniumTestBase TestBase { get; }
+        private ISeleniumTest TestBase { get; }
 
         public TestContextLogger(SeleniumTestBase test)
         {
@@ -13,6 +16,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public void WriteLine(string message, TraceLevel level)
         {
             TestBase?.Context?.WriteLine(message);
+        }
+        public void OnTestFinished(ITestContext context)
+        {
+            //ignore
         }
     }
 }

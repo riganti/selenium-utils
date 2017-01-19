@@ -23,13 +23,17 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 
         public static int ActionTimeout { get; set; } = SeleniumTestsConfiguration.ActionTimeout;
-
+        /// <summary>
+        /// Default timeout for Wait function.
+        /// </summary>
         public int ActionWaitTime
         {
             get { return ActionTimeout; }
             set { ActionTimeout = value; }
         }
-
+        /// <summary>
+        /// Unwrapped IWebElement binding implementation (SeleniumHQ).
+        /// </summary>
         public IWebElement WebElement
         {
             get
@@ -91,17 +95,23 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 
         public string BaseUrl { get; set; }
-
         public void SetCssSelectMethod()
         {
             selectMethod = By.CssSelector;
         }
 
+        /// <summary>
+        /// Resets select method to value of BrowserWrapper.
+        /// </summary>
         public void SetBrowserSelectMethod()
         {
             selectMethod = null;
         }
 
+        /// <summary>
+        /// Sends enter key to browser.
+        /// </summary>
+        /// <returns></returns>
         public ElementWrapper SendEnterKey()
         {
             SendKeys(Keys.Enter);

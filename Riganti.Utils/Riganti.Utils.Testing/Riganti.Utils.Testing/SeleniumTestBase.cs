@@ -11,7 +11,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
     /// <summary>
     /// This class represents the funcation of UI tests based on selenium. Provides logging, re-try logic, screenshots, etc..
     /// </summary>
-    public abstract class SeleniumTestBase : ITestBase
+    public abstract class SeleniumTestBase : ISeleniumTest
     {
         /// <summary>
         ///  Factory to create drivers that supports FastMode (cleaning and re-using the same browser for more tests)
@@ -23,7 +23,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Unique ID of the scope/frame/window.
         /// </summary>
-        public Guid ActiveScope { get; set; } = Guid.Empty;
+        public Guid CurrentScope { get; set; } = Guid.Empty;
 
         static SeleniumTestBase()
         {
@@ -98,7 +98,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Place to store browser factories, that does NOT support FastMode.
         /// </summary>
-        protected virtual List<IWebDriverFactory> BrowserFactories => SeleniumTestsConfiguration.FastMode ? FastModeFactoryRegistry.BrowserFactories : FactoryRegistry.BrowserFactories;
+        protected virtual List<IWebDriverFactory> BrowserFactories
+            =>
+            SeleniumTestsConfiguration.FastMode
+                ? FastModeFactoryRegistry.BrowserFactories
+                : FactoryRegistry.BrowserFactories;
 
         private BrowserWrapper wrapper;
 
@@ -107,41 +111,47 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         protected virtual void RunInAllBrowsers(Action<BrowserWrapper> testBody)
         {
-            Log("Test no.: " + testsIndexer++, 10);
-            CheckAvailableWebDriverFactories();
-            foreach (var browserFactory in BrowserFactories)
+            try
             {
-                string browserName;
-                Exception exception = null;
+                Log("Test no.: " + testsIndexer++, 10);
+                CheckAvailableWebDriverFactories();
+                foreach (var browserFactory in BrowserFactories)
+                {
+                    string browserName;
+                    Exception exception = null;
 
-                CurrentTestExceptions.Clear();
-                if (!(SeleniumTestsConfiguration.PlainMode || SeleniumTestsConfiguration.DeveloperMode))
-                {
-                    TryExecuteTest(testBody, browserFactory, out browserName, out exception);
-                }
-                else
-                {
-                    //developer mode - it throws exception directly without catch statement
-                    ExecuteTest(testBody, browserFactory, out browserName);
-                }
-                if (exception != null)
-                {
-                    Exception throwException;
-                    if (CurrentSubSection == null)
+                    CurrentTestExceptions.Clear();
+                    if (!(SeleniumTestsConfiguration.PlainMode || SeleniumTestsConfiguration.DeveloperMode))
                     {
-                        throwException = new SeleniumTestFailedException(CurrentTestExceptions, browserName, ScreenshotsFolderPath);
+                        TryExecuteTest(testBody, browserFactory, out browserName, out exception);
                     }
                     else
                     {
-                        throwException = new SeleniumTestFailedException(CurrentTestExceptions, browserName, ScreenshotsFolderPath, CurrentSubSection);
+                        //developer mode - it throws exception directly without catch statement
+                        ExecuteTest(testBody, browserFactory, out browserName);
                     }
+                    if (exception != null)
+                    {
+                        Exception throwException;
+                        if (CurrentSubSection == null)
+                        {
+                            throwException = new SeleniumTestFailedException(CurrentTestExceptions, browserName, ScreenshotsFolderPath);
+                        }
+                        else
+                        {
+                            throwException = new SeleniumTestFailedException(CurrentTestExceptions, browserName, ScreenshotsFolderPath, CurrentSubSection);
+                        }
 
-                    Log("\r\n\r\n\r\n\r\nException logging: \r\n\r\n");
-                    Log(throwException);
-                    throw throwException;
+                        Log("\r\n\r\n\r\n\r\nException logging: \r\n\r\n");
+                        Log(throwException);
+                        throw throwException;
+                    }
                 }
             }
-            TestCleanUp();
+            finally
+            {
+                TestCleanUp();
+            }
         }
 
         /// <summary>
@@ -310,7 +320,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 LogCurrentlyPerformedAction("Taking screenshot");
 
-                var filename = Path.Combine(ScreenshotsFolderPath, $"{Context.FullyQualifiedTestClassName}_{Context.TestName}" + attemptNumber + ".png");
+                var filename = Path.Combine(ScreenshotsFolderPath, GetScreenshotName(attemptNumber));
                 browserWrapper.TakeScreenshot(filename);
                 LogCurrentlyPerformedAction($"Screenshot saved to: {filename}");
                 Context.AddResultFile(filename);
@@ -320,6 +330,19 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 Log($"Screenshot CANNOT be saved!", 10);
                 Log(ex);
             }
+        }
+
+        /// <summary>
+        /// Get new name to save screenshot. 
+        /// </summary>
+        /// <param name="attemptNumber">number of test iteration (re-try iteration)</param>
+        protected virtual string GetScreenshotName(int attemptNumber)
+        {
+            if (Context == null)
+            {
+                return $"{DateTime.Now:YYMMDD}_attempt{attemptNumber}.png";
+            }
+            return $"{Context.FullyQualifiedTestClassName}_{Context.TestName}" + attemptNumber + ".png";
         }
 
         /// <summary>
@@ -405,6 +428,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             AllowDerivedExceptionTypes = false;
             ExpectedExceptionType = null;
             Log("Test cleanup.");
+            Loggers.ForEach(s=> s.OnTestFinished(Context));
         }
 
         /// <summary>

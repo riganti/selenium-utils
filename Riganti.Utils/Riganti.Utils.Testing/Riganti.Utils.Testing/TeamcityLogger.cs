@@ -9,5 +9,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
            Console.WriteLine($"##teamcity[message text='{message}']");
         }
+        public void OnTestFinished(ITestContext context)
+        {
+            //ignore
+        }
     }
 }

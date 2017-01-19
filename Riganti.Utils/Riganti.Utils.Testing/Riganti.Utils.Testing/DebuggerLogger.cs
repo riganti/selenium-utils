@@ -17,5 +17,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
+        public void OnTestFinished(ITestContext context)
+        {
+            //ignore
+        }
     }
 }
