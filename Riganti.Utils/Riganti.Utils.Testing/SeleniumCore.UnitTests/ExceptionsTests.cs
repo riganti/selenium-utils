@@ -8,13 +8,18 @@ namespace Selenium.Core.UnitTests
     [TestClass]
     public class ExceptionsTests
     {
+        private const string UrlConst = "https://example.com/";
+
         public TestContext TestContext { get; set; }
         [TestMethod]
         public void SeleniumTestFailedExceptionTest()
 
         {
             var exps = new List<Exception>() { new Exception("Exception1"), new Exception("Exception2"), new Exception("Exception3") };
-            var exp = new SeleniumTestFailedException(exps,"SpecificBrowserName", "SpecificScreen", "SpecificSession");
+            var exp = new SeleniumTestFailedException(exps, "SpecificBrowserName", "SpecificScreen", "SpecificSession")
+            {
+                Url = UrlConst
+            };
             var str = exp.ToString();
 
             TestContext.WriteLine(str);
@@ -25,6 +30,7 @@ namespace Selenium.Core.UnitTests
             Assert.IsTrue(str.Contains("SpecificBrowserName"));
             Assert.IsTrue(str.Contains("SpecificScreen"));
             Assert.IsTrue(str.Contains("SpecificSession"));
+            Assert.IsTrue(str.Contains(UrlConst));
 
 
         }

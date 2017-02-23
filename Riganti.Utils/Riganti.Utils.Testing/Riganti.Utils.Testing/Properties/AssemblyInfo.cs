@@ -36,3 +36,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.1")]
 [assembly: AssemblyFileVersion("1.0.1")]
 [assembly: InternalsVisibleTo("WebApplication1.Tests")]
+[assembly: InternalsVisibleTo("Selenium.Core.UnitTests")]

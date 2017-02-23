@@ -47,6 +47,9 @@
     <DocumentationFile>bin\CI2\Riganti.Utils.Testing.Selenium.Core.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotVVM.Framework">
+      <HintPath>..\packages\DotVVM.1.1.0-rc\lib\net451\DotVVM.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />

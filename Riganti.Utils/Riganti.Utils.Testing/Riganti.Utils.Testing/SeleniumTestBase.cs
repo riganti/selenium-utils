@@ -119,11 +119,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 {
                     string browserName;
                     Exception exception = null;
-
+                    string url = null;
                     CurrentTestExceptions.Clear();
                     if (!(SeleniumTestsConfiguration.PlainMode || SeleniumTestsConfiguration.DeveloperMode))
                     {
-                        TryExecuteTest(testBody, browserFactory, out browserName, out exception);
+                        TryExecuteTest(testBody, browserFactory, out browserName, out exception, out url);
                     }
                     else
                     {
@@ -132,15 +132,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
                     }
                     if (exception != null)
                     {
-                        Exception throwException;
-                        if (CurrentSubSection == null)
+                        var throwException = new SeleniumTestFailedException(CurrentTestExceptions, browserName)
                         {
-                            throwException = new SeleniumTestFailedException(CurrentTestExceptions, browserName, ScreenshotsFolderPath);
-                        }
-                        else
-                        {
-                            throwException = new SeleniumTestFailedException(CurrentTestExceptions, browserName, ScreenshotsFolderPath, CurrentSubSection);
-                        }
+                            ScreenshotPath =  ScreenshotsFolderPath,
+                            CurrentSubSection = CurrentSubSection,
+                             Url = url
+                        };
+
 
                         Log("\r\n\r\n\r\n\r\nException logging: \r\n\r\n");
                         Log(throwException);
@@ -154,6 +152,21 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
+        /// <summary>
+        /// Tries to return current url of the IWebDriver or null.
+        /// </summary>
+        protected virtual string TryGetBrowserCurrentUrl(IWebDriver driver)
+        {
+            try
+            {
+                return driver.Url;
+            }
+            catch
+            {
+                return null;
+            }
+            
+        }
         /// <summary>
         /// Executes test withnout caching exceptions
         /// </summary>
@@ -186,12 +199,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="browserFactory">Factory of specific browser.</param>
         /// <param name="browserName">Name of the browser.</param>
         /// <param name="exception">Exception with details of failure.</param>
-        protected virtual void TryExecuteTest(Action<BrowserWrapper> testBody, IWebDriverFactory browserFactory, out string browserName, out Exception exception)
+        protected virtual void TryExecuteTest(Action<BrowserWrapper> testBody, IWebDriverFactory browserFactory, out string browserName, out Exception exception, out string url)
         {
             var attemptNumber = 0;
             var attampsMaximum = SeleniumTestsConfiguration.TestAttempts + (SeleniumTestsConfiguration.FastMode ? 1 : 0);
             do
             {
+                url = null;
                 attemptNumber++;
                 WriteLine($"Attamp #{attemptNumber} starts.");
                 exception = null;
@@ -215,6 +229,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 }
                 catch (Exception ex)
                 {
+                    url = TryGetBrowserCurrentUrl(wrapper.Browser);
                     exceptionWasThrow = true;
                     bool isExpected = false;
                     if (ExpectedExceptionType != null)

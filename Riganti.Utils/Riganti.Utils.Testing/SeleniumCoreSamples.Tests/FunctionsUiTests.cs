@@ -16,9 +16,8 @@ namespace SeleniumCore.Samples.Tests
         {
             RunInAllBrowsers(browser =>
             {
-                Thread.Sleep(5000);
                 browser.NavigateToUrl();
-                browser.CheckIfIsDisplayed("#displayed");
+                browser.CheckIfIsDisplayed("#dispblayed");
                 browser.First("#displayed").CheckIfIsDisplayed();
             });
         }
