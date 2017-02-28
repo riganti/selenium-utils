@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using DotVVM.Framework.Utils;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {

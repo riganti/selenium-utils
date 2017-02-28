@@ -70,11 +70,13 @@
   <ItemGroup>
     <Compile Include="ByExtension.cs" />
     <Compile Include="ChromeDriverWrapper.cs" />
+    <Compile Include="Comparators\StringValueComparator.cs" />
     <Compile Include="DebuggerLogger.cs" />
     <Compile Include="DebugLogger.cs" />
     <Compile Include="DefaultChromeWebDriverFactory.cs" />
     <Compile Include="DefaultFirefoxWebDriverFactory.cs" />
     <Compile Include="DefaultInternetExplorerWebDriverFactory.cs" />
+    <Compile Include="CheckElementWrapper.cs" />
     <Compile Include="ElementWrapper.cs" />
     <Compile Include="BrowserWrapper.cs" />
     <Compile Include="ElementWrapperCollection.cs" />

@@ -763,6 +763,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
+        public CheckElementWrapper Check()
+        {
+            return new CheckElementWrapper(this);
+        }
+
         public virtual ElementWrapper CheckIfContainsText()
         {
             if (string.IsNullOrWhiteSpace(GetInnerText()))
