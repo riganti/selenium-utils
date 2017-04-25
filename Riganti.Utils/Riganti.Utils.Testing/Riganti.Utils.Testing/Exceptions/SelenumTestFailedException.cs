@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using DotVVM.Framework.Utils;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
@@ -21,31 +20,37 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 
         /// <inheritdoc />
         public override string Message => ToString();
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string ExceptionMessage { get; set; }
+
         /// <inheritdoc/>
         internal SeleniumTestFailedException()
         {
         }
+
         /// <inheritdoc/>
 
         internal SeleniumTestFailedException(string message) : base(message)
         {
             ExceptionMessage = message;
         }
+
         /// <inheritdoc/>
 
         internal SeleniumTestFailedException(Exception innerException) : base("", innerException)
         {
         }
+
         /// <inheritdoc/>
 
         internal SeleniumTestFailedException(string message, Exception innerException) : base(message, innerException)
         {
             ExceptionMessage = message;
         }
+
         /// <inheritdoc/>
         private SeleniumTestFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
@@ -57,12 +62,14 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             this.ScreenshotPath = screenshotsPath;
             this.BrowserName = browserName;
         }
+
         /// <inheritdoc/>
         internal SeleniumTestFailedException(List<Exception> innerExceptions, string browserName) : this($"Test failed in browser '{browserName}'.", null)
         {
             this.innerExceptions = innerExceptions;
             this.BrowserName = browserName;
         }
+
         /// <inheritdoc/>
 
         internal SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsPath) : this($"Test failed in browser '{browserName}'.", null)
@@ -71,6 +78,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             this.ScreenshotPath = screenshotsPath;
             this.BrowserName = browserName;
         }
+
         /// <inheritdoc/>
 
         internal SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsPath, string currentSubsection) : this($"Test failed in browser '{browserName}'", null)
@@ -80,6 +88,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             ScreenshotPath = screenshotsPath;
             BrowserName = browserName;
         }
+
         /// <inheritdoc/>
 
         internal SeleniumTestFailedException(Exception innerException, string browserName, string screenshotsPath, string currentSubSection) : this($"Test failed in browser '{browserName}'.", innerException)
@@ -88,14 +97,17 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             this.ScreenshotPath = screenshotsPath;
             this.BrowserName = browserName;
         }
+
         /// <summary>
         /// Path to stored screenshot.
         /// </summary>
         public string ScreenshotPath { get; set; }
+
         /// <summary>
         /// Name of browser where the test failed.
         /// </summary>
         public string BrowserName { get; set; }
+
         /// <summary>
         /// Current url of the tested website.
         /// </summary>
@@ -151,14 +163,11 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             {
                 //top exception = this
                 sb.AppendLine(exception.StackTrace);
-
             }
         }
 
-
         private void RenderInnerAgregatedExceptions(StringBuilder sb)
         {
-
             // add all exceptions to report
             if (innerExceptions != null && innerExceptions.Count > 1)
             {
@@ -194,9 +203,9 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             if (testedObject != null)
             {
                 builder.AppendLine(message);
-
             }
         }
+
         private void RenderMessage(StringBuilder sb)
         {
             RenderWhenNotNull(sb, ExceptionMessage, $"Message: {ExceptionMessage}");

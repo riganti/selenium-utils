@@ -68,12 +68,14 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>When overridden in a derived class, adds a file name to the list in TestResult.ResultFileNames.</summary>
         /// <param name="fileName">The file name to add.</param>
         void AddResultFile(string fileName);
-
     }
 
- 
+    /// <summary>
+    /// Unit tests result values
+    /// </summary>
     public enum UnitTestResult
     {
+#pragma warning disable 1591
         Failed,
         Inconclusive,
         Passed,
@@ -82,5 +84,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
         Timeout,
         Aborted,
         Unknown,
+#pragma warning restore 1591
     }
 }

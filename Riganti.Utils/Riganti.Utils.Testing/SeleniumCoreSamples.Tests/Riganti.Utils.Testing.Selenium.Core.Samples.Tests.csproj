@@ -79,6 +79,7 @@
     <Compile Include="IframeTests.cs" />
     <Compile Include="IsCheckedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestContextTests.cs" />
     <Compile Include="TitleTests.cs" />
     <Compile Include="FunctionsUiTests.cs" />
   </ItemGroup>

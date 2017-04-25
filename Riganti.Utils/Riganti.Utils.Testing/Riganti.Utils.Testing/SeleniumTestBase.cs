@@ -134,11 +134,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
                     {
                         var throwException = new SeleniumTestFailedException(CurrentTestExceptions, browserName)
                         {
-                            ScreenshotPath =  ScreenshotsFolderPath,
+                            ScreenshotPath = ScreenshotsFolderPath,
                             CurrentSubSection = CurrentSubSection,
-                             Url = url
+                            Url = url
                         };
-
 
                         Log("\r\n\r\n\r\n\r\nException logging: \r\n\r\n");
                         Log(throwException);
@@ -165,8 +164,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 return null;
             }
-            
         }
+
         /// <summary>
         /// Executes test withnout caching exceptions
         /// </summary>
@@ -199,6 +198,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="browserFactory">Factory of specific browser.</param>
         /// <param name="browserName">Name of the browser.</param>
         /// <param name="exception">Exception with details of failure.</param>
+        /// <param name="url">Current url</param>
         protected virtual void TryExecuteTest(Action<BrowserWrapper> testBody, IWebDriverFactory browserFactory, out string browserName, out Exception exception, out string url)
         {
             var attemptNumber = 0;
@@ -306,6 +306,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
+        /// <summary>
+        /// Checks if factories collection contains at least one factory.
+        /// </summary>
+        /// <exception cref="Exception"></exception>
         protected virtual void CheckAvailableWebDriverFactories()
         {
             if (BrowserFactories.Count == 0)
@@ -315,7 +319,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 
         [Obsolete]
+#pragma warning disable 1591
         public virtual void RunTestSubSection(string subSectionName, Action<BrowserWrapper> action)
+#pragma warning restore 1591
         {
             Log($"Starts testing of section: {subSectionName}", 5);
             CurrentSubSection = subSectionName;
@@ -348,7 +354,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 
         /// <summary>
-        /// Get new name to save screenshot. 
+        /// Get new name to save screenshot.
         /// </summary>
         /// <param name="attemptNumber">number of test iteration (re-try iteration)</param>
         protected virtual string GetScreenshotName(int attemptNumber)
@@ -443,7 +449,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             AllowDerivedExceptionTypes = false;
             ExpectedExceptionType = null;
             Log("Test cleanup.");
-            Loggers.ForEach(s=> s.OnTestFinished(Context));
+            Loggers.ForEach(s => s.OnTestFinished(Context));
         }
 
         /// <summary>
