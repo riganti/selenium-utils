@@ -5,7 +5,9 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
+using Riganti.Utils.Testing.Selenium.Core.Comparators;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
@@ -14,23 +16,35 @@ namespace Riganti.Utils.Testing.Selenium.Core
         private readonly IWebElement element;
         private readonly BrowserWrapper browser;
 
+        /// <summary>
+        /// Gets selector used to get this element.
+        /// </summary>
         public string Selector { get; set; }
+
+        /// <summary>
+        /// Generated css selector to this element.
+        /// </summary>
         public string FullSelector => GenerateFullSelector();
 
+        /// <summary>
+        /// Activates selenium SwitchTo function to change context to make element accessable.
+        /// </summary>
         public void ActivateScope()
         {
             ParentWrapper.ActivateScope();
         }
 
         public static int ActionTimeout { get; set; } = SeleniumTestsConfiguration.ActionTimeout;
+
         /// <summary>
         /// Default timeout for Wait function.
         /// </summary>
         public int ActionWaitTime
         {
-            get { return ActionTimeout; }
-            set { ActionTimeout = value; }
+            get => ActionTimeout;
+            set => ActionTimeout = value;
         }
+
         /// <summary>
         /// Unwrapped IWebElement binding implementation (SeleniumHQ).
         /// </summary>
@@ -85,19 +99,33 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public ElementWrapperCollection Children => FindElements("child::*", By.XPath);
 
-        public ElementWrapper(IWebElement webElement, BrowserWrapper browserWrapper)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ElementWrapper"/> class.
+        /// </summary>
+        /// <param name="webElement">The web element.</param>
+        /// <param name="browserWrapper">The browser wrapper.</param>
+        /// <param name="selector">The selector.</param>
+        public ElementWrapper(IWebElement webElement, BrowserWrapper browserWrapper, string selector = null)
         {
             element = webElement;
             browser = browserWrapper;
+            Selector = selector;
             SelectMethod = browser.SelectMethod;
             BaseUrl = browser.BaseUrl;
             ActionTimeout = browserWrapper.ActionWaitTime;
         }
 
+        /// <summary>
+        /// Absolute Url that is used to resolve relative addresses when function NavigateTo is used.
+        /// </summary>
         public string BaseUrl { get; set; }
+
+        /// <summary>
+        /// Set css selector as current select method.
+        /// </summary>
         public void SetCssSelectMethod()
         {
-            selectMethod = By.CssSelector;
+            selectMethod = SelectBy.CssSelector;
         }
 
         /// <summary>
@@ -130,6 +158,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return $"{Selector ?? ""}".Trim();
         }
 
+        /// <summary>
+        /// Checks the name of the tag.
+        /// </summary>
+        /// <param name="expectedTagName">Expected name of the tag.</param>
+        /// <param name="failureMessage">The failure message.</param>
+        /// <returns></returns>
+        /// <exception cref="UnexpectedElementStateException"></exception>
         public virtual ElementWrapper CheckTagName(string expectedTagName, string failureMessage = null)
         {
             if (!string.Equals(GetTagName(), expectedTagName, StringComparison.OrdinalIgnoreCase))
@@ -139,6 +174,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
+        /// <summary>
+        /// Checks the name of tag.
+        /// </summary>
+        /// <param name="expectedTagNames">The expected tag names.</param>
+        /// <param name="failureMessage">The failure message.</param>
+        /// <returns></returns>
+        /// <exception cref="UnexpectedElementStateException"></exception>
         public virtual ElementWrapper CheckIfTagName(string[] expectedTagNames, string failureMessage = null)
         {
             var valid = false;
@@ -159,11 +201,24 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
+        /// <summary>
+        /// Checks the name of tag.
+        /// </summary>
+        /// <param name="expectedTagName">Expected name of the tag.</param>
+        /// <param name="failureMessage">The failure message.</param>
+        /// <returns></returns>
         public virtual ElementWrapper CheckIfTagName(string expectedTagName, string failureMessage = null)
         {
             return CheckTagName(expectedTagName, failureMessage);
         }
 
+        /// <summary>
+        /// Checks if this element contains other element(s) selected by <see cref="cssSelector"/>.
+        /// </summary>
+        /// <param name="cssSelector">The CSS selector.</param>
+        /// <param name="tmpSelectMethod">The temporary select method.</param>
+        /// <returns></returns>
+        /// <exception cref="EmptySequenceException"></exception>
         public virtual ElementWrapper CheckIfContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             if (FindElements(cssSelector, tmpSelectMethod).Count == 0)
@@ -707,6 +762,23 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual ElementWrapper CheckIfValue(string value, bool caseInsensitive = false, bool trimValue = true)
         {
+            string elementValue = GetValue();
+
+            if (trimValue)
+            {
+                elementValue = elementValue?.Trim();
+                value = value.Trim();
+            }
+            if (!string.Equals(value, elementValue,
+                caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
+            {
+                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{elementValue}' \r\n Element selector: {FullSelector} \r\n");
+            }
+            return this;
+        }
+
+        public string GetValue()
+        {
             var tag = GetTagName();
             string elementValue = null;
             //input
@@ -720,17 +792,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 elementValue = GetInnerText();
             }
 
-            if (trimValue)
-            {
-                elementValue = elementValue?.Trim();
-                value = value.Trim();
-            }
-            if (!string.Equals(value, elementValue,
-                caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
-            {
-                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{elementValue}' \r\n Element selector: {FullSelector} \r\n");
-            }
-            return this;
+            return elementValue;
         }
 
         private bool IsChecked()
@@ -763,6 +825,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
+        /// <summary>
+        /// Returns new api to define validation rules of the element.
+        /// </summary>
         public CheckElementWrapper Check()
         {
             return new CheckElementWrapper(this);
@@ -1066,6 +1131,18 @@ return elementInViewport2(arguments[0]);
             BrowserWrapper.DragAndDrop(this, dropToElement, offsetX, offsetY);
             return this;
         }
-    }
 
+        /// <summary>
+        /// Determines whether the specified CSS class.
+        /// </summary>
+        /// <param name="cssClass">The CSS class.</param>
+        /// <returns>
+        ///   <c>true</c> if has the specified CSS class otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasCssClass(string cssClass)
+        {
+            var attr = GetAttribute("class");
+            return attr.Split(' ').Any(s => string.Equals(cssClass, s, StringComparison.OrdinalIgnoreCase));
+        }
+    }
 }

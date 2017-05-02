@@ -26,7 +26,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             CheckAndSet(GetSettingsKey("StandardOutputLogger"), false, value => StandardOutputLogger = value, false);
             CheckAndSet(GetSettingsKey("DebugLogger"), false, value => DebugLogger = value, false);
             CheckAndSet(GetSettingsKey("TraceLogger"), false, value => TraceLogger = value, false);
-            
+
             DebugLoggerContainedKey = ConfigurationManager.AppSettings.AllKeys.Any(s => string.Equals(GetSettingsKey("DebugLogger"), s, StringComparison.OrdinalIgnoreCase));
 
             //drivers
@@ -145,6 +145,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// When browser cannot be closed and driver is not responding, this option tries to get PID of the driver and kill the process.
         /// </summary>
         public static bool TryToKillWhenNotResponding { get; set; }
+
+        public static StringComparison DefaultStringComparison { get; set; } = StringComparison.Ordinal;
 
         #endregion Properties
 

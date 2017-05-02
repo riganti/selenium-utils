@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -69,22 +68,6 @@ namespace Riganti.Utils.Testing.Selenium.DotVVM
             element.Wait(element.ActionWaitTime);
             element.ActivateScope();
             return element;
-        }
-    }
-    public static class BrowserWrapperExtensions
-    {
-        public static bool IsDotvvmPage(this BrowserWrapper browser)
-        {
-            try
-            {
-                return string.Equals("true",
-                    browser.GetJavaScriptExecutor().ExecuteScript("return dotvvm instanceof DotVVM").ToString(),
-                    StringComparison.OrdinalIgnoreCase);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
         }
     }
 }
