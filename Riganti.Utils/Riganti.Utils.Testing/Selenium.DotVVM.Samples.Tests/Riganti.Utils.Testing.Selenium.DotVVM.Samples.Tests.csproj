@@ -81,8 +81,8 @@
       <Project>{421f5b2a-aedd-41f0-81b6-d6603b574c0e}</Project>
       <Name>Riganti.Utils.Testing.Selenium.MSTest2Integration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.DotVVM\Riganti.Utils.Testing.Selenium.DotVVM.csproj">
-      <Project>{32dec30e-6649-4cb0-aa94-bb839f72cfa6}</Project>
+    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.DotVVM.MSTest2\Riganti.Utils.Testing.Selenium.DotVVM.csproj">
+      <Project>{359f976a-6222-4cd7-be4b-de33c0e46adc}</Project>
       <Name>Riganti.Utils.Testing.Selenium.DotVVM</Name>
     </ProjectReference>
   </ItemGroup>
