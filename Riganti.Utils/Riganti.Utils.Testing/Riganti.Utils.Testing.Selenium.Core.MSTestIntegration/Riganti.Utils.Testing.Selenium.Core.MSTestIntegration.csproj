@@ -47,12 +47,6 @@
     <Compile Include="TestContextExtensions.cs" />
     <Compile Include="TestContextWrapper.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Riganti.Utils.Testing\Riganti.Utils.Testing.Selenium.Core.csproj">
-      <Project>{A02B34DF-6874-4DBD-8ED9-6C73CE4120AB}</Project>
-      <Name>Riganti.Utils.Testing.Selenium.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

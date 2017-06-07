@@ -79,13 +79,13 @@
     <Compile Include="TimeOutTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Riganti.Utils.Testing\Riganti.Utils.Testing.Selenium.Core.csproj">
-      <Project>{a02b34df-6874-4dbd-8ed9-6c73ce4120ab}</Project>
-      <Name>Riganti.Utils.Testing.Selenium.Core</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Riganti.Utils.Testing.Core2\Riganti.Utils.Testing.Selenium.Core.csproj">
+      <Project>{b4467232-b573-461e-af44-4b195120f2c8}</Project>
+      <Name>Riganti.Utils.Testing.Selenium.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+
+namespace Riganti.Utils.Testing.Selenium.Core
+{
+    public class FastModeWebDriverFactoryRegistry
+    {
+        public List<IWebDriverFactory> BrowserFactories { get; }
+
+        public FastModeWebDriverFactoryRegistry()
+        {
+            BrowserFactories = new List<IWebDriverFactory>();
+            if (SeleniumTestsConfiguration.FastMode)
+            {
+                if (SeleniumTestsConfiguration.StartChromeDriver) RegisterBrowserFactory(new ChromeFastModeFactory());
+                if (SeleniumTestsConfiguration.StartInternetExplorerDriver) RegisterBrowserFactory(new InternetExplorerFastModeFactoryBase());
+                if (SeleniumTestsConfiguration.StartFirefoxDriver) RegisterBrowserFactory(new FirefoxFastModeFactoryBase());
+            }
+        }
+
+        public void RegisterBrowserFactoryMethod(Func<ISelfCleanUpWebDriver> func)
+        {
+            BrowserFactories.Add(new FastModeWebDriverFactoryMethodWrapper(func));
+        }
+
+        public void RegisterBrowserFactory(IFastModeFactory factory)
+        {
+            if (!SeleniumTestsConfiguration.FastMode) throw new Exception("Registration of FastMode factories is not allowed when the SeleniumTestsConfiguration.FastMode is false.");
+            BrowserFactories.Add(factory);
+        }
+
+        ~FastModeWebDriverFactoryRegistry()
+        {
+            try
+            {
+                Dispose();
+            }
+            catch
+            {
+                //ignore
+            }
+        }
+        /// <summary>
+        /// Destroys all browser instances.
+        /// </summary>
+        public void Dispose()
+        {
+            BrowserFactories.ForEach(b => (b as IFastModeFactory)?.Dispose());
+        }
+    }
+}

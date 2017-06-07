@@ -95,13 +95,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Core.MSTestIntegration\Riganti.Utils.Testing.Selenium.Core.MSTestIntegration.csproj">
-      <Project>{6adc4a33-e56b-4e62-bef7-3abef7e4bf95}</Project>
-      <Name>Riganti.Utils.Testing.Selenium.Core.MSTestIntegration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Riganti.Utils.Testing\Riganti.Utils.Testing.Selenium.Core.csproj">
-      <Project>{a02b34df-6874-4dbd-8ed9-6c73ce4120ab}</Project>
+    <ProjectReference Include="..\Riganti.Utils.Testing.Core2\Riganti.Utils.Testing.Selenium.Core.csproj">
+      <Project>{b4467232-b573-461e-af44-4b195120f2c8}</Project>
       <Name>Riganti.Utils.Testing.Selenium.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Core.MSTest2Integration\Riganti.Utils.Testing.Selenium.MSTest2Integration.csproj">
+      <Project>{421f5b2a-aedd-41f0-81b6-d6603b574c0e}</Project>
+      <Name>Riganti.Utils.Testing.Selenium.MSTest2Integration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

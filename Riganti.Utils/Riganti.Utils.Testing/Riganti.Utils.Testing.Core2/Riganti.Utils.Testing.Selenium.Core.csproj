@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net451</TargetFramework>
+    <AssemblyName>Riganti.Utils.Testing.Selenium.Core</AssemblyName>
+    <ApplicationIcon>C:\dev\selenium-utils\Riganti.Utils\Riganti.Utils.Testing\Riganti.Utils.Testing.Core2\Icon.ico</ApplicationIcon>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <Description>Basic utilities for performing UI tests based on selenium on CI servers.</Description>
+    <Company>RIGANTI s.r.o.</Company>
+    <Authors>Ladislav Šesták</Authors>
+    <Version>1.0.2</Version>
+    <RepositoryUrl>https://github.com/riganti/selenium-utils</RepositoryUrl>
+    <RepositoryType></RepositoryType>
+    <PackageTags>selenium ui tests riganti ci</PackageTags>
+    <PackageReleaseNotes>- Added support for Selenium.WebDriver.3.4.0</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/riganti/selenium-utils</PackageProjectUrl>
+    <PackageIconUrl />
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\net451\Riganti.Utils.Testing.Selenium.Core.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <DebugSymbols>True</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\net451\Riganti.Utils.Testing.Selenium.Core.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Selenium.Support" Version="3.4.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+</Project>

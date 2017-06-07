@@ -21,5 +21,7 @@
     </metadata>
     <files>
         <file src="..\Riganti.Utils.Testing.Selenium.DotVVM\bin\release\Riganti.Utils.Testing.Selenium.DotVVM.dll" target="lib\net45\Riganti.Utils.Testing.Selenium.DotVVM.dll" />
+        <file src="..\Riganti.Utils.Testing.Selenium.DotVVM\bin\release\Riganti.Utils.Testing.Selenium.DotVVM.xml" target="lib\net45\Riganti.Utils.Testing.Selenium.DotVVM.xml" />
+        <file src="..\Riganti.Utils.Testing.Selenium.DotVVM\bin\release\Riganti.Utils.Testing.Selenium.DotVVM.pdb" target="lib\net45\Riganti.Utils.Testing.Selenium.DotVVM.pdb" />
     </files>
 </package>

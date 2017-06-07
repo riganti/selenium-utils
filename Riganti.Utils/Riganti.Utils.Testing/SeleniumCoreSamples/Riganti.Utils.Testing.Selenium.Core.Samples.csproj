@@ -276,12 +276,6 @@
       <DependentUpon>ValueTest.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Riganti.Utils.Testing\Riganti.Utils.Testing.Selenium.Core.csproj">
-      <Project>{a02b34df-6874-4dbd-8ed9-6c73ce4120ab}</Project>
-      <Name>Riganti.Utils.Testing.Selenium.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
