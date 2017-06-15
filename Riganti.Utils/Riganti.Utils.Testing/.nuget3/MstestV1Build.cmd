@@ -1,0 +1,1 @@
+nuget.exe pack Riganti.Utils.Testing.Selenium.MSTestIntegration.nuspec

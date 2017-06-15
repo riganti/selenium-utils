@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Riganti.Utils.Testing.Selenium.MSTestIntegration</id>
+    <version>1.0.4</version>
+    <authors>Ladislav Šesták</authors>
+    <owners>Ladislav Šesták</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/riganti/selenium-utils</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/riganti/selenium-utils/new-api/Riganti.Utils/Riganti.Utils.Testing/Icon.png</iconUrl>
+    <description>Integration of Riganti.Utils.Testing.Selenium.Core for MSTest.TestFramework package.</description>
+    <tags>selenium ui tests riganti ci mstest</tags>
+    <repository url="https://github.com/riganti/selenium-utils" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.5.1">
+        <dependency id="Riganti.Utils.Testing.Selenium.Core" version="1.0.4" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+       <file src="..\Riganti.Utils.Testing.Selenium.MSTestIntegration\bin\Debug\Riganti.Utils.Testing.Selenium.MSTestIntegration.dll" target="lib\net451" />
+       <!--<file src="..\Riganti.Utils.Testing.Selenium.MSTestIntegration\bin\Debug\Riganti.Utils.Testing.Selenium.MSTestIntegration.xml" target="lib\net451" />-->
+  </files>
+</package>
