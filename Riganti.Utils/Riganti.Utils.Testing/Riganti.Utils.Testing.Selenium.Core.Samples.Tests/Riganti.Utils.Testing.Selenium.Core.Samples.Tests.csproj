@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Core.MSTest2Integration\Riganti.Utils.Testing.Selenium.MSTest2Integration.csproj" />
     <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Core\Riganti.Utils.Testing.Selenium.Core.csproj" />
+    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.MSTest2Integration\Riganti.Utils.Testing.Selenium.MSTest2Integration.csproj" />
   </ItemGroup>
 
   <ItemGroup>
