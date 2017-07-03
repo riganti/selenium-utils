@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
     [Serializable]
-    public class EmptySequenceException : WebDriverException
+    public class EmptySequenceException : TestExceptionBase
     {
         public EmptySequenceException()
         {

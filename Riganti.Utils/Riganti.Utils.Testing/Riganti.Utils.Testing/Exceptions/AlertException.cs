@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
     [Serializable]
-    public class AlertException : WebDriverException
+    public class AlertException : TestExceptionBase
     {
         public AlertException()
         {

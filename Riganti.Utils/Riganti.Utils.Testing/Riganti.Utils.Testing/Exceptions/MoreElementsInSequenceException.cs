@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
     [Serializable]
-    public class MoreElementsInSequenceException : WebDriverException
+    public class MoreElementsInSequenceException : TestExceptionBase
     {
         public MoreElementsInSequenceException()
         {

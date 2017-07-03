@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
     [Serializable]
-    public class WaitBlockException : WebDriverException
+    public class WaitBlockException : TestExceptionBase
     {
         public WaitBlockException()
         {

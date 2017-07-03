@@ -63,6 +63,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\AllOperationRunner.cs" />
+    <Compile Include="Api\AnyOperationRunner.cs" />
+    <Compile Include="Api\AssertUI.cs" />
+    <Compile Include="Api\IOperationRunner.cs" />
+    <Compile Include="Api\OperationRunnerBase.cs" />
+    <Compile Include="Checkers\CheckIfInnerText.cs" />
+    <Compile Include="Checkers\CheckResult.cs" />
+    <Compile Include="Checkers\ICheck.cs" />
+    <Compile Include="Api\OperationValidator.cs" />
     <Compile Include="ByExtension.cs" />
     <Compile Include="ChromeDriverWrapper.cs" />
     <Compile Include="DebuggerLogger.cs" />
@@ -74,6 +83,8 @@
     <Compile Include="BrowserWrapper.cs" />
     <Compile Include="ElementWrapperCollection.cs" />
     <Compile Include="Exceptions\AlertException.cs" />
+    <Compile Include="Exceptions\HideFromStackTraceAttribute.cs" />
+    <Compile Include="Exceptions\TestExceptionBase.cs" />
     <Compile Include="Exceptions\BrowserException.cs" />
     <Compile Include="Exceptions\BrowserLocationException.cs" />
     <Compile Include="Exceptions\EmptySequenceException.cs" />
@@ -121,6 +132,7 @@
     <None Include="bundleconfig.json" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

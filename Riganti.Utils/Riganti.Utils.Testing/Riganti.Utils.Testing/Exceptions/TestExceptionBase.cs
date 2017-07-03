@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Threading.Tasks;
+using OpenQA.Selenium;
+using Riganti.Utils.Testing.Selenium.Core.Api.Checkers;
+
+namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
+{
+    public abstract class TestExceptionBase : WebDriverException
+    {
+        public string FullStackTrace => base.StackTrace;
+
+        public override string StackTrace => string.Concat(
+            new StackTrace(this, true)
+                .GetFrames()
+                .Where(frame => !frame.GetMethod().IsDefined(typeof(HideFromStackTraceAttribute), true))
+                .Select(frame => new StackTrace(frame).ToString())
+                .ToArray());
+
+        public CheckResult CheckResult { get; internal set; }
+
+        public TestExceptionBase()
+        {
+        }
+
+        public TestExceptionBase(string message) : base(message)
+        {
+        }
+
+        public TestExceptionBase(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected TestExceptionBase(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
+}

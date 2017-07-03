@@ -5,6 +5,7 @@ using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.IO;
 using System.Threading;
+using Riganti.Utils.Testing.Selenium.Core.Api;
 
 namespace SeleniumCore.Samples.Tests
 {
@@ -274,10 +275,28 @@ namespace SeleniumCore.Samples.Tests
 
                 var button = browser.First("#button");
                 button.Click();
+
                 browser.ConfirmAlert().First("#message").CheckIfInnerTextEquals("Accept", false);
 
                 button.Click();
                 browser.DismissAlert().First("#message").CheckIfInnerTextEquals("Dismiss", false);
+            });
+        }
+
+        [TestMethod]
+        public void ConfirmTestApi()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Confirm.aspx");
+
+                var button = browser.First("#button");
+                button.Click();
+
+                AssertUI.CheckIfInnerText(browser.ConfirmAlert().First("#message"), s => s.Equals("Accept", StringComparison.OrdinalIgnoreCase));
+
+                button.Click();
+                AssertUI.CheckIfInnerText(browser.DismissAlert().First("#message"), s => s.Equals("Dismiss", StringComparison.OrdinalIgnoreCase));
             });
         }
 
