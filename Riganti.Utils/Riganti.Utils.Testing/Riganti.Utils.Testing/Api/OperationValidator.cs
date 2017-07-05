@@ -1,4 +1,5 @@
-﻿using Riganti.Utils.Testing.Selenium.Core.Api.Checkers;
+﻿using System;
+using Riganti.Utils.Testing.Selenium.Core.Api.Checkers;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Api
@@ -9,7 +10,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
         {
             if (!checkResult.IsSucceeded)
             {
-                throw new TException {CheckResult = checkResult};
+                throw new TException() {CheckResult = checkResult};
             }
         }
     }

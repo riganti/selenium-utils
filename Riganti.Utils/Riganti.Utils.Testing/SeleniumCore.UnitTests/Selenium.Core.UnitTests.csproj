@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="BrowserWrapperTests.cs" />
     <Compile Include="CheckIfTests.cs" />
+    <Compile Include="CheckIfTestsNewApi.cs" />
     <Compile Include="ElementWrapperTests.cs" />
     <Compile Include="ExceptionsTests.cs" />
     <Compile Include="FactoriesTests.cs" />

@@ -12,7 +12,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
     /// This exception is thrown only from execution block in SeleniumTestBase. Indicates that test failed.
     /// </summary>
     [Serializable]
-    public sealed class SeleniumTestFailedException : WebDriverException
+    public sealed class SeleniumTestFailedException : TestExceptionBase
     {
         public string CurrentSubSection { get; set; }
 

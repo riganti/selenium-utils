@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +22,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Checkers
         {
             var innerText = wrapper.GetInnerText();
             var isSucceeded = rule.Compile()(innerText);
-            return isSucceeded ? CheckResult.Succeeded : new CheckResult($"Element contains wrong content. Provided content: '{wrapper.GetInnerText()}' \r\n Element selector: {wrapper.FullSelector} \r\n {failureMessage ?? ""}");
+            return isSucceeded ? CheckResult.Succeeded : new CheckResult($"Element contains wrong content. Provided content: '{innerText}' \r\n Element selector: {wrapper.FullSelector} \r\n {failureMessage ?? ""}");
         }
     }
 }

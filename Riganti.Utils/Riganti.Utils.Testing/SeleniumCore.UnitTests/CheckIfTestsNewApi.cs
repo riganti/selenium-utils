@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Api;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using Selenium.Core.UnitTests.Mock;
 
 namespace Selenium.Core.UnitTests
 {
     [TestClass]
-    public class CheckIfTests
+    public class CheckIfTestsNewApi
     {
         [TestMethod]
         public void CheckIfTagName_ArrayTest()
@@ -21,8 +18,7 @@ namespace Selenium.Core.UnitTests
             var browser = new BrowserWrapper(driverMock, new MockISeleniumTest(), new ScopeOptions());
 
             var element = browser.First("frame");
-            element.CheckIfTagName(new[] { "frame", "iframe" });
-
+            AssertUI.CheckIfTagName(element, new[] { "frame", "iframe" });
         }
 
 
@@ -33,8 +29,7 @@ namespace Selenium.Core.UnitTests
             var browser = new BrowserWrapper(driverMock, new MockISeleniumTest(), new ScopeOptions());
 
             var element = browser.First("iframe");
-            element.CheckIfTagName(new[] { "frame", "iframe" });
-
+            AssertUI.CheckIfTagName(element, new[] { "frame", "iframe" });
         }
 
         [TestMethod]
@@ -45,7 +40,7 @@ namespace Selenium.Core.UnitTests
             var browser = new BrowserWrapper(driverMock, new MockISeleniumTest(), new ScopeOptions());
 
             var element = browser.First("a");
-            element.CheckIfTagName(new[] { "frame", "iframe" });
+            AssertUI.CheckIfTagName(element, new[] { "frame", "iframe" });
         }
 
     }

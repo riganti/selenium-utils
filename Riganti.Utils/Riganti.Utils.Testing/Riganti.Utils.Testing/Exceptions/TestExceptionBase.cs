@@ -14,12 +14,17 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
     {
         public string FullStackTrace => base.StackTrace;
 
-        public override string StackTrace => string.Concat(
-            new StackTrace(this, true)
-                .GetFrames()
-                .Where(frame => !frame.GetMethod().IsDefined(typeof(HideFromStackTraceAttribute), true))
-                .Select(frame => new StackTrace(frame).ToString())
-                .ToArray());
+        public override string StackTrace
+        {
+            get
+            {
+                var frames = new StackTrace(this, true)?.GetFrames()
+                    //?.Where(frame => frame.GetMethod()?.ReflectedType?.Namespace?.Contains("Riganti.Utils.Testing.Selenium") != true)
+                    ?.Select(frame => new StackTrace(frame).ToString())
+                    ?.ToArray();
+                return frames == null ? String.Empty : string.Concat(frames);
+            }
+        }
 
         public CheckResult CheckResult { get; internal set; }
 

@@ -1,8 +1,4 @@
-ï»¿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core;
@@ -11,7 +7,7 @@ using Riganti.Utils.Testing.Selenium.Core.Api;
 namespace SeleniumCore.Samples.Tests
 {
     [TestClass]
-    public class BrowsersStabilityUiTests : SeleniumTest
+    public class BrowsersStabilityUiTestsNewApi : SeleniumTest
     {
         [TestMethod]
         public void ButtonClickTest()
@@ -24,24 +20,22 @@ namespace SeleniumCore.Samples.Tests
                 var input = browser.First("#testInput");
 
                 //check init
-                input.CheckIfValue("0");
+                AssertUI.CheckIfValue(input, "0");
 
                 //click and check if the driver clicked only once
                 button.Click();
-                input.CheckIfValue("1");
+                AssertUI.CheckIfValue(input, "1");
 
                 //click and check if the driver clicked only once
                 button.Click();
-                input.CheckIfValue("2");
-
-                //click and check if the driver clicked only once
-                button.Click();
-                button.Click();
-                input.CheckIfValue("4");
+                AssertUI.CheckIfValue(input, "2");
 
                 //click and check if the driver clicked only once
                 button.Click();
                 button.Click();
+                AssertUI.CheckIfValue(input, "4");
+
+                //click and check if the driver clicked only once
                 button.Click();
                 button.Click();
                 button.Click();
@@ -49,15 +43,18 @@ namespace SeleniumCore.Samples.Tests
                 button.Click();
                 button.Click();
                 button.Click();
-                input.CheckIfValue("13");
+                button.Click();
+                button.Click();
+                AssertUI.CheckIfValue(input, "13");
             });
 
 
         }
 
-        [TestMethod, ExpectedException(typeof(Exception))]
+        [TestMethod, ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
         public void XPathSelectorToRootTest()
         {
+            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/ClickTest.aspx");
@@ -66,13 +63,14 @@ namespace SeleniumCore.Samples.Tests
         }
 
 
-        [TestMethod, ExpectedException(typeof(Exception))]
+        [TestMethod, ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
         public void InvalidXPathSelectorToRootTest()
         {
+            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/ClickTest.aspx");
-                browser.Single("///***-*///@@##@Å¡Å¡+Å¡++++---><<>''", By.XPath);
+                browser.Single("///***-*///@@##@šš+š++++---><<>''", By.XPath);
             });
         }
     }

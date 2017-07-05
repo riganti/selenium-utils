@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using OpenQA.Selenium.Interactions;
+using Riganti.Utils.Testing.Selenium.Core.Api;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
@@ -681,6 +682,15 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 {
                     element.CheckIfHyperLinkEquals(url, kind, components);
                 });
+            return this;
+        }
+
+        public BrowserWrapper CheckIfHyperLinkEqualsApi(string selector, string url, UrlKind kind, params UriComponents[] components)
+        {
+            ForEach(selector, element =>
+            {
+                AssertUI.CheckIfHyperLineEquals(element, url, kind, components);
+            });
             return this;
         }
 
