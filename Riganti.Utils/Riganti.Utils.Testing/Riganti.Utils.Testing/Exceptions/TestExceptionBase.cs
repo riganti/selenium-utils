@@ -19,9 +19,9 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             get
             {
                 var frames = new StackTrace(this, true)?.GetFrames()
-                    //?.Where(frame => frame.GetMethod()?.ReflectedType?.Namespace?.Contains("Riganti.Utils.Testing.Selenium") != true)
-                    ?.Select(frame => new StackTrace(frame).ToString())
-                    ?.ToArray();
+                    ?.Where(frame => frame.GetMethod()?.ReflectedType?.Namespace
+                                         ?.Contains("Riganti.Utils.Testing.Selenium") != true)
+                    ?.Select(frame => new StackTrace(frame).ToString());
                 return frames == null ? String.Empty : string.Concat(frames);
             }
         }

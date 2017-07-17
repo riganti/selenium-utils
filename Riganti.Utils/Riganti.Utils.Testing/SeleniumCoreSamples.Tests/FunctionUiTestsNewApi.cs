@@ -518,7 +518,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementContained_TwoElement_ExpectedFailure()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             try
             {
                 RunInAllBrowsers(browser =>
