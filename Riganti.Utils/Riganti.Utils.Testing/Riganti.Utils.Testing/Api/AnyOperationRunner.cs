@@ -1,18 +1,18 @@
 ﻿using System.Linq;
-using Riganti.Utils.Testing.Selenium.Core.Api.Checkers;
+using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Api
 {
-    public class AnyOperationRunner : OperationRunnerBase
+    public class AnyOperationRunner<T> : OperationRunnerBase<T> where T : ISeleniumWrapper
     {
-        private readonly ElementWrapper[] wrappers;
+        private readonly T[] wrappers;
 
-        internal AnyOperationRunner(ElementWrapper[] wrappers)
+        internal AnyOperationRunner(T[] wrappers)
         {
             this.wrappers = wrappers;
         }
 
-        public override void Evaluate(ICheck check)
+        public override void Evaluate(ICheck<T> check)
         {
             var checkResults = wrappers.Select(check.Validate).ToArray();
             var checkResult = CreateCheckResult(checkResults);

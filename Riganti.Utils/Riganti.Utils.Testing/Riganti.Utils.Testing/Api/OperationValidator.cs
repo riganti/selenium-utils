@@ -1,5 +1,5 @@
 ﻿using System;
-using Riganti.Utils.Testing.Selenium.Core.Api.Checkers;
+using Riganti.Utils.Testing.Selenium.Core.Checkers;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Api

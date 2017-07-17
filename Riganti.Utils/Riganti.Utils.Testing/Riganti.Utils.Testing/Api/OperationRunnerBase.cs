@@ -1,9 +1,9 @@
-﻿using Riganti.Utils.Testing.Selenium.Core.Api.Checkers;
+﻿using Riganti.Utils.Testing.Selenium.Core.Checkers;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Api
 {
-    public abstract class OperationRunnerBase : IOperationRunner
+    public abstract class OperationRunnerBase<T> : IOperationRunner<T> where T : ISeleniumWrapper
     {
         private readonly OperationValidator operationValidator = new OperationValidator();
 
@@ -12,6 +12,6 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
             operationValidator.Validate<UnexpectedElementStateException>(checkResult);
         }
 
-        public abstract void Evaluate(ICheck check);
+        public abstract void Evaluate(ICheck<T> check);
     }
 }

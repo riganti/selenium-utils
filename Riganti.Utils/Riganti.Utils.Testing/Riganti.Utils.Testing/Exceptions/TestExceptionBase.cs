@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
-using Riganti.Utils.Testing.Selenium.Core.Api.Checkers;
+using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {

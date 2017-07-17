@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Api.Checkers
+namespace Riganti.Utils.Testing.Selenium.Core.Checkers
 {
     public class CheckResult
     {

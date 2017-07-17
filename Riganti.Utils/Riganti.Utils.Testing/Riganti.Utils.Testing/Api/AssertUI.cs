@@ -5,8 +5,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
-using Riganti.Utils.Testing.Selenium.Core.Api.Checkers;
 using Riganti.Utils.Testing.Selenium.Core.Checkers;
+using Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Api
@@ -62,7 +62,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
             CheckAttribute(wrapper, "type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox.");
 
             var checkIfIsChecked = new CheckIfIsChecked();
-            EvaluateCheck<UnexpectedElementStateException>(wrapper, checkIfIsChecked);
+            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsChecked);
         }
 
         public static void CheckIfIsNotChecked(ElementWrapper wrapper)
@@ -219,7 +219,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
         public static void CheckAttribute(ElementWrapper wrapper, string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
             var checkAttribute = new CheckAttribute(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
-            EvaluateCheck<UnexpectedElementStateException>(wrapper, checkAttribute);
+            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkAttribute);
         }
 
         public static void CheckAttribute(ElementWrapper wrapper, string attributeName, Expression<Func<string, bool>> expression, string failureMessage = null)
@@ -264,15 +264,17 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
 
 
 
-        private static void EvaluateCheck<TException>(ElementWrapper wrapper, ICheck check) where TException : TestExceptionBase, new()
+        private static void EvaluateCheck<TException, T>(T wrapper, ICheck<T> check) 
+            where T : ISeleniumWrapper 
+            where TException : TestExceptionBase, new()
         {
             var operationResult = check.Validate(wrapper);
             operationValidator.Validate<TException>(operationResult);
         }
 
-        public static AnyOperationRunner Any(ElementWrapper[] wrappers)
+        public static AnyOperationRunner<ElementWrapper> Any(ElementWrapper[] wrappers)
         {
-            return new AnyOperationRunner(wrappers);
+            return new AnyOperationRunner<ElementWrapper>(wrappers);
         }
 
         public static AllOperationRunner All(ElementWrapper[] elementWrappers)

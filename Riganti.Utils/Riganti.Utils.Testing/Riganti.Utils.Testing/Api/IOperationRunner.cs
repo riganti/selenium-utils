@@ -1,9 +1,9 @@
-﻿using Riganti.Utils.Testing.Selenium.Core.Api.Checkers;
+﻿using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Api
 {
-    public interface IOperationRunner
+    public interface IOperationRunner<T> where T : ISeleniumWrapper
     {
-        void Evaluate(ICheck check);
+        void Evaluate(ICheck<T> check);
     }
 }

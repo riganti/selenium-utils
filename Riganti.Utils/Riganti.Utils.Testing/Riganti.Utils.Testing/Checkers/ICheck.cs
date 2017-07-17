@@ -1,7 +1,7 @@
-﻿namespace Riganti.Utils.Testing.Selenium.Core.Api.Checkers
+﻿namespace Riganti.Utils.Testing.Selenium.Core.Checkers
 {
-    public interface ICheck
+    public interface ICheck<T> where T : ISeleniumWrapper
     {
-        CheckResult Validate(ElementWrapper wrapper);
+        CheckResult Validate(T wrapper);
     }
 }
