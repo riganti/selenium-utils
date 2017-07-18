@@ -5,7 +5,7 @@ using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers
 {
-    public class CheckIfContainsElement : ICheck
+    public class CheckIfContainsElement : ICheck<ElementWrapper>
     {
         public readonly string cssSelector;
         public readonly Expression<Func<string, By>> tmpSelectMethod;

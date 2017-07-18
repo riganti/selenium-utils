@@ -2,7 +2,7 @@ using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers
 {
-    public class CheckIfIsElementInView : ICheck
+    public class CheckIfIsElementInView : ICheck<ElementWrapper>
     {
         private readonly ElementWrapper element;
 

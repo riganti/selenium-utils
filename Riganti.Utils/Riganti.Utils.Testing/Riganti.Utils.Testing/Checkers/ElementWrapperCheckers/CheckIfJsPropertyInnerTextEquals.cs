@@ -3,7 +3,7 @@ using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers
 {
-    public class CheckIfJsPropertyInnerTextEquals : ICheck
+    public class CheckIfJsPropertyInnerTextEquals : ICheck<ElementWrapper>
     {
         private readonly string text;
         private readonly bool caseSensitive;

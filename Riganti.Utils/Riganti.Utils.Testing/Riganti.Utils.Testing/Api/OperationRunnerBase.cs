@@ -3,15 +3,16 @@ using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Api
 {
-    public abstract class OperationRunnerBase<T> : IOperationRunner<T> where T : ISeleniumWrapper
+    public abstract class OperationRunnerBase<T> : IOperationRunner<T>
     {
         private readonly OperationValidator operationValidator = new OperationValidator();
 
-        protected void EvaluateResult(CheckResult checkResult)
+        protected void EvaluateResult<TException>(CheckResult checkResult)
+            where TException : TestExceptionBase, new()
         {
-            operationValidator.Validate<UnexpectedElementStateException>(checkResult);
+            operationValidator.Validate<TException>(checkResult);
         }
 
-        public abstract void Evaluate(ICheck<T> check);
+        public abstract void Evaluate<TException>(ICheck<T> check) where TException : TestExceptionBase, new();
     }
 }

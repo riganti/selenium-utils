@@ -2,7 +2,7 @@ using System;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Checkers.BrowserWrapperCheckers
 {
-    public class CheckIfAlertTextEquals : BrowserWrapperCheckBase
+    public class CheckIfAlertTextEquals : ICheck<BrowserWrapper>
     {
         private readonly string expectedValue;
         private readonly bool caseSensitive;

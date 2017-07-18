@@ -7,20 +7,20 @@ using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Api
 {
-    public class AllOperationRunner : OperationRunnerBase
+    public class AllOperationRunner<T> : OperationRunnerBase<T>
     {
-        private readonly ElementWrapper[] wrappers;
+        private readonly T[] wrappers;
 
-        internal AllOperationRunner(ElementWrapper[] wrappers)
+        internal AllOperationRunner(T[] wrappers)
         {
             this.wrappers = wrappers;
         }
 
-        public override void Evaluate(ICheck check)
+        public override void Evaluate<TException>(ICheck<T> check)
         {
             var checkResults = wrappers.Select(check.Validate).ToArray();
             var checkResult = CreateCheckResult(checkResults);
-            EvaluateResult(checkResult);
+            EvaluateResult<TException>(checkResult);
         }
 
         private static CheckResult CreateCheckResult(CheckResult[] checkResults)

@@ -4,7 +4,7 @@ using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers
 {
-    public class CheckAttribute : ElementWrapperCheckBase
+    public class CheckAttribute : ICheck<ElementWrapper>
     {
         private readonly string[] allowedValues;
         private readonly string attributeName;
@@ -31,7 +31,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers
             this.failureMessage = failureMessage;
         }
 
-        public override CheckResult Validate(ElementWrapper wrapper)
+        public CheckResult Validate(ElementWrapper wrapper)
         {
             string[] tempAllowedValues = allowedValues;
             var attribute = wrapper.WebElement.GetAttribute(attributeName);

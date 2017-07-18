@@ -33,7 +33,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Checkers
 
             if (InnerResults.Any())
             {
-                return ErrorMessage + "\n" + string.Join("\n\t", InnerResults.Select(ir => ir.ToString()));
+                return ErrorMessage + "\n\t" + string.Join("\n\t", InnerResults.Select(ir => ir.ToString().Replace("\n", "\n\t")));
             }
 
             return ErrorMessage;

@@ -4,7 +4,7 @@ using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers
 {
-    public class CheckIfTagName : ICheck
+    public class CheckIfTagName : ICheck<ElementWrapper>
     {
         private readonly Expression<Func<string, bool>> rule;
         private readonly string failureMessage;

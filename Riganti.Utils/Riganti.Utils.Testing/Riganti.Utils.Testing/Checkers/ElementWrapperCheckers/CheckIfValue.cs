@@ -3,7 +3,7 @@ using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers
 {
-    public class CheckIfValue : ICheck
+    public class CheckIfValue : ICheck<ElementWrapper>
     {
         private readonly string value;
         private readonly bool caseSensitive;

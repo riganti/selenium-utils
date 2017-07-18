@@ -4,6 +4,7 @@ using Riganti.Utils.Testing.Selenium.Core;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Riganti.Utils.Testing.Selenium.Core.Api;
 
@@ -15,7 +16,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfIsDisplayed()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
@@ -27,7 +27,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfIsNotDisplayed()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
@@ -40,7 +39,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfHasAttribute()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
@@ -52,7 +50,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException), AllowDerivedTypes = true)]
         public void CheckIfHasAttributeExpectedException()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
@@ -75,7 +72,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfHasNotAttributeExpectedException()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
@@ -176,7 +172,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(NoSuchElementException))]
         public void NoParentTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("NoParentTest.aspx");
@@ -227,7 +222,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void AlertTest3()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
@@ -240,7 +234,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void AlertTest4()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
@@ -253,7 +246,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(AlertException))]
         public void ExpectedExceptionTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
@@ -266,7 +258,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(AlertException))]
         public void ExpectedExceptionTest2()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             ExpectException(typeof(AlertException));
             RunInAllBrowsers(browser =>
             {
@@ -279,7 +270,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ConfirmTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Confirm.aspx");
@@ -297,7 +287,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void SelectMethodTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/SelectMethod.aspx");
@@ -327,7 +316,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void FileDialogTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("FileDialog.aspx");
@@ -345,7 +333,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void TextTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("text.aspx");
@@ -377,7 +364,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void JsInnerHtmlTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("JsHtmlTest.aspx");
@@ -391,7 +377,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementAtFirst1()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("elementatfirst.aspx");
@@ -406,7 +391,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementAtFirst2()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("elementatfirst.aspx");
@@ -420,7 +404,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementAtFirst3()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("elementatfirst.aspx");
@@ -434,7 +417,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void First()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("TemporarySelector.aspx");
@@ -449,7 +431,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(EmptySequenceException))]
         public void ElementContained_NoElement_ExpectedFailure()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("ElementContained.aspx");
@@ -462,7 +443,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementContained_NoElement()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("ElementContained.aspx");
@@ -473,7 +453,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementContained_OneElement_ExpectedFailure()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             try
             {
                 RunInAllBrowsers(browser =>
@@ -494,7 +473,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementContained_OneElement()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("ElementContained.aspx");
@@ -539,7 +517,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementContained_TwoElement()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("ElementContained.aspx");
@@ -550,7 +527,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckValueTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("valuetest.aspx");
@@ -562,13 +538,28 @@ namespace SeleniumCore.Samples.Tests
                 AssertUI.CheckIfValue(browser.First("#input-text"), "text1");
                 AssertUI.CheckIfValue(browser.First("#input-text"), "texT1", false);
                 AssertUI.CheckIfValue(browser.First("#input-text"), "   texT1   ", false);
+
+            });
+        }
+
+        [TestMethod]
+        public void CheckValueAnyTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("valuetest.aspx");
+                var elements = new[]
+                {
+                    browser.First("#checkbox1"),
+                    browser.First("#checkbox2")
+                };
+                AssertUI.Any(elements).CheckIfValue("checkboxvalue1");
             });
         }
 
         [TestMethod]
         public void SetJsInputPropertyTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("JSPropertySetTest.aspx");
@@ -583,7 +574,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CookieTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             Action<BrowserWrapper> test = browser =>
             {
                 browser.NavigateToUrl("CookiesTest.aspx");
@@ -599,7 +589,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void TextNotEquals()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("CookiesTest.aspx");
@@ -620,7 +609,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckHyperLink()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
@@ -646,16 +634,24 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckHyperLink_Failure1()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
-            RunInAllBrowsers(browser =>
+            try
             {
-                browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEqualsApi("#RelativeLink", "/path0/test?query=test#fragment", UrlKind.Relative,
-                    UriComponents.PathAndQuery);
-            });
+                RunInAllBrowsers(browser =>
+                {
+                    browser.NavigateToUrl("hyperlink.aspx");
+                    browser.CheckIfHyperLinkEqualsApi("#RelativeLink", "/path0/test?query=test#fragment", UrlKind.Relative,
+                        UriComponents.PathAndQuery);
+                });
+                throw new Exception("Exception was expected.");
+            }
+            catch (UnexpectedElementStateException e)
+            {
+                //var innerCheckResult = e.i.FirstOrDefault();
+                //innerCheckResult.
+                //if (e.InnerCheckResults.FirstOrDefault().GetType() != typeof(UnexpectedElementStateException))
+            }
         }
 
 
@@ -663,7 +659,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckHyperLink_Failure2()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
@@ -678,7 +673,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckHyperLink_Failure3()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
@@ -691,7 +685,6 @@ namespace SeleniumCore.Samples.Tests
 
         public void CheckHyperLink_Failure4()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
@@ -709,7 +702,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(EmptySequenceException))]
         public void SingleExceptionTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");

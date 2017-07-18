@@ -4,7 +4,7 @@ using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers
 {
-    public class CheckIfHyperLinkEquals : ICheck
+    public class CheckIfHyperLinkEquals : ICheck<ElementWrapper>
     {
         private readonly string url;
 

@@ -2,7 +2,7 @@ using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers
 {
-    public class CheckIfContainsText : ICheck
+    public class CheckIfContainsText : ICheck<ElementWrapper>
     {
         public CheckResult Validate(ElementWrapper wrapper)
         {

@@ -2,7 +2,7 @@ using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers
 {
-    public class CheckIfHasAttribute : ICheck
+    public class CheckIfHasAttribute : ICheck<ElementWrapper>
     {
         private readonly string name;
 

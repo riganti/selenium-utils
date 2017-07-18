@@ -69,7 +69,7 @@
     <Compile Include="Api\AssertUI.cs" />
     <Compile Include="Api\IOperationRunner.cs" />
     <Compile Include="Api\OperationRunnerBase.cs" />
-    <Compile Include="Checkers\BrowserWrapperCheckers\BrowserWrapperCheckBase.cs" />
+    <Compile Include="Api\OperationRunnerExtensions.cs" />
     <Compile Include="Checkers\ElementWrapperCheckers\CheckAttribute.cs" />
     <Compile Include="Checkers\BrowserWrapperCheckers\CheckIfAlertTextEquals.cs" />
     <Compile Include="Checkers\ElementWrapperCheckers\CheckIfAttribute.cs" />
@@ -105,8 +105,6 @@
     <Compile Include="Checkers\ElementWrapperCheckers\CheckIfTextNotEquals.cs" />
     <Compile Include="Checkers\ElementWrapperCheckers\CheckIfValue.cs" />
     <Compile Include="Checkers\CheckResult.cs" />
-    <Compile Include="Checkers\ElementWrapperCheckers\ElementWrapperCheckBase.cs" />
-    <Compile Include="Checkers\ElementWrapperCollectionCheckers\ElementWrapperCollectionCheckBase.cs" />
     <Compile Include="Checkers\ICheck.cs" />
     <Compile Include="Api\OperationValidator.cs" />
     <Compile Include="ByExtension.cs" />
@@ -168,7 +166,9 @@
     <None Include="bundleconfig.json" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Checkers\ElementWrapperCollectionCheckers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

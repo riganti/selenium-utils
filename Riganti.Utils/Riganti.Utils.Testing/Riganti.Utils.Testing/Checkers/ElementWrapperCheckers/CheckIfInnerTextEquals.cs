@@ -4,7 +4,7 @@ using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers
 {
-    public class CheckIfInnerTextEquals : ICheck
+    public class CheckIfInnerTextEquals : ICheck<ElementWrapper>
     {
         private readonly string text;
         private readonly bool caseSensitive;

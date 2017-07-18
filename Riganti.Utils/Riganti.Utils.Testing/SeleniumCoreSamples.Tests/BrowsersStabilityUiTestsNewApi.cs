@@ -54,7 +54,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod, ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
         public void XPathSelectorToRootTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/ClickTest.aspx");
@@ -66,7 +65,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod, ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
         public void InvalidXPathSelectorToRootTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/ClickTest.aspx");

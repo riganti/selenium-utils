@@ -3,7 +3,7 @@ using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers
 {
-    public class CheckTagName : ICheck
+    public class CheckTagName : ICheck<ElementWrapper>
     {
         private readonly string[] expectedTagNames;
         private readonly string failureMessage;

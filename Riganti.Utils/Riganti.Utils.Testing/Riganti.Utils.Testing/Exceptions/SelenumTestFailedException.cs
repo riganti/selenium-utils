@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using Riganti.Utils.Testing.Selenium.Core.Api.Checkers;
+using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
@@ -180,7 +180,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
                 for (int i = 0; i < source.Length; i++)
                 {
                     var item = source[i];
-                    RenderWhenNotNull(sb, item, $"\t{createMessage(i, item)}");
+                    RenderWhenNotNull(sb, item, $"\t{createMessage(i, item).Replace("\n", "\n\t")}");
                 }
             }
         }
