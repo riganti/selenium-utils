@@ -668,7 +668,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
             var options = new ScopeOptions { FrameSelector = selector, Parent = this, CurrentWindowHandle = browser.CurrentWindowHandle };
 
             var iframe = First(selector);
-            iframe.CheckIfTagName(new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
+            AssertUI.CheckIfTagName(iframe, new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
+            //iframe.CheckIfTagName(new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
             var frame = browser.SwitchTo().Frame(iframe.WebElement);
             testClass.CurrentScope = options.ScopeId;
             return new BrowserWrapper(frame, testClass, options);
@@ -682,15 +683,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 {
                     element.CheckIfHyperLinkEquals(url, kind, components);
                 });
-            return this;
-        }
-
-        public BrowserWrapper CheckIfHyperLinkEqualsApi(string selector, string url, UrlKind kind, params UriComponents[] components)
-        {
-            ForEach(selector, element =>
-            {
-                AssertUI.CheckIfHyperLineEquals(element, url, kind, components);
-            });
             return this;
         }
 

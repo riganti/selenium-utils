@@ -5,6 +5,7 @@ using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.IO;
 using System.Threading;
+using Riganti.Utils.Testing.Selenium.Core.Api;
 
 namespace SeleniumCore.Samples.Tests
 {
@@ -210,6 +211,37 @@ namespace SeleniumCore.Samples.Tests
                 try
                 {
                     browser.CheckIfAlertTextEquals("Confirm test", true);
+                }
+                catch (AlertException)
+                {
+                }
+            });
+        }
+
+
+        [TestMethod]
+        public void AlertTestN()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+
+                browser.First("#button").Click();
+                AssertUI.CheckIfAlertTextEquals(browser, "confirm test");
+            });
+        }
+
+        [TestMethod]
+        public void AlertTest2N()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+
+                browser.First("#button").Click();
+                try
+                {
+                    AssertUI.CheckIfAlertTextEquals(browser, "Confirm test", true);
                 }
                 catch (AlertException)
                 {
@@ -592,7 +624,8 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "/path/test?query=test#fragment", UrlKind.Relative,
+                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "/path/test?query=test#fragment",
+                    UrlKind.Relative,
                     UriComponents.PathAndQuery);
                 browser.CheckIfHyperLinkEquals("#RelativeLink", "/path/test?query=test#fragment", UrlKind.Relative,
                     UriComponents.PathAndQuery);
@@ -653,7 +686,6 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-
         public void CheckHyperLink_Failure4()
         {
             RunInAllBrowsers(browser =>
@@ -661,7 +693,9 @@ namespace SeleniumCore.Samples.Tests
                 browser.NavigateToUrl("hyperlink.aspx");
                 try
                 {
-                    browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "https://localhost:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.AbsoluteUri);
+                    browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema",
+                        "https://localhost:1234/path/test?query=test#fragment", UrlKind.Absolute,
+                        UriComponents.AbsoluteUri);
                 }
                 catch (UnexpectedElementStateException)
                 {
@@ -685,10 +719,7 @@ namespace SeleniumCore.Samples.Tests
         public void CheckIfUrlExistsTest()
         {
             SeleniumTestsConfiguration.DeveloperMode = true;
-            RunInAllBrowsers(browser =>
-            {
-                browser.CheckIfUrlIsAccessible("hyperlink.aspx", UrlKind.Relative);
-            });
+            RunInAllBrowsers(browser => { browser.CheckIfUrlIsAccessible("hyperlink.aspx", UrlKind.Relative); });
         }
 
         [TestMethod]
@@ -697,10 +728,7 @@ namespace SeleniumCore.Samples.Tests
         {
             SeleniumTestsConfiguration.DeveloperMode = false;
             SeleniumTestsConfiguration.PlainMode = false;
-            RunInAllBrowsers(browser =>
-            {
-                browser.CheckIfUrlIsAccessible("NonExistent359.aspx", UrlKind.Relative);
-            });
+            RunInAllBrowsers(browser => { browser.CheckIfUrlIsAccessible("NonExistent359.aspx", UrlKind.Relative); });
         }
     }
 }

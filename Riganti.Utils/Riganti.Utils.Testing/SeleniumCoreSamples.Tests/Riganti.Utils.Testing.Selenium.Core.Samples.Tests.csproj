@@ -83,6 +83,7 @@
     <Compile Include="TestContextTests.cs" />
     <Compile Include="TitleTests.cs" />
     <Compile Include="FunctionsUiTests.cs" />
+    <Compile Include="TitleTestsNewApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.CI.config">

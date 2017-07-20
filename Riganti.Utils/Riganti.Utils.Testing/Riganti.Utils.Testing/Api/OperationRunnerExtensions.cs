@@ -7,7 +7,11 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
+using Riganti.Utils.Testing.Selenium.Core.Checkers.BrowserWrapperCheckers;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
+using CheckIfHyperLinkEquals = Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers.CheckIfHyperLinkEquals;
+using CheckIfIsDisplayed = Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers.CheckIfIsDisplayed;
+using CheckIfIsNotDisplayed = Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers.CheckIfIsNotDisplayed;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Api
 {
@@ -258,6 +262,83 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
         {
             var checkIfHasNotAttribute = new CheckIfHasNotAttribute(name);
             operationRunner.Evaluate<UnexpectedElementStateException>(checkIfHasNotAttribute);
+        }
+        public static void CheckIfAlertTextEquals(this IOperationRunner<BrowserWrapper> operationRunner, string expectedValue,
+            bool caseSensitive = false, bool trim = true)
+        {
+            var checkIfAlertTextEquals = new CheckIfAlertTextEquals(expectedValue, caseSensitive, trim);
+            operationRunner.Evaluate<AlertException>(checkIfAlertTextEquals);
+        }
+
+        public static void CheckIfAlertText(this IOperationRunner<BrowserWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = "")
+        {
+            var checkIfAlertText = new CheckIfAlertText(expression, failureMessage);
+            operationRunner.Evaluate<AlertException>(checkIfAlertText);
+        }
+
+        public static void CheckIfAlertTextContains(this IOperationRunner<BrowserWrapper> operationRunner, string expectedValue, bool trim = true)
+        {
+            var checkIfAlertTextContains = new CheckIfAlertTextContains(expectedValue, trim);
+            operationRunner.Evaluate<AlertException>(checkIfAlertTextContains);
+        }
+
+        public static void CheckUrl(this IOperationRunner<BrowserWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = null)
+        {
+            var checkIfUrl = new CheckIfUrl(expression, failureMessage);
+            operationRunner.Evaluate<BrowserLocationException>(checkIfUrl);
+        }
+
+        public static void CheckUrl(this IOperationRunner<BrowserWrapper> operationRunner, string url, UrlKind urlKind, params UriComponents[] components)
+        {
+            var checkUrl = new CheckUrl(url, urlKind, components);
+            operationRunner.Evaluate<BrowserLocationException>(checkUrl);
+        }
+
+        public static void CheckUrlEquals(this IOperationRunner<BrowserWrapper> operationRunner, string url)
+        {
+            var checkUrlExquals = new CheckUrlEquals(url);
+            operationRunner.Evaluate<BrowserLocationException>(checkUrlExquals);
+        }
+
+        public static void CheckIfHyperLinkEquals(this IOperationRunner<BrowserWrapper> operationRunner, string selector, string url, UrlKind kind, params UriComponents[] components)
+        {
+            var checkIfHyperLinkEquals = new Checkers.BrowserWrapperCheckers.CheckIfHyperLinkEquals(selector, url, kind, components);
+            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfHyperLinkEquals);
+        }
+
+        public static void CheckIfIsDisplayed(this IOperationRunner<BrowserWrapper> operationRunner, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
+        {
+            var checkIfIsDisplayed = new Checkers.BrowserWrapperCheckers.CheckIfIsDisplayed(selector, tmpSelectedMethod);
+            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsDisplayed);
+        }
+        public static void CheckIfIsNotDisplayed(this IOperationRunner<BrowserWrapper> operationRunner, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
+        {
+            var checkIfIsNotDisplayed = new Checkers.BrowserWrapperCheckers.CheckIfIsNotDisplayed(selector, tmpSelectedMethod);
+            operationRunner.Evaluate<BrowserException>(checkIfIsNotDisplayed);
+        }
+
+        public static void CheckIfUrlIsAccessible(this IOperationRunner<BrowserWrapper> operationRunner, string url, UrlKind urlKind)
+        {
+            var checkIfUrlIsAccessible = new CheckIfUrlIsAccessible(url, urlKind);
+            operationRunner.Evaluate<BrowserException>(checkIfUrlIsAccessible);
+        }
+
+        public static void CheckIfTitleEquals(this IOperationRunner<BrowserWrapper> operationRunner, string title, bool caseSensitive = false, bool trim = true)
+        {
+            var checkIfTitleEquals = new CheckIfTitleEquals(title, caseSensitive, trim);
+            operationRunner.Evaluate<BrowserException>(checkIfTitleEquals);
+        }
+
+        public static void CheckIfTitleNotEquals(this IOperationRunner<BrowserWrapper> operationRunner, string title, bool caseSensitive = false, bool trim = true)
+        {
+            var checkIfTitleNotEquals = new CheckIfTitleNotEquals(title, caseSensitive, trim);
+            operationRunner.Evaluate<BrowserException>(checkIfTitleNotEquals);
+        }
+
+        public static void CheckIfTitle(this IOperationRunner<BrowserWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = "")
+        {
+            var checkIfTitle = new CheckIfTitle(expression, failureMessage);
+            operationRunner.Evaluate<BrowserException>(checkIfTitle);
         }
 
 

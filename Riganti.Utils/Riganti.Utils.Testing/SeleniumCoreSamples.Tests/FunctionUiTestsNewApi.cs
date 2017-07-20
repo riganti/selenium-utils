@@ -19,7 +19,7 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                browser.CheckIfIsDisplayed("#displayed");
+                AssertUI.CheckIfIsDisplayed(browser, "#displayed");
                 AssertUI.CheckIfIsDisplayed(browser.First("#displayed"));
             });
         }
@@ -30,7 +30,7 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                browser.CheckIfIsNotDisplayed("#non-displayed");
+                AssertUI.CheckIfIsNotDisplayed(browser, "#non-displayed");
                 AssertUI.CheckIfIsNotDisplayed(browser.First("#non-displayed"));
                 AssertUI.CheckIfIsDisplayed(browser.First("#displayed-zero-draw-rec"));
             });
@@ -47,9 +47,10 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException), AllowDerivedTypes = true)]
+        //[ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfHasAttributeExpectedException()
         {
+            ExpectException(typeof(UnexpectedElementStateException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
@@ -69,9 +70,10 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
+        //[ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfHasNotAttributeExpectedException()
         {
+            ExpectException(typeof(UnexpectedElementStateException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
@@ -126,9 +128,10 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
+        //[ExpectedException(typeof(UnexpectedElementStateException))]
         public void HasAttributeTest2()
         {
+            ExpectException(typeof(UnexpectedElementStateException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
@@ -137,9 +140,10 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
+        //[ExpectedException(typeof(UnexpectedElementStateException))]
         public void HasAttributeTest3()
         {
+            ExpectException(typeof(UnexpectedElementStateException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
@@ -169,9 +173,10 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NoSuchElementException))]
+        //[ExpectedException(typeof(NoSuchElementException))]
         public void NoParentTest()
         {
+            ExpectException(typeof(NoSuchElementException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("NoParentTest.aspx");
@@ -185,7 +190,7 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/NoParentTest.aspx");
-                browser.CheckUrl(url => url.Contains("NoParentTest.aspx"));
+                AssertUI.CheckUrl(browser, url => url.Contains("NoParentTest.aspx"));
             });
         }
 
@@ -197,7 +202,7 @@ namespace SeleniumCore.Samples.Tests
                 browser.NavigateToUrl("/Alert.aspx");
 
                 browser.First("#button").Click();
-                browser.CheckIfAlertTextEquals("confirm test");
+                AssertUI.CheckIfAlertTextEquals(browser, "confirm test");
             });
         }
 
@@ -211,7 +216,7 @@ namespace SeleniumCore.Samples.Tests
                 browser.First("#button").Click();
                 try
                 {
-                    browser.CheckIfAlertTextEquals("Confirm test", true);
+                    AssertUI.CheckIfAlertTextEquals(browser, "Confirm test", true);
                 }
                 catch (AlertException)
                 {
@@ -227,7 +232,7 @@ namespace SeleniumCore.Samples.Tests
                 browser.NavigateToUrl("/Alert.aspx");
 
                 browser.First("#button").Click();
-                browser.CheckIfAlertTextContains("confirm");
+                AssertUI.CheckIfAlertTextContains(browser, "confirm");
             });
         }
 
@@ -238,24 +243,33 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl("/Alert.aspx");
                 browser.First("#button").Click();
-                browser.CheckIfAlertText(s => s.EndsWith("test"), "alert text doesn't end with 'test.'");
+                AssertUI.CheckIfAlertText(browser, s => s.EndsWith("test"), "alert text doesn't end with 'test.'");
             });
         }
 
         [TestMethod]
-        [ExpectedException(typeof(AlertException))]
         public void ExpectedExceptionTest()
         {
-            RunInAllBrowsers(browser =>
+            try
             {
-                browser.NavigateToUrl("/Alert.aspx");
-                browser.First("#button").Click();
-                browser.CheckIfAlertText(s => s.EndsWith("test."), "alert text doesn't end with 'test.'");
-            });
+                RunInAllBrowsers(browser =>
+                {
+                    browser.NavigateToUrl("/Alert.aspx");
+                    browser.First("#button").Click();
+                    AssertUI.CheckIfAlertText(browser, s => s.EndsWith("test."), "alert text doesn't end with 'test.'");
+                });
+            }
+            catch (Exception e)
+            {
+                var message = e.ToString();
+                if (!message.Contains("confirm test"))
+                {
+                    throw;
+                }
+            }
         }
 
         [TestMethod]
-        [ExpectedException(typeof(AlertException))]
         public void ExpectedExceptionTest2()
         {
             ExpectException(typeof(AlertException));
@@ -263,7 +277,7 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl("/Alert.aspx");
                 browser.First("#button").Click();
-                browser.CheckIfAlertText(s => s.EndsWith("test."), "alert text doesn't end with 'test.'");
+                AssertUI.CheckIfAlertText(browser, s => s.EndsWith("test."), "alert text doesn't end with 'test.'");
             });
         }
 
@@ -336,13 +350,31 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("text.aspx");
+
                 AssertUI.CheckIfTextEquals(browser.First("#button"), "text", false);
                 AssertUI.CheckIfTextEquals(browser.First("#input"), "text", false);
                 AssertUI.CheckIfTextEquals(browser.First("#area"), "text", false);
-
                 AssertUI.CheckIfText(browser.First("#button"), s => s.ToLower().Contains("text"));
                 AssertUI.CheckIfText(browser.First("#input"), s => s.Contains("text"));
                 AssertUI.CheckIfText(browser.First("#area"), s => s.Contains("text"));
+            });
+        }
+
+        [TestMethod]
+        public void TextTestAll()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("text.aspx");
+
+                var elements = new[]
+                {
+                    browser.First("#button"),
+                    browser.First("#input"),
+                    browser.First("#area")
+                };
+                AssertUI.All(elements).CheckIfTextEquals("text", false);
+                AssertUI.All(elements).CheckIfText(s => s.ToLower().Contains("text"));
             });
         }
 
@@ -606,77 +638,80 @@ namespace SeleniumCore.Samples.Tests
             });
         }
 
+
         [TestMethod]
         public void CheckHyperLink()
         {
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEqualsApi("#AbsoluteSameSchema", "/path/test?query=test#fragment", UrlKind.Relative,
+                AssertUI.CheckIfHyperLinkEquals(browser, "#AbsoluteSameSchema", "/path/test?query=test#fragment",
+                    UrlKind.Relative,
                     UriComponents.PathAndQuery);
-                browser.CheckIfHyperLinkEqualsApi("#RelativeLink", "/path/test?query=test#fragment", UrlKind.Relative,
+                AssertUI.CheckIfHyperLinkEquals(browser, "#RelativeLink", "/path/test?query=test#fragment",
+                    UrlKind.Relative,
                     UriComponents.PathAndQuery);
-                browser.CheckIfHyperLinkEqualsApi("#RelativeLink", "/path/test?query=test#fragment", UrlKind.Relative,
+                AssertUI.CheckIfHyperLinkEquals(browser, "#RelativeLink", "/path/test?query=test#fragment",
+                    UrlKind.Relative,
                     UriComponents.AbsoluteUri);
-                browser.CheckIfHyperLinkEqualsApi("#RelativeLink", "path/test?query=test#fragmentasd", UrlKind.Relative,
+                AssertUI.CheckIfHyperLinkEquals(browser, "#RelativeLink", "path/test?query=test#fragmentasd",
+                    UrlKind.Relative,
                     UriComponents.PathAndQuery);
-                browser.CheckIfHyperLinkEqualsApi("#RelativeLink", "path/test?query=test#fragment", UrlKind.Relative,
+                AssertUI.CheckIfHyperLinkEquals(browser, "#RelativeLink", "path/test?query=test#fragment",
+                    UrlKind.Relative,
                     UriComponents.PathAndQuery);
-                browser.CheckIfHyperLinkEqualsApi("#AbsoluteLink", "https://www.google.com/path/test?query=test#fragment",
+                AssertUI.CheckIfHyperLinkEquals(browser, "#AbsoluteLink",
+                    "https://www.google.com/path/test?query=test#fragment",
                     UrlKind.Absolute, UriComponents.PathAndQuery);
-                browser.CheckIfHyperLinkEqualsApi("#AbsoluteLink", "https://www.google.com/path/test?query=test#fragment",
+                AssertUI.CheckIfHyperLinkEquals(browser, "#AbsoluteLink",
+                    "https://www.google.com/path/test?query=test#fragment",
                     UrlKind.Absolute, UriComponents.AbsoluteUri);
-                browser.CheckIfHyperLinkEqualsApi("#AbsoluteSameSchema", "//localhost:1234/path/test?query=test#fragment",
+                AssertUI.CheckIfHyperLinkEquals(browser, "#AbsoluteSameSchema",
+                    "//localhost:1234/path/test?query=test#fragment",
                     UrlKind.Absolute, UriComponents.PathAndQuery);
-                browser.CheckIfHyperLinkEqualsApi("#AbsoluteSameSchema",
+                AssertUI.CheckIfHyperLinkEquals(browser, "#AbsoluteSameSchema",
                     "//localhostads:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.PathAndQuery);
             });
         }
 
         [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckHyperLink_Failure1()
         {
-            try
-            {
-                RunInAllBrowsers(browser =>
-                {
-                    browser.NavigateToUrl("hyperlink.aspx");
-                    browser.CheckIfHyperLinkEqualsApi("#RelativeLink", "/path0/test?query=test#fragment", UrlKind.Relative,
-                        UriComponents.PathAndQuery);
-                });
-                throw new Exception("Exception was expected.");
-            }
-            catch (UnexpectedElementStateException e)
-            {
-                //var innerCheckResult = e.i.FirstOrDefault();
-                //innerCheckResult.
-                //if (e.InnerCheckResults.FirstOrDefault().GetType() != typeof(UnexpectedElementStateException))
-            }
-        }
-
-
-        [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void CheckHyperLink_Failure2()
-        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEquals("#RelativeLink", "https://www.google.com/path/test?query=test#fragment",
-                    UrlKind.Absolute);
-                browser.CheckIfHyperLinkEqualsApi("#RelativeLink", "/path0/test?query=test#fragment", UrlKind.Relative,
-    UriComponents.PathAndQuery);
+                AssertUI.CheckIfHyperLinkEquals(browser, "#RelativeLink", "/path0/test?query=test#fragment",
+                    UrlKind.Relative,
+                    UriComponents.PathAndQuery);
             });
         }
 
         [TestMethod]
         [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void CheckHyperLink_Failure3()
+        public void CheckHyperLink_Failure2()
         {
+            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEqualsApi("#AbsoluteLink", "https://www.googles.com/path/test?query=test#fragment",
+                AssertUI.CheckIfHyperLinkEquals(browser, "#RelativeLink",
+                    "https://www.google.com/path/test?query=test#fragment",
+                    UrlKind.Absolute);
+            });
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void CheckHyperLink_Failure3()
+        {
+            SeleniumTestsConfiguration.DeveloperMode = true;
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("hyperlink.aspx");
+                AssertUI.CheckIfHyperLinkEquals(browser, "#AbsoluteLink", "https://www.googles.com/path/test?query=test#fragment",
                     UrlKind.Absolute, UriComponents.AbsoluteUri);
             });
         }
@@ -690,7 +725,7 @@ namespace SeleniumCore.Samples.Tests
                 browser.NavigateToUrl("hyperlink.aspx");
                 try
                 {
-                    browser.CheckIfHyperLinkEqualsApi("#AbsoluteSameSchema", "https://localhost:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.AbsoluteUri);
+                    AssertUI.CheckIfHyperLinkEquals(browser, "#AbsoluteSameSchema", "https://localhost:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.AbsoluteUri);
                 }
                 catch (UnexpectedElementStateException)
                 {
@@ -709,12 +744,13 @@ namespace SeleniumCore.Samples.Tests
             });
         }
 
+
         [TestMethod]
         public void CheckIfUrlExistsTest()
         {
             RunInAllBrowsers(browser =>
             {
-                browser.CheckIfUrlIsAccessible("hyperlink.aspx", UrlKind.Relative);
+                AssertUI.CheckIfUrlIsAccessible(browser, "hyperlink.aspx", UrlKind.Relative);
             });
         }
 
@@ -726,7 +762,7 @@ namespace SeleniumCore.Samples.Tests
             SeleniumTestsConfiguration.PlainMode = false;
             RunInAllBrowsers(browser =>
             {
-                browser.CheckIfUrlIsAccessible("NonExistent359.aspx", UrlKind.Relative);
+                AssertUI.CheckIfUrlIsAccessible(browser, "NonExistent359.aspx", UrlKind.Relative);
             });
         }
     }

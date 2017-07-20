@@ -67,6 +67,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BrowserWrapperTests.cs" />
+    <Compile Include="BrowserWrapperTestsNewApi.cs" />
     <Compile Include="CheckIfTests.cs" />
     <Compile Include="CheckIfTestsNewApi.cs" />
     <Compile Include="ElementWrapperTests.cs" />

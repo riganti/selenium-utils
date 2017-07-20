@@ -51,6 +51,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public void WriteLine(string format, params object[] args)
         {
+            if (format.Contains("{") || format.Contains("}"))
+            {
+                format = format.Replace("{", "{{");
+                format = format.Replace("}", "}}");
+            }
             context.WriteLine(format, args);
         }
     }

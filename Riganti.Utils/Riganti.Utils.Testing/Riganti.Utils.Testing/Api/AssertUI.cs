@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core.Checkers;
 using Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers;
+using Riganti.Utils.Testing.Selenium.Core.Checkers.BrowserWrapperCheckers;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
+using CheckIfIsDisplayed = Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers.CheckIfIsDisplayed;
+using CheckIfIsNotDisplayed = Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers.CheckIfIsNotDisplayed;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Api
 {
@@ -127,9 +130,9 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
             EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfDoesNotContainsText);
         }
 
-        public static void CheckIfHyperLineEquals(ElementWrapper wrapper, string url, UrlKind kind, params UriComponents[] components)
+        public static void CheckIfHyperLinkEquals(ElementWrapper wrapper, string url, UrlKind kind, params UriComponents[] components)
         {
-            var checkIfHyperLinkEquals = new CheckIfHyperLinkEquals(url, kind, components);
+            var checkIfHyperLinkEquals = new Checkers.ElementWrapperCheckers.CheckIfHyperLinkEquals(url, kind, components);
             EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfHyperLinkEquals);
         }
 
@@ -260,6 +263,84 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
         {
             var checkIfHasNotAttribute = new CheckIfHasNotAttribute(name);
             EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfHasNotAttribute);
+        }
+
+        public static void CheckIfAlertTextEquals(BrowserWrapper wrapper, string expectedValue,
+            bool caseSensitive = false, bool trim = true)
+        {
+            var checkIfAlertTextEquals = new CheckIfAlertTextEquals(expectedValue, caseSensitive, trim);
+            EvaluateCheck<AlertException, BrowserWrapper>(wrapper, checkIfAlertTextEquals);
+        }
+
+        public static void CheckIfAlertText(BrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = "")
+        {
+            var checkIfAlertText = new CheckIfAlertText(expression, failureMessage);
+            EvaluateCheck<AlertException, BrowserWrapper>(wrapper, checkIfAlertText);
+        }
+
+        public static void CheckIfAlertTextContains(BrowserWrapper wrapper, string expectedValue, bool trim = true)
+        {
+            var checkIfAlertTextContains = new CheckIfAlertTextContains(expectedValue, trim);
+            EvaluateCheck<AlertException, BrowserWrapper>(wrapper, checkIfAlertTextContains);
+        }
+
+        public static void CheckUrl(BrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = null)
+        {
+            var checkIfUrl = new CheckIfUrl(expression, failureMessage);
+            EvaluateCheck<BrowserLocationException, BrowserWrapper>(wrapper, checkIfUrl);
+        }
+
+        public static void CheckUrl(BrowserWrapper wrapper, string url, UrlKind urlKind, params UriComponents[] components)
+        {           
+            var checkUrl = new CheckUrl(url, urlKind, components);
+            EvaluateCheck<BrowserLocationException, BrowserWrapper>(wrapper, checkUrl);
+        }
+
+        public static void CheckUrlEquals(BrowserWrapper wrapper, string url)
+        {
+            var checkUrlExquals = new CheckUrlEquals(url);
+            EvaluateCheck<BrowserLocationException, BrowserWrapper>(wrapper, checkUrlExquals);
+        }
+
+        public static void CheckIfHyperLinkEquals(BrowserWrapper wrapper, string selector, string url, UrlKind kind, params UriComponents[] components)
+        {
+            var checkIfHyperLinkEquals = new Checkers.BrowserWrapperCheckers.CheckIfHyperLinkEquals(selector, url, kind, components);
+            EvaluateCheck<UnexpectedElementStateException, BrowserWrapper>(wrapper, checkIfHyperLinkEquals);
+        }
+
+        public static void CheckIfIsDisplayed(BrowserWrapper wrapper, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
+        {
+            var checkIfIsDisplayed =  new Checkers.BrowserWrapperCheckers.CheckIfIsDisplayed(selector, tmpSelectedMethod);
+            EvaluateCheck<UnexpectedElementStateException, BrowserWrapper>(wrapper, checkIfIsDisplayed);
+        }
+        public static void CheckIfIsNotDisplayed(BrowserWrapper wrapper, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
+        {
+            var checkIfIsNotDisplayed = new Checkers.BrowserWrapperCheckers.CheckIfIsNotDisplayed(selector, tmpSelectedMethod);
+            EvaluateCheck<BrowserException, BrowserWrapper>(wrapper, checkIfIsNotDisplayed);
+        }
+
+        public static void CheckIfUrlIsAccessible(BrowserWrapper wrapper, string url, UrlKind urlKind)
+        {
+            var checkIfUrlIsAccessible = new CheckIfUrlIsAccessible(url, urlKind);
+            EvaluateCheck<BrowserException, BrowserWrapper>(wrapper, checkIfUrlIsAccessible);
+        }
+
+        public static void CheckIfTitleEquals(BrowserWrapper wrapper, string title,bool caseSensitive = false, bool trim = true)
+        {
+            var checkIfTitleEquals = new CheckIfTitleEquals(title, caseSensitive, trim);
+            EvaluateCheck<BrowserException, BrowserWrapper>(wrapper, checkIfTitleEquals);
+        }
+
+        public static void CheckIfTitleNotEquals(BrowserWrapper wrapper, string title, bool caseSensitive = false, bool trim = true)
+        {
+            var checkIfTitleNotEquals = new CheckIfTitleNotEquals(title, caseSensitive, trim);
+            EvaluateCheck<BrowserException, BrowserWrapper>(wrapper, checkIfTitleNotEquals);
+        }
+
+        public static void CheckIfTitle(BrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = "")
+        {
+            var checkIfTitle = new CheckIfTitle(expression, failureMessage);
+            EvaluateCheck<BrowserException, BrowserWrapper>(wrapper, checkIfTitle);
         }
 
         public static void Check<TException, T>(ICheck<T> check, T wrapper)
