@@ -11,7 +11,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
     /// <summary>
     /// This wrapper cares of recreating and cleaning of web driver.
     /// </summary>
-    public abstract class SelfCleanUpWebDriver : IReusableWebDriver, ISelfCleanUpWebDriver
+    public abstract class SelfCleanUpWebDriver : ISelfCleanUpWebDriver
     {
         private IWebDriver driver;
         /// <summary>
