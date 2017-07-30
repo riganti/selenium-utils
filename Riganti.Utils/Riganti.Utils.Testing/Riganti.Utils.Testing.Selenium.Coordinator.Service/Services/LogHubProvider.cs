@@ -19,7 +19,7 @@ namespace Riganti.Utils.Testing.Selenium.Coordinator.Service.Services
 
         public ILogger CreateLogger(string categoryName)
         {
-            if (!categoryName.StartsWith(nameof(Riganti.Utils.Testing.Selenium.Coordinator)))
+            if (!categoryName.StartsWith(typeof(Startup).Namespace))
             {
                 return NullLogger.Instance;
             }

@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  seleniumcoordinator.service:
+    image: seleniumcoordinator.service
+    build:
+      context: ./Riganti.Utils.Testing.Selenium.Coordinator.Service
+      dockerfile: Dockerfile

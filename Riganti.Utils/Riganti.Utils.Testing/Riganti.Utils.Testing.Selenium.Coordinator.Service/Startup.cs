@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -23,7 +24,12 @@ namespace Riganti.Utils.Testing.Selenium.Coordinator.Service
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-            
+
+            if (Directory.Exists("/mnt/config"))
+            {
+                builder.AddJsonFile("/mnt/config/appsettings.json", optional: true, reloadOnChange: true);
+            }
+
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -63,7 +69,7 @@ namespace Riganti.Utils.Testing.Selenium.Coordinator.Service
             var logHubContext = app.ApplicationServices.GetService<IHubContext<LogHub>>();
             loggerFactory.AddProvider(new LogHubProvider(logHubContext)
             {
-                Level = LogLevel.Debug
+                Level = env.IsDevelopment() ? LogLevel.Debug : LogLevel.Information
             });
 
             // use SignalR

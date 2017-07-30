@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26724.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Core.Samples", "Riganti.Utils.Testing.Selenium.Core.Samples\Riganti.Utils.Testing.Selenium.Core.Samples.csproj", "{A15FCC63-4D2C-4E82-828A-0747B6416134}"
 EndProject
@@ -29,15 +29,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{693F6CF7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.MSTestIntegration", "Riganti.Utils.Testing.Selenium.MSTestIntegration\Riganti.Utils.Testing.Selenium.MSTestIntegration.csproj", "{7DB45AE2-D09E-4EA2-B691-4161485A32DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Runtime", "Riganti.Utils.Testing.Selenium.Runtime\Riganti.Utils.Testing.Selenium.Runtime.csproj", "{01AA38C8-D685-4058-A842-53A6C517F5B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Runtime", "Riganti.Utils.Testing.Selenium.Runtime\Riganti.Utils.Testing.Selenium.Runtime.csproj", "{01AA38C8-D685-4058-A842-53A6C517F5B6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Coordinator", "Coordinator", "{56C2E9D7-1C68-47EE-BFB4-27AF259FF7A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Coordinator.Service", "Riganti.Utils.Testing.Selenium.Coordinator.Service\Riganti.Utils.Testing.Selenium.Coordinator.Service.csproj", "{54D8BE40-2942-4C71-B07E-58B0F0DABEC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Coordinator.Service", "Riganti.Utils.Testing.Selenium.Coordinator.Service\Riganti.Utils.Testing.Selenium.Coordinator.Service.csproj", "{54D8BE40-2942-4C71-B07E-58B0F0DABEC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Coordinator.Client", "Riganti.Utils.Testing.Selenium.Coordinator.Client\Riganti.Utils.Testing.Selenium.Coordinator.Client.csproj", "{D486FAAB-A9C4-4ED1-AF6E-3F28C7CFAB68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Coordinator.Client", "Riganti.Utils.Testing.Selenium.Coordinator.Client\Riganti.Utils.Testing.Selenium.Coordinator.Client.csproj", "{D486FAAB-A9C4-4ED1-AF6E-3F28C7CFAB68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Coordinator.Client.Tests", "Riganti.Utils.Testing.Selenium.Coordinator.Client.Tests\Riganti.Utils.Testing.Selenium.Coordinator.Client.Tests.csproj", "{137023D1-4C00-4B3B-A1D4-892DF240C3E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Coordinator.Client.Tests", "Riganti.Utils.Testing.Selenium.Coordinator.Client.Tests\Riganti.Utils.Testing.Selenium.Coordinator.Client.Tests.csproj", "{137023D1-4C00-4B3B-A1D4-892DF240C3E5}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,6 +161,14 @@ Global
 		{137023D1-4C00-4B3B-A1D4-892DF240C3E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{137023D1-4C00-4B3B-A1D4-892DF240C3E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{137023D1-4C00-4B3B-A1D4-892DF240C3E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9}.CI|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9}.CI|Any CPU.Build.0 = Debug|Any CPU
+		{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9}.CI2|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9}.CI2|Any CPU.Build.0 = Debug|Any CPU
+		{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -178,5 +188,9 @@ Global
 		{54D8BE40-2942-4C71-B07E-58B0F0DABEC3} = {56C2E9D7-1C68-47EE-BFB4-27AF259FF7A5}
 		{D486FAAB-A9C4-4ED1-AF6E-3F28C7CFAB68} = {56C2E9D7-1C68-47EE-BFB4-27AF259FF7A5}
 		{137023D1-4C00-4B3B-A1D4-892DF240C3E5} = {56C2E9D7-1C68-47EE-BFB4-27AF259FF7A5}
+		{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9} = {56C2E9D7-1C68-47EE-BFB4-27AF259FF7A5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {069407A3-360C-4D69-AFA7-4E7532D148A7}
 	EndGlobalSection
 EndGlobal

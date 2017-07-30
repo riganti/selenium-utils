@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  seleniumcoordinator.service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+    volumes:
+      - /mnt/config:/var/seleniumcoordinator
