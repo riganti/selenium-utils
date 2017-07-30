@@ -63,16 +63,15 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories
         public async Task<IWebBrowser> AcquireBrowser()
         {
             ContainerLeaseDataDTO lease;
-            while (true)
+            
+            lease = await Client.AcquireLease(BrowserType);
+            if (lease != null)
             {
-                lease = await Client.AcquireLease(BrowserType);
-                if (lease != null)
-                {
-                    return CreateBrowser(lease);
-                }
-
-                await Task.Delay(5000);
+                return CreateBrowser(lease);
             }
+
+            // returning null means that we should retry later as no instance is available right now
+            return null;
         }
 
         private IWebBrowser CreateBrowser(ContainerLeaseDataDTO lease)
@@ -90,6 +89,8 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories
 
         public async Task ReleaseBrowser(IWebBrowser browser)
         {
+            DisposeBrowser(browser);
+
             var coordinatorWebBrowser = (CoordinatorWebBrowserBase) browser;
             lock (createdBrowsersLocker)
             {
@@ -110,6 +111,11 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories
             {
                 Client.RenewLease(browser.Lease.LeaseId).Wait();
             }
+        }
+
+        protected virtual void DisposeBrowser(IWebBrowser browser)
+        {
+            browser.Dispose();
         }
 
     }

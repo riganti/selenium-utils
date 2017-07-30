@@ -12,14 +12,14 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Discovery
     public class LoggerResolver
     {
 
-        public Dictionary<string, ILogger> CreateLoggers(SeleniumTestsConfiguration configuration, Assembly[] assemblies)
+        public List<ILogger> CreateLoggers(SeleniumTestsConfiguration configuration, Assembly[] assemblies)
         {
             // find all loggers
             var foundTypes = DiscoverLoggers(assemblies);
             var loggers = InstantiateLoggers(foundTypes);
 
             // create instances and configure them
-            var result = new Dictionary<string, ILogger>();
+            var result = new List<ILogger>();
             foreach (var loggerConfiguration in configuration.Logging.Loggers.Where(f => f.Value.Enabled))
             {
                 // try to find logger instance
@@ -36,7 +36,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Discovery
                 }
 
                 // return the instance
-                result[loggerConfiguration.Key] = instance;
+                result.Add(instance);
             }
             return result;
         }

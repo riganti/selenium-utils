@@ -8,5 +8,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Configuration
         public int TestAttemptsCount { get; set; } = 2;
 
         public bool TryToKillWhenNotResponding { get; set; } = true;
+
+        public bool RunInParallel { get; set; } = true;
     }
 }

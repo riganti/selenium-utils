@@ -13,12 +13,11 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Logging
     public class LoggerService
     {
 
-        private readonly Dictionary<string, ILogger> loggers;
+        private readonly List<ILogger> loggers;
 
-        public LoggerService(SeleniumTestsConfiguration configuration)
+        public LoggerService(List<ILogger> loggers)
         {
-            var discoveryService = new LoggerResolver();
-            loggers = discoveryService.CreateLoggers(configuration, new[] { Assembly.GetExecutingAssembly() });
+            this.loggers = loggers;
         }
 
 
@@ -53,7 +52,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Logging
 
         private void RunOnAllLoggers(Action<ILogger> action)
         {
-            foreach (var logger in loggers.Values)
+            foreach (var logger in loggers)
             {
                 try
                 {

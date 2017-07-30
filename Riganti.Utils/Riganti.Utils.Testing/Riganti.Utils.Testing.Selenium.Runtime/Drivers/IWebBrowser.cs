@@ -1,6 +1,7 @@
 ﻿using System;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Runtime.Configuration;
+using Riganti.Utils.Testing.Selenium.Runtime.Factories;
 
 namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers
 {
@@ -8,9 +9,11 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers
     {
 
         IWebDriver Driver { get; }
+        IWebBrowserFactory Factory { get; }
 
         void ClearDriverState();
 
-
+        void RecreateDriver();
+        
     }
 }

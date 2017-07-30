@@ -17,7 +17,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Discovery
         {
             // find all factories
             var foundTypes = DiscoverFactories(assemblies);
-            var factories = InstantiateFactories(configuration, foundTypes);
+            var factories = InstantiateFactories(configuration, assemblies, foundTypes);
 
             // create instances and configure them
             var result = new Dictionary<string, IWebBrowserFactory>();
@@ -50,9 +50,9 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Discovery
             return foundTypes;
         }
 
-        private IList<IWebBrowserFactory> InstantiateFactories(SeleniumTestsConfiguration configuration, IEnumerable<Type> foundTypes)
+        private IList<IWebBrowserFactory> InstantiateFactories(SeleniumTestsConfiguration configuration, Assembly[] assemblies, IEnumerable<Type> foundTypes)
         {
-            var loggerService = CreateLoggerService(configuration);
+            var loggerService = CreateLoggerService(configuration, assemblies);
             var testContextAccessor = CreateTestContextAccessor();
 
             var instances = new List<IWebBrowserFactory>();
@@ -76,9 +76,11 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Discovery
             return new TestContextAccessor();
         }
 
-        private LoggerService CreateLoggerService(SeleniumTestsConfiguration configuration)
+        private LoggerService CreateLoggerService(SeleniumTestsConfiguration configuration, Assembly[] assemblies)
         {
-            return new LoggerService(configuration);
+            var discoveryService = new LoggerResolver();
+            var loggers = discoveryService.CreateLoggers(configuration, assemblies);
+            return new LoggerService(loggers);
         }
     }
 }
