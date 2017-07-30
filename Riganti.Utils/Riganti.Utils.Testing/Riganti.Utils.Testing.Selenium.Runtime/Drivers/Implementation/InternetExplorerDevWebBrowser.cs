@@ -4,22 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
-using Riganti.Utils.Testing.Selenium.Runtime.Drivers.Factories;
+using OpenQA.Selenium.IE;
+using Riganti.Utils.Testing.Selenium.Runtime.Factories;
 
 namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers.Implementation
 {
     public class InternetExplorerDevWebBrowser : DevWebBrowserBase
     {
-        private LocalWebBrowserFactory factory;
+        public new LocalWebBrowserFactory Factory => (LocalWebBrowserFactory)base.Factory;
 
-        public InternetExplorerDevWebBrowser(LocalWebBrowserFactory factory)
+        public InternetExplorerDevWebBrowser(LocalWebBrowserFactory factory) : base(factory)
         {
-            this.factory = factory;
         }
 
         protected override IWebDriver CreateDriver()
         {
-            throw new NotImplementedException();
+            return InternetExplorerHelpers.CreateInternetExplorerDriver(Factory);
         }
     }
 }

@@ -3,19 +3,45 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Riganti.Utils.Testing.Selenium.Coordinator.Client;
+using Riganti.Utils.Testing.Selenium.Runtime.Configuration;
+using Riganti.Utils.Testing.Selenium.Runtime.Drivers;
 using Riganti.Utils.Testing.Selenium.Runtime.Drivers.Implementation;
+using Riganti.Utils.Testing.Selenium.Runtime.Logging;
 
-namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers.Factories
+namespace Riganti.Utils.Testing.Selenium.Runtime.Factories
 {
-    public class CoordinatorWebBrowserFactory : IWebBrowserFactory
+    public abstract class CoordinatorWebBrowserFactoryBase : IWebBrowserFactory
     {
-        private readonly Dictionary<string, Func<ContainerLeaseDataDTO, CoordinatorWebBrowserBase>> browserFactories;
         private readonly Timer timer;
         
         private readonly List<CoordinatorWebBrowserBase> createdBrowsers = new List<CoordinatorWebBrowserBase>();
         private readonly object createdBrowsersLocker = new object();
 
-        
+
+        public abstract string Name { get; }
+
+        public IDictionary<string, string> Options { get; } = new Dictionary<string, string>();
+
+
+        public SeleniumTestsConfiguration Configuration { get; }
+
+        public LoggerService LoggerService { get; }
+
+        public TestContextAccessor TestContextAccessor { get; }
+
+
+
+        public CoordinatorWebBrowserFactoryBase(SeleniumTestsConfiguration configuration, LoggerService loggerService, TestContextAccessor testContextAccessor)
+        {
+            Configuration = configuration;
+            LoggerService = loggerService;
+            TestContextAccessor = testContextAccessor;
+
+            timer = new Timer(RenewLeases, null, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15));
+        }
+
+
+
         private CoordinatorClient client;
         protected CoordinatorClient Client
         {
@@ -29,30 +55,10 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers.Factories
             }
         }
 
-        /// <summary>
-        /// Gets or sets the URL of the coordinator service.
-        /// </summary>
-        public string CoordinatorUrl { get; set; }
+        protected string CoordinatorUrl => Options[nameof(CoordinatorUrl)];
+
+        protected abstract string BrowserType { get; }
         
-        /// <summary>
-        /// Gets or sets the name of the browser. Use 'chrome' or 'firefox'.
-        /// </summary>
-        public string BrowserType { get; set; }
-
-
-        public CoordinatorWebBrowserFactory()
-        {
-            browserFactories = new Dictionary<string, Func<ContainerLeaseDataDTO, CoordinatorWebBrowserBase>>()
-            {
-                { "chrome", lease => new ChromeCoordinatorWebBrowser(this, lease) },
-                { "firefox", lease => new FirefoxCoordinatorWebBrowser(this, lease) }
-            };
-
-            timer = new Timer(RenewLeases, null, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15));
-        }
-
-
-        public IReadOnlyDictionary<string, string> Options { get; internal set; }
 
         public async Task<IWebBrowser> AcquireBrowser()
         {
@@ -79,10 +85,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers.Factories
             return createdBrowser;
         }
 
-        protected virtual CoordinatorWebBrowserBase CreateBrowserCore(ContainerLeaseDataDTO lease)
-        {
-            return browserFactories[BrowserType](lease);
-        }
+        protected abstract CoordinatorWebBrowserBase CreateBrowserCore(ContainerLeaseDataDTO lease);
 
 
         public async Task ReleaseBrowser(IWebBrowser browser)

@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
@@ -23,27 +22,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
-        public string DeploymentDirectory => context.DeploymentDirectory;
-
         public string FullyQualifiedTestClassName => context.FullyQualifiedTestClassName;
 
-        public IDictionary Properties => context.Properties;
-
-        public string ResultsDirectory => context.ResultsDirectory;
-
         public string TestDeploymentDir => context.TestDeploymentDir;
-
-        public string TestDir => context.TestDir;
 
         public string TestLogsDir => context.TestLogsDir;
 
         public string TestName => context.TestName;
-
-        public string TestResultsDirectory => context.TestResultsDirectory;
-
-        public string TestRunDirectory => context.TestRunDirectory;
-
-        public string TestRunResultsDirectory => context.TestRunResultsDirectory;
 
         public void AddResultFile(string fileName)
         {

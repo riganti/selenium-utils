@@ -1,18 +1,16 @@
 ﻿using Riganti.Utils.Testing.Selenium.Coordinator.Client;
-using Riganti.Utils.Testing.Selenium.Runtime.Drivers.Factories;
+using Riganti.Utils.Testing.Selenium.Runtime.Factories;
 
 namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers.Implementation
 {
     public abstract class CoordinatorWebBrowserBase : WebBrowserBase
     {
-        private CoordinatorWebBrowserFactory factory;
+        public new CoordinatorWebBrowserFactoryBase Factory => (CoordinatorWebBrowserFactoryBase) base.Factory;
 
         public ContainerLeaseDataDTO Lease { get; }
 
-        public CoordinatorWebBrowserBase(CoordinatorWebBrowserFactory factory, ContainerLeaseDataDTO lease)
+        public CoordinatorWebBrowserBase(CoordinatorWebBrowserFactoryBase factory, ContainerLeaseDataDTO lease) : base(factory)
         {
-            this.factory = factory;
-
             Lease = lease;
         }
         

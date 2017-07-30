@@ -1,26 +1,22 @@
 ﻿using System;
 using OpenQA.Selenium;
-using Riganti.Utils.Testing.Selenium.Runtime.Drivers.Factories;
+using OpenQA.Selenium.IE;
+using Riganti.Utils.Testing.Selenium.Runtime.Factories;
 
 namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers.Implementation
 {
-    public class InternetExplorerFastWebBrowser : WebBrowserBase
+    public class InternetExplorerFastWebBrowser : FastWebBrowserBase
     {
-        private readonly LocalWebBrowserFactory factory;
+        public new LocalWebBrowserFactory Factory => (LocalWebBrowserFactory) base.Factory;
 
-        public InternetExplorerFastWebBrowser(LocalWebBrowserFactory factory)
+        public InternetExplorerFastWebBrowser(LocalWebBrowserFactory factory) : base(factory)
         {
-            this.factory = factory;
         }
 
         protected override IWebDriver CreateDriver()
         {
-            throw new NotImplementedException();
+            return InternetExplorerHelpers.CreateInternetExplorerDriver(Factory);
         }
-
-        public override void ClearBrowserState()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

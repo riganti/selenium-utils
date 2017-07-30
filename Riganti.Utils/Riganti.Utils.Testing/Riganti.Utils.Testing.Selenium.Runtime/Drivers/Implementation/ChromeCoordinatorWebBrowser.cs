@@ -3,13 +3,13 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 using Riganti.Utils.Testing.Selenium.Coordinator.Client;
-using Riganti.Utils.Testing.Selenium.Runtime.Drivers.Factories;
+using Riganti.Utils.Testing.Selenium.Runtime.Factories;
 
 namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers.Implementation
 {
     public class ChromeCoordinatorWebBrowser : CoordinatorWebBrowserBase
     {
-        public ChromeCoordinatorWebBrowser(CoordinatorWebBrowserFactory factory, ContainerLeaseDataDTO lease) : base(factory, lease)
+        public ChromeCoordinatorWebBrowser(CoordinatorWebBrowserFactoryBase factory, ContainerLeaseDataDTO lease) : base(factory, lease)
         {
         }
 
@@ -18,7 +18,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers.Implementation
             return new RemoteWebDriver(new Uri(Lease.Url), new ChromeOptions());
         }
 
-        public override void ClearBrowserState()
+        public override void ClearDriverState()
         {
             throw new NotImplementedException();
         }

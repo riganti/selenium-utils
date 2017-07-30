@@ -1,16 +1,15 @@
 ﻿using System;
 using OpenQA.Selenium;
-using Riganti.Utils.Testing.Selenium.Runtime.Drivers.Factories;
+using Riganti.Utils.Testing.Selenium.Runtime.Factories;
 
 namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers.Implementation
 {
     public class FirefoxDevWebBrowser : DevWebBrowserBase
     {
-        private readonly LocalWebBrowserFactory factory;
+        public new LocalWebBrowserFactory Factory => (LocalWebBrowserFactory)base.Factory;
 
-        public FirefoxDevWebBrowser(LocalWebBrowserFactory factory)
+        public FirefoxDevWebBrowser(LocalWebBrowserFactory factory) : base(factory)
         {
-            this.factory = factory;
         }
 
         protected override IWebDriver CreateDriver()
