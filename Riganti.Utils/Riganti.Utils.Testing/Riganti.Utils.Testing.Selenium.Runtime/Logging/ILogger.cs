@@ -38,5 +38,4 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Logging
         void OnTestFinished(ITestContext context);
 
     }
-
 }

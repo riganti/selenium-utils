@@ -16,7 +16,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories.Implementation
             return new ChromeCoordinatorWebBrowser(this, lease);
         }
 
-        public ChromeCoordinatorWebBrowserFactory(SeleniumTestsConfiguration configuration, LoggerService loggerService, TestContextAccessor testContextAccessor) : base(configuration, loggerService, testContextAccessor)
+        public ChromeCoordinatorWebBrowserFactory(TestSuiteRunner runner) : base(runner)
         {
         }
     }

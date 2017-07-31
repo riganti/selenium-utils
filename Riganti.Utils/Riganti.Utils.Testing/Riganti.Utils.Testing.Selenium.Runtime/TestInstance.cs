@@ -1,30 +1,32 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
-using Riganti.Utils.Testing.Selenium.Runtime.Configuration;
 using Riganti.Utils.Testing.Selenium.Runtime.Drivers;
 
 namespace Riganti.Utils.Testing.Selenium.Runtime
 {
     public class TestInstance
     {
-        private readonly SeleniumTestsConfiguration configuration;
         private readonly TestSuiteRunner runner;
         private readonly TestConfiguration testConfiguration;
+        private readonly string testName;
         private readonly Action<BrowserWrapper> testAction;
+        private int testAttemptNumber;
 
 
-        public TestInstance(SeleniumTestsConfiguration configuration, TestSuiteRunner runner, TestConfiguration testConfiguration, Action<BrowserWrapper> testAction)
+        public TestInstance(TestSuiteRunner runner, TestConfiguration testConfiguration, string testName, Action<BrowserWrapper> testAction)
         {
-            this.configuration = configuration;
             this.runner = runner;
             this.testConfiguration = testConfiguration;
+            this.testName = testName;
             this.testAction = testAction;
         }
 
         public async Task RunAsync()
         {
-            await RetryAsync(RunAsyncCore, configuration.TestRunOptions.TestAttemptsCount);
+            await RetryAsync(RunAsyncCore, runner.Configuration.TestRunOptions.TestAttemptsCount);
         }
 
         private async Task RunAsyncCore()
@@ -32,16 +34,19 @@ namespace Riganti.Utils.Testing.Selenium.Runtime
             IWebBrowser browser = null;
             try
             {
+                runner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Acquiring browser from browser pool");
                 browser = await runner.WebBrowserPool.GetOrCreateBrowser(testConfiguration.Factory);
 
                 RunTest(browser);
+
+                await runner.WebBrowserPool.ReturnBrowserToPool(browser);
+                runner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Browser {browser.UniqueName} returned to browser pool");
             }
-            finally
+            catch (Exception ex)
             {
-                if (browser != null)
-                {
-                    runner.WebBrowserPool.ReturnBrowserToPool(browser);
-                }
+                await runner.WebBrowserPool.DisposeBrowser(browser);
+                runner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Test failed {ex}");
+                throw;
             }
         }
 
@@ -52,29 +57,32 @@ namespace Riganti.Utils.Testing.Selenium.Runtime
 
             // prepare test context
             var testContext = runner.TestContextProvider.CreateTestContext(testConfiguration);
-            using (testConfiguration.Factory.TestContextAccessor.Scope(testContext))
+            using (testConfiguration.Factory.TestSuiteRunner.TestContextAccessor.Scope(testContext))
             {
                 try
                 {
+                    runner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Running test in browser instance {browser.UniqueName}");
+
                     // run actual test
                     testAction(wrapper);
-                    browser.ClearDriverState();
+
+                    runner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Test passed");
                 }
                 catch
                 {
+                    TakeScreenshot(wrapper);
+
                     // recreate the browser
-                    browser.RecreateDriver();
+                    runner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Test failed");
                     throw;
                 }
             }
         }
 
-
-
-        private static async Task RetryAsync(Func<Task> action, int testAttemptsCount)
+        private async Task RetryAsync(Func<Task> action, int testAttemptsCount)
         {
             var errors = new List<Exception>();
-            for (int i = 0; i < testAttemptsCount; i++)
+            for (testAttemptNumber = 1; testAttemptNumber <= testAttemptsCount; testAttemptNumber++)
             {
                 try
                 {
@@ -83,10 +91,29 @@ namespace Riganti.Utils.Testing.Selenium.Runtime
                 }
                 catch (Exception ex)
                 {
+                    runner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Test attempt #{testAttemptNumber} failed.");
                     errors.Add(ex);
                 }
             }
             throw new AggregateException(errors);
+        }
+
+        private void TakeScreenshot(BrowserWrapper browserWrapper)
+        {
+            var testContext = runner.TestContextAccessor.GetTestContext();
+
+            try
+            {
+                var filename = Path.Combine(testContext.DeploymentDirectory, $"{testContext.FullyQualifiedTestClassName}_{testContext.TestName}_{testAttemptNumber}.png");
+                runner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Taking screenshot {filename}");
+
+                browserWrapper.TakeScreenshot(filename);
+                runner.TestContextAccessor.GetTestContext().AddResultFile(filename);
+            }
+            catch (Exception ex)
+            {
+                runner.LogError(new Exception($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Failed to take screenshot.", ex));
+            }
         }
     }
 }

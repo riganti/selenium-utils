@@ -14,7 +14,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories.Implementation
             return new InternetExplorerDevWebBrowser(this);
         }
 
-        public InternetExplorerDevWebBrowserFactory(SeleniumTestsConfiguration configuration, LoggerService loggerService, TestContextAccessor testContextAccessor) : base(configuration, loggerService, testContextAccessor)
+        public InternetExplorerDevWebBrowserFactory(TestSuiteRunner runner) : base(runner)
         {
         }
     }

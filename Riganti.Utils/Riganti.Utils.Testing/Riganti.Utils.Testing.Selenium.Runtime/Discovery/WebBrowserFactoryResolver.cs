@@ -13,11 +13,11 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Discovery
     public class WebBrowserFactoryResolver
     {
 
-        public Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories(SeleniumTestsConfiguration configuration, Assembly[] assemblies)
+        public Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories(SeleniumTestsConfiguration configuration, TestContextAccessor testContextAccessor, LoggerService loggerService, Assembly[] assemblies)
         {
             // find all factories
             var foundTypes = DiscoverFactories(assemblies);
-            var factories = InstantiateFactories(configuration, assemblies, foundTypes);
+            var factories = InstantiateFactories(configuration, testContextAccessor, loggerService, assemblies, foundTypes);
 
             // create instances and configure them
             var result = new Dictionary<string, IWebBrowserFactory>();
@@ -50,11 +50,8 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Discovery
             return foundTypes;
         }
 
-        private IList<IWebBrowserFactory> InstantiateFactories(SeleniumTestsConfiguration configuration, Assembly[] assemblies, IEnumerable<Type> foundTypes)
+        private IList<IWebBrowserFactory> InstantiateFactories(SeleniumTestsConfiguration configuration, TestContextAccessor testContextAccessor, LoggerService loggerService, Assembly[] assemblies, IEnumerable<Type> foundTypes)
         {
-            var loggerService = CreateLoggerService(configuration, assemblies);
-            var testContextAccessor = CreateTestContextAccessor();
-
             var instances = new List<IWebBrowserFactory>();
             foreach (var type in foundTypes)
             {
@@ -70,17 +67,6 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Discovery
             }
             return instances;
         }
-
-        private TestContextAccessor CreateTestContextAccessor()
-        {
-            return new TestContextAccessor();
-        }
-
-        private LoggerService CreateLoggerService(SeleniumTestsConfiguration configuration, Assembly[] assemblies)
-        {
-            var discoveryService = new LoggerResolver();
-            var loggers = discoveryService.CreateLoggers(configuration, assemblies);
-            return new LoggerService(loggers);
-        }
+        
     }
 }

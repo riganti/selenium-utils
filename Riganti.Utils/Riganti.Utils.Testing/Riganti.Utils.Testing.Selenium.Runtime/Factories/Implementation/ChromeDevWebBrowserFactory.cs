@@ -19,7 +19,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories.Implementation
             return new ChromeDevWebBrowser(this);
         }
 
-        public ChromeDevWebBrowserFactory(SeleniumTestsConfiguration configuration, LoggerService loggerService, TestContextAccessor testContextAccessor) : base(configuration, loggerService, testContextAccessor)
+        public ChromeDevWebBrowserFactory(TestSuiteRunner runner) : base(runner)
         {
         }
     }

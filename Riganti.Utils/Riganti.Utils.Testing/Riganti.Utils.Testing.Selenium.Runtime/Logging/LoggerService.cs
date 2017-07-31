@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,12 +15,13 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Logging
     {
 
         private readonly List<ILogger> loggers;
+        public IEnumerable<ILogger> Loggers => loggers;
+
 
         public LoggerService(List<ILogger> loggers)
         {
             this.loggers = loggers;
         }
-
 
 
         /// <summary>

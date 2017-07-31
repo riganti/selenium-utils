@@ -11,11 +11,16 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers
 {
     public abstract class WebBrowserBase : IWebBrowser
     {
+        private static int uniqueBrowserIndex = 1;
+        private static readonly object uniqueBroserIndexLocker = new object();
+
+
+
         public IWebBrowserFactory Factory { get; }
         
-
-
         protected IWebDriver driverInstance = null;
+
+        public string UniqueName { get; }
 
         public IWebDriver Driver
         {
@@ -33,18 +38,16 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers
         public WebBrowserBase(IWebBrowserFactory factory)
         {
             Factory = factory;
+
+            lock (uniqueBroserIndexLocker)
+            {
+                UniqueName = factory + "-" + (uniqueBrowserIndex++);
+            }
         }
 
 
         protected abstract IWebDriver CreateDriver();
         
-        public abstract void ClearDriverState();
-        
-        public virtual void RecreateDriver()
-        {
-            KillDriver();
-            driverInstance = CreateDriver();
-        }
 
         public virtual void KillDriver()
         {

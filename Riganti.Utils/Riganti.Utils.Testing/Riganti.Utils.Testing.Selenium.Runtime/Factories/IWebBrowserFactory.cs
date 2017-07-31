@@ -12,15 +12,10 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories
 
         IDictionary<string, string> Options { get; }
         
-        SeleniumTestsConfiguration Configuration { get; }
-
-        LoggerService LoggerService { get; }
-
-        TestContextAccessor TestContextAccessor { get; }
-
+        TestSuiteRunner TestSuiteRunner { get; }
 
         Task<IWebBrowser> AcquireBrowser();
-
+        
         Task ReleaseBrowser(IWebBrowser browser);
 
     }

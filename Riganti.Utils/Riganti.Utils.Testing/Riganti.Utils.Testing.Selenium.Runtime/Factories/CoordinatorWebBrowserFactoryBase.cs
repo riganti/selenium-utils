@@ -21,21 +21,14 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories
         public abstract string Name { get; }
 
         public IDictionary<string, string> Options { get; } = new Dictionary<string, string>();
-
-
-        public SeleniumTestsConfiguration Configuration { get; }
-
-        public LoggerService LoggerService { get; }
-
-        public TestContextAccessor TestContextAccessor { get; }
+        
+        public TestSuiteRunner TestSuiteRunner { get; }
 
 
 
-        public CoordinatorWebBrowserFactoryBase(SeleniumTestsConfiguration configuration, LoggerService loggerService, TestContextAccessor testContextAccessor)
+        public CoordinatorWebBrowserFactoryBase(TestSuiteRunner runner)
         {
-            Configuration = configuration;
-            LoggerService = loggerService;
-            TestContextAccessor = testContextAccessor;
+            TestSuiteRunner = runner;
 
             timer = new Timer(RenewLeases, null, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15));
         }
@@ -98,6 +91,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories
             }
             await Client.DropLease(coordinatorWebBrowser.Lease.LeaseId);
         }
+
 
         private void RenewLeases(object state)
         {

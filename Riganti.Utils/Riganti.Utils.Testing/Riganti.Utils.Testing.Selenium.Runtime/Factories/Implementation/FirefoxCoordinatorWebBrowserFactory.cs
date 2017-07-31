@@ -16,7 +16,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories.Implementation
             return new FirefoxCoordinatorWebBrowser(this, lease);
         }
 
-        public FirefoxCoordinatorWebBrowserFactory(SeleniumTestsConfiguration configuration, LoggerService loggerService, TestContextAccessor testContextAccessor) : base(configuration, loggerService, testContextAccessor)
+        public FirefoxCoordinatorWebBrowserFactory(TestSuiteRunner runner) : base(runner)
         {
         }
     }

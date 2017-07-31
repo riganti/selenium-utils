@@ -5,7 +5,7 @@ using Riganti.Utils.Testing.Selenium.Runtime.Logging;
 
 namespace Riganti.Utils.Testing.Selenium.Runtime.Factories.Implementation
 {
-    public class ChromeFastWebBrowserFactory : LocalWebBrowserFactory
+    public class ChromeFastWebBrowserFactory : FastLocalWebBrowserFactory
     {
         public override string Name => "chrome:fast";
 
@@ -14,7 +14,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories.Implementation
             return new ChromeFastWebBrowser(this);
         }
 
-        public ChromeFastWebBrowserFactory(SeleniumTestsConfiguration configuration, LoggerService loggerService, TestContextAccessor testContextAccessor) : base(configuration, loggerService, testContextAccessor)
+        public ChromeFastWebBrowserFactory(TestSuiteRunner runner) : base(runner)
         {
         }
     }

@@ -25,7 +25,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers.Implementation
             }
             catch
             {
-                factory.LogMessage("Default location of firefox was not found.");
+                factory.LogInfo("Default location of firefox was not found.");
 
                 var env = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
                 if (env.Contains("(x86)"))

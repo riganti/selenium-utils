@@ -8,5 +8,10 @@ namespace Riganti.Utils.Testing.Selenium.Runtime
         {
             
         }
+
+        public void TakeScreenshot(string filename)
+        {
+            
+        }
     }
 }

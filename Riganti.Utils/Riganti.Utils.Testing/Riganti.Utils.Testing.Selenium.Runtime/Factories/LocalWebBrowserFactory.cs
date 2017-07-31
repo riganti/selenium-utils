@@ -15,31 +15,47 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories
         public IDictionary<string, string> Options { get; } = new Dictionary<string, string>();
         
 
-        public SeleniumTestsConfiguration Configuration { get; }
-
-        public LoggerService LoggerService { get; }
-
-        public TestContextAccessor TestContextAccessor { get; }
+        public TestSuiteRunner TestSuiteRunner { get; }
 
 
+        private readonly object locker = new object();
+        private IWebBrowser currentBrowser = null;
 
-        public LocalWebBrowserFactory(SeleniumTestsConfiguration configuration, LoggerService loggerService, TestContextAccessor testContextAccessor)
+
+        public LocalWebBrowserFactory(TestSuiteRunner runner)
         {
-            Configuration = configuration;
-            LoggerService = loggerService;
-            TestContextAccessor = testContextAccessor;
+            TestSuiteRunner = runner;
         }
 
 
         public Task<IWebBrowser> AcquireBrowser()
         {
-            return Task.FromResult(CreateBrowser());
+            lock (locker)
+            {
+                if (currentBrowser != null)
+                {
+                    return Task.FromResult<IWebBrowser>(null);
+                }
+
+                currentBrowser = CreateBrowser();
+                return Task.FromResult(currentBrowser);
+            }
         }
 
         public Task ReleaseBrowser(IWebBrowser browser)
         {
-            DisposeBrowser(browser);
-            return Task.FromResult(0);
+            lock (locker)
+            {
+                if (browser != currentBrowser)
+                {
+                    throw new InvalidOperationException($"The LocalWebBrowserFactory received a request to release an unknown browser instance!");
+                }
+
+                DisposeBrowser(browser);
+                currentBrowser = null;
+
+                return Task.FromResult(0);
+            }
         }
 
 

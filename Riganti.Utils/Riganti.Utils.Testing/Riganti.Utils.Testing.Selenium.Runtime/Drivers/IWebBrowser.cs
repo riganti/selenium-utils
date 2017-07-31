@@ -8,12 +8,11 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers
     public interface IWebBrowser : IDisposable
     {
 
+        string UniqueName { get; }
+
         IWebDriver Driver { get; }
+
         IWebBrowserFactory Factory { get; }
-
-        void ClearDriverState();
-
-        void RecreateDriver();
         
     }
 }

@@ -5,7 +5,7 @@ using Riganti.Utils.Testing.Selenium.Runtime.Logging;
 
 namespace Riganti.Utils.Testing.Selenium.Runtime.Factories.Implementation
 {
-    public class InternetExplorerFastWebBrowserFactory : LocalWebBrowserFactory
+    public class InternetExplorerFastWebBrowserFactory : FastLocalWebBrowserFactory
     {
         public override string Name => "ie:fast";
 
@@ -14,7 +14,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Factories.Implementation
             return new InternetExplorerFastWebBrowser(this);
         }
 
-        public InternetExplorerFastWebBrowserFactory(SeleniumTestsConfiguration configuration, LoggerService loggerService, TestContextAccessor testContextAccessor) : base(configuration, loggerService, testContextAccessor)
+        public InternetExplorerFastWebBrowserFactory(TestSuiteRunner runner) : base(runner)
         {
         }
     }

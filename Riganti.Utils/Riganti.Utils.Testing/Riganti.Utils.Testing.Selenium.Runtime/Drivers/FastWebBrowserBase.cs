@@ -19,7 +19,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers
         /// <summary>
         /// Clears the web driver. Use this method to get web browser ready to another test.
         /// </summary>
-        public override void ClearDriverState()
+        public void ClearDriverState()
         {
             try
             {
@@ -28,9 +28,6 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers
             catch (Exception ex)
             {
                 Factory.LogError(ex);
-                Factory.LogMessage("Browser cleaning failed! Recreating the browser.");
-                RecreateDriver();
-                Factory.LogMessage("New browser instance created.");
             }
         }
 
@@ -38,7 +35,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers
         {
             if (driverInstance == null) return;
 
-            Factory.LogMessage("Cleaning session");
+            Factory.LogInfo("Cleaning session");
 
             ExpectedConditions.AlertIsPresent()(driverInstance)?.Dismiss();
             driverInstance.Manage().Cookies.DeleteAllCookies();
@@ -68,7 +65,7 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers
                     }
                     catch
                     {
-                        if (Factory.Configuration.TestRunOptions.TryToKillWhenNotResponding)
+                        if (Factory.TestSuiteRunner.Configuration.TestRunOptions.TryToKillWhenNotResponding)
                         {
                             TryToKill(driverInstance);
                         }

@@ -8,10 +8,6 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers
         public DevWebBrowserBase(IWebBrowserFactory factory) : base(factory)
         {
         }
-
-        public override void ClearDriverState()
-        {
-            RecreateDriver();
-        }
+        
     }
 }

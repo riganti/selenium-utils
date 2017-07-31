@@ -17,10 +17,6 @@ namespace Riganti.Utils.Testing.Selenium.Runtime.Drivers.Implementation
         {
             return new RemoteWebDriver(new Uri(Lease.Url), new ChromeOptions());
         }
-
-        public override void ClearDriverState()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
