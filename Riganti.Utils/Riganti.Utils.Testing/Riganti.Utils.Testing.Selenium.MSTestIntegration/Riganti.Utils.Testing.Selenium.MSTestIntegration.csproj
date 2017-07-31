@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleniumTest.cs" />
-    <Compile Include="TestContextExtensions.cs" />
+    <Compile Include="TestContextProvider.cs" />
     <Compile Include="TestContextWrapper.cs" />
   </ItemGroup>
   <ItemGroup>

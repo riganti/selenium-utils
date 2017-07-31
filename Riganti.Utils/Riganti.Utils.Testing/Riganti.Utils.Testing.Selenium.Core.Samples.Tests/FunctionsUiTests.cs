@@ -18,7 +18,7 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                Context.WriteLine(
+                TestContext.WriteLine(
                     browser.First("#displayed").FindElements("div p")
                         .FullSelector);
             });
@@ -31,18 +31,6 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl();
                 browser.FindElements("form").FindElements("div").ThrowIfSequenceEmpty();
-            });
-        }
-
-        [TestMethod]
-        public void SubSectionTest()
-        {
-            RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
-#pragma warning disable CS0612 // Type or member is obsolete
-                RunTestSubSection("Test Subsection", (b) => { });
-#pragma warning restore CS0612 // Type or member is obsolete
             });
         }
 
@@ -83,7 +71,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(AlertException))]
         public void ExpectedExceptionTest2()
         {
-            ExpectException(typeof(AlertException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
@@ -448,41 +435,47 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckHyperLink_Failure1()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEquals("#RelativeLink", "/path0/test?query=test#fragment", UrlKind.Relative,
-                    UriComponents.PathAndQuery);
+
+                Assert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.CheckIfHyperLinkEquals("#RelativeLink", "/path0/test?query=test#fragment", UrlKind.Relative,
+                        UriComponents.PathAndQuery);
+                });
             });
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckHyperLink_Failure2()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEquals("#RelativeLink", "https://www.google.com/path/test?query=test#fragment",
-                    UrlKind.Absolute);
+
+                Assert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.CheckIfHyperLinkEquals("#RelativeLink", "https://www.google.com/path/test?query=test#fragment",
+                        UrlKind.Absolute);
+                });
             });
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckHyperLink_Failure3()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.googles.com/path/test?query=test#fragment",
-                    UrlKind.Absolute, UriComponents.AbsoluteUri);
+
+                Assert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.googles.com/path/test?query=test#fragment",
+                        UrlKind.Absolute, UriComponents.AbsoluteUri);
+                });
             });
         }
 
@@ -503,36 +496,40 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(EmptySequenceException))]
         public void SingleExceptionTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.Single("asdasd");
+
+                Assert.ThrowsException<EmptySequenceException>(() =>
+                {
+                    browser.Single("asdasd");
+                });
             });
         }
 
         [TestMethod]
         public void CheckIfUrlExistsTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
-                browser.CheckIfUrlIsAccessible("hyperlink.aspx", UrlKind.Relative);
+                Assert.ThrowsException<EmptySequenceException>(() =>
+                {
+                    browser.CheckIfUrlIsAccessible("hyperlink.aspx", UrlKind.Relative);
+                });
             });
         }
 
         [TestMethod]
-        [ExpectedException(typeof(SeleniumTestFailedException))]
         public void CheckIfUrlExistsTest2()
         {
-            SeleniumTestsConfiguration.DeveloperMode = false;
-            SeleniumTestsConfiguration.PlainMode = false;
             RunInAllBrowsers(browser =>
             {
-                browser.CheckIfUrlIsAccessible("NonExistent359.aspx", UrlKind.Relative);
+                Assert.ThrowsException<SeleniumTestFailedException>(() =>
+                {
+                    browser.CheckIfUrlIsAccessible("NonExistent359.aspx", UrlKind.Relative);
+                });
             });
         }
     }

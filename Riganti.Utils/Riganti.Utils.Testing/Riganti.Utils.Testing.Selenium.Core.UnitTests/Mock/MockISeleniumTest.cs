@@ -7,11 +7,7 @@ namespace Selenium.Core.UnitTests.Mock
     public class MockISeleniumTest : ISeleniumTest
     {
         public ITestContext Context { get; set; }
-
-        public void Log(Exception exception)
-        {
-        }
-
+        
         public Guid CurrentScope { get; set; }
     }
 }

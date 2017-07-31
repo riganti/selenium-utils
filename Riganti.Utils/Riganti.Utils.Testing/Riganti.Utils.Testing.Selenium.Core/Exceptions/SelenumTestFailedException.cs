@@ -126,7 +126,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             //sb.AppendLine();
             //sb.AppendLine();
 
-            //RenderInnerAgregatedExceptions(sb);
+            RenderInnerAgregatedExceptions(sb);
 
             return sb.ToString();
         }
@@ -162,7 +162,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
         /// Gets informations about inner exceptions that was agregated from test cycle.
         /// </summary>
         /// <param name="sb"></param>
-        public void GetInnerAgregatedExceptions(StringBuilder sb)
+        public void RenderInnerAgregatedExceptions(StringBuilder sb)
         {
 
             // add all exceptions to report

@@ -6,40 +6,50 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using OpenQA.Selenium.Interactions;
+using Riganti.Utils.Testing.Selenium.Core.Configuration;
+using Riganti.Utils.Testing.Selenium.Core.Drivers;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class BrowserWrapper
     {
-        // ReSharper disable once InconsistentNaming
-        protected readonly IWebDriver browser;
 
-        private readonly ISeleniumTest testClass;
-        public int ActionWaitTime { get; set; } = SeleniumTestsConfiguration.ActionTimeout;
-        public string BaseUrl { get; set; } = SeleniumTestsConfiguration.BaseUrl;
+        private readonly IWebBrowser browser;
+        private readonly IWebDriver driver;
+        private readonly ITestInstance testInstance;
 
-        public IWebDriver Browser
+        public int ActionWaitTime { get; set; }
+
+        public string BaseUrl => testInstance.TestConfiguration.BaseUrl;
+
+
+
+        public IWebDriver Driver
         {
             get
             {
                 ActivateScope();
-                return browser;
+                return driver;
             }
         }
 
         private ScopeOptions ScopeOptions { get; set; }
 
-        public BrowserWrapper(IWebDriver browser, ISeleniumTest testClass, ScopeOptions scope)
+        public BrowserWrapper(IWebBrowser browser, IWebDriver driver, ITestInstance testInstance, ScopeOptions scope)
         {
             this.browser = browser;
-            this.testClass = testClass;
+            this.driver = driver;
+
+            this.testInstance = testInstance;
+            ActionWaitTime = browser.Factory?.TestSuiteRunner?.Configuration.TestRunOptions.ActionTimeout ?? 250;
+
             ScopeOptions = scope;
             SetCssSelector();
         }
 
         public void SetTimeouts(TimeSpan pageLoadTimeout, TimeSpan implicitlyWait)
         {
-            var timeouts = browser.Manage().Timeouts();
+            var timeouts = Driver.Manage().Timeouts();
             timeouts.SetPageLoadTimeout(pageLoadTimeout);
             timeouts.ImplicitlyWait(implicitlyWait);
         }
@@ -65,7 +75,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Url of active browser tab.
         /// </summary>
-        public string CurrentUrl => Browser.Url;
+        public string CurrentUrl => Driver.Url;
 
         /// <summary>
         /// Gives path of url of active browser tab.
@@ -78,7 +88,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public bool CompareUrl(string url)
         {
             Uri uri1 = new Uri(url);
-            Uri uri2 = new Uri(Browser.Url);
+            Uri uri2 = new Uri(Driver.Url);
 
             var result = Uri.Compare(uri1, uri2,
                 UriComponents.Scheme | UriComponents.Host | UriComponents.PathAndQuery,
@@ -165,15 +175,15 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 {
                     throw new InvalidRedirectException();
                 }
-                SeleniumTestBase.Log($"Start navigation to: {BaseUrl}", 10);
-                Browser.Navigate().GoToUrl(BaseUrl);
+                LogVerbose($"Start navigation to: {BaseUrl}");
+                Driver.Navigate().GoToUrl(BaseUrl);
                 return;
             }
             //redirect if is absolute
             if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
             {
-                SeleniumTestBase.Log($"Start navigation to: {url}", 10);
-                Browser.Navigate().GoToUrl(url);
+                LogVerbose($"Start navigation to: {url}");
+                Driver.Navigate().GoToUrl(url);
                 return;
             }
             //redirect absolute with same schema
@@ -181,8 +191,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 var schema = new Uri(CurrentUrl).Scheme;
                 var navigateUrltmp = $"{schema}:{url}";
-                SeleniumTestBase.Log($"Start navigation to: {navigateUrltmp}", 10);
-                Browser.Navigate().GoToUrl(navigateUrltmp);
+                LogVerbose($"Start navigation to: {navigateUrltmp}");
+                Driver.Navigate().GoToUrl(navigateUrltmp);
                 return;
             }
             var builder = new UriBuilder(BaseUrl);
@@ -192,14 +202,29 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 builder.Path = "";
                 var urlToNavigate = builder.ToString().TrimEnd('/') + "/" + url.TrimStart('/');
-                SeleniumTestBase.Log($"Start navigation to: {urlToNavigate}", 10);
-                Browser.Navigate().GoToUrl(urlToNavigate);
+                LogVerbose($"Start navigation to: {urlToNavigate}");
+                Driver.Navigate().GoToUrl(urlToNavigate);
                 return;
             }
 
             var navigateUrl = builder.ToString().TrimEnd('/') + "/" + url.TrimStart('/');
-            SeleniumTestBase.Log($"Start navigation to: {navigateUrl}", 10);
-            Browser.Navigate().GoToUrl(navigateUrl);
+            LogVerbose($"Start navigation to: {navigateUrl}");
+            Driver.Navigate().GoToUrl(navigateUrl);
+        }
+
+        public void LogVerbose(string message)
+        {
+            browser.Factory.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {message}");
+        }
+
+        public void LogInfo(string message)
+        {
+            browser.Factory.LogInfo($"(#{Thread.CurrentThread.ManagedThreadId}) {message}");
+        }
+
+        public void LogError(string message, Exception ex)
+        {
+            browser.Factory.LogError(new Exception($"(#{Thread.CurrentThread.ManagedThreadId}) {message}", ex));
         }
 
         /// <summary>
@@ -215,7 +240,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public void NavigateBack()
         {
-            Browser.Navigate().Back();
+            Driver.Navigate().Back();
         }
 
         /// <summary>
@@ -223,7 +248,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public void NavigateForward()
         {
-            Browser.Navigate().Forward();
+            Driver.Navigate().Forward();
         }
 
         /// <summary>
@@ -231,7 +256,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public void Refresh()
         {
-            Browser.Navigate().Refresh();
+            Driver.Navigate().Refresh();
         }
 
         /// <summary>
@@ -286,7 +311,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             try
 
             {
-                alert = Browser.SwitchTo().Alert();
+                alert = Driver.SwitchTo().Alert();
             }
             catch (Exception ex)
             {
@@ -322,7 +347,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public BrowserWrapper CheckIfAlertText(Func<string, bool> expression, string failureMessage = "")
         {
-            var alert = Browser.SwitchTo().Alert()?.Text;
+            var alert = Driver.SwitchTo().Alert()?.Text;
             if (!expression(alert))
             {
                 throw new AlertException($"Alert text is not correct. Provided value: '{alert}' \n { failureMessage } ");
@@ -335,7 +360,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public BrowserWrapper ConfirmAlert()
         {
-            Browser.SwitchTo().Alert().Accept();
+            Driver.SwitchTo().Alert().Accept();
             Wait();
             return this;
         }
@@ -345,7 +370,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public BrowserWrapper DismissAlert()
         {
-            Browser.SwitchTo().Alert().Dismiss();
+            Driver.SwitchTo().Alert().Dismiss();
             Wait();
             return this;
         }
@@ -383,7 +408,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <returns></returns>
         public ElementWrapperCollection FindElements(By selector)
         {
-            return Browser.FindElements(selector).ToElementsList(this, selector.GetSelector());
+            return Driver.FindElements(selector).ToElementsList(this, selector.GetSelector());
         }
 
         /// <summary>
@@ -393,7 +418,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
         public ElementWrapperCollection FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
-            return Browser.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)).ToElementsList(this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector());
+            return Driver.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)).ToElementsList(this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector());
         }
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
@@ -506,7 +531,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public IJavaScriptExecutor GetJavaScriptExecutor()
         {
-            return Browser as IJavaScriptExecutor;
+            return Driver as IJavaScriptExecutor;
         }
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
@@ -548,7 +573,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         ///<param name="format">Default value is PNG.</param>
         public void TakeScreenshot(string filename, ImageFormat format = null)
         {
-            ((ITakesScreenshot)Browser).GetScreenshot().SaveAsFile(filename, format ?? ImageFormat.Png);
+            ((ITakesScreenshot)Driver).GetScreenshot().SaveAsFile(filename, format ?? ImageFormat.Png);
         }
 
         /// <summary>
@@ -556,15 +581,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public void Dispose()
         {
-            Browser.Quit();
-            Browser.Dispose();
-            if (Browser is IWebDriverWrapper)
-            {
-                ((IWebDriverWrapper)Browser).Disposed = true;
-                SeleniumTestBase.LogDriverId(Browser, "Dispose - ChromeDriver");
-            }
-
-            SeleniumTestBase.Log("IWebDriver was disposed.");
+            Driver.Quit();
+            Driver.Dispose();
         }
 
         #region CheckUrl
@@ -665,13 +683,14 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public BrowserWrapper GetFrameScope(string selector)
         {
-            var options = new ScopeOptions { FrameSelector = selector, Parent = this, CurrentWindowHandle = browser.CurrentWindowHandle };
+            var options = new ScopeOptions { FrameSelector = selector, Parent = this, CurrentWindowHandle = Driver.CurrentWindowHandle };
 
             var iframe = First(selector);
             iframe.CheckIfTagName(new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
-            var frame = browser.SwitchTo().Frame(iframe.WebElement);
-            testClass.CurrentScope = options.ScopeId;
-            return new BrowserWrapper(frame, testClass, options);
+            var frame = Driver.SwitchTo().Frame(iframe.WebElement);
+            testInstance.TestClass.CurrentScope = options.ScopeId;
+
+            return new BrowserWrapper(browser, frame, testInstance, options);
         }
 
         #endregion Frames support
@@ -806,7 +825,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
 
             HttpWebResponse response = null;
-            SeleniumTestBase.Log($"CheckIfUrlIsAccessible: Checking of url: '{url}'", 10);
+            LogVerbose($"CheckIfUrlIsAccessible: Checking of url: '{url}'");
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
 
@@ -843,14 +862,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <returns></returns>
         public BrowserWrapper SwitchToTab(int index)
         {
-            Browser.SwitchTo().Window(Browser.WindowHandles[index]);
+            Driver.SwitchTo().Window(Driver.WindowHandles[index]);
             return this;
         }
 
         public void ActivateScope()
         {
-            
-            if (testClass.CurrentScope == ScopeOptions.ScopeId)
+            if (testInstance.TestClass.CurrentScope == ScopeOptions.ScopeId)
             {
                 return;
             }
@@ -861,24 +879,24 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
             else
             {
-                if (ScopeOptions.CurrentWindowHandle != null && browser.CurrentWindowHandle != ScopeOptions.CurrentWindowHandle)
+                if (ScopeOptions.CurrentWindowHandle != null && driver.CurrentWindowHandle != ScopeOptions.CurrentWindowHandle)
                 {
-                    browser.SwitchTo().Window(ScopeOptions.CurrentWindowHandle);
+                    driver.SwitchTo().Window(ScopeOptions.CurrentWindowHandle);
                 }
                 if (ScopeOptions.Parent == null)
                 {
-                    browser.SwitchTo().DefaultContent();
+                    driver.SwitchTo().DefaultContent();
                 }
 
                 if (ScopeOptions.FrameSelector != null)
                 {
-                    browser.SwitchTo().Frame(ScopeOptions.FrameSelector);
+                    driver.SwitchTo().Frame(ScopeOptions.FrameSelector);
                 }
             }
-            testClass.CurrentScope = ScopeOptions.ScopeId;
+            testInstance.TestClass.CurrentScope = ScopeOptions.ScopeId;
         }
 
-        public string GetTitle() => Browser.Title;
+        public string GetTitle() => Driver.Title;
 
         public BrowserWrapper CheckIfTitleEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
         {
@@ -928,8 +946,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public IWebDriver _GetInternalWebDriver()
         {
-            testClass.CurrentScope = Guid.Empty;
-            return browser;
+            testInstance.TestClass.CurrentScope = Guid.Empty;
+            return Driver;
         }
 
         /// <summary>

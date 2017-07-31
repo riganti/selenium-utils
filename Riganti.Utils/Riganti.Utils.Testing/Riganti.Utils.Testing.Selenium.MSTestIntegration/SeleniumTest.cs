@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Riganti.Utils.Testing.Selenium.Core.Configuration;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
@@ -7,15 +8,14 @@ namespace Riganti.Utils.Testing.Selenium.Core
     /// </summary>
     public class SeleniumTest : SeleniumTestBase
     {
-        private ITestContext testContext;
-
-        public override ITestContext Context
-        {
-            get => testContext ?? (testContext = TestContext?.Wrap());
-            set => testContext = value;
-        }
 
         public TestContext TestContext { get; set; }
+
+
+        protected override TestSuiteRunner InitializeTestSuiteRunner(SeleniumTestsConfiguration configuration)
+        {
+            return new TestSuiteRunner(configuration, new TestContextProvider());
+        }
 
         [ClassCleanup]
         public override void TotalCleanUp()

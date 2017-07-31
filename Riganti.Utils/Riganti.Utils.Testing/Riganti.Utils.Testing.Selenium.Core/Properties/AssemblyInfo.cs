@@ -7,5 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
- [assembly: InternalsVisibleTo("Selenium.Core.UnitTests")]
+ [assembly: InternalsVisibleTo("Riganti.Utils.Testing.Selenium.Core.UnitTests")]
+ [assembly: InternalsVisibleTo("Riganti.Utils.Testing.Selenium.MSTest2Integration")]
+ [assembly: InternalsVisibleTo("Riganti.Utils.Testing.Selenium.MSTestIntegration")]
 

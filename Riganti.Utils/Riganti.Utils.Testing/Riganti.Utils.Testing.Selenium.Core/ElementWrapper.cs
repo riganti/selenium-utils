@@ -34,16 +34,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
             ParentWrapper.ActivateScope();
         }
 
-        public static int ActionTimeout { get; set; } = SeleniumTestsConfiguration.ActionTimeout;
-
         /// <summary>
         /// Default timeout for Wait function.
         /// </summary>
-        public int ActionWaitTime
-        {
-            get => ActionTimeout;
-            set => ActionTimeout = value;
-        }
+        public int ActionWaitTime { get; set; }
 
         /// <summary>
         /// Unwrapped IWebElement binding implementation (SeleniumHQ).
@@ -112,7 +106,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             Selector = selector;
             SelectMethod = browser.SelectMethod;
             BaseUrl = browser.BaseUrl;
-            ActionTimeout = browserWrapper.ActionWaitTime;
+            ActionWaitTime = browserWrapper.ActionWaitTime;
         }
 
         /// <summary>

@@ -14,6 +14,10 @@ namespace Riganti.Utils.Testing.Selenium.Core.Comparators
         private string CompareValue => Trim ? compareValue?.Trim() : compareValue;
         public bool Trim { get; set; }
 
+
+        public StringComparison DefaultStringComparison { get; set; } = StringComparison.Ordinal;
+
+
         /// <summary>
         /// Gets or sets the failure message.
         /// </summary>
@@ -39,7 +43,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Comparators
         /// <exception cref="UnexpectedElementStateException"></exception>
         public void Equals(string value, StringComparison? comparison = null)
         {
-            if (string.Equals(CompareValue, value, comparison ?? SeleniumTestsConfiguration.DefaultStringComparison))
+            if (string.Equals(CompareValue, value, comparison ?? DefaultStringComparison))
             {
                 return;
             }
@@ -47,6 +51,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Comparators
             var failureMessage = FailureMessage ?? $"Element compared values differ. Expected value: '{value}', Provided value: '{CompareValue}' \r\n";
             throw new UnexpectedElementStateException(failureMessage);
         }
+
 
         /// <summary>
         /// Nots the equals.
@@ -56,7 +61,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Comparators
         /// <exception cref="UnexpectedElementStateException"></exception>
         public void NotEquals(string value, StringComparison? comparison = null)
         {
-            if (!string.Equals(CompareValue, value, comparison ?? SeleniumTestsConfiguration.DefaultStringComparison))
+            if (!string.Equals(CompareValue, value, comparison ?? DefaultStringComparison))
             {
                 return;
             }
@@ -73,7 +78,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Comparators
         /// <exception cref="UnexpectedElementStateException"></exception>
         public void Contains(string value, StringComparison? comparison = null)
         {
-            if (CompareValue == value || CompareValue != null && CompareValue.IndexOf(value, comparison ?? SeleniumTestsConfiguration.DefaultStringComparison) > -1)
+            if (CompareValue == value || CompareValue != null && CompareValue.IndexOf(value, comparison ?? DefaultStringComparison) > -1)
             {
                 return;
             }
@@ -88,7 +93,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Comparators
         /// <param name="values">Options to compare with.</param>
         public void IsIn(params string[] values)
         {
-            IsIn(SeleniumTestsConfiguration.DefaultStringComparison, values);
+            IsIn(DefaultStringComparison, values);
         }
 
         /// <summary>

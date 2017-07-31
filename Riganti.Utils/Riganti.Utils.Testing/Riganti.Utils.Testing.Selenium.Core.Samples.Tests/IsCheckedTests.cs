@@ -10,7 +10,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void IsNotCheckedTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("Checkboxes.aspx");
@@ -21,7 +20,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void IsCheckedTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("Checkboxes.aspx");
@@ -34,7 +32,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfIsChecked_TypeTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("Checkboxes.aspx");
@@ -46,7 +43,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfIsNotChecked_TypeTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("Checkboxes.aspx");
@@ -58,7 +54,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfIsChecked_TagnameTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("Checkboxes.aspx");
@@ -70,7 +65,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfIsNotChecked_TagnameTest()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("Checkboxes.aspx");
@@ -81,7 +75,6 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfIsChecked_RadioButton()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("Checkboxes.aspx");
@@ -92,7 +85,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfIsChecked_RadioButton_ExceptionExpected()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("Checkboxes.aspx");
@@ -100,36 +92,27 @@ namespace SeleniumCore.Samples.Tests
             });
         }
 
-
-
         [TestMethod]
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfIsNotChecked_RadioButton()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("Checkboxes.aspx");
                 browser.Single("#RadioChecked").CheckIfIsNotChecked();
             });
         }
+
         [TestMethod]
         public void CheckIfIsNotChecked_RadioButton_ExceptionExpected()
         {
-            SeleniumTestsConfiguration.DeveloperMode = true;
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("Checkboxes.aspx");
                 browser.Single("#RadioNotChecked").CheckIfIsNotChecked();
             });
         }
-
-
-
-
-
-
-
+        
         [TestMethod]
         public void CheckCheckboxes()
         {

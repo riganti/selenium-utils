@@ -37,6 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Coordinator.Client\Riganti.Utils.Testing.Selenium.Coordinator.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>

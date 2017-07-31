@@ -18,7 +18,8 @@ namespace Selenium.Core.UnitTests
         public void CheckIfTagName_ArrayTest()
         {
             var driverMock = new MockIWebDriver { FindElementsAction = () => new List<IWebElement>() { new MockIWebElement() { TagName = "frame" } } };
-            var browser = new BrowserWrapper(driverMock, new MockISeleniumTest(), new ScopeOptions());
+            var browserMock = new MockIWebBrowser(driverMock);
+            var browser = new BrowserWrapper(browserMock, driverMock, new MockITestInstance(), new ScopeOptions());
 
             var element = browser.First("frame");
             element.CheckIfTagName(new[] { "frame", "iframe" });
@@ -28,7 +29,8 @@ namespace Selenium.Core.UnitTests
         public void CheckIfTagName_ArrayTest2()
         {
             var driverMock = new MockIWebDriver { FindElementsAction = () => new List<IWebElement>() { new MockIWebElement() { TagName = "iframe" } } };
-            var browser = new BrowserWrapper(driverMock, new MockISeleniumTest(), new ScopeOptions());
+            var browserMock = new MockIWebBrowser(driverMock);
+            var browser = new BrowserWrapper(browserMock, driverMock, new MockITestInstance(), new ScopeOptions());
 
             var element = browser.First("iframe");
             element.CheckIfTagName(new[] { "frame", "iframe" });
@@ -40,7 +42,8 @@ namespace Selenium.Core.UnitTests
         public void CheckIfTagName_ArrayTest3()
         {
             var driverMock = new MockIWebDriver { FindElementsAction = () => new List<IWebElement>() { new MockIWebElement() { TagName = "a" } } };
-            var browser = new BrowserWrapper(driverMock, new MockISeleniumTest(), new ScopeOptions());
+            var browserMock = new MockIWebBrowser(driverMock);
+            var browser = new BrowserWrapper(browserMock, driverMock, new MockITestInstance(), new ScopeOptions());
 
             var element = browser.First("a");
             element.CheckIfTagName(new[] { "frame", "iframe" });
