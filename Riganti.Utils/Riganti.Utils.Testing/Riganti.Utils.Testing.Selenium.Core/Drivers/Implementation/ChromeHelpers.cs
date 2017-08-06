@@ -12,7 +12,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers.Implementation
             var options = new ChromeOptions();
             options.AddArgument("test-type");
 
-            if (Convert.ToBoolean(factory.Options["DisableExtensions"] ?? "true"))
+            if (factory.GetBooleanOption("disableExtensions"))
             {
                 options.AddArgument("--disable-extensions");
             }

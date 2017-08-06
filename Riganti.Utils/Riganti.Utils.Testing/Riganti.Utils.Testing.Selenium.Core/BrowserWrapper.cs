@@ -573,7 +573,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         ///<param name="format">Default value is PNG.</param>
         public void TakeScreenshot(string filename, ImageFormat format = null)
         {
-            ((ITakesScreenshot)Driver).GetScreenshot().SaveAsFile(filename, format ?? ImageFormat.Png);
+            ((ITakesScreenshot)driver).GetScreenshot().SaveAsFile(filename, format ?? ImageFormat.Png);
         }
 
         /// <summary>

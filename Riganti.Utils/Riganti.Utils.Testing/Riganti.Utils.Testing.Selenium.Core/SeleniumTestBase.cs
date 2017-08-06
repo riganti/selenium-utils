@@ -30,8 +30,20 @@ namespace Riganti.Utils.Testing.Selenium.Core
                     {
                         if (testSuiteRunner == null)
                         {
-                            var configuration = CreateConfigurationBuilder();
-                            testSuiteRunner = InitializeTestSuiteRunner(configuration.Build());
+                            var builder = CreateConfigurationBuilder();
+                            var configuration = builder.Build();
+
+                            if (!configuration.Factories.Any())
+                            {
+                                throw new SeleniumTestConfigurationException("The configuration is not correct! No web browser factories were registered!");
+                            }
+
+                            testSuiteRunner = InitializeTestSuiteRunner(configuration);
+
+                            AppDomain.CurrentDomain.DomainUnload += (sender, args) =>
+                            {
+                                testSuiteRunner.Dispose();
+                            };
                         }
                     }
                 }
@@ -59,17 +71,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         protected virtual void RunInAllBrowsers(Action<BrowserWrapper> testBody, [CallerMemberName]string callerMemberName = "", [CallerFilePath]string callerFilePath = "", [CallerLineNumber]int callerLineNumber = 0)
         {
-            testSuiteRunner.RunInAllBrowsers(this, testBody, callerMemberName, callerFilePath, callerLineNumber);
+            TestSuiteRunner.RunInAllBrowsers(this, testBody, callerMemberName, callerFilePath, callerLineNumber);
         }
         
-
-        /// <summary>
-        /// Cleans up the complete test suite.
-        /// </summary>
-        public virtual void TotalCleanUp()
-        {
-            TestSuiteRunner.Dispose();
-        }
+        
 
     }
 }

@@ -15,7 +15,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Comparators
         public bool Trim { get; set; }
 
 
-        public StringComparison DefaultStringComparison { get; set; } = StringComparison.Ordinal;
+        public StringComparison DefaultStringComparison { get; set; } = StringComparison.CurrentCultureIgnoreCase;
 
 
         /// <summary>

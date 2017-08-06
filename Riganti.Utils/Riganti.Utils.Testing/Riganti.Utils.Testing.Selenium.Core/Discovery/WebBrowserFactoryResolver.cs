@@ -14,15 +14,15 @@ namespace Riganti.Utils.Testing.Selenium.Core.Discovery
     public class WebBrowserFactoryResolver
     {
 
-        public Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories(SeleniumTestsConfiguration configuration, TestContextAccessor testContextAccessor, LoggerService loggerService, Assembly[] assemblies)
+        public Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories(TestSuiteRunner runner, Assembly[] assemblies)
         {
             // find all factories
             var foundTypes = DiscoverFactories(assemblies);
-            var factories = InstantiateFactories(configuration, testContextAccessor, loggerService, assemblies, foundTypes);
+            var factories = InstantiateFactories(runner, foundTypes);
 
             // create instances and configure them
             var result = new Dictionary<string, IWebBrowserFactory>();
-            foreach (var factoryConfiguration in configuration.Factories.Where(f => f.Value.Enabled))
+            foreach (var factoryConfiguration in runner.Configuration.Factories.Where(f => f.Value.Enabled))
             {
                 // try to find factory instance
                 var instance = factories.SingleOrDefault(f => f.Name == factoryConfiguration.Key);
@@ -51,19 +51,19 @@ namespace Riganti.Utils.Testing.Selenium.Core.Discovery
             return foundTypes;
         }
 
-        private IList<IWebBrowserFactory> InstantiateFactories(SeleniumTestsConfiguration configuration, TestContextAccessor testContextAccessor, LoggerService loggerService, Assembly[] assemblies, IEnumerable<Type> foundTypes)
+        private IList<IWebBrowserFactory> InstantiateFactories(TestSuiteRunner testSuiteRunner, IEnumerable<Type> foundTypes)
         {
             var instances = new List<IWebBrowserFactory>();
             foreach (var type in foundTypes)
             {
                 try
                 {
-                    var instance = (IWebBrowserFactory) Activator.CreateInstance(type, configuration, loggerService, testContextAccessor);
+                    var instance = (IWebBrowserFactory) Activator.CreateInstance(type, testSuiteRunner);
                     instances.Add(instance);
                 }
                 catch (Exception ex)
                 {
-                    throw new SeleniumTestConfigurationException($"Failed to create an instance of the factory '{type}'! Make sure that the factory has a constructor with the following parameters (the order must match): {typeof(SeleniumTestsConfiguration)}, {typeof(LoggerService)}, {typeof(TestContextAccessor)}", ex);
+                    throw new SeleniumTestConfigurationException($"Failed to create an instance of the factory '{type}'! Make sure that the factory has a constructor with the exactly one parameter of type {typeof(TestSuiteRunner)}.", ex);
                 }
             }
             return instances;

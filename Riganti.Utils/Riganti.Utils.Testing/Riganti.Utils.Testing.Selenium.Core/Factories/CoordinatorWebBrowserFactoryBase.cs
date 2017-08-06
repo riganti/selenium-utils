@@ -48,7 +48,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Factories
             }
         }
 
-        protected string CoordinatorUrl => Options[nameof(CoordinatorUrl)];
+        protected string CoordinatorUrl => this.GetStringOption("coordinatorUrl");
 
         protected abstract string BrowserType { get; }
         

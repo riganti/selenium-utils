@@ -27,44 +27,53 @@ namespace SeleniumCore.Samples.Tests
             });
         }
         [TestMethod]
-        [ExpectedException(typeof(BrowserException))]
         public void CheckIfTitleEquals_trim()
         {
             RunInAllBrowsers(browser =>
             {
 
                 browser.NavigateToUrl();
-                browser.CheckIfTitleEquals("This is title           ", trim: false);
+
+                Assert.ThrowsException<BrowserException>(() =>
+                {
+                    browser.CheckIfTitleEquals("This is title           ", trim: false);
+                });
             });
         }
         [TestMethod]
-        [ExpectedException(typeof(BrowserException))]
         public void CheckIfTitleNotEquals_Exception()
         {
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                browser.CheckIfTitleNotEquals("This is title");
+                Assert.ThrowsException<BrowserException>(() =>
+                {
+                    browser.CheckIfTitleNotEquals("This is title");
+                });
             });
         }
         [TestMethod]
-        [ExpectedException(typeof(BrowserException))]
         public void CheckIfTitleEquals_Exception()
         {
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                browser.CheckIfTitleEquals("This is not title");
+                Assert.ThrowsException<BrowserException>(() =>
+                {
+                    browser.CheckIfTitleEquals("This is not title");
+                });
             });
         }
         [TestMethod]
-        [ExpectedException(typeof(BrowserException))]
         public void CheckIfTitle_Exception()
         {
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
-                browser.CheckIfTitle(c=> c == "This is not title");
+                Assert.ThrowsException<BrowserException>(() =>
+                {
+                    browser.CheckIfTitle(c => c == "This is not title");
+                });
             });
         }
     }

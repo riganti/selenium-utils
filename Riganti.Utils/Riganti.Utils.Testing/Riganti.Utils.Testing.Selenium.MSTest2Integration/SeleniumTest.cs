@@ -16,11 +16,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             return new TestSuiteRunner(configuration, new TestContextProvider());
         }
-
-        [ClassCleanup]
-        public override void TotalCleanUp()
-        {
-            base.TotalCleanUp();
-        }
+        
     }
 }

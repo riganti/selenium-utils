@@ -20,8 +20,8 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.Tests.NewApi
                 //A
                 browser.First("#button")
                         .Check()
-                            .InnerText(s => s.Equals("text"))
-                            .Tag(s => s.IsIn("a", "b"));
+                            .InnerText(s => s.Equals("Text"))
+                            .Tag(s => s.IsIn("a", "button"));
 
                 browser.First("#button").Check().InnerText(s => s.Contains("text"));
                 browser.First("#input").Check().Tag(s => s.Contains("input"));

@@ -34,6 +34,12 @@ namespace Riganti.Utils.Testing.Selenium.Core.Configuration
             return this;
         }
 
+        public ConfigurationBuilder Configure(Action<SeleniumTestsConfiguration> configureAction)
+        {
+            configureAction(configuration);
+            return this;
+        }
+
         public SeleniumTestsConfiguration Build()
         {
             return configuration;

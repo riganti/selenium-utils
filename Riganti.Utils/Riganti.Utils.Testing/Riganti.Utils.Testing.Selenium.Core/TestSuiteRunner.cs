@@ -80,7 +80,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         private Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories()
         {
             var factoryResolver = new WebBrowserFactoryResolver();
-            return factoryResolver.CreateWebBrowserFactories(Configuration, TestContextAccessor, LoggerService, searchAssemblies);
+            return factoryResolver.CreateWebBrowserFactories(this, searchAssemblies);
         }
 
         private List<TestConfiguration> GetTestConfigurations()

@@ -24,6 +24,9 @@
     <None Update="app.CI2.config">
       <DependentUpon>app.config</DependentUpon>
     </None>
+    <None Update="seleniumconfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
