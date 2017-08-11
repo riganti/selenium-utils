@@ -11,6 +11,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers.Implementation
         {
             var options = new ChromeOptions();
             options.AddArgument("test-type");
+            options.AddArgument("disable-popup-blocking");
 
             if (factory.GetBooleanOption("disableExtensions"))
             {

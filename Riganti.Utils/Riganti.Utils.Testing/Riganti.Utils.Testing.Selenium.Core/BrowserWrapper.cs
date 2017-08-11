@@ -287,7 +287,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
             if (!string.Equals(alertText, expectedValue,
                     caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
             {
-                DismissAlert();
                 throw new AlertException($"Alert does not contain expected value. Expected value: '{expectedValue}', provided value: '{alertText}'");
             }
             return this;
@@ -338,7 +337,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
             if (alertText == null || !alertText.Contains(expectedValue))
             {
-                DismissAlert();
                 throw new AlertException($"Alert does not contain expected value. Expected value: '{expectedValue}', provided value: '{alertText}'");
             }
             return this;
@@ -352,7 +350,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
             var alert = Driver.SwitchTo().Alert()?.Text;
             if (!expression(alert))
             {
-                DismissAlert();
                 throw new AlertException($"Alert text is not correct. Provided value: '{alert}' \n { failureMessage } ");
             }
             return this;
