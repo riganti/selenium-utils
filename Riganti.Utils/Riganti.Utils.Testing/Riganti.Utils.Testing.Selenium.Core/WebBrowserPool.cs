@@ -32,6 +32,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 lock (locker)
                 {
                     instance = pool.FirstOrDefault(b => b.Factory == factory);
+
+                    if (instance != null)
+                    {
+                        pool.Remove(instance);
+                    }
                 }
 
                 // if the browser is not in the cache, acquire a new one

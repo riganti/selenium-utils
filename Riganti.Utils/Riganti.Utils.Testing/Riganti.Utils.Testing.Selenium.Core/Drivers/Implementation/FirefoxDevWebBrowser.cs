@@ -14,7 +14,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers.Implementation
 
         protected override IWebDriver CreateDriver()
         {
-            throw new NotImplementedException();
+            return FirefoxHelpers.CreateFirefoxDriver(Factory);
         }
     }
 }

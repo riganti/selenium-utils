@@ -28,6 +28,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers
             catch (Exception ex)
             {
                 Factory.LogError(ex);
+                throw;
             }
         }
 
@@ -39,13 +40,14 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers
 
             ExpectedConditions.AlertIsPresent()(driverInstance)?.Dismiss();
             driverInstance.Manage().Cookies.DeleteAllCookies();
+            driverInstance.Manage().Cookies.DeleteCookie(new Cookie("cookie1", "asdasdasd"));
 
             if (!(driverInstance.Url.Contains("chrome:") || driverInstance.Url.Contains("data:") || driverInstance.Url.Contains("about:")))
             {
                 ((IJavaScriptExecutor)driverInstance).ExecuteScript("if(typeof(Storage) !== undefined) { localStorage.clear(); }");
                 ((IJavaScriptExecutor)driverInstance).ExecuteScript("if(typeof(Storage) !== undefined) { sessionStorage.clear(); }");
             }
-
+            
             driverInstance.Navigate().GoToUrl("about:blank");
         }
         
