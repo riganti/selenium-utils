@@ -44,7 +44,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 
         /// <summary>
-        /// Sets children reference to Parent wrapper
+        /// Sets children reference to Parent wrapper.
         /// </summary>
         /// <param name="selector"></param>
         private void SetReferences(string selector)
@@ -77,7 +77,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             if (!collection.Any())
             {
-                throw new EmptySequenceException($"Sequence contains no one element. Selector: '{FullSelector}'");
+                throw new EmptySequenceException($"Sequence contains no elements. Selector: '{FullSelector}'");
             }
             return this;
         }
@@ -86,12 +86,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             if (Count > 1)
             {
-                throw new MoreElementsInSequenceException($"Sequence containse more Than one element. Selector: '{FullSelector}'");
+                throw new MoreElementsInSequenceException($"Sequence contains more than one element. Selector: '{FullSelector}'");
             }
             return this;
         }
         /// <summary>
-        /// Throws exception when lenght of a sequence is empty or the sequence contains more then one element.
+        /// Throws exception when lenght of a sequence is empty or the sequence contains more than one element.
         /// </summary>
         /// <returns></returns>
         public ElementWrapperCollection ThrowIfEmptyOrMoreThanOne()
@@ -106,7 +106,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             if (Count != count)
             {
-                throw new SequenceCountException($"Count of elements in sequence is different Than expected value. Selector: '{FullSelector}', Expected value: '{count}', Actual value: '{Count}'.");
+                throw new SequenceCountException($"Element count in sequence is different from the expected value. Selector: '{FullSelector}', Expected value: '{count}', Actual value: '{Count}'.");
             }
             return this;
         }
@@ -236,11 +236,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 return element;
             }
-            throw new EmptySequenceException($"Sequence does not contain element with selector: '{FullSelector}'");
+            throw new EmptySequenceException($"Sequence contains no element with the selector: '{FullSelector}'");
         }
 
         /// <summary>
-        /// Returns first element from sequence. If sequence contains no element, function returns null.
+        /// Returns first element from sequence. If sequence doesn't contain the element, function returns null.
         /// </summary>
         /// <param name="tmpSelectMethod">Defines what type of selector are you want to use only for this query.</param>
         public ElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)

@@ -2,7 +2,7 @@
 
 
 # selenium-utils
-**The purpouse of this framework is to make UI testing much more easier and cheaper.**
+**The purpose of this framework is to make UI testing much more easier and cheaper.**
 Framework is based on selenium wrappers and principles which canopy uses. 
 
 Creation of tests full of Assert.AssertationFunc() was not acceptable for us. These tests usualy become very hard to read even it checks simple case. 

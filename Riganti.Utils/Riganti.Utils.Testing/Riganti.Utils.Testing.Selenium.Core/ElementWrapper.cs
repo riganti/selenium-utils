@@ -754,6 +754,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
+      
+
         public virtual ElementWrapper CheckIfValue(string value, bool caseInsensitive = false, bool trimValue = true)
         {
             string elementValue = GetValue();
