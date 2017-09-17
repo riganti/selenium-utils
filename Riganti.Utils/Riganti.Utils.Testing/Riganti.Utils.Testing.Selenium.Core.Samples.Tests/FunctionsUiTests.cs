@@ -5,13 +5,80 @@ using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.IO;
 using System.Threading;
-using OpenQA.Selenium.Chrome;
+using Riganti.Utils.Testing.Selenium.Core.Api;
 
 namespace SeleniumCore.Samples.Tests
 {
     [TestClass]
     public class FunctionsUiTests : SeleniumTest
     {
+        [TestMethod]
+        public void CheckIfIsDisplayed()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.CheckIfIsDisplayed("#dispblayed");
+                browser.First("#displayed").CheckIfIsDisplayed();
+            });
+        }
+
+        [TestMethod]
+        public void CheckIfIsNotDisplayed()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.CheckIfIsNotDisplayed("#non-displayed");
+                browser.First("#non-displayed").CheckIfIsNotDisplayed();
+                browser.First("#displayed-zero-draw-rec").CheckIfIsDisplayed();
+            });
+        }
+
+        [TestMethod]
+        public void CheckIfHasAttribute()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.First("#content").CheckIfHasAttribute("class");
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException), AllowDerivedTypes = true)]
+        public void CheckIfHasAttributeExpectedException()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.First("#content").CheckIfHasAttribute("title");
+            });
+        }
+
+        [TestMethod]
+        public void CheckIfHasNotAttribute()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+
+                browser.First("#content").CheckIfHasNotAttribute("title");
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void CheckIfHasNotAttributeExpectedException()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+
+                browser.First("#content").CheckIfHasNotAttribute("class");
+            });
+        }
+
         [TestMethod]
         public void GetFullSelector()
         {
@@ -31,6 +98,72 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl();
                 browser.FindElements("form").FindElements("div").ThrowIfSequenceEmpty();
+            });
+        }
+
+        [TestMethod]
+        public void SubSectionTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+#pragma warning disable CS0612 // Type or member is obsolete
+                RunTestSubSection("Test Subsection", (b) => { });
+#pragma warning restore CS0612 // Type or member is obsolete
+            });
+        }
+
+        [TestMethod]
+        public void HasAttributeTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.First("#dis-button").CheckIfHasAttribute("disabled");
+                browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void HasAttributeTest2()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.First("#dis-button").CheckIfHasNotAttribute("disabled");
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedElementStateException))]
+        public void HasAttributeTest3()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.First("#submit-button").CheckIfHasAttribute("disabled");
+            });
+        }
+
+        [TestMethod]
+        public void HasAttributeTest4()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.First("#dis-button").CheckIfHasAttribute("disabled");
+                browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
+            });
+        }
+
+        [TestMethod]
+        public void CheckAttributeTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl();
+                browser.First("#submit-button").CheckAttribute("type", "submit");
             });
         }
 
@@ -56,6 +189,90 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
+        public void AlertTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+
+                browser.First("#button").Click();
+                browser.CheckIfAlertTextEquals("confirm test");
+            });
+        }
+
+        [TestMethod]
+        public void AlertTest2()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+
+                browser.First("#button").Click();
+                try
+                {
+                    browser.CheckIfAlertTextEquals("Confirm test", true);
+                }
+                catch (AlertException)
+                {
+                }
+            });
+        }
+
+
+        [TestMethod]
+        public void AlertTestN()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+
+                browser.First("#button").Click();
+                AssertUI.CheckIfAlertTextEquals(browser, "confirm test");
+            });
+        }
+
+        [TestMethod]
+        public void AlertTest2N()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+
+                browser.First("#button").Click();
+                try
+                {
+                    AssertUI.CheckIfAlertTextEquals(browser, "Confirm test", true);
+                }
+                catch (AlertException)
+                {
+                }
+            });
+        }
+
+        [TestMethod]
+        public void AlertTest3()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+
+                browser.First("#button").Click();
+                browser.CheckIfAlertTextContains("confirm");
+            });
+        }
+
+        [TestMethod]
+        public void AlertTest4()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/Alert.aspx");
+                browser.First("#button").Click();
+                browser.CheckIfAlertText(s => s.EndsWith("test"), "alert text doesn't end with 'test.'");
+            });
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(AlertException))]
         public void ExpectedExceptionTest()
         {
@@ -71,6 +288,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(AlertException))]
         public void ExpectedExceptionTest2()
         {
+            ExpectException(typeof(AlertException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
@@ -88,6 +306,7 @@ namespace SeleniumCore.Samples.Tests
 
                 var button = browser.First("#button");
                 button.Click();
+
                 browser.ConfirmAlert().First("#message").CheckIfInnerTextEquals("Accept", false);
 
                 button.Click();
@@ -367,24 +586,16 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CookieTest()
         {
-            
-
-                Action<BrowserWrapper> test = browser =>
-                {
-                    browser.NavigateToUrl("CookiesTest.aspx");
-                    browser.First("#CookieIndicator").CheckIfTextEquals("False");
-                    browser.Click("#SetCookies").Wait();
-                    browser.NavigateToUrl("CookiesTest.aspx");
-                    browser.First("#CookieIndicator").CheckIfTextEquals("True");
-
-                };
-                RunInAllBrowsers(browser =>
-                {
-                    browser.Dispose();
-                });
-                RunInAllBrowsers(test);
-                RunInAllBrowsers(test);
-            
+            Action<BrowserWrapper> test = browser =>
+            {
+                browser.NavigateToUrl("CookiesTest.aspx");
+                browser.First("#CookieIndicator").CheckIfTextEquals("False");
+                browser.Click("#SetCookies").Wait();
+                browser.NavigateToUrl("CookiesTest.aspx");
+                browser.First("#CookieIndicator").CheckIfTextEquals("True");
+            };
+            RunInAllBrowsers(test);
+            RunInAllBrowsers(test);
         }
 
         [TestMethod]
@@ -413,7 +624,8 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
-                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "/path/test?query=test#fragment", UrlKind.Relative,
+                browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "/path/test?query=test#fragment",
+                    UrlKind.Relative,
                     UriComponents.PathAndQuery);
                 browser.CheckIfHyperLinkEquals("#RelativeLink", "/path/test?query=test#fragment", UrlKind.Relative,
                     UriComponents.PathAndQuery);
@@ -487,7 +699,9 @@ namespace SeleniumCore.Samples.Tests
                 browser.NavigateToUrl("hyperlink.aspx");
                 try
                 {
-                    browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "https://localhost:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.AbsoluteUri);
+                    browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema",
+                        "https://localhost:1234/path/test?query=test#fragment", UrlKind.Absolute,
+                        UriComponents.AbsoluteUri);
                 }
                 catch (UnexpectedElementStateException)
                 {

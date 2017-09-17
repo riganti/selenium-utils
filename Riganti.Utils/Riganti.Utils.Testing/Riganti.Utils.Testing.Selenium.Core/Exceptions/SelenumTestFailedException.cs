@@ -2,9 +2,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
@@ -22,12 +24,20 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 
         private readonly List<Exception> innerExceptions;
 
+        public CheckResult[] InnerCheckResults { get; }
+
+
         /// <inheritdoc />
         public override string Message => ToString();
         /// <summary>
         /// 
         /// </summary>
         public string ExceptionMessage { get; set; }
+
+        public string FullStackTrace => base.StackTrace;
+
+        public override string StackTrace => innerExceptions?.FirstOrDefault()?.StackTrace ?? FullStackTrace;
+
         /// <inheritdoc/>
         internal SeleniumTestFailedException()
         {
@@ -40,7 +50,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
         }
         /// <inheritdoc/>
 
-        internal SeleniumTestFailedException(Exception innerException) : base("", innerException)
+        internal SeleniumTestFailedException(Exception innerException) : this("", innerException)
         {
         }
         /// <inheritdoc/>
@@ -48,40 +58,34 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
         internal SeleniumTestFailedException(string message, Exception innerException) : base(message, innerException)
         {
             ExceptionMessage = message;
+            this.innerExceptions = new List<Exception>(new[] { innerException });
+            InnerCheckResults = CreateCheckResult(this.innerExceptions).ToArray();
         }
+
+        private IEnumerable<CheckResult> CreateCheckResult(IEnumerable<Exception> exceptions)
+        {
+            return exceptions.OfType<TestExceptionBase>().Select(e => e.CheckResult);
+        }
+
         /// <inheritdoc/>
         private SeleniumTestFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
-
         /// <inheritdoc/>
         internal SeleniumTestFailedException(Exception innerException, string browserName, string screenshotsPath) : this($"Test failed in browser '{browserName}'.", innerException)
         {
-            ScreenshotPath = screenshotsPath;
-            BrowserName = browserName;
+            this.ScreenshotPath = screenshotsPath;
+            this.BrowserName = browserName;
         }
-        /// <inheritdoc/>
-        internal SeleniumTestFailedException(List<Exception> innerExceptions, string browserName) : this($"Test failed in browser '{browserName}'.", null)
-        {
-            this.innerExceptions = innerExceptions;
-            BrowserName = browserName;
-        }
-        /// <inheritdoc/>
 
-        internal SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsPath) : this($"Test failed in browser '{browserName}'.", null)
-        {
-            this.innerExceptions = innerExceptions;
-            ScreenshotPath = screenshotsPath;
-            BrowserName = browserName;
-        }
-        /// <inheritdoc/>
 
-        internal SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsPath, string currentSubsection) : this($"Test failed in browser '{browserName}'", null)
+        internal SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsPath = null, string currentSubsection = null) : this($"Test failed in browser '{browserName}'", null)
         {
-            this.innerExceptions = innerExceptions;
             CurrentSubSection = currentSubsection;
             ScreenshotPath = screenshotsPath;
             BrowserName = browserName;
+            this.innerExceptions = innerExceptions;
+            InnerCheckResults = CreateCheckResult(this.innerExceptions).ToArray();
         }
         /// <inheritdoc/>
 
@@ -113,6 +117,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             var sb = new StringBuilder();
 
             RenderMessage(sb);
+            RenderInnerCheckResults(sb);
             RenderBrowserName(sb);
             RenderSubsection(sb);
             RenderScreenshotPath(sb);
@@ -129,6 +134,11 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             RenderInnerAgregatedExceptions(sb);
 
             return sb.ToString();
+        }
+
+        private void RenderInnerCheckResults(StringBuilder sb)
+        {
+            RenderCollectionIfNotEmpty(sb, InnerCheckResults, "Inner check results", (index, result) => $"Inner check result #{index}: '{result}'.");
         }
 
         private void RenderStackTrace(StringBuilder sb, int i, Exception exception)
@@ -158,11 +168,20 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             }
         }
 
-        /// <summary>
-        /// Gets informations about inner exceptions that was agregated from test cycle.
-        /// </summary>
-        /// <param name="sb"></param>
-        public void RenderInnerAgregatedExceptions(StringBuilder sb)
+        private void RenderCollectionIfNotEmpty<T>(StringBuilder sb, T[] source, string collectionName, Func<int, T, string> createMessage)
+        {
+            if (source.Any())
+            {
+                sb.AppendLine($"{collectionName}:");
+                for (int i = 0; i < source.Length; i++)
+                {
+                    var item = source[i];
+                    RenderWhenNotNull(sb, item, $"\t{createMessage(i, item).Replace("\n", "\n\t")}");
+                }
+            }
+        }
+
+        private void RenderInnerAgregatedExceptions(StringBuilder sb)
         {
 
             // add all exceptions to report
@@ -195,7 +214,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             RenderWhenNotNull(sb, BrowserName, $"Test failed in browser '{BrowserName}'.");
         }
 
-        private void RenderWhenNotNull(StringBuilder builder, object testedObject, string message)
+        private void RenderWhenNotNull<T>(StringBuilder builder, T testedObject, string message)
         {
             if (testedObject != null)
             {

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using OpenQA.Selenium.Interactions;
+using Riganti.Utils.Testing.Selenium.Core.Api;
 using Riganti.Utils.Testing.Selenium.Core.Configuration;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
 
@@ -686,11 +687,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
             var options = new ScopeOptions { FrameSelector = selector, Parent = this, CurrentWindowHandle = Driver.CurrentWindowHandle };
 
             var iframe = First(selector);
-            iframe.CheckIfTagName(new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
-            var frame = Driver.SwitchTo().Frame(iframe.WebElement);
-            testInstance.TestClass.CurrentScope = options.ScopeId;
-
-            return new BrowserWrapper(browser, frame, testInstance, options);
+            AssertUI.CheckIfTagName(iframe, new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
+            //iframe.CheckIfTagName(new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
+            var frame = browser.SwitchTo().Frame(iframe.WebElement);
+            testClass.CurrentScope = options.ScopeId;
+            return new BrowserWrapper(frame, testClass, options);
         }
 
         #endregion Frames support

@@ -6,7 +6,7 @@ using OpenQA.Selenium;
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
     [Serializable]
-    public class BrowserLocationException : WebDriverException
+    public class BrowserLocationException : TestExceptionBase
     {
         public BrowserLocationException()
         {

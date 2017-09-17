@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Api;
 
 namespace SeleniumCore.Samples.Tests
 {
@@ -53,6 +54,7 @@ namespace SeleniumCore.Samples.Tests
 
 
         }
+
         [TestMethod, ExpectedException(typeof(Exception))]
         public void XPathSelectorToRootTest()
         {

@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using Riganti.Utils.Testing.Selenium.DotVVM;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using Riganti.Utils.Testing.Selenium.Core.Api;
 
 namespace Selenium.DotVVM.Samples.Tests
 {
+    [TestClass]
     public class BasicTests : SeleniumTest
     {
         [TestMethod]
@@ -33,7 +35,7 @@ namespace Selenium.DotVVM.Samples.Tests
                 browser.NavigateToUrl("/FileUpload");
 
                 var tempPath = Path.GetTempFileName();
-                File.WriteAllBytes(tempPath, Enumerable.Range(0, 255).Select(i => (byte)i).ToArray());
+                File.WriteAllBytes(tempPath, Enumerable.Range(0, 255).Select(i => (byte) i).ToArray());
 
 
                 browser.First("#FUpload").UploadFile(tempPath);
@@ -46,8 +48,5 @@ namespace Selenium.DotVVM.Samples.Tests
                 }, 4000, "File upload failed.");
             });
         }
-
-
     }
-
 }

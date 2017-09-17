@@ -273,7 +273,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        private bool IsClickable()
+        public bool IsClickable()
         {
             var obj = this.browser.GetJavaScriptExecutor().ExecuteScript(@"
                 if(arguments.length === 0) {

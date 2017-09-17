@@ -25,6 +25,8 @@ namespace Selenium.Core.UnitTests
             element.CheckIfTagName(new[] { "frame", "iframe" });
 
         }
+
+
         [TestMethod]
         public void CheckIfTagName_ArrayTest2()
         {
