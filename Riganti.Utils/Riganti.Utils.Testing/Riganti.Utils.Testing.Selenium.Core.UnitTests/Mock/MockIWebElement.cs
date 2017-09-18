@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using OpenQA.Selenium;
 
@@ -34,12 +35,17 @@ namespace Selenium.Core.UnitTests.Mock
 
         public string GetAttribute(string attributeName)
         {
-            return null;
+            throw new NotImplementedException();
+        }
+
+        public string GetProperty(string propertyName)
+        {
+            throw new NotImplementedException();
         }
 
         public string GetCssValue(string propertyName)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public string TagName { get; set; }

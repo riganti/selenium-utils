@@ -9,6 +9,7 @@
 </head>
 <body>
     Routes:
+    capacity:{{value:  Routes.Capacity}}
     <ul>
         <dot:Repeater DataSource="{value: Routes}">
             <ItemTemplate>

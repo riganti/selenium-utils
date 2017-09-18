@@ -17,13 +17,11 @@ namespace Selenium.DotVVM.Samples
         // For more information about this class, visit https://dotvvm.com/docs/tutorials/basics-project-structure
         public void Configure(DotvvmConfiguration config, string applicationPath)
         {
-           
             //routing
             config.RouteTable.AutoDiscoverRoutes(new DefaultRouteStrategy(config));
             RegisterRoutes(config.RouteTable);
 
             RegisterResources(config.RouteTable);
-
         }
 
         private void RegisterRoutes(DotvvmRouteTable routeTable)
@@ -33,7 +31,6 @@ namespace Selenium.DotVVM.Samples
 
         private void RegisterResources(DotvvmRouteTable routeTable)
         {
-
         }
     }
 }

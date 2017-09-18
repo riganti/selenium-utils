@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26724.1
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Core.Samples", "Riganti.Utils.Testing.Selenium.Core.Samples\Riganti.Utils.Testing.Selenium.Core.Samples.csproj", "{A15FCC63-4D2C-4E82-828A-0747B6416134}"
 EndProject
@@ -33,9 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selen
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Core.UnitTests", "Riganti.Utils.Testing.Selenium.Core.UnitTests\Riganti.Utils.Testing.Selenium.Core.UnitTests.csproj", "{9398E1E2-4679-47B9-9E64-2256713C5DFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Core.UnitTests", "Riganti.Utils.Testing.Selenium.Core.UnitTests\Riganti.Utils.Testing.Selenium.Core.UnitTests.csproj", "{9398E1E2-4679-47B9-9E64-2256713C5DFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.DotVVM.Samples.Tests", "Riganti.Utils.Testing.Selenium.DotVVM.Samples.Tests\Riganti.Utils.Testing.Selenium.DotVVM.Samples.Tests.csproj", "{F3AAEA4A-4321-4BFA-97F1-34EFCC96150F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.DotVVM.Samples.Tests", "Riganti.Utils.Testing.Selenium.DotVVM.Samples.Tests\Riganti.Utils.Testing.Selenium.DotVVM.Samples.Tests.csproj", "{F3AAEA4A-4321-4BFA-97F1-34EFCC96150F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.xUnitIntegration", "Riganti.Utils.Testing.Selenium.xUnit\XUnitTestProject1\Riganti.Utils.Testing.Selenium.xUnitIntegration.csproj", "{2DC4F2AE-4956-4958-AFAF-538202E5CCEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -149,6 +151,14 @@ Global
 		{F3AAEA4A-4321-4BFA-97F1-34EFCC96150F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3AAEA4A-4321-4BFA-97F1-34EFCC96150F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3AAEA4A-4321-4BFA-97F1-34EFCC96150F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DC4F2AE-4956-4958-AFAF-538202E5CCEC}.CI|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC4F2AE-4956-4958-AFAF-538202E5CCEC}.CI|Any CPU.Build.0 = Debug|Any CPU
+		{2DC4F2AE-4956-4958-AFAF-538202E5CCEC}.CI2|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC4F2AE-4956-4958-AFAF-538202E5CCEC}.CI2|Any CPU.Build.0 = Debug|Any CPU
+		{2DC4F2AE-4956-4958-AFAF-538202E5CCEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC4F2AE-4956-4958-AFAF-538202E5CCEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC4F2AE-4956-4958-AFAF-538202E5CCEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC4F2AE-4956-4958-AFAF-538202E5CCEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -167,6 +177,7 @@ Global
 		{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9} = {56C2E9D7-1C68-47EE-BFB4-27AF259FF7A5}
 		{9398E1E2-4679-47B9-9E64-2256713C5DFC} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
 		{F3AAEA4A-4321-4BFA-97F1-34EFCC96150F} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
+		{2DC4F2AE-4956-4958-AFAF-538202E5CCEC} = {E83BB596-BF2A-4FE2-9843-E5649B561293}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {069407A3-360C-4D69-AFA7-4E7532D148A7}

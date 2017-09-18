@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net451</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <IsPackable>true</IsPackable>
     <IncludeContentInPack>False</IncludeContentInPack>
     <Version>1.0.4</Version>
@@ -19,13 +19,13 @@
     <AssemblyName>Riganti.Utils.Testing.Selenium.MSTest2Integration</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\net451\Riganti.Utils.Testing.Selenium.MSTest2Integration.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\net461\Riganti.Utils.Testing.Selenium.MSTest2Integration.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\net451\Riganti.Utils.Testing.Selenium.Core.MSTest2Integration.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net461\Riganti.Utils.Testing.Selenium.Core.MSTest2Integration.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
     <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
   </ItemGroup>

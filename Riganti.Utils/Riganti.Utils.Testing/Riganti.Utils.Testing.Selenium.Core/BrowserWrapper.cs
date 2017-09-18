@@ -24,7 +24,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public string BaseUrl => testInstance.TestConfiguration.BaseUrl;
 
 
-
+        /// <summary>
+        /// Generic representation of browser driver.
+        /// </summary>
         public IWebDriver Driver
         {
             get
@@ -51,8 +53,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public void SetTimeouts(TimeSpan pageLoadTimeout, TimeSpan implicitlyWait)
         {
             var timeouts = Driver.Manage().Timeouts();
-            timeouts.SetPageLoadTimeout(pageLoadTimeout);
-            timeouts.ImplicitlyWait(implicitlyWait);
+            timeouts.PageLoad = pageLoadTimeout;
+            timeouts.ImplicitWait = implicitlyWait;
         }
 
         private Func<string, By> selectMethodFunc;
@@ -572,9 +574,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         ///<param name="filename">Path where the screenshot is going to be saved.</param>
         ///<param name="format">Default value is PNG.</param>
-        public void TakeScreenshot(string filename, ImageFormat format = null)
+        public void TakeScreenshot(string filename, ScreenshotImageFormat? format = null)
         {
-            ((ITakesScreenshot)driver).GetScreenshot().SaveAsFile(filename, format ?? ImageFormat.Png);
+            ((ITakesScreenshot)driver).GetScreenshot().SaveAsFile(filename, format ?? ScreenshotImageFormat.Png);
         }
 
         /// <summary>

@@ -20,12 +20,14 @@ namespace Selenium.DotVVM.Samples
         {
             var applicationPhysicalPath = HostingEnvironment.ApplicationPhysicalPath;
             var uploadPath = Path.Combine(applicationPhysicalPath, "App_Data\\UploadTemp");
-            
+
             // use DotVVM
-            var dotvvmConfiguration = app.UseDotVVM<DotvvmStartup>(applicationPhysicalPath, options: options =>
-            {
-                options.Services.TryAddSingleton( typeof(IUploadedFileStorage),serviceProvider => new FileSystemUploadedFileStorage(uploadPath, TimeSpan.FromMinutes(30)));
-            });
+            var dotvvmConfiguration = app.UseDotVVM<DotvvmStartup>(applicationPhysicalPath,
+                options: options =>
+                {
+                    options.Services.TryAddSingleton(typeof(IUploadedFileStorage),
+                        serviceProvider => new FileSystemUploadedFileStorage(uploadPath, TimeSpan.FromMinutes(30)));
+                });
 #if DEBUG
             dotvvmConfiguration.Debug = true;
 #endif
@@ -34,9 +36,7 @@ namespace Selenium.DotVVM.Samples
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileSystem = new PhysicalFileSystem(applicationPhysicalPath)
-
             });
-          
         }
     }
 }

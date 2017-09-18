@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.Selenium.Core;
-using Riganti.Utils.Testing.Selenium.Core.Api;
+using Riganti.Utils.Testing.Selenium.Core.Configuration;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace SeleniumCore.Samples.Tests
@@ -38,7 +38,7 @@ namespace SeleniumCore.Samples.Tests
                 AssertUI.CheckIfIsChecked(browser.Single("#checkbox1"));
             });
         }
-        
+
         [TestMethod]
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfIsChecked_TypeTest()
@@ -92,6 +92,7 @@ namespace SeleniumCore.Samples.Tests
                 browser.Single("#RadioChecked").CheckIfIsChecked();
             });
         }
+
         [TestMethod]
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfIsChecked_RadioButton_ExceptionExpected()
@@ -135,7 +136,7 @@ namespace SeleniumCore.Samples.Tests
                 browser.Single("#RadioNotChecked").CheckIfIsNotChecked();
             });
         }
-        
+
         [TestMethod]
         public void CheckCheckboxes()
         {

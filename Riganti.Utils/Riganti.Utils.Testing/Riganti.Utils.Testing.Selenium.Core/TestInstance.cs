@@ -113,10 +113,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 var filename = Path.Combine(testContext.DeploymentDirectory, $"{testContext.FullyQualifiedTestClassName}_{testContext.TestName}_{testAttemptNumber}.png");
                 TestSuiteRunner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Taking screenshot {filename}");
-
+#if NET461
                 browserWrapper.TakeScreenshot(filename);
                 TestSuiteRunner.TestContextAccessor.GetTestContext().AddResultFile(filename);
-            }
+#endif
+                }
             catch (Exception ex)
             {
                 TestSuiteRunner.LogError(new Exception($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Failed to take screenshot.", ex));

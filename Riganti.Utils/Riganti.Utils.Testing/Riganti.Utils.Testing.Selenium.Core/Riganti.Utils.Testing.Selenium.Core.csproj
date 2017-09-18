@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net451</TargetFramework>
+    <TargetFrameworks>net461</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Testing.Selenium.Core</AssemblyName>
     <ApplicationIcon></ApplicationIcon>
     <AssemblyVersion>1.0.4</AssemblyVersion>
@@ -11,7 +11,7 @@
     <Description>Basic utilities for performing UI tests based on selenium on CI servers.</Description>
     <Company>RIGANTI s.r.o.</Company>
     <Authors>Ladislav Šesták</Authors>
-    <Version>1.0.4</Version>
+    <Version>2.0.0</Version>
     <RepositoryUrl>https://github.com/riganti/selenium-utils</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <PackageTags>selenium ui tests riganti ci</PackageTags>
@@ -22,18 +22,27 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\net451\Riganti.Utils.Testing.Selenium.Core.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\net461\Riganti.Utils.Testing.Selenium.Core.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\net451\Riganti.Utils.Testing.Selenium.Core.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net461\Riganti.Utils.Testing.Selenium.Core.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;net461</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;netcoreapp20</DefineConstants>
+  </PropertyGroup>
+
+
   <ItemGroup>
-    <PackageReference Include="Selenium.Support" Version="3.4.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="3.4.0" />
+    <PackageReference Include="Selenium.Support" Version="3.5.2" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.5.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,8 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Condition="'$(TargetFramework)'=='net461'" Include="System.Windows.Forms" />
   </ItemGroup>
 
 </Project>
