@@ -49,7 +49,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
             ScopeOptions = scope;
             SetCssSelector();
         }
-
+        /// <summary>
+        /// Sets implicit timeouts for page load and the time range between actions.
+        /// </summary>
         public void SetTimeouts(TimeSpan pageLoadTimeout, TimeSpan implicitlyWait)
         {
             var timeouts = Driver.Manage().Timeouts();
