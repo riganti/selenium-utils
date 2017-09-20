@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Riganti.Utils.Testing.Selenium.DotVVM;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
-using Riganti.Utils.Testing.Selenium.Core.Api;
 
 namespace Selenium.DotVVM.Samples.Tests
 {

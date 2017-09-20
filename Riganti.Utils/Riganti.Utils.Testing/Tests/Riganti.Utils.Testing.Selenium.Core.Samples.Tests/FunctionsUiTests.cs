@@ -5,7 +5,6 @@ using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.IO;
 using System.Threading;
-using Riganti.Utils.Testing.Selenium.Core.Api;
 
 namespace SeleniumCore.Samples.Tests
 {

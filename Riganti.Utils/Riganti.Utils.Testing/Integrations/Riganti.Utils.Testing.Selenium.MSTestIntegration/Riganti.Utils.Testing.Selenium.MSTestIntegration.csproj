@@ -48,7 +48,7 @@
     <Compile Include="TestContextWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Core\Riganti.Utils.Testing.Selenium.Core.csproj">
+    <ProjectReference Include="..\..\Core\Riganti.Utils.Testing.Selenium.Core\Riganti.Utils.Testing.Selenium.Core.csproj">
       <Project>{b4467232-b573-461e-af44-4b195120f2c8}</Project>
       <Name>Riganti.Utils.Testing.Selenium.Core</Name>
     </ProjectReference>
