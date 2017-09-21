@@ -9,7 +9,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
     /// </summary>
     /// <seealso cref="OpenQA.Selenium.WebDriverException" />
     [Serializable]
-    public class AlertException : WebDriverException
+    public class AlertException : TestExceptionBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AlertException"/> class.

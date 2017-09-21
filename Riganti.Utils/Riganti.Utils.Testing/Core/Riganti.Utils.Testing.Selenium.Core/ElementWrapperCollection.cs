@@ -3,11 +3,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    public class ElementWrapperCollection : ICollection<ElementWrapper>, ISeleniumWrapper
+    public class ElementWrapperCollection : ICollection<IElementWrapper>, IElementWrapperCollection
     {
         public string Selector { get; }
         /// <summary>
@@ -17,7 +18,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Wrapper of a current browser. 
         /// </summary>
-        public BrowserWrapper BrowserWrapper { get; set; }
+        public IBrowserWrapper BrowserWrapper { get; set; }
         /// <summary>
         /// Selector construced by provided partail selectors in a test. 
         /// </summary>
@@ -35,9 +36,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
-        public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, BrowserWrapper browserWrapper)
+        public ElementWrapperCollection(IEnumerable<IElementWrapper> collection, string selector, BrowserWrapper browserWrapper)
         {
-            this.collection = new List<ElementWrapper>(collection);
+            this.collection = new List<IElementWrapper>(collection);
             Selector = selector;
             SetReferences(selector);
             BrowserWrapper = browserWrapper;
@@ -56,24 +57,24 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
-        public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ISeleniumWrapper parentElement, BrowserWrapper browserWrapper)
+        public ElementWrapperCollection(IEnumerable<IElementWrapper> collection, string selector, ISeleniumWrapper parentElement, IBrowserWrapper browserWrapper)
         {
-            this.collection = new List<ElementWrapper>(collection);
+            this.collection = new List<IElementWrapper>(collection);
             SetReferences(selector);
             Selector = selector;
             ParentWrapper = parentElement;
             BrowserWrapper = browserWrapper;
         }
 
-        public ElementWrapperCollection(IEnumerable<ElementWrapper> collection, string selector, ElementWrapperCollection parentCollection)
+        public ElementWrapperCollection(IEnumerable<IElementWrapper> collection, string selector, IElementWrapperCollection parentCollection)
         {
-            this.collection = new List<ElementWrapper>(collection);
+            this.collection = new List<IElementWrapper>(collection);
             SetReferences(selector);
             Selector = selector;
             ParentWrapper = parentCollection;
         }
 
-        public ElementWrapperCollection ThrowIfSequenceEmpty()
+        public IElementWrapperCollection ThrowIfSequenceEmpty()
         {
             if (!collection.Any())
             {
@@ -82,7 +83,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        public ElementWrapperCollection ThrowIfSequenceContainsMoreThanOneElement()
+        public IElementWrapperCollection ThrowIfSequenceContainsMoreThanOneElement()
         {
             if (Count > 1)
             {
@@ -94,7 +95,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// Throws exception when lenght of a sequence is empty or the sequence contains more than one element.
         /// </summary>
         /// <returns></returns>
-        public ElementWrapperCollection ThrowIfEmptyOrMoreThanOne()
+        public IElementWrapperCollection ThrowIfEmptyOrMoreThanOne()
         {
             return ThrowIfSequenceEmpty().ThrowIfSequenceContainsMoreThanOneElement();
         }
@@ -102,7 +103,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// Throws exception when lenght of sequence is different then specified number.
         /// </summary>
         /// <param name="count">expected sequence lenght</param>
-        public ElementWrapperCollection ThrowIfDifferentCountThan(int count)
+        public IElementWrapperCollection ThrowIfDifferentCountThan(int count)
         {
             if (Count != count)
             {
@@ -113,14 +114,14 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Returns a single, specific web element of a sequence, or null value if that element is not found.
         /// </summary>
-        public ElementWrapper SingleOrDefault()
+        public IElementWrapper SingleOrDefault()
         {
             return ThrowIfSequenceContainsMoreThanOneElement()?[0];
         }
         /// <summary>
         /// Returns the only web element of a sequence, and throws an exception if there is not exactly one element in the sequence.
         /// </summary>
-        public ElementWrapper Single()
+        public IElementWrapper Single()
         {
 
             return ThrowIfEmptyOrMoreThanOne()?[0];
@@ -129,7 +130,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// Returns the element at a specified index in a sequence.
         /// </summary>
         /// <param name="index">position of web element to return</param>
-        public ElementWrapper ElementAt(int index)
+        public IElementWrapper ElementAt(int index)
         {
             if (Count <= index || index < 0)
             {
@@ -141,15 +142,15 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// Returns last web element of a sequence.
         /// </summary>
         /// <returns></returns>
-        public ElementWrapper Last()
+        public IElementWrapper Last()
         {
             ThrowIfSequenceEmpty();
             return collection.Last();
         }
 
-        private readonly List<ElementWrapper> collection;
+        private readonly List<IElementWrapper> collection;
 
-        public IEnumerator<ElementWrapper> GetEnumerator()
+        public IEnumerator<IElementWrapper> GetEnumerator()
         {
             return collection.GetEnumerator();
         }
@@ -159,7 +160,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return GetEnumerator();
         }
 
-        public void Add(ElementWrapper item)
+        public void Add(IElementWrapper item)
         {
             throw new NotSupportedException("Collection is readonly.");
         }
@@ -169,17 +170,17 @@ namespace Riganti.Utils.Testing.Selenium.Core
             throw new NotSupportedException("Collection is readonly.");
         }
 
-        public bool Contains(ElementWrapper item)
+        public bool Contains(IElementWrapper item)
         {
             return collection.Contains(item);
         }
 
-        public void CopyTo(ElementWrapper[] array, int arrayIndex)
+        public void CopyTo(IElementWrapper[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
-        public bool Remove(ElementWrapper item)
+        public bool Remove(IElementWrapper item)
         {
             throw new NotSupportedException("Collection is readonly.");
         }
@@ -187,7 +188,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public int Count => collection.Count;
         public bool IsReadOnly => true;
 
-        public int IndexOf(ElementWrapper item)
+        public int IndexOf(IElementWrapper item)
         {
             return collection.IndexOf(item);
         }
@@ -196,27 +197,27 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
         }
 
-        public IEnumerable<TResult> Select<TResult>(Func<ElementWrapper, TResult> selector)
+        public IEnumerable<TResult> Select<TResult>(Func<IElementWrapper, TResult> selector)
         {
             return collection.Select(selector);
         }
 
-        public ElementWrapper this[int index]
+        public IElementWrapper this[int index]
         {
-            get { return ElementAt(index); }
-            set { collection[index] = value; }
+            get => ElementAt(index);
+            set => collection[index] = value;
         }
 
         /// <summary>
         /// Performs the specified action on each element of the <see cref="ElementWrapperCollection"/>.
         /// </summary>
         /// <param name="action">The <see cref="T:System.Action`1"/> delegate to perform on each element of the <see cref="T:System.Collections.Generic.List`1"/>.</param><exception cref="T:System.ArgumentNullException"><paramref name="action"/> is null.</exception>
-        public void ForEach(Action<ElementWrapper> action)
+        public void ForEach(Action<IElementWrapper> action)
         {
             collection.ForEach(action);
         }
 
-        public ElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var results = collection.SelectMany(item => item.FindElements(selector, tmpSelectMethod));
 
@@ -229,7 +230,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="selector"></param>
         /// <param name="tmpSelectMethod">Defines what type of selector are you want to use only for this query.</param>
         /// <exception cref="EmptySequenceException"></exception>
-        public ElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var element = FirstOrDefault(selector, tmpSelectMethod);
             if (element != null)
@@ -243,7 +244,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// Returns first element from sequence. If sequence doesn't contain the element, function returns null.
         /// </summary>
         /// <param name="tmpSelectMethod">Defines what type of selector are you want to use only for this query.</param>
-        public ElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return collection.Select(item => item.FirstOrDefault(selector, tmpSelectMethod)).FirstOrDefault(element => element != null);
         }

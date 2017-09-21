@@ -6,12 +6,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using Riganti.Utils.Testing.Selenium.Core.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
     /// <summary>
-    /// This exception is thrown only from execution block in SeleniumTestBase. Indicates that test failed.
+    /// This exception is thrown only from execution block in SeleniumTestExecutor. Indicates that test failed.
     /// </summary>
     [Serializable]
     public sealed class SeleniumTestFailedException : WebDriverException

@@ -12,5 +12,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// Represents current scope id.
         /// </summary>
         Guid CurrentScope { get; set; }
+
+        TestSuiteRunner TestSuiteRunner { get;}
     }
 }

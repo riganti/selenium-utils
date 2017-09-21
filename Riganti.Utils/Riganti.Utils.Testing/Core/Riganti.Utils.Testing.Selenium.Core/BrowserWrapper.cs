@@ -9,10 +9,13 @@ using OpenQA.Selenium.Interactions;
 using Riganti.Utils.Testing.Selenium.Core.Api;
 using Riganti.Utils.Testing.Selenium.Core.Configuration;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
+using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+using Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    public class BrowserWrapper
+    public class BrowserWrapper  : IBrowserWrapper
     {
 
         private readonly IWebBrowser browser;
@@ -141,7 +144,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Clicks on element.
         /// </summary>
-        public BrowserWrapper Click(string selector)
+        public IBrowserWrapper  Click(string selector)
         {
             First(selector).Click();
             Wait();
@@ -156,7 +159,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         ///             then this will be submitted to the web server. If this causes the current
         ///             page to change, then this method will block until the new page is loaded.
         /// </remarks>
-        public BrowserWrapper Submit(string selector)
+        public IBrowserWrapper  Submit(string selector)
         {
             First(selector).Submit();
             Wait();
@@ -279,7 +282,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return alert?.Text;
         }
 
-        public BrowserWrapper CheckIfAlertTextEquals(string expectedValue, bool caseSensitive = false, bool trim = true)
+        public IBrowserWrapper  CheckIfAlertTextEquals(string expectedValue, bool caseSensitive = false, bool trim = true)
         {
             var alert = GetAlert();
             var alertText = "";
@@ -330,7 +333,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Checks if modal dialog (Alert) contains specified text as a part of provided text from the dialog.
         /// </summary>
-        public BrowserWrapper CheckIfAlertTextContains(string expectedValue, bool trim = true)
+        public IBrowserWrapper  CheckIfAlertTextContains(string expectedValue, bool trim = true)
         {
             var alert = GetAlert();
             var alertText = "";
@@ -350,7 +353,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Checks if modal dialog (Alert) text equals with specified text.
         /// </summary>
-        public BrowserWrapper CheckIfAlertText(Func<string, bool> expression, string failureMessage = "")
+        public IBrowserWrapper  CheckIfAlertText(Func<string, bool> expression, string failureMessage = "")
         {
             var alert = Driver.SwitchTo().Alert()?.Text;
             if (!expression(alert))
@@ -363,7 +366,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Confirms modal dialog (Alert).
         /// </summary>
-        public BrowserWrapper ConfirmAlert()
+        public IBrowserWrapper  ConfirmAlert()
         {
             Driver.SwitchTo().Alert().Accept();
             Wait();
@@ -373,7 +376,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Dismisses modal dialog (Alert).
         /// </summary>
-        public BrowserWrapper DismissAlert()
+        public IBrowserWrapper  DismissAlert()
         {
             Driver.SwitchTo().Alert().Dismiss();
             Wait();
@@ -383,7 +386,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Waits specified time in milliseconds.
         /// </summary>
-        public BrowserWrapper Wait(int milliseconds)
+        public IBrowserWrapper  Wait(int milliseconds)
         {
             Thread.Sleep(milliseconds);
             return this;
@@ -392,7 +395,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Waits time specified by ActionWaitType property.
         /// </summary>
-        public BrowserWrapper Wait()
+        public IBrowserWrapper  Wait()
         {
             return Wait(ActionWaitTime);
         }
@@ -400,7 +403,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Waits specified time.
         /// </summary>
-        public BrowserWrapper Wait(TimeSpan interval)
+        public IBrowserWrapper  Wait(TimeSpan interval)
         {
             Thread.Sleep((int)interval.TotalMilliseconds);
             return this;
@@ -411,7 +414,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         /// <param name="selector"></param>
         /// <returns></returns>
-        public ElementWrapperCollection FindElements(By selector)
+        public IElementWrapperCollection FindElements(By selector)
         {
             return Driver.FindElements(selector).ToElementsList(this, selector.GetSelector());
         }
@@ -421,14 +424,14 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         /// <param name="cssSelector"></param>
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
-        public ElementWrapperCollection FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapperCollection FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             return Driver.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)).ToElementsList(this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector());
         }
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
-        public ElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var elms = FindElements(selector, tmpSelectMethod);
             return elms.FirstOrDefault();
@@ -436,7 +439,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
-        public ElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return ThrowIfIsNull(FirstOrDefault(selector, tmpSelectMethod), $"Element not found. Selector: {selector}");
         }
@@ -447,7 +450,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="selector">Selector to find a sequence of elements.</param>
         /// <param name="action">Action to perform on each element of a sequence.</param>
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
-        public BrowserWrapper ForEach(string selector, Action<ElementWrapper> action, Func<string, By> tmpSelectMethod = null)
+        public IBrowserWrapper  ForEach(string selector, Action<IElementWrapper> action, Func<string, By> tmpSelectMethod = null)
         {
             FindElements(selector, tmpSelectMethod).ForEach(action);
             return this;
@@ -455,7 +458,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
-        public ElementWrapper SingleOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapper SingleOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).SingleOrDefault();
         }
@@ -466,7 +469,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
-        public ElementWrapper Single(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapper Single(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).Single();
         }
@@ -480,7 +483,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
-        public ElementWrapperCollection CheckIfIsDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapperCollection CheckIfIsDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var collection = FindElements(selector, tmpSelectMethod);
             var result = collection.ThrowIfSequenceEmpty().All(s => s.IsDisplayed());
@@ -494,7 +497,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         ///<summary>Provides elements that satisfies the selector condition at specific position.</summary>
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
-        public ElementWrapperCollection CheckIfIsNotDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapperCollection CheckIfIsNotDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var collection = FindElements(selector, tmpSelectMethod);
             var result = collection.All(s => s.IsDisplayed()) && collection.Any();
@@ -509,7 +512,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         ///<summary>Provides elements that satisfies the selector condition at specific position.</summary>
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
-        public ElementWrapper ElementAt(string selector, int index, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapper ElementAt(string selector, int index, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).ElementAt(index);
         }
@@ -517,18 +520,18 @@ namespace Riganti.Utils.Testing.Selenium.Core
         ///<summary>Provides the last element that satisfies the selector condition.</summary>
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
-        public ElementWrapper Last(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapper Last(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).Last();
         }
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
-        public ElementWrapper LastOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapper LastOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
             return FindElements(selector, tmpSelectMethod).LastOrDefault();
         }
 
-        public BrowserWrapper FireJsBlur()
+        public IBrowserWrapper  FireJsBlur()
         {
             GetJavaScriptExecutor()?.ExecuteScript("if(document.activeElement && document.activeElement.blur) {document.activeElement.blur()}");
             return this;
@@ -541,7 +544,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
-        public BrowserWrapper SendKeys(string selector, string text, Func<string, By> tmpSelectMethod = null)
+        public IBrowserWrapper  SendKeys(string selector, string text, Func<string, By> tmpSelectMethod = null)
         {
             FindElements(selector, tmpSelectMethod).ForEach(s => { s.SendKeys(text); s.Wait(); });
             return this;
@@ -551,7 +554,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// Removes content from selected elements
         /// </summary>
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
-        public BrowserWrapper ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null)
+        public IBrowserWrapper  ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null)
         {
             FindElements(selector, tmpSelectMethod).ForEach(s => { s.Clear(); s.Wait(); });
             return this;
@@ -596,7 +599,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// Checks exact match with CurrentUrl
         /// </summary>
         /// <param name="url">This url is compared with CurrentUrl.</param>
-        public BrowserWrapper CheckUrlEquals(string url)
+        public IBrowserWrapper  CheckUrlEquals(string url)
         {
             var uri1 = new Uri(CurrentUrl, UriKind.Absolute);
             var uri2 = new Uri(url, UriKind.RelativeOrAbsolute);
@@ -612,7 +615,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         /// <param name="expression">The condition</param>
         /// <param name="failureMessage">Failure message</param>
-        public BrowserWrapper CheckUrl(Func<string, bool> expression, string failureMessage = null)
+        public IBrowserWrapper  CheckUrl(Func<string, bool> expression, string failureMessage = null)
         {
             if (!expression(CurrentUrl))
             {
@@ -627,7 +630,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="url">This url is compared with CurrentUrl.</param>
         /// <param name="urlKind">Determine whether url parameter contains relative or absolute path.</param>
         /// <param name="components">Determine what parts of urls are compared.</param>
-        public BrowserWrapper CheckUrl(string url, UrlKind urlKind, params UriComponents[] components)
+        public IBrowserWrapper  CheckUrl(string url, UrlKind urlKind, params UriComponents[] components)
         {
             if (!CompareUrl(url, urlKind, components))
             {
@@ -645,7 +648,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         /// <param name="fileUploadOpener">Element that opens file dialog after it is clicked.</param>
         /// <param name="fullFileName">Full path to file that is intended to be uploaded.</param>
-        public virtual BrowserWrapper FileUploadDialogSelect(ElementWrapper fileUploadOpener, string fullFileName)
+        public virtual IBrowserWrapper  FileUploadDialogSelect(IElementWrapper fileUploadOpener, string fullFileName)
         {
             if (fileUploadOpener.GetTagName() == "input" && fileUploadOpener.HasAttribute("type") && fileUploadOpener.GetAttribute("type") == "file")
             {
@@ -667,7 +670,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        public virtual BrowserWrapper SendEnterKey()
+        public virtual IBrowserWrapper  SendEnterKey()
         {
             
             System.Windows.Forms.SendKeys.SendWait("{Enter}");
@@ -675,7 +678,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        public virtual BrowserWrapper SendEscKey()
+        public virtual IBrowserWrapper  SendEscKey()
         {
             System.Windows.Forms.SendKeys.SendWait("{ESC}");
             Wait();
@@ -686,21 +689,21 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         #region Frames support
 
-        public BrowserWrapper GetFrameScope(string selector)
+        public IBrowserWrapper  GetFrameScope(string selector)
         {
             var options = new ScopeOptions { FrameSelector = selector, Parent = this, CurrentWindowHandle = Driver.CurrentWindowHandle };
-
             var iframe = First(selector);
-            AssertUI.CheckIfTagName(iframe, new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
-            //iframe.CheckIfTagName(new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
-            var frame = browser.SwitchTo().Frame(iframe.WebElement);
-            testClass.CurrentScope = options.ScopeId;
-            return new BrowserWrapper(frame, testClass, options);
+         //AssertUI.CheckIfTagName(iframe, new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
+            
+            iframe.CheckIfTagName(new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
+            var frame = browser.Driver.SwitchTo().Frame(iframe.WebElement);
+            testInstance.TestClass.CurrentScope = options.ScopeId;
+            return new BrowserWrapper(browser, frame, testInstance, options);
         }
 
         #endregion Frames support
 
-        public BrowserWrapper CheckIfHyperLinkEquals(string selector, string url, UrlKind kind, params UriComponents[] components)
+        public IBrowserWrapper  CheckIfHyperLinkEquals(string selector, string url, UrlKind kind, params UriComponents[] components)
         {
             ForEach(selector, element =>
                 {
@@ -717,7 +720,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
         /// <param name="ignoreCertainException">When StaleElementReferenceException or InvalidElementStateException is thrown than it would be ignored.</param>
         /// <param name="checkInterval">Interval in miliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
-        public BrowserWrapper WaitFor(Func<bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500)
+        public IBrowserWrapper  WaitFor(Func<bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500)
         {
             if (condition == null)
             {
@@ -752,7 +755,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             } while (!isConditionMet);
             return this;
         }
-        public BrowserWrapper WaitFor(Action checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500)
+        public IBrowserWrapper  WaitFor(Action checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500)
         {
             return WaitFor(() =>
             {
@@ -772,7 +775,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         /// <param name="maxTimeout">If condition is not reached in this timeout (ms) test is dropped.</param>
         /// <param name="checkInterval">Interval in miliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
-        public BrowserWrapper WaitFor(Action action, int maxTimeout, int checkInterval = 500, string failureMessage = null)
+        public IBrowserWrapper  WaitFor(Action action, int maxTimeout, int checkInterval = 500, string failureMessage = null)
         {
             if (action == null)
             {
@@ -812,7 +815,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="url"></param>
         /// <param name="urlKind"></param>
         /// <returns></returns>
-        public BrowserWrapper CheckIfUrlIsAccessible(string url, UrlKind urlKind)
+        public IBrowserWrapper  CheckIfUrlIsAccessible(string url, UrlKind urlKind)
         {
             var currentUri = new Uri(CurrentUrl);
 
@@ -865,7 +868,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public BrowserWrapper SwitchToTab(int index)
+        public IBrowserWrapper  SwitchToTab(int index)
         {
             Driver.SwitchTo().Window(Driver.WindowHandles[index]);
             return this;
@@ -903,7 +906,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public string GetTitle() => Driver.Title;
 
-        public BrowserWrapper CheckIfTitleEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
+        public IBrowserWrapper  CheckIfTitleEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
         {
             var browserTitle = GetTitle();
             if (trim)
@@ -919,7 +922,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        public BrowserWrapper CheckIfTitleNotEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
+        public IBrowserWrapper  CheckIfTitleNotEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
         {
             var browserTitle = GetTitle();
             if (trim)
@@ -935,7 +938,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        public BrowserWrapper CheckIfTitle(Func<string, bool> func, string failureMessage = "")
+        public IBrowserWrapper  CheckIfTitle(Func<string, bool> func, string failureMessage = "")
         {
             var browserTitle = GetTitle();
 
@@ -963,7 +966,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="offsetX"></param>
         /// <param name="offsetY"></param>
         /// <returns></returns>
-        public BrowserWrapper DragAndDrop(ElementWrapper dragOnElement, ElementWrapper dropToElement, int offsetX = 0, int offsetY = 0)
+        public IBrowserWrapper  DragAndDrop(IElementWrapper dragOnElement, IElementWrapper dropToElement, int offsetX = 0, int offsetY = 0)
         {
             var builder = new Actions(_GetInternalWebDriver());
             var from = dragOnElement.WebElement;

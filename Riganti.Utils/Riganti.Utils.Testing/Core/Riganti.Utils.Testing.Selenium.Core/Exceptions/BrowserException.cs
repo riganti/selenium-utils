@@ -8,7 +8,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
     /// Represents common exception, that is trown when action in browser cannot be executed or received data are incorrect.
     /// </summary>
     [Serializable]
-    public class BrowserException : WebDriverException
+    public class BrowserException : TestExceptionBase
     {
         public BrowserException()
         {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
     [Serializable]
-    public class UnexpectedElementStateException : Exception
+    public class UnexpectedElementStateException : TestExceptionBase
     {
         public UnexpectedElementStateException()
         {

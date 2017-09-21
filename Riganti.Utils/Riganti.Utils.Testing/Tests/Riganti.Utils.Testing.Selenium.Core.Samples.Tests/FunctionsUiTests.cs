@@ -1,10 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MSAssert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.IO;
 using System.Threading;
+using Riganti.Utils.Testing.Selenium.Core.Api;
 
 namespace SeleniumCore.Samples.Tests
 {
@@ -100,17 +102,7 @@ namespace SeleniumCore.Samples.Tests
             });
         }
 
-        [TestMethod]
-        public void SubSectionTest()
-        {
-            RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
-#pragma warning disable CS0612 // Type or member is obsolete
-                RunTestSubSection("Test Subsection", (b) => { });
-#pragma warning restore CS0612 // Type or member is obsolete
-            });
-        }
+       
 
         [TestMethod]
         public void HasAttributeTest()
@@ -226,7 +218,7 @@ namespace SeleniumCore.Samples.Tests
                 browser.NavigateToUrl("/Alert.aspx");
 
                 browser.First("#button").Click();
-                AssertUI.CheckIfAlertTextEquals(browser, "confirm test");
+                Assert.CheckIfAlertTextEquals(browser, "confirm test");
             });
         }
 
@@ -240,7 +232,7 @@ namespace SeleniumCore.Samples.Tests
                 browser.First("#button").Click();
                 try
                 {
-                    AssertUI.CheckIfAlertTextEquals(browser, "Confirm test", true);
+                    Assert.CheckIfAlertTextEquals(browser, "Confirm test", true);
                 }
                 catch (AlertException)
                 {
@@ -287,7 +279,6 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(AlertException))]
         public void ExpectedExceptionTest2()
         {
-            ExpectException(typeof(AlertException));
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
@@ -381,7 +372,7 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl("JsTestSite.aspx");
                 var elm = browser.First("#hiddenElement");
-                Assert.IsTrue(string.Equals(elm.GetJsInnerText()?.Trim(), "InnerText",
+                MSAssert.IsTrue(string.Equals(elm.GetJsInnerText()?.Trim(), "InnerText",
                     StringComparison.OrdinalIgnoreCase));
                 elm.CheckIfJsPropertyInnerText(c => c == "InnerText")
                     .CheckIfJsPropertyInnerTextEquals("InnerText", false);
@@ -396,7 +387,7 @@ namespace SeleniumCore.Samples.Tests
                 browser.NavigateToUrl("JsHtmlTest.aspx");
                 var elm = browser.First("#htmlTest");
                 var content = elm.GetJsInnerHtml()?.Trim() ?? "";
-                Assert.IsTrue(content.Contains("<span>") && content.Contains("</span>"));
+                MSAssert.IsTrue(content.Contains("<span>") && content.Contains("</span>"));
                 elm.CheckIfJsPropertyInnerHtml(c => c.Contains("<span>") && c.Contains("</span>"));
             });
         }
@@ -407,7 +398,7 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("elementatfirst.aspx");
-                Assert.AreEqual(
+                MSAssert.AreEqual(
                     browser
                         .ElementAt("div > div", 0)
                         .First("#first0")
@@ -421,7 +412,7 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("elementatfirst.aspx");
-                Assert.AreEqual(browser
+                MSAssert.AreEqual(browser
                     .ElementAt("#divs > div", 1)
                     .First("div")
                     .GetInnerText()?.ToLower(), "first1");
@@ -434,7 +425,7 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("elementatfirst.aspx");
-                Assert.AreEqual(browser
+                MSAssert.AreEqual(browser
                     .ElementAt("#divs > div", 2)
                     .ParentElement.First("#first2")
                     .GetInnerText()?.ToLower(), "first2");
@@ -578,7 +569,7 @@ namespace SeleniumCore.Samples.Tests
                 const string inputValue = "4012 5770 5655";
                 input.SetJsElementProperty("value", inputValue);
                 input.CheckIfValue(inputValue);
-                Assert.AreEqual(input.GetJsElementPropertyValue("value"), inputValue);
+                MSAssert.AreEqual(input.GetJsElementPropertyValue("value"), inputValue);
             });
         }
 
@@ -652,7 +643,7 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl("hyperlink.aspx");
 
-                Assert.ThrowsException<UnexpectedElementStateException>(() =>
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
                 {
                     browser.CheckIfHyperLinkEquals("#RelativeLink", "/path0/test?query=test#fragment", UrlKind.Relative,
                         UriComponents.PathAndQuery);
@@ -667,7 +658,7 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl("hyperlink.aspx");
 
-                Assert.ThrowsException<UnexpectedElementStateException>(() =>
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
                 {
                     browser.CheckIfHyperLinkEquals("#RelativeLink", "https://www.google.com/path/test?query=test#fragment",
                         UrlKind.Absolute);
@@ -682,7 +673,7 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl("hyperlink.aspx");
 
-                Assert.ThrowsException<UnexpectedElementStateException>(() =>
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
                 {
                     browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.googles.com/path/test?query=test#fragment",
                         UrlKind.Absolute, UriComponents.AbsoluteUri);
@@ -715,7 +706,7 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl("hyperlink.aspx");
 
-                Assert.ThrowsException<EmptySequenceException>(() =>
+                MSAssert.ThrowsException<EmptySequenceException>(() =>
                 {
                     browser.Single("asdasd");
                 });
@@ -727,7 +718,7 @@ namespace SeleniumCore.Samples.Tests
         {
             RunInAllBrowsers(browser =>
             {
-                Assert.ThrowsException<EmptySequenceException>(() =>
+                MSAssert.ThrowsException<EmptySequenceException>(() =>
                 {
                     browser.CheckIfUrlIsAccessible("hyperlink.aspx", UrlKind.Relative);
                 });
@@ -739,7 +730,7 @@ namespace SeleniumCore.Samples.Tests
         {
             RunInAllBrowsers(browser =>
             {
-                Assert.ThrowsException<SeleniumTestFailedException>(() =>
+                MSAssert.ThrowsException<SeleniumTestFailedException>(() =>
                 {
                     browser.CheckIfUrlIsAccessible("NonExistent359.aspx", UrlKind.Relative);
                 });

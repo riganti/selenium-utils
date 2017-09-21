@@ -16,7 +16,7 @@ namespace Selenium.DotVVM.Samples.Tests
         [TestMethod]
         public void DetectDotvvm()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 Assert.IsTrue(browser.IsDotvvmPage());
@@ -29,7 +29,7 @@ namespace Selenium.DotVVM.Samples.Tests
         [TestMethod]
         public void FileUpload_ElementWrapper()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/FileUpload");
 

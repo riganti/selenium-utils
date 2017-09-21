@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Configuration;
 using Riganti.Utils.Testing.Selenium.Core.Discovery;
 using Riganti.Utils.Testing.Selenium.Core.Factories;
@@ -94,7 +95,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 
 
-        public void RunInAllBrowsers(ISeleniumTest testClass, Action<BrowserWrapper> action, string callerMemberName, string callerFilePath, int callerLineNumber)
+        public void RunInAllBrowsers(ISeleniumTest testClass, Action<IBrowserWrapper> action, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
             var testName = $"{callerMemberName}";
             this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Entering RunInAllBrowsers from {callerFilePath}:{callerLineNumber}");
