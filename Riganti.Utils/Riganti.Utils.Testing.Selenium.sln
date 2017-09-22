@@ -45,11 +45,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Core.Abstractions", "Core\Riganti.Utils.Testing.Selenium.Core.Abstractions\Riganti.Utils.Testing.Selenium.Core.Abstractions.csproj", "{D7D2C905-B5BB-4D9F-A273-3A0ED55E0361}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Core.Samples.New", "Samples\Riganti.Utils.Testing.Selenium.Core.Samples.New\Riganti.Utils.Testing.Selenium.Core.Samples.New.csproj", "{55238D70-D60F-490E-9D31-A6A81EA758DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Core.Samples", "Samples\Riganti.Utils.Testing.Selenium.Core.Samples.New\Riganti.Utils.Testing.Selenium.Core.Samples.csproj", "{55238D70-D60F-490E-9D31-A6A81EA758DA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.DotVVM.Samples", "Samples\Riganti.Utils.Testing.Selenium.DotVVM.Samples\Riganti.Utils.Testing.Selenium.DotVVM.Samples.csproj", "{8AB57B5D-93E0-482E-970A-544663D87192}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Core.Samples.Assert.Tests", "Tests\Riganti.Utils.Testing.Selenium.Core.Samples.Assert.Tests\Riganti.Utils.Testing.Selenium.Core.Samples.Assert.Tests.csproj", "{353D8FE1-C499-4931-A564-3DED67ABE500}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Core.Samples.Assert.Tests", "Tests\Riganti.Utils.Testing.Selenium.Core.Samples.Assert.Tests\Riganti.Utils.Testing.Selenium.Core.Samples.Assert.Tests.csproj", "{353D8FE1-C499-4931-A564-3DED67ABE500}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
