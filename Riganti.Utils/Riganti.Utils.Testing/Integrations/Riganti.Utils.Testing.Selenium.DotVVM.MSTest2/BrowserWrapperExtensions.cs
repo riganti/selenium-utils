@@ -1,11 +1,12 @@
 ﻿using System;
 using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.DotVVM
 {
     public static class BrowserWrapperExtensions
     {
-        public static bool IsDotvvmPage(this BrowserWrapper browser)
+        public static bool IsDotvvmPage(this IBrowserWrapper browser)
         {
             try
             {

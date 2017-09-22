@@ -11,9 +11,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
     public class ElementWrapperCollection : ICollection<IElementWrapper>, IElementWrapperCollection
     {
         public string Selector { get; }
-        /// <summary>
-        ///         
-        /// </summary>
+        public IElementWrapper this[int index]
+        {
+            get { return ElementAt(index); }
+            set { collection[index] = value; }
+        }
+
+
         public ISeleniumWrapper ParentWrapper { get; set; }
         /// <summary>
         /// Wrapper of a current browser. 
@@ -36,7 +40,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
-        public ElementWrapperCollection(IEnumerable<IElementWrapper> collection, string selector, BrowserWrapper browserWrapper)
+        public ElementWrapperCollection(IEnumerable<IElementWrapper> collection, string selector, IBrowserWrapper browserWrapper)
         {
             this.collection = new List<IElementWrapper>(collection);
             Selector = selector;
@@ -202,11 +206,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return collection.Select(selector);
         }
 
-        public IElementWrapper this[int index]
-        {
-            get => ElementAt(index);
-            set => collection[index] = value;
-        }
 
         /// <summary>
         /// Performs the specified action on each element of the <see cref="ElementWrapperCollection"/>.

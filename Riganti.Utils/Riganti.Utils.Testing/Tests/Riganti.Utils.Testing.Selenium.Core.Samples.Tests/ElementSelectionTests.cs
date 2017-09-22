@@ -9,7 +9,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementChildrenSelection()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("ElementSelectionTest.aspx");
 

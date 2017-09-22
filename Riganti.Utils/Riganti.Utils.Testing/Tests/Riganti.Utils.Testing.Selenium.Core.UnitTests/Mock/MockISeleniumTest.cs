@@ -9,5 +9,6 @@ namespace Selenium.Core.UnitTests.Mock
         public ITestContext Context { get; set; }
         
         public Guid CurrentScope { get; set; }
+        public TestSuiteRunner TestSuiteRunner { get; }
     }
 }

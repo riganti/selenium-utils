@@ -15,7 +15,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
     public class ElementWrapper : ISeleniumWrapper, IElementWrapper
     {
         private readonly IWebElement element;
-        private readonly BrowserWrapper browser;
+        private readonly IBrowserWrapper browser;
 
         /// <summary>
         /// Gets selector used to get this element.
@@ -92,7 +92,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <summary>
         /// Contains direct children of the element.
         /// </summary>
-        public ElementWrapperCollection Children => FindElements("child::*", By.XPath);
+        public IElementWrapperCollection Children => FindElements("child::*", By.XPath);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ElementWrapper"/> class.
@@ -100,7 +100,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="webElement">The web element.</param>
         /// <param name="browserWrapper">The browser wrapper.</param>
         /// <param name="selector">The selector.</param>
-        public ElementWrapper(IWebElement webElement, BrowserWrapper browserWrapper, string selector = null)
+        public ElementWrapper(IWebElement webElement, IBrowserWrapper browserWrapper, string selector = null)
         {
             element = webElement;
             browser = browserWrapper;
@@ -612,7 +612,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="selector"></param>
         /// <param name="tmpSelectMethod"> This select method is used only for selection of elements in this query. Not in the future.</param>
         /// <returns></returns>
-        public virtual ElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null)
+        public virtual IElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var collection = WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList(browser, selector, this);
             collection.ParentWrapper = this;
@@ -940,7 +940,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
         /// <param name="ignoreCertainException">When StaleElementReferenceException or InvalidElementStateException is thrown than it would be ignored.</param>
         /// <param name="checkInterval">Interval in milliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
-        public IElementWrapper WaitFor(Func<ElementWrapper, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500)
+        public IElementWrapper WaitFor(Func<IElementWrapper, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500)
         {
             if (condition == null)
             {
@@ -976,7 +976,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        public IElementWrapper WaitFor(Action<ElementWrapper> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500)
+        public IElementWrapper WaitFor(Action<IElementWrapper> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500)
         {
             return WaitFor(elm =>
             {
@@ -1047,7 +1047,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        public IElementWrapper ScrollTo(ElementWrapper element)
+        public IElementWrapper ScrollTo(IElementWrapper element)
         {
             var javascript = @"
             function findPosition(element) {
@@ -1067,7 +1067,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        public IElementWrapper CheckIfIsElementInView(ElementWrapper element)
+        public IElementWrapper CheckIfIsElementInView(IElementWrapper element)
         {
             if (!IsElementInView(element))
             {
@@ -1076,7 +1076,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        public IElementWrapper CheckIfIsElementNotInView(ElementWrapper element)
+        public IElementWrapper CheckIfIsElementNotInView(IElementWrapper element)
         {
             if (IsElementInView(element))
             {
@@ -1085,7 +1085,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        public bool IsElementInView(ElementWrapper element)
+        public bool IsElementInView(IElementWrapper element)
         {
             var executor = element.BrowserWrapper.GetJavaScriptExecutor();
 
@@ -1123,7 +1123,7 @@ return elementInViewport2(arguments[0]);
         /// <param name="offsetX"></param>
         /// <param name="offsetY"></param>
         /// <returns></returns>
-        public IElementWrapper DropTo(ElementWrapper dropToElement, int offsetX = 0, int offsetY = 0)
+        public IElementWrapper DropTo(IElementWrapper dropToElement, int offsetX = 0, int offsetY = 0)
         {
             BrowserWrapper.DragAndDrop(this, dropToElement, offsetX, offsetY);
             return this;

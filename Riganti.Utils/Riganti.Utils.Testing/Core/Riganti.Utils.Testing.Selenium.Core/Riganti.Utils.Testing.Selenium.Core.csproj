@@ -48,8 +48,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Coordinator\Riganti.Utils.Testing.Selenium.Coordinator.Client\Riganti.Utils.Testing.Selenium.Coordinator.Client.csproj" />
-    <ProjectReference Include="..\..\Riganti.Utils.Testing.Selenium.Validators\Riganti.Utils.Testing.Selenium.Validators.csproj" />
     <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Core.Abstractions\Riganti.Utils.Testing.Selenium.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Validators\Riganti.Utils.Testing.Selenium.Validators.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,7 +11,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfTitleEquals()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.CheckIfTitleEquals("This is title       ");
@@ -20,7 +20,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfTitleNotEquals()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.CheckIfTitleNotEquals("This is not title            ");
@@ -29,7 +29,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfTitleEquals_trim()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
 
                 browser.NavigateToUrl();
@@ -43,7 +43,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfTitleNotEquals_Exception()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 Assert.ThrowsException<BrowserException>(() =>
@@ -55,7 +55,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfTitleEquals_Exception()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 Assert.ThrowsException<BrowserException>(() =>
@@ -67,7 +67,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfTitle_Exception()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 Assert.ThrowsException<BrowserException>(() =>

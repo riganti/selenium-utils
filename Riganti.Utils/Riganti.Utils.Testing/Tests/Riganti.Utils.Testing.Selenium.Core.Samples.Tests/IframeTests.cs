@@ -10,7 +10,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void IFrameTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("frametest1.aspx");
                 browser.First("#top");
@@ -23,7 +23,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void IFrameTest2()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("frametest1.aspx");
                 var elm = browser.First("#top");
@@ -41,7 +41,7 @@ namespace SeleniumCore.Samples.Tests
             // test the exception message
             try
             {
-                RunInAllBrowsers(browser =>
+                this.RunInAllBrowsers(browser =>
                 {
                     browser.NavigateToUrl("frametest1.aspx");
                     var frame = browser.GetFrameScope("#top");

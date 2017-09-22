@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using Riganti.Utils.Testing.Selenium.Validators.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 {
@@ -58,10 +59,10 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
         {
             ExceptionMessage = message;
             this.innerExceptions = new List<Exception>(new[] { innerException });
-            InnerCheckResults = CreateCheckResult(this.innerExceptions).ToArray();
+            InnerCheckResults = CreateCheckResult(innerExceptions).Cast<CheckResult>().ToArray();
         }
 
-        private IEnumerable<CheckResult> CreateCheckResult(IEnumerable<Exception> exceptions)
+        private IEnumerable<ICheckResult> CreateCheckResult(IEnumerable<Exception> exceptions)
         {
             return exceptions.OfType<TestExceptionBase>().Select(e => e.CheckResult);
         }
@@ -84,7 +85,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             ScreenshotPath = screenshotsPath;
             BrowserName = browserName;
             this.innerExceptions = innerExceptions;
-            InnerCheckResults = CreateCheckResult(this.innerExceptions).ToArray();
+            InnerCheckResults = CreateCheckResult(this.innerExceptions).Cast<CheckResult>().ToArray();
         }
         /// <inheritdoc/>
 

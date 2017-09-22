@@ -4,20 +4,17 @@ using OpenQA.Selenium.Support.UI;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Abstractions
 {
-    public interface IElementWrapper
+    public interface IElementWrapper : ISeleniumWrapper
     {
         int ActionWaitTime { get; set; }
+        new string Selector { get; set; }
         string BaseUrl { get; set; }
         IBrowserWrapper BrowserWrapper { get; }
-        string FullSelector { get; }
         IElementWrapperCollection Children { get; }
         IElementWrapper ParentElement { get; }
-        ISeleniumWrapper ParentWrapper { get; set; }
         Func<string, By> SelectMethod { get; set; }
-        string Selector { get; set; }
         IWebElement WebElement { get; }
 
-        void ActivateScope();
         //CheckIElementWrapper Check();
         IElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression, string failureMessage = null);
         IElementWrapper CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null);

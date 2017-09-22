@@ -11,7 +11,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfIsDisplayed()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.Wait();
@@ -24,7 +24,7 @@ namespace SeleniumCore.Samples.Tests
         {
             try
             {
-                RunInAllBrowsers(browser =>
+                this.RunInAllBrowsers(browser =>
                 {
                     browser.NavigateToUrl();
                     browser.CheckIfIsDisplayed("#non-displayed");
@@ -43,7 +43,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfIsNotDisplayed()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.CheckIfIsNotDisplayed("#non-displayed");

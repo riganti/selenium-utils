@@ -10,7 +10,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void HasAttributeTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#dis-button").CheckIfHasAttribute("disabled");
@@ -21,7 +21,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfHasAttribute()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#content").CheckIfHasAttribute("class");
@@ -32,7 +32,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException), AllowDerivedTypes = true)]
         public void CheckIfHasAttributeExpectedException()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#content").CheckIfHasAttribute("title");
@@ -43,7 +43,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void HasAttributeTest3()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#submit-button").CheckIfHasAttribute("disabled");
@@ -53,7 +53,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void HasAttributeTest4()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#dis-button").CheckIfHasAttribute("disabled");
@@ -64,7 +64,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfHasNotAttribute()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
 
@@ -76,7 +76,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfHasNotAttributeExpectedException()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
 
@@ -88,7 +88,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void HasAttributeTest2()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#dis-button").CheckIfHasNotAttribute("disabled");
@@ -98,7 +98,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckAttributeTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#submit-button").CheckAttribute("type", "submit");

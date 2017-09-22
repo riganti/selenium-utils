@@ -6,6 +6,7 @@ using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.IO;
 using System.Threading;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Api;
 
 namespace SeleniumCore.Samples.Tests
@@ -16,7 +17,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfIsDisplayed()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.CheckIfIsDisplayed("#dispblayed");
@@ -27,7 +28,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfIsNotDisplayed()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.CheckIfIsNotDisplayed("#non-displayed");
@@ -39,7 +40,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfHasAttribute()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#content").CheckIfHasAttribute("class");
@@ -50,7 +51,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException), AllowDerivedTypes = true)]
         public void CheckIfHasAttributeExpectedException()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#content").CheckIfHasAttribute("title");
@@ -60,7 +61,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfHasNotAttribute()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
 
@@ -72,7 +73,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void CheckIfHasNotAttributeExpectedException()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
 
@@ -83,7 +84,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void GetFullSelector()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 TestContext.WriteLine(
@@ -95,7 +96,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void SearchInElementsCollection()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.FindElements("form").FindElements("div").ThrowIfSequenceEmpty();
@@ -107,7 +108,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void HasAttributeTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#dis-button").CheckIfHasAttribute("disabled");
@@ -119,7 +120,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void HasAttributeTest2()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#dis-button").CheckIfHasNotAttribute("disabled");
@@ -130,7 +131,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(UnexpectedElementStateException))]
         public void HasAttributeTest3()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#submit-button").CheckIfHasAttribute("disabled");
@@ -140,7 +141,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void HasAttributeTest4()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#dis-button").CheckIfHasAttribute("disabled");
@@ -151,7 +152,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckAttributeTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl();
                 browser.First("#submit-button").CheckAttribute("type", "submit");
@@ -162,7 +163,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(NoSuchElementException))]
         public void NoParentTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("NoParentTest.aspx");
                 var parent = browser.First("html").ParentElement;
@@ -172,7 +173,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void UrlComparisonTest1()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/NoParentTest.aspx");
                 browser.CheckUrl(url => url.Contains("NoParentTest.aspx"));
@@ -182,7 +183,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void AlertTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
 
@@ -194,7 +195,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void AlertTest2()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
 
@@ -213,26 +214,26 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void AlertTestN()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
 
                 browser.First("#button").Click();
-                Assert.CheckIfAlertTextEquals(browser, "confirm test");
+                browser.CheckIfAlertTextEquals("confirm test");
             });
         }
 
         [TestMethod]
         public void AlertTest2N()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
 
                 browser.First("#button").Click();
                 try
                 {
-                    Assert.CheckIfAlertTextEquals(browser, "Confirm test", true);
+                    browser.CheckIfAlertTextEquals( "Confirm test", true);
                 }
                 catch (AlertException)
                 {
@@ -243,7 +244,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void AlertTest3()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
 
@@ -255,7 +256,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void AlertTest4()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
                 browser.First("#button").Click();
@@ -267,7 +268,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(AlertException))]
         public void ExpectedExceptionTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
                 browser.First("#button").Click();
@@ -279,7 +280,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(AlertException))]
         public void ExpectedExceptionTest2()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
                 browser.First("#button").Click();
@@ -290,7 +291,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ConfirmTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Confirm.aspx");
 
@@ -307,7 +308,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void SelectMethodTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/SelectMethod.aspx");
 
@@ -335,7 +336,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void FileDialogTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("FileDialog.aspx");
 
@@ -352,7 +353,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void TextTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("text.aspx");
                 browser.First("#button").CheckIfTextEquals("text", false);
@@ -368,7 +369,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void JsInnerTextTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("JsTestSite.aspx");
                 var elm = browser.First("#hiddenElement");
@@ -382,7 +383,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void JsInnerHtmlTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("JsHtmlTest.aspx");
                 var elm = browser.First("#htmlTest");
@@ -395,7 +396,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementAtFirst1()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("elementatfirst.aspx");
                 MSAssert.AreEqual(
@@ -409,7 +410,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementAtFirst2()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("elementatfirst.aspx");
                 MSAssert.AreEqual(browser
@@ -422,7 +423,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementAtFirst3()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("elementatfirst.aspx");
                 MSAssert.AreEqual(browser
@@ -435,7 +436,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void First()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("TemporarySelector.aspx");
                 browser.SelectMethod = s => SelectBy.CssSelector(s, "[data-ui='{0}']");
@@ -449,7 +450,7 @@ namespace SeleniumCore.Samples.Tests
         [ExpectedException(typeof(EmptySequenceException))]
         public void ElementContained_NoElement_ExpectedFailure()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("ElementContained.aspx");
 
@@ -461,7 +462,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementContained_NoElement()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("ElementContained.aspx");
                 browser.First("#no").CheckIfNotContainsElement("span");
@@ -473,7 +474,7 @@ namespace SeleniumCore.Samples.Tests
         {
             try
             {
-                RunInAllBrowsers(browser =>
+                this.RunInAllBrowsers(browser =>
                 {
                     browser.NavigateToUrl("ElementContained.aspx");
                     browser.First("#one").CheckIfNotContainsElement("span");
@@ -491,7 +492,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementContained_OneElement()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("ElementContained.aspx");
                 browser.First("#one").CheckIfContainsElement("span");
@@ -516,7 +517,7 @@ namespace SeleniumCore.Samples.Tests
         {
             try
             {
-                RunInAllBrowsers(browser =>
+                this.RunInAllBrowsers(browser =>
                 {
                     browser.NavigateToUrl("ElementContained.aspx");
                     browser.First("#two").CheckIfNotContainsElement("span");
@@ -535,7 +536,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ElementContained_TwoElement()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("ElementContained.aspx");
                 browser.First("#two").CheckIfContainsElement("span");
@@ -545,7 +546,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckValueTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("valuetest.aspx");
                 browser.First("#input-radio").CheckIfValue("radio1");
@@ -562,7 +563,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void SetJsInputPropertyTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("JSPropertySetTest.aspx");
                 var input = browser.First("#input1");
@@ -576,7 +577,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CookieTest()
         {
-            Action<BrowserWrapper> test = browser =>
+            Action<IBrowserWrapper> test = browser =>
             {
                 browser.NavigateToUrl("CookiesTest.aspx");
                 browser.First("#CookieIndicator").CheckIfTextEquals("False");
@@ -584,14 +585,14 @@ namespace SeleniumCore.Samples.Tests
                 browser.NavigateToUrl("CookiesTest.aspx");
                 browser.First("#CookieIndicator").CheckIfTextEquals("True");
             };
-            RunInAllBrowsers(test);
-            RunInAllBrowsers(test);
+            this.RunInAllBrowsers(test);
+            this.RunInAllBrowsers(test);
         }
 
         [TestMethod]
         public void TextNotEquals()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("CookiesTest.aspx");
                 var label = browser.First("#CookieIndicator");
@@ -611,7 +612,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckHyperLink()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
                 browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "/path/test?query=test#fragment",
@@ -639,7 +640,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckHyperLink_Failure1()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
 
@@ -654,7 +655,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckHyperLink_Failure2()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
 
@@ -669,7 +670,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckHyperLink_Failure3()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
 
@@ -684,7 +685,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckHyperLink_Failure4()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
                 try
@@ -702,7 +703,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void SingleExceptionTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("hyperlink.aspx");
 
@@ -716,7 +717,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfUrlExistsTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 MSAssert.ThrowsException<EmptySequenceException>(() =>
                 {
@@ -728,7 +729,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void CheckIfUrlExistsTest2()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 MSAssert.ThrowsException<SeleniumTestFailedException>(() =>
                 {

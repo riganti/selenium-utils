@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Core.Samples", "Samples\Riganti.Utils.Testing.Selenium.Core.Samples\Riganti.Utils.Testing.Selenium.Core.Samples.csproj", "{A15FCC63-4D2C-4E82-828A-0747B6416134}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Core.Samples.Old", "Samples\Riganti.Utils.Testing.Selenium.Core.Samples\Riganti.Utils.Testing.Selenium.Core.Samples.Old.csproj", "{A15FCC63-4D2C-4E82-828A-0747B6416134}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.DotVVM.Samples", "Samples\Riganti.Utils.Testing.Selenium.DotVVM.Samples\Riganti.Utils.Testing.Selenium.DotVVM.Samples.csproj", "{1C7A9914-8CDC-4075-9422-37BD0E51C076}"
 EndProject
@@ -43,11 +43,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integration
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.PseudoFluentApi", "Core\Riganti.Utils.Testing.Selenium.PseudoFluentApi\Riganti.Utils.Testing.Selenium.PseudoFluentApi.csproj", "{0E82904E-9F34-4679-9B66-702ADC067062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.AssertApi", "Core\Riganti.Utils.Testing.Selenium.AssertApi\Riganti.Utils.Testing.Selenium.AssertApi.csproj", "{3FB8ACCF-C2D3-4B6B-858E-B2AD2E1858E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.AssertApi", "Core\Riganti.Utils.Testing.Selenium.AssertApi\Riganti.Utils.Testing.Selenium.AssertApi.csproj", "{3FB8ACCF-C2D3-4B6B-858E-B2AD2E1858E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Validators", "Core\Riganti.Utils.Testing.Selenium.Validators\Riganti.Utils.Testing.Selenium.Validators.csproj", "{376928E6-0551-43E6-90D8-B66C5B7D1C0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Validators", "Core\Riganti.Utils.Testing.Selenium.Validators\Riganti.Utils.Testing.Selenium.Validators.csproj", "{376928E6-0551-43E6-90D8-B66C5B7D1C0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Core.Abstractions", "Core\Riganti.Utils.Testing.Selenium.Core.Abstractions\Riganti.Utils.Testing.Selenium.Core.Abstractions.csproj", "{D7D2C905-B5BB-4D9F-A273-3A0ED55E0361}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Core.Abstractions", "Core\Riganti.Utils.Testing.Selenium.Core.Abstractions\Riganti.Utils.Testing.Selenium.Core.Abstractions.csproj", "{D7D2C905-B5BB-4D9F-A273-3A0ED55E0361}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Testing.Selenium.Core.Samples.New", "Samples\Riganti.Utils.Testing.Selenium.Core.Samples.New\Riganti.Utils.Testing.Selenium.Core.Samples.New.csproj", "{55238D70-D60F-490E-9D31-A6A81EA758DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,10 @@ Global
 		{D7D2C905-B5BB-4D9F-A273-3A0ED55E0361}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7D2C905-B5BB-4D9F-A273-3A0ED55E0361}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7D2C905-B5BB-4D9F-A273-3A0ED55E0361}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55238D70-D60F-490E-9D31-A6A81EA758DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55238D70-D60F-490E-9D31-A6A81EA758DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55238D70-D60F-490E-9D31-A6A81EA758DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55238D70-D60F-490E-9D31-A6A81EA758DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +156,7 @@ Global
 		{3FB8ACCF-C2D3-4B6B-858E-B2AD2E1858E6} = {E83BB596-BF2A-4FE2-9843-E5649B561293}
 		{376928E6-0551-43E6-90D8-B66C5B7D1C0D} = {E83BB596-BF2A-4FE2-9843-E5649B561293}
 		{D7D2C905-B5BB-4D9F-A273-3A0ED55E0361} = {E83BB596-BF2A-4FE2-9843-E5649B561293}
+		{55238D70-D60F-490E-9D31-A6A81EA758DA} = {08822873-F53A-4CBD-8A9E-D62ED6B3A614}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {069407A3-360C-4D69-AFA7-4E7532D148A7}

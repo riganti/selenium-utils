@@ -3,12 +3,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.DotVVM
 {
     public static class ElementWrapperExtensions
     {
-        public static ElementWrapper UploadFile(this ElementWrapper element, string fullFileName)
+        public static IElementWrapper UploadFile(this IElementWrapper element, string fullFileName)
         {
             if (element.BrowserWrapper.IsDotvvmPage())
             {
@@ -36,7 +37,7 @@ namespace Riganti.Utils.Testing.Selenium.DotVVM
             return element;
         }
 
-        private static ElementWrapper UploadFileByDiv(ElementWrapper element, string fullFileName)
+        private static IElementWrapper UploadFileByDiv(IElementWrapper element, string fullFileName)
         {
             element.BrowserWrapper.GetJavaScriptExecutor()
            .ExecuteScript("dotvvm.fileUpload.createUploadId(arguments[0])", element.First("a", SelectBy.CssSelector).WebElement);
@@ -53,7 +54,7 @@ namespace Riganti.Utils.Testing.Selenium.DotVVM
             return element;
         }
 
-        private static ElementWrapper UploadFileByA(ElementWrapper element, string fullFileName)
+        private static IElementWrapper UploadFileByA(IElementWrapper element, string fullFileName)
         {
             element.BrowserWrapper.GetJavaScriptExecutor()
                 .ExecuteScript("dotvvm.fileUpload.createUploadId(arguments[0])", element.WebElement);

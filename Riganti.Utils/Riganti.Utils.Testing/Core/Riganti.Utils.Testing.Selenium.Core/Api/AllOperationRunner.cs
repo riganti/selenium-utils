@@ -11,7 +11,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
     {
         private readonly T[] wrappers;
 
-        internal AllOperationRunner(T[] wrappers)
+        public AllOperationRunner(T[] wrappers)
         {
             this.wrappers = wrappers;
         }

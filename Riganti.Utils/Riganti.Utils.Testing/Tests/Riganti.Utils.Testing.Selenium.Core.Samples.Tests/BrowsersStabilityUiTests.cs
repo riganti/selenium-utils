@@ -15,7 +15,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void ButtonClickTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/ClickTest.aspx");
 
@@ -57,7 +57,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod, ExpectedException(typeof(Exception))]
         public void XPathSelectorToRootTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/ClickTest.aspx");
                 browser.Single("..", By.XPath);
@@ -68,7 +68,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod, ExpectedException(typeof(Exception))]
         public void InvalidXPathSelectorToRootTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/ClickTest.aspx");
                 browser.Single("///***-*///@@##@šš+š++++---><<>''", By.XPath);

@@ -10,7 +10,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void AlertTest()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
 
@@ -22,7 +22,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void AlertTest2()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
 
@@ -40,7 +40,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void AlertTest3()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
 
@@ -52,7 +52,7 @@ namespace SeleniumCore.Samples.Tests
         [TestMethod]
         public void AlertTest4()
         {
-            RunInAllBrowsers(browser =>
+            this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/Alert.aspx");
                 browser.First("#button").Click();

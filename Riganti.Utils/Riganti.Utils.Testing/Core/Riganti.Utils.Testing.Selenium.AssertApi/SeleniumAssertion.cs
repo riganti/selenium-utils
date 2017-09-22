@@ -1,8 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using CheckIfIsDisplayed = Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers.CheckIfIsDisplayed;
-using CheckIfIsNotDisplayed = Riganti.Utils.Testing.Selenium.Core.Checkers.ElementWrapperCheckers.CheckIfIsNotDisplayed;
+using OpenQA.Selenium;
+using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+using Riganti.Utils.Testing.Selenium.Core.Api;
+using Riganti.Utils.Testing.Selenium.Core.Exceptions;
+using Riganti.Utils.Testing.Selenium.Validators.Checkers;
+using Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheckers;
+using Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers;
+using BrowserCheckers = Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheckers;
+using ElementCheckers = Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers;
 
 namespace Riganti.Utils.Testing.Selenium.AssertApi
 {
@@ -13,42 +21,42 @@ namespace Riganti.Utils.Testing.Selenium.AssertApi
         public void CheckIfInnerText(ElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
         {
             var checkIfInnerText = new CheckIfInnerText(rule, failureMessage);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfInnerText);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfInnerText);
         }
 
         public void CheckIfInnerTextEquals(ElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
         {
             var checkIfInnerTextEquals = new CheckIfInnerTextEquals(text, caseSensitive, trim);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfInnerTextEquals);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfInnerTextEquals);
         }
 
         public void CheckIfText(ElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
         {
             var checkIfText = new CheckIfText(rule, failureMessage);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfText);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfText);
         }
 
         public void CheckIfTextEquals(ElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
         {
             var checkIfTextEquals = new CheckIfTextEquals(text, caseSensitive, trim);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfTextEquals);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfTextEquals);
         }
         public void CheckIfTextNotEquals(ElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
         {
             var checkIfTextNotEquals = new CheckIfTextNotEquals(text, caseSensitive, trim);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfTextNotEquals);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfTextNotEquals);
         }
 
         public void CheckIfIsDisplayed(ElementWrapper wrapper)
         {
-            var checkIfIsDisplayed = new CheckIfIsDisplayed();
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsDisplayed);
+            var checkIfIsDisplayed = new  ElementCheckers.CheckIfIsDisplayed();
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfIsDisplayed);
         }
 
         public void CheckIfIsNotDisplayed(ElementWrapper wrapper)
         {
-            var checkIfIsNotDisplayed = new CheckIfIsNotDisplayed();
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsNotDisplayed);
+            var checkIfIsNotDisplayed = new ElementCheckers.CheckIfIsNotDisplayed();
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfIsNotDisplayed);
         }
 
         public void CheckIfIsChecked(ElementWrapper wrapper)
@@ -57,7 +65,7 @@ namespace Riganti.Utils.Testing.Selenium.AssertApi
             CheckAttribute(wrapper, "type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox.");
 
             var checkIfIsChecked = new CheckIfIsChecked();
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsChecked);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfIsChecked);
         }
 
         public void CheckIfIsNotChecked(ElementWrapper wrapper)
@@ -66,78 +74,78 @@ namespace Riganti.Utils.Testing.Selenium.AssertApi
             CheckAttribute(wrapper, "type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox or radio.");
 
             var checkIfIsNotChecked = new CheckIfIsNotChecked();
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsNotChecked);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfIsNotChecked);
         }
 
         public void CheckIfIsSelected(ElementWrapper wrapper)
         {
             var checkIfIsSelected = new CheckIfIsSelected();
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsSelected);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfIsSelected);
         }
 
         public void CheckIfIsNotSelected(ElementWrapper wrapper)
         {
             var checkIfIsNotSelected = new CheckIfIsNotSelected();
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsNotSelected);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfIsNotSelected);
         }
 
         public void CheckIfIsEnabled(ElementWrapper wrapper)
         {
             var checkIfIsEnabled = new CheckIfIsEnabled();
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsEnabled);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfIsEnabled);
         }
 
         public void CheckIfIsClickable(ElementWrapper wrapper)
         {
             var checkIfIsClickable = new CheckIfIsClickable();
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsClickable);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfIsClickable);
         }
 
         public void CheckIfIsNotClickable(ElementWrapper wrapper)
         {
             var checkIfIsNotClickable = new CheckIfIsNotClickable();
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsNotClickable);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfIsNotClickable);
         }
 
         public void CheckIfIsNotEnabled(ElementWrapper wrapper)
         {
             var checkIfIsNotEnabled = new CheckIfIsNotEnabled();
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsNotEnabled);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfIsNotEnabled);
         }
 
         public void CheckIfValue(ElementWrapper wrapper, string value, bool caseSensitive = false, bool trim = true)
         {
             var checkIfValue = new CheckIfValue(value, caseSensitive, trim);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfValue);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfValue);
         }
 
         public void CheckIfContainsText(ElementWrapper wrapper)
         {
             var checkIfContainsText = new CheckIfContainsText();
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfContainsText);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfContainsText);
         }
         public void CheckIfDoesNotContainsText(ElementWrapper wrapper)
         {
             var checkIfDoesNotContainsText = new CheckIfDoesNotContainText();
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfDoesNotContainsText);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfDoesNotContainsText);
         }
 
         public void CheckIfHyperLinkEquals(ElementWrapper wrapper, string url, UrlKind kind, params UriComponents[] components)
         {
-            var checkIfHyperLinkEquals = new Checkers.ElementWrapperCheckers.CheckIfHyperLinkEquals(url, kind, components);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfHyperLinkEquals);
+            var checkIfHyperLinkEquals = new ElementCheckers.CheckIfHyperLinkEquals(url, kind, components);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfHyperLinkEquals);
         }
 
         public void CheckIfIsElementInView(ElementWrapper wrapper, ElementWrapper element)
         {
             var checkIfIsElementInView = new CheckIfIsElementInView(element);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsElementInView);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfIsElementInView);
         }
 
         public void CheckIfIsElementNotInView(ElementWrapper wrapper, ElementWrapper element)
         {
             var checkIfIsElementNotInView = new CheckIfIsElementNotInView(element);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfIsElementNotInView);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfIsElementNotInView);
         }
 
         public void CheckTagName(ElementWrapper wrapper, string expectedTagName, string failureMessage = null)
@@ -148,13 +156,13 @@ namespace Riganti.Utils.Testing.Selenium.AssertApi
         public void CheckIfTagName(ElementWrapper wrapper, string expectedTagName, string failureMessage = null)
         {
             var checkTagName = new CheckTagName(expectedTagName, failureMessage);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkTagName);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkTagName);
         }
 
         public void CheckIfTagName(ElementWrapper wrapper, string[] expectedTagNames, string failureMessage = null)
         {
             var checkTagName = new CheckTagName(expectedTagNames, failureMessage);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkTagName);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkTagName);
         }
 
         public void CheckTagName(ElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
@@ -165,62 +173,62 @@ namespace Riganti.Utils.Testing.Selenium.AssertApi
         public void CheckIfTagName(ElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
         {
             var checkIfTagName = new CheckIfTagName(rule, failureMessage);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfTagName);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfTagName);
         }
 
 
         public void CheckIfContainsElement(ElementWrapper wrapper, string cssSelector, Expression<Func<string, By>> tmpSelectMethod = null)
         {
             var checkIfContainsElement = new CheckIfContainsElement(cssSelector, tmpSelectMethod);
-            EvaluateCheck<EmptySequenceException, ElementWrapper>(wrapper, checkIfContainsElement);
+            EvaluateCheck<EmptySequenceException, IElementWrapper>(wrapper, checkIfContainsElement);
         }
 
         public void CheckIfNotContainsElement(ElementWrapper wrapper, string cssSelector, Expression<Func<string, By>> tmpSelectMethod = null)
         {
             var checkIfNotContainsElement = new CheckIfNotContainsElement(cssSelector, tmpSelectMethod);
-            EvaluateCheck<MoreElementsInSequenceException, ElementWrapper>(wrapper, checkIfNotContainsElement);
+            EvaluateCheck<MoreElementsInSequenceException, IElementWrapper>(wrapper, checkIfNotContainsElement);
         }
 
         public void CheckIfJsPropertyInnerText(ElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMesssage = null, bool trim = true)
         {
             var checkIfJsPropertyInnerText = new CheckIfJsPropertyInnerText(rule, failureMesssage, trim);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfJsPropertyInnerText);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfJsPropertyInnerText);
         }
 
         public void CheckIfJsPropertyInnerTextEquals(ElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true)
         {
             var checkIfJsPropertyInnerTextEquals = new CheckIfJsPropertyInnerTextEquals(text, caseSensitive, trim);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfJsPropertyInnerTextEquals);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfJsPropertyInnerTextEquals);
         }
 
         public void CheckIfJsPropertyInnerHtmlEquals(ElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true)
         {
             var checkIfJsPropertyInnerHtmlEquals = new CheckIfJsPropertyInnerHtmlEquals(text, caseSensitive, trim);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfJsPropertyInnerHtmlEquals);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfJsPropertyInnerHtmlEquals);
         }
 
         public void CheckIfJsPropertyInnerHtml(ElementWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
             var checkIfJsPropertyInnerHtml = new CheckIfJsPropertyInnerHtml(expression, failureMessage);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfJsPropertyInnerHtml);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfJsPropertyInnerHtml);
         }
 
         public void CheckAttribute(ElementWrapper wrapper, string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
             var checkAttribute = new CheckAttribute(attributeName, value, caseSensitive, trimValue, failureMessage);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkAttribute);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkAttribute);
         }
 
         public void CheckAttribute(ElementWrapper wrapper, string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
             var checkAttribute = new CheckAttribute(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkAttribute);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkAttribute);
         }
 
         public void CheckAttribute(ElementWrapper wrapper, string attributeName, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
             var checkIfAttribute = new CheckIfAttribute(attributeName, expression, failureMessage);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfAttribute);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfAttribute);
         }
 
         public void CheckClassAttribute(ElementWrapper wrapper, string value, bool caseSensitive = false, bool trimValue = true)
@@ -248,91 +256,91 @@ namespace Riganti.Utils.Testing.Selenium.AssertApi
         public void CheckIfHasAttribute(ElementWrapper wrapper, string name)
         {
             var checkIfHasAttribute = new CheckIfHasAttribute(name);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfHasAttribute);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfHasAttribute);
         }
 
         public void CheckIfHasNotAttribute(ElementWrapper wrapper, string name)
         {
             var checkIfHasNotAttribute = new CheckIfHasNotAttribute(name);
-            EvaluateCheck<UnexpectedElementStateException, ElementWrapper>(wrapper, checkIfHasNotAttribute);
+            EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkIfHasNotAttribute);
         }
 
         public void CheckIfAlertTextEquals(BrowserWrapper wrapper, string expectedValue,
             bool caseSensitive = false, bool trim = true)
         {
             var checkIfAlertTextEquals = new CheckIfAlertTextEquals(expectedValue, caseSensitive, trim);
-            EvaluateCheck<AlertException, BrowserWrapper>(wrapper, checkIfAlertTextEquals);
+            EvaluateCheck<AlertException, IBrowserWrapper>(wrapper, checkIfAlertTextEquals);
         }
 
         public void CheckIfAlertText(BrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = "")
         {
             var checkIfAlertText = new CheckIfAlertText(expression, failureMessage);
-            EvaluateCheck<AlertException, BrowserWrapper>(wrapper, checkIfAlertText);
+            EvaluateCheck<AlertException, IBrowserWrapper>(wrapper, checkIfAlertText);
         }
 
         public void CheckIfAlertTextContains(BrowserWrapper wrapper, string expectedValue, bool trim = true)
         {
             var checkIfAlertTextContains = new CheckIfAlertTextContains(expectedValue, trim);
-            EvaluateCheck<AlertException, BrowserWrapper>(wrapper, checkIfAlertTextContains);
+            EvaluateCheck<AlertException, IBrowserWrapper>(wrapper, checkIfAlertTextContains);
         }
 
         public void CheckUrl(BrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
             var checkIfUrl = new CheckIfUrl(expression, failureMessage);
-            EvaluateCheck<BrowserLocationException, BrowserWrapper>(wrapper, checkIfUrl);
+            EvaluateCheck<BrowserLocationException, IBrowserWrapper>(wrapper, checkIfUrl);
         }
 
         public void CheckUrl(BrowserWrapper wrapper, string url, UrlKind urlKind, params UriComponents[] components)
         {
             var checkUrl = new CheckUrl(url, urlKind, components);
-            EvaluateCheck<BrowserLocationException, BrowserWrapper>(wrapper, checkUrl);
+            EvaluateCheck<BrowserLocationException, IBrowserWrapper>(wrapper, checkUrl);
         }
 
         public void CheckUrlEquals(BrowserWrapper wrapper, string url)
         {
             var checkUrlExquals = new CheckUrlEquals(url);
-            EvaluateCheck<BrowserLocationException, BrowserWrapper>(wrapper, checkUrlExquals);
+            EvaluateCheck<BrowserLocationException, IBrowserWrapper>(wrapper, checkUrlExquals);
         }
 
         public void CheckIfHyperLinkEquals(BrowserWrapper wrapper, string selector, string url, UrlKind kind, params UriComponents[] components)
         {
-            var checkIfHyperLinkEquals = new Checkers.BrowserWrapperCheckers.CheckIfHyperLinkEquals(selector, url, kind, components);
-            EvaluateCheck<UnexpectedElementStateException, BrowserWrapper>(wrapper, checkIfHyperLinkEquals);
+            var checkIfHyperLinkEquals = new BrowserCheckers.CheckIfHyperLinkEquals(selector, url, kind, components);
+            EvaluateCheck<UnexpectedElementStateException, IBrowserWrapper>(wrapper, checkIfHyperLinkEquals);
         }
 
         public void CheckIfIsDisplayed(BrowserWrapper wrapper, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
         {
-            var checkIfIsDisplayed = new Checkers.BrowserWrapperCheckers.CheckIfIsDisplayed(selector, tmpSelectedMethod);
-            EvaluateCheck<UnexpectedElementStateException, BrowserWrapper>(wrapper, checkIfIsDisplayed);
+            var checkIfIsDisplayed = new BrowserCheckers.CheckIfIsDisplayed(selector, tmpSelectedMethod);
+            EvaluateCheck<UnexpectedElementStateException, IBrowserWrapper>(wrapper, checkIfIsDisplayed);
         }
         public void CheckIfIsNotDisplayed(BrowserWrapper wrapper, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
         {
-            var checkIfIsNotDisplayed = new Checkers.BrowserWrapperCheckers.CheckIfIsNotDisplayed(selector, tmpSelectedMethod);
-            EvaluateCheck<BrowserException, BrowserWrapper>(wrapper, checkIfIsNotDisplayed);
+            var checkIfIsNotDisplayed = new BrowserCheckers.CheckIfIsNotDisplayed(selector, tmpSelectedMethod);
+            EvaluateCheck<BrowserException, IBrowserWrapper>(wrapper, checkIfIsNotDisplayed);
         }
 
         public void CheckIfUrlIsAccessible(BrowserWrapper wrapper, string url, UrlKind urlKind)
         {
             var checkIfUrlIsAccessible = new CheckIfUrlIsAccessible(url, urlKind);
-            EvaluateCheck<BrowserException, BrowserWrapper>(wrapper, checkIfUrlIsAccessible);
+            EvaluateCheck<BrowserException, IBrowserWrapper>(wrapper, checkIfUrlIsAccessible);
         }
 
         public void CheckIfTitleEquals(BrowserWrapper wrapper, string title, bool caseSensitive = false, bool trim = true)
         {
             var checkIfTitleEquals = new CheckIfTitleEquals(title, caseSensitive, trim);
-            EvaluateCheck<BrowserException, BrowserWrapper>(wrapper, checkIfTitleEquals);
+            EvaluateCheck<BrowserException, IBrowserWrapper>(wrapper, checkIfTitleEquals);
         }
 
         public void CheckIfTitleNotEquals(BrowserWrapper wrapper, string title, bool caseSensitive = false, bool trim = true)
         {
             var checkIfTitleNotEquals = new CheckIfTitleNotEquals(title, caseSensitive, trim);
-            EvaluateCheck<BrowserException, BrowserWrapper>(wrapper, checkIfTitleNotEquals);
+            EvaluateCheck<BrowserException, IBrowserWrapper>(wrapper, checkIfTitleNotEquals);
         }
 
         public void CheckIfTitle(BrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = "")
         {
             var checkIfTitle = new CheckIfTitle(expression, failureMessage);
-            EvaluateCheck<BrowserException, BrowserWrapper>(wrapper, checkIfTitle);
+            EvaluateCheck<BrowserException, IBrowserWrapper>(wrapper, checkIfTitle);
         }
 
         public void Check<TException, T>(ICheck<T> check, T wrapper)
