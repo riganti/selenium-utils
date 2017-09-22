@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {

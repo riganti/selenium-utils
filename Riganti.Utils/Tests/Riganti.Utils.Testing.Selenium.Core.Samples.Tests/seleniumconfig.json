@@ -1,6 +1,6 @@
 ﻿{
   "factories": {
-    "chrome:fast": {}
+    "chrome:dev": {}
   },
   "baseUrls": [
     "http://localhost:5633/"

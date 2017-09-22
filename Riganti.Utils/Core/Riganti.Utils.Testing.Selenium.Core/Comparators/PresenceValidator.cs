@@ -1,4 +1,4 @@
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Comparators
 {

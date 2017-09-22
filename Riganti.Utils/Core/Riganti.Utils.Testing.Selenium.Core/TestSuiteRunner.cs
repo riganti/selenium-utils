@@ -32,6 +32,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public ITestContextProvider TestContextProvider { get; }
 
         public LoggerService LoggerService { get; }
+        public ServiceFactory ServiceFactory { get; } = new ServiceFactory();
 
 
 

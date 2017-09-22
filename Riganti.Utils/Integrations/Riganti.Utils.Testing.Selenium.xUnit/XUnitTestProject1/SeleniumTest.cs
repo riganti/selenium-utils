@@ -1,7 +1,5 @@
-﻿using System;
-using Riganti.Utils.Testing.Selenium.Core.Configuration;
+﻿using Riganti.Utils.Testing.Selenium.Core.Configuration;
 using Riganti.Utils.Testing.Selenium.Core;
-using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Xunit.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.xUnitIntegration
@@ -24,21 +22,5 @@ namespace Riganti.Utils.Testing.Selenium.xUnitIntegration
             return (TestSuiteRunner)new XunitTestSuiteRunner(configuration, new TestContextProvider());
         }
 
-    }
-
-    public class XunitTestSuiteRunner : TestSuiteRunner
-    {
-        public XunitTestSuiteRunner(SeleniumTestsConfiguration configuration, TestContextProvider testContextProvider) : base(configuration, testContextProvider)
-        {
-        }
-
-        public override void RunInAllBrowsers(ISeleniumTest testClass, Action<IBrowserWrapper> action, string callerMemberName, string callerFilePath,
-            int callerLineNumber)
-        {
-            var context = (TestContextWrapper)TestContextAccessor.GetTestContext();
-            context.TestName = callerMemberName;
-
-            base.RunInAllBrowsers(testClass, action, callerMemberName, callerFilePath, callerLineNumber);
-        }
     }
 }

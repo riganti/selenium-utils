@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Api;
 using Riganti.Utils.Testing.Selenium.Core.Configuration;
 

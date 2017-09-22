@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.Drawing;
 using System.Globalization;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Comparators;
 
 namespace Riganti.Utils.Testing.Selenium.Core
@@ -1125,7 +1125,8 @@ return elementInViewport2(arguments[0]);
         /// <returns></returns>
         public IElementWrapper DropTo(IElementWrapper dropToElement, int offsetX = 0, int offsetY = 0)
         {
-            BrowserWrapper.DragAndDrop(this, dropToElement, offsetX, offsetY);
+            throw new NotImplementedException();
+            //BrowserWrapper.DragAndDrop(this, dropToElement, offsetX, offsetY);
             return this;
         }
 

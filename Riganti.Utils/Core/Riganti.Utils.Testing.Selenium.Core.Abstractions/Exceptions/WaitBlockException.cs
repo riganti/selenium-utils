@@ -1,8 +1,7 @@
 using System;
-using OpenQA.Selenium;
 using System.Runtime.Serialization;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
+namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 {
     [Serializable]
     public class WaitBlockException : TestExceptionBase

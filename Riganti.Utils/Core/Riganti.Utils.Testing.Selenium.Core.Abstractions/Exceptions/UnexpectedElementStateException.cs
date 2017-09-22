@@ -1,12 +1,7 @@
-﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
+namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 {
     [Serializable]
     public class UnexpectedElementStateException : TestExceptionBase

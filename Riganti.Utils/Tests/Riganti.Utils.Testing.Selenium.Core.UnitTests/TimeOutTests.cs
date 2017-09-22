@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Factories;
 using Selenium.Core.UnitTests.Mock;
 using TestConfiguration = Riganti.Utils.Testing.Selenium.Core.TestConfiguration;
@@ -24,7 +24,7 @@ namespace Selenium.Core.UnitTests
         public void TestInit()
         {
             var mockIWebBrowser = new MockIWebBrowser();
-            browser = new BrowserWrapper(mockIWebBrowser, mockIWebBrowser.Driver, new MockITestInstance(), new ScopeOptions());
+            browser = new BrowserWrapperPseudoFluentApi(mockIWebBrowser, mockIWebBrowser.Driver, new MockITestInstance(), new ScopeOptions());
         }
 
 

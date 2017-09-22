@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,30 +12,31 @@ namespace Riganti.Utils.Testing.Selenium.DotVVM
     {
         public static IElementWrapper UploadFile(this IElementWrapper element, string fullFileName)
         {
-            if (element.BrowserWrapper.IsDotvvmPage())
-            {
-                element.BrowserWrapper.LogVerbose("Selenium.DotVVM : Uploading file");
-                var name = element.GetTagName();
-                if (name == "a" && element.HasAttribute("onclick") && (element.GetAttribute("onclick")?.Contains("showUploadDialog") ?? false))
-                {
-                    return UploadFileByA(element, fullFileName);
-                }
+            throw new NotImplementedException();
+            //if (element.BrowserWrapper.IsDotvvmPage())
+            //{
+            //    element.BrowserWrapper.LogVerbose("Selenium.DotVVM : Uploading file");
+            //    var name = element.GetTagName();
+            //    if (name == "a" && element.HasAttribute("onclick") && (element.GetAttribute("onclick")?.Contains("showUploadDialog") ?? false))
+            //    {
+            //        return UploadFileByA(element, fullFileName);
+            //    }
 
-                if (name == "div" && element.FindElements("iframe", SelectBy.CssSelector).Count == 1)
-                {
-                    return UploadFileByDiv(element, fullFileName);
-                }
-                else
-                {
-                    element.BrowserWrapper.LogVerbose("Selenium.DotVVM : Cannot identify DotVVM scenario. Uploading over standard procedure.");
+            //    if (name == "div" && element.FindElements("iframe", SelectBy.CssSelector).Count == 1)
+            //    {
+            //        return UploadFileByDiv(element, fullFileName);
+            //    }
+            //    else
+            //    {
+            //        element.BrowserWrapper.LogVerbose("Selenium.DotVVM : Cannot identify DotVVM scenario. Uploading over standard procedure.");
 
-                    element.BrowserWrapper.FileUploadDialogSelect(element, fullFileName);
-                    return element;
-                }
-            }
+            //        element.BrowserWrapper.FileUploadDialogSelect(element, fullFileName);
+            //        return element;
+            //    }
+            //}
 
-            element.BrowserWrapper.FileUploadDialogSelect(element, fullFileName);
-            return element;
+            //element.BrowserWrapper.FileUploadDialogSelect(element, fullFileName);
+            //return element;
         }
 
         private static IElementWrapper UploadFileByDiv(IElementWrapper element, string fullFileName)

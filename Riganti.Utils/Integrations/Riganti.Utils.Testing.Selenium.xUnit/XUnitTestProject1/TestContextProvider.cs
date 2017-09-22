@@ -8,6 +8,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public ITestContext CreateTestContext(TestInstance testInstance)
         {
             var context = ((SeleniumTest)testInstance.TestClass).TestOutput;
+
             return new TestContextWrapper(context, testInstance);
         }
     }

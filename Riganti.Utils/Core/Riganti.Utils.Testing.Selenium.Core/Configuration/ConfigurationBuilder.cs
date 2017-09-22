@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Configuration
 {

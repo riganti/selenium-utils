@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.Validators.Checkers
 {
@@ -7,8 +8,8 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers
     {
         public bool IsSucceeded { get; }
         public string ErrorMessage { get; }
-        public IList<CheckResult> InnerResults { get; }
-        public IEnumerable<CheckResult> InnerFailedResults => Enumerable.Where(InnerResults, result => !result.IsSucceeded);
+        public IList<ICheckResult> InnerResults { get; }
+        public IEnumerable<ICheckResult> InnerFailedResults => Enumerable.Where(InnerResults, result => !result.IsSucceeded);
 
         private CheckResult()
         {
@@ -19,7 +20,7 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers
         {
             IsSucceeded = false;
             ErrorMessage = errorMessage;
-            InnerResults = checkResults?.ToList() ?? new List<CheckResult>();
+            InnerResults = checkResults?.Cast<ICheckResult>().ToList() ?? new List<ICheckResult>();
         }
 
         public static CheckResult Succeeded { get; } = new CheckResult();

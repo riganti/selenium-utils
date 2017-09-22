@@ -2,11 +2,11 @@
 using MSAssert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using System;
 using System.IO;
 using System.Threading;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Api;
 
 namespace SeleniumCore.Samples.Tests

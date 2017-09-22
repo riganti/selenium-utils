@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheckers;
 using Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers;
 using CheckIfHyperLinkEquals = Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers.CheckIfHyperLinkEquals;

@@ -53,16 +53,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
-        //public string FullyQualifiedTestClassName => context.FullyQualifiedTestClassName;
-
-        //public string DeploymentDirectory => context.TestDeploymentDir;
-
-        //public string TestName => context.TestName;
-
-        //public void AddResultFile(string fileName)
-        //{
-        //    context.AddResultFile(fileName);
-        //}
+    
 
         public void AddResultFile(string fileName)
         {

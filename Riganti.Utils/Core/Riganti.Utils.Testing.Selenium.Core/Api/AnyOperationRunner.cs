@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using Riganti.Utils.Testing.Selenium.Validators.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Api

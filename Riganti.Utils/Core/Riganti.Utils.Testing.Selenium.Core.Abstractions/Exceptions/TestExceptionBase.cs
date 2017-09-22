@@ -2,12 +2,9 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using OpenQA.Selenium;
-using Riganti.Utils.Testing.Selenium.Validators.Checkers;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
+namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 {
     public abstract class TestExceptionBase : WebDriverException
     {
@@ -25,7 +22,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
             }
         }
 
-        public ICheckResult CheckResult { get; internal set; }
+        public ICheckResult CheckResult { get; set; }
 
         public TestExceptionBase()
         {

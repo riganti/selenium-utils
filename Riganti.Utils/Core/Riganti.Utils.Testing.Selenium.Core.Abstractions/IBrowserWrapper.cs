@@ -5,6 +5,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions
 {
     public interface IBrowserWrapper
     {
+
         int ActionWaitTime { get; set; }
         string BaseUrl { get; }
         string CurrentUrl { get; }
@@ -15,15 +16,10 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions
         void ActivateScope();
         IBrowserWrapper ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null);
         IBrowserWrapper Click(string selector);
-        bool CompareUrl(string url);
-        bool CompareUrl(string url, UrlKind urlKind, params UriComponents[] components);
         IBrowserWrapper ConfirmAlert();
         IBrowserWrapper DismissAlert();
         void Dispose();
-        IBrowserWrapper DragAndDrop(IElementWrapper dragOnElement, IElementWrapper dropToElement, int offsetX = 0, int offsetY = 0);
-        void DropTest(string message);
         IElementWrapper ElementAt(string selector, int index, Func<string, By> tmpSelectMethod = null);
-        IBrowserWrapper FileUploadDialogSelect(IElementWrapper fileUploadOpener, string fullFileName);
         IElementWrapperCollection FindElements(By selector);
         IElementWrapperCollection FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null);
         IBrowserWrapper FireJsBlur();

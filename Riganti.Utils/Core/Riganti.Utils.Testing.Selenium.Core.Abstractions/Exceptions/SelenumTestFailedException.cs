@@ -1,14 +1,11 @@
-﻿using OpenQA.Selenium;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using Riganti.Utils.Testing.Selenium.Validators.Checkers;
+using OpenQA.Selenium;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
+namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 {
     /// <summary>
     /// This exception is thrown only from execution block in SeleniumTestExecutor. Indicates that test failed.
@@ -24,7 +21,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
 
         private readonly List<Exception> innerExceptions;
 
-        public CheckResult[] InnerCheckResults { get; }
+        public ICheckResult[] InnerCheckResults { get; }
 
 
         /// <inheritdoc />
@@ -50,7 +47,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
         }
         /// <inheritdoc/>
 
-        internal SeleniumTestFailedException(Exception innerException) : this("", innerException)
+        internal SeleniumTestFailedException(Exception innerException) : this((string) "", innerException)
         {
         }
         /// <inheritdoc/>
@@ -59,7 +56,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
         {
             ExceptionMessage = message;
             this.innerExceptions = new List<Exception>(new[] { innerException });
-            InnerCheckResults = CreateCheckResult(innerExceptions).Cast<CheckResult>().ToArray();
+            InnerCheckResults = CreateCheckResult(innerExceptions).ToArray();
         }
 
         private IEnumerable<ICheckResult> CreateCheckResult(IEnumerable<Exception> exceptions)
@@ -72,24 +69,24 @@ namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
         {
         }
         /// <inheritdoc/>
-        internal SeleniumTestFailedException(Exception innerException, string browserName, string screenshotsPath) : this($"Test failed in browser '{browserName}'.", innerException)
+        internal SeleniumTestFailedException(Exception innerException, string browserName, string screenshotsPath) : this((string) $"Test failed in browser '{browserName}'.", innerException)
         {
             this.ScreenshotPath = screenshotsPath;
             this.BrowserName = browserName;
         }
 
 
-        internal SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsPath = null, string currentSubsection = null) : this($"Test failed in browser '{browserName}'", null)
+        internal SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsPath = null, string currentSubsection = null) : this((string) $"Test failed in browser '{browserName}'", (Exception) null)
         {
             CurrentSubSection = currentSubsection;
             ScreenshotPath = screenshotsPath;
             BrowserName = browserName;
             this.innerExceptions = innerExceptions;
-            InnerCheckResults = CreateCheckResult(this.innerExceptions).Cast<CheckResult>().ToArray();
+            InnerCheckResults = CreateCheckResult(this.innerExceptions).ToArray();
         }
         /// <inheritdoc/>
 
-        internal SeleniumTestFailedException(Exception innerException, string browserName, string screenshotsPath, string currentSubSection) : this($"Test failed in browser '{browserName}'.", innerException)
+        internal SeleniumTestFailedException(Exception innerException, string browserName, string screenshotsPath, string currentSubSection) : this((string) $"Test failed in browser '{browserName}'.", innerException)
         {
             CurrentSubSection = currentSubSection;
             ScreenshotPath = screenshotsPath;

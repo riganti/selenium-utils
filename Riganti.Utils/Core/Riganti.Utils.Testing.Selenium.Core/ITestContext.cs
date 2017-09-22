@@ -43,5 +43,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         string BaseUrl { get; }
 
+        string DeploymentDirectory { get; }
+        void AddResultFile(string filename);
     }
 }

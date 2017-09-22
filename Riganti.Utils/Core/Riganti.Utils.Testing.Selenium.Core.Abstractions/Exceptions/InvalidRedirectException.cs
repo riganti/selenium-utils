@@ -1,8 +1,7 @@
-using OpenQA.Selenium;
 using System;
 using System.Runtime.Serialization;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
+namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 {
     [Serializable]
     public class InvalidRedirectException : TestExceptionBase

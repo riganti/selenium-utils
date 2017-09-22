@@ -1,8 +1,7 @@
 using System;
 using System.Runtime.Serialization;
-using OpenQA.Selenium;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
+namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 {
     [Serializable]
     public class MoreElementsInSequenceException : TestExceptionBase

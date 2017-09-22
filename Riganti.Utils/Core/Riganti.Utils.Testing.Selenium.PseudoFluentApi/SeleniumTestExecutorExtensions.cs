@@ -11,9 +11,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public static void RunInAllBrowsers(this ISeleniumTest executor, Action<BrowserWrapperPseudoFluentApi> testBody, [CallerMemberName]string callerMemberName = "", [CallerFilePath]string callerFilePath = "", [CallerLineNumber]int callerLineNumber = 0)
         {
-
-            executor.TestSuiteRunner.RunInAllBrowsers(executor, (Action<IBrowserWrapper>)testBody, callerMemberName, callerFilePath, callerLineNumber);
+            executor.TestSuiteRunner.ServiceFactory.RegisterTransient<BrowserWrapper, BrowserWrapperPseudoFluentApi>();
+            executor.TestSuiteRunner.RunInAllBrowsers(executor, Convert(testBody), callerMemberName, callerFilePath, callerLineNumber);
         }
 
+        public static Action<IBrowserWrapper> Convert(Action<BrowserWrapperPseudoFluentApi> action)
+        {
+            return o => action((BrowserWrapperPseudoFluentApi)o);
+        }
     }
 }

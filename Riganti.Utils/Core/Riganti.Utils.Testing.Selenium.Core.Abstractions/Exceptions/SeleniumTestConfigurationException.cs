@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Exceptions
+namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 {
     public class SeleniumTestConfigurationException : Exception
     {

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Configuration;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Logging;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Discovery

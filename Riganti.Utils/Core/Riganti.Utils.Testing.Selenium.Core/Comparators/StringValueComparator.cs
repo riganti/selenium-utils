@@ -1,7 +1,7 @@
-﻿using Riganti.Utils.Testing.Selenium.Core.Exceptions;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Linq;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Comparators
 {

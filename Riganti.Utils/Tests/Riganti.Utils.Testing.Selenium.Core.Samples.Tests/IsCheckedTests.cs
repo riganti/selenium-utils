@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Configuration;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 
 namespace SeleniumCore.Samples.Tests
 {

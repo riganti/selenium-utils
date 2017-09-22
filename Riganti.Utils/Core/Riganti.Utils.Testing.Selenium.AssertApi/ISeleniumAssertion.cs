@@ -3,8 +3,8 @@ using System.Linq.Expressions;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Api;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using Riganti.Utils.Testing.Selenium.Validators.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.AssertApi
