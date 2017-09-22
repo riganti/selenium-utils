@@ -1,4 +1,4 @@
-﻿namespace Selenium.DotVVM.Samples.ViewModels
+﻿namespace Riganti.Utils.Testing.Selenium.DotVVM.Samples.ViewModels
 {
     public class RouteDTO
     {

@@ -1,36 +1,34 @@
-using System;
-using System.IO;
-using System.Web.Hosting;
-using Microsoft.Owin;
-using Microsoft.Owin.FileSystems;
-using Microsoft.Owin.StaticFiles;
-using Owin;
 using DotVVM.Framework;
 using DotVVM.Framework.Configuration;
 using DotVVM.Framework.Routing;
-using DotVVM.Framework.Storage;
 
-namespace Selenium.DotVVM.Samples
+namespace Riganti.Utils.Testing.Selenium.DotVVM.Samples
 {
     public class DotvvmStartup : IDotvvmStartup
     {
         // For more information about this class, visit https://dotvvm.com/docs/tutorials/basics-project-structure
         public void Configure(DotvvmConfiguration config, string applicationPath)
         {
-            //routing
+            ConfigureRoutes(config, applicationPath);
+            ConfigureControls(config, applicationPath);
+            ConfigureResources(config, applicationPath);
+        }
+
+        private void ConfigureRoutes(DotvvmConfiguration config, string applicationPath)
+        {
+            config.RouteTable.Add("Default", "", "Views/default.dothtml");
+
             config.RouteTable.AutoDiscoverRoutes(new DefaultRouteStrategy(config));
-            RegisterRoutes(config.RouteTable);
-
-            RegisterResources(config.RouteTable);
         }
 
-        private void RegisterRoutes(DotvvmRouteTable routeTable)
+        private void ConfigureControls(DotvvmConfiguration config, string applicationPath)
         {
-            routeTable.Add("DefaultRoute", "", "Views/default.dothtml");
+            // register code-only controls and markup controls
         }
 
-        private void RegisterResources(DotvvmRouteTable routeTable)
+        private void ConfigureResources(DotvvmConfiguration config, string applicationPath)
         {
+            // register custom resources and adjust paths to the built-in resources
         }
     }
 }

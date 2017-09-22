@@ -1,5 +1,4 @@
-﻿@viewModel Selenium.DotVVM.Samples.ViewModels.DefaultViewModel, Selenium.DotVVM.Samples
-
+﻿@viewModel Riganti.Utils.Testing.Selenium.DotVVM.Samples.ViewModels.DefaultViewModel, Riganti.Utils.Testing.Selenium.DotVVM.Samples
 <!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">

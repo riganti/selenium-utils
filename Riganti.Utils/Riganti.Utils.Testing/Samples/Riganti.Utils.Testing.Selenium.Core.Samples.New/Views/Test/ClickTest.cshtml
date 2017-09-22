@@ -1,0 +1,14 @@
+﻿
+    <div>
+        <script>
+            function increase() {
+                var input = document.getElementById("testInput");
+                var value = parseInt(input.value);
+                input.value = ++value;
+            }
+        </script>
+        <button onclick="javascript: increase(); return false;">
+           Click to test
+        </button>
+        <input type="number" id="testInput" value="0"/>
+    </div>

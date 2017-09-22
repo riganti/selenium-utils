@@ -1,0 +1,18 @@
+﻿<div>
+    <span id="message"></span>
+    <input id="button" type="button" value="click" />
+</div>
+<script>
+                function click(e) {
+                    e.preventDefault();
+                    var span = document.querySelector("#message");
+                    if (confirm("confirm test")) {
+                        span.textContent = span.innerText = "Accept";
+
+                    } else {
+                        span.textContent = span.innerText = "Dismiss";
+                    }
+                    return null;
+                }
+                document.getElementById("button").onclick = click;
+</script>

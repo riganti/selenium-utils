@@ -1,13 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using DotVVM.Framework.Controls;
 using DotVVM.Framework.ViewModel;
 
-namespace Selenium.DotVVM.Samples.ViewModels
+namespace Riganti.Utils.Testing.Selenium.DotVVM.Samples.ViewModels
 {
     public class DefaultViewModel : DotvvmViewModelBase
     {
