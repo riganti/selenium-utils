@@ -10,10 +10,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
 {
     public interface ITestContext
     {
-        /// <summary>
-        /// Gets the path to the deployment directory.
-        /// </summary>
-        string DeploymentDirectory { get; }
 
         /// <summary>
         /// Gets the fully-qualified name of the class that contains the test method that is currently running.
@@ -38,16 +34,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
         void WriteLine(string format, params object[] args);
 
         /// <summary>
-        /// Adds a file name to the list in TestResult.ResultFileNames.
-        /// </summary>
-        /// <param name="fileName">The file name to add.</param>
-        void AddResultFile(string fileName);
-
-        /// <summary>
         /// Gets the web browser object used to run the test.
         /// </summary>
         IWebBrowser CurrentWebBrowser { get; }
-        
+
         /// <summary>
         /// Gets the base URL of the application under test.
         /// </summary>

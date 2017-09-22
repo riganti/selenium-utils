@@ -15,7 +15,7 @@ using Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    public class BrowserWrapper  : IBrowserWrapper
+    public class BrowserWrapper :IBrowserWrapper
     {
 
         private readonly IWebBrowser browser;
@@ -41,7 +41,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         private ScopeOptions ScopeOptions { get; set; }
 
-        public BrowserWrapper(IWebBrowser browser, IWebDriver driver, ITestInstance testInstance, ScopeOptions scope)
+        public BrowserWrapper(IWebBrowser browser, IWebDriver driver, ITestInstance testInstance, ScopeOptions scope) 
         {
             this.browser = browser;
             this.driver = driver;

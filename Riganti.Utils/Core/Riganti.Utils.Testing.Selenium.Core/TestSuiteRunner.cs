@@ -14,7 +14,7 @@ using Riganti.Utils.Testing.Selenium.Core.Logging;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    public class TestSuiteRunner : IDisposable
+    public class TestSuiteRunner : IDisposable 
     {
 
         private readonly Dictionary<string, IWebBrowserFactory> factories;
@@ -80,7 +80,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         private Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories()
         {
-            var factoryResolver = new WebBrowserFactoryResolver();
+            var factoryResolver = new WebBrowserFactoryResolver<TestSuiteRunner>();
             return factoryResolver.CreateWebBrowserFactories(this, searchAssemblies);
         }
 
@@ -93,11 +93,11 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }))
             .ToList();
         }
+        
 
-
-        public void RunInAllBrowsers(ISeleniumTest testClass, Action<IBrowserWrapper> action, string callerMemberName, string callerFilePath, int callerLineNumber)
+        public virtual void RunInAllBrowsers(ISeleniumTest testClass, Action<IBrowserWrapper> action, string callerMemberName, string callerFilePath, int callerLineNumber) 
         {
-            var testName = $"{callerMemberName}";
+            var testName = callerMemberName;
             this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Entering RunInAllBrowsers from {callerFilePath}:{callerLineNumber}");
 
             try
@@ -117,7 +117,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
-        private void RunInAllBrowsersSequential(ISeleniumTest testClass, string testName, Action<BrowserWrapper> action)
+        private void RunInAllBrowsersSequential(ISeleniumTest testClass, string testName, Action<IBrowserWrapper> action) 
         {
             foreach (var testConfiguration in testConfigurations)
             {
@@ -125,12 +125,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
-        private void RunInAllBrowsersParallel(ISeleniumTest testClass, string testName, Action<BrowserWrapper> action)
+        private void RunInAllBrowsersParallel(ISeleniumTest testClass, string testName, Action<IBrowserWrapper> action) 
         {
             Parallel.ForEach(testConfigurations, c => RunSingleTest(testClass, c, testName, action).Wait());
         }
 
-        private async Task RunSingleTest(ISeleniumTest testClass, TestConfiguration testConfiguration, string testName, Action<BrowserWrapper> action)
+        private async Task RunSingleTest(ISeleniumTest testClass, TestConfiguration testConfiguration, string testName, Action<IBrowserWrapper> action) 
         {
             var testFullName = $"{testName} for {testConfiguration.BaseUrl} in {testConfiguration.Factory.Name}";
 

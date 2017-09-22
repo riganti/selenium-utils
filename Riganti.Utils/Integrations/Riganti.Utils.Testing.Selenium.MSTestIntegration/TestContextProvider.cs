@@ -1,4 +1,6 @@
-﻿namespace Riganti.Utils.Testing.Selenium.Core
+﻿using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class TestContextProvider : ITestContextProvider
     {
@@ -7,5 +9,6 @@
             var context = ((SeleniumTest)testInstance.TestClass).TestContext;
             return new TestContextWrapper(context, testInstance);
         }
+
     }
 }

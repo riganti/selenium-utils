@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Configuration;
 using Riganti.Utils.Testing.Selenium.Core.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Factories;
@@ -11,10 +12,10 @@ using Riganti.Utils.Testing.Selenium.Core.Logging;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Discovery
 {
-    public class WebBrowserFactoryResolver
+    public class WebBrowserFactoryResolver<T> where T: TestSuiteRunner
     {
 
-        public Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories(TestSuiteRunner runner, Assembly[] assemblies)
+        public Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories(T runner, Assembly[] assemblies)
         {
             // find all factories
             var foundTypes = DiscoverFactories(assemblies);
@@ -51,7 +52,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Discovery
             return foundTypes;
         }
 
-        private IList<IWebBrowserFactory> InstantiateFactories(TestSuiteRunner testSuiteRunner, IEnumerable<Type> foundTypes)
+        private IList<IWebBrowserFactory> InstantiateFactories(T testSuiteRunner, IEnumerable<Type> foundTypes)
         {
             var instances = new List<IWebBrowserFactory>();
             foreach (var type in foundTypes)
@@ -63,7 +64,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Discovery
                 }
                 catch (Exception ex)
                 {
-                    throw new SeleniumTestConfigurationException($"Failed to create an instance of the factory '{type}'! Make sure that the factory has a constructor with the exactly one parameter of type {typeof(TestSuiteRunner)}.", ex);
+                    throw new SeleniumTestConfigurationException($"Failed to create an instance of the factory '{type}'! Make sure that the factory has a constructor with the exactly one parameter of type {typeof(T)}.", ex);
                 }
             }
             return instances;

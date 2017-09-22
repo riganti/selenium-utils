@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
 using Riganti.Utils.Testing.Selenium.Core.Factories;
 
@@ -60,6 +61,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return instance;
         }
 
+     
 
         public async Task ReturnBrowserToPool(IWebBrowser webBrowser)
         {

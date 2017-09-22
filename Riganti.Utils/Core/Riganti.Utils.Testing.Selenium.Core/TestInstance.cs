@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
+using Riganti.Utils.Testing.Selenium.Core.Factories;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class TestInstance : ITestInstance
     {
 
-        private readonly Action<BrowserWrapper> testAction;
+        private readonly Action<IBrowserWrapper> testAction;
         private int testAttemptNumber;
 
         public TestSuiteRunner TestSuiteRunner { get; }
@@ -20,7 +22,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public IWebBrowser CurrentWebBrowser { get; private set; }
 
 
-        public TestInstance(TestSuiteRunner runner, ISeleniumTest testClass, TestConfiguration testConfiguration, string testName, Action<BrowserWrapper> testAction)
+        public TestInstance(TestSuiteRunner runner, ISeleniumTest testClass, TestConfiguration testConfiguration, string testName, Action<IBrowserWrapper> testAction) 
         {
             this.TestSuiteRunner = runner;
             this.TestClass = testClass;
@@ -60,7 +62,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         private void RunTest(IWebBrowser browser)
         {
             // create a new browser wrapper
-            var wrapper = new BrowserWrapper(browser, browser.Driver, this, new ScopeOptions());
+            var wrapper =  new BrowserWrapper(browser, browser.Driver, this, new ScopeOptions());
 
             // prepare test context
             var testContext = TestSuiteRunner.TestContextProvider.CreateTestContext(this);
@@ -105,23 +107,24 @@ namespace Riganti.Utils.Testing.Selenium.Core
             throw new AggregateException(errors);
         }
 
-        private void TakeScreenshot(BrowserWrapper browserWrapper)
+        private void TakeScreenshot(IBrowserWrapper browserWrapper) 
         {
-            var testContext = TestSuiteRunner.TestContextAccessor.GetTestContext();
 
-            try
-            {
-                var filename = Path.Combine(testContext.DeploymentDirectory, $"{testContext.FullyQualifiedTestClassName}_{testContext.TestName}_{testAttemptNumber}.png");
-                TestSuiteRunner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Taking screenshot {filename}");
-#if NET461
-                browserWrapper.TakeScreenshot(filename);
-                TestSuiteRunner.TestContextAccessor.GetTestContext().AddResultFile(filename);
-#endif
-                }
-            catch (Exception ex)
-            {
-                TestSuiteRunner.LogError(new Exception($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Failed to take screenshot.", ex));
-            }
+            
+            throw new NotImplementedException();
+            //var testContext = TestSuiteRunner.TestContextAccessor.GetTestContext();
+
+            //try
+            //{
+            //    var filename = Path.Combine(testContext.DeploymentDirectory, $"{testContext.FullyQualifiedTestClassName}_{testContext.TestName}_{testAttemptNumber}.png");
+            //    TestSuiteRunner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Taking screenshot {filename}");
+            //    browserWrapper.TakeScreenshot(filename);
+            //    TestSuiteRunner.TestContextAccessor.GetTestContext().AddResultFile(filename);
+            //}
+            //catch (Exception ex)
+            //{
+            //    TestSuiteRunner.LogError(new Exception($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Failed to take screenshot.", ex));
+            //}
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {

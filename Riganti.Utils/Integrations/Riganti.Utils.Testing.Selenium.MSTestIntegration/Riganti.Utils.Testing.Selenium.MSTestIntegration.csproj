@@ -48,6 +48,10 @@
     <Compile Include="TestContextWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Riganti.Utils.Testing.Selenium.Core.Abstractions\Riganti.Utils.Testing.Selenium.Core.Abstractions.csproj">
+      <Project>{D7D2C905-B5BB-4D9F-A273-3A0ED55E0361}</Project>
+      <Name>Riganti.Utils.Testing.Selenium.Core.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Riganti.Utils.Testing.Selenium.Core\Riganti.Utils.Testing.Selenium.Core.csproj">
       <Project>{b4467232-b573-461e-af44-4b195120f2c8}</Project>
       <Name>Riganti.Utils.Testing.Selenium.Core</Name>

@@ -1,11 +1,12 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
 using Riganti.Utils.Testing.Selenium.Core.Factories;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    internal class TestContextWrapper : ITestContext
+    internal class TestContextWrapper : ITestContext 
     {
         private readonly TestContext context;
         private readonly TestInstance testInstance;

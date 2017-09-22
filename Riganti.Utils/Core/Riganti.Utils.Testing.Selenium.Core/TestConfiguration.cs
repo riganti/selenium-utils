@@ -1,4 +1,5 @@
-﻿using Riganti.Utils.Testing.Selenium.Core.Factories;
+﻿using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+using Riganti.Utils.Testing.Selenium.Core.Factories;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
