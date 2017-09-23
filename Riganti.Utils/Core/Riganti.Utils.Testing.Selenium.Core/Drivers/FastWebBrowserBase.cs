@@ -11,7 +11,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers
 {
     public abstract class FastWebBrowserBase : WebBrowserBase
     {
-        
+
         public FastWebBrowserBase(IWebBrowserFactory factory) : base(factory)
         {
         }
@@ -34,23 +34,33 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers
 
         private void ExecuteCleanup()
         {
-            if (driverInstance == null) return;
-
-            Factory.LogInfo("Cleaning session");
-
-            ExpectedConditions.AlertIsPresent()(driverInstance)?.Dismiss();
-            driverInstance.Manage().Cookies.DeleteAllCookies();
-            driverInstance.Manage().Cookies.DeleteCookie(new Cookie("cookie1", "asdasdasd"));
-
-            if (!(driverInstance.Url.Contains("chrome:") || driverInstance.Url.Contains("data:") || driverInstance.Url.Contains("about:")))
+            StopWatchedAction(() =>
             {
-                ((IJavaScriptExecutor)driverInstance).ExecuteScript("if(typeof(Storage) !== undefined) { localStorage.clear(); }");
-                ((IJavaScriptExecutor)driverInstance).ExecuteScript("if(typeof(Storage) !== undefined) { sessionStorage.clear(); }");
-            }
-            
-            driverInstance.Navigate().GoToUrl("about:blank");
+
+
+                if (driverInstance == null) return;
+
+                Factory.LogInfo("Cleaning session");
+
+                ExpectedConditions.AlertIsPresent()(driverInstance)?.Dismiss();
+                driverInstance.Manage().Cookies.DeleteAllCookies();
+                driverInstance.Manage().Cookies.DeleteCookie(new Cookie("cookie1", "asdasdasd")); //TODO: WTF?
+
+                if (!(driverInstance.Url.Contains("chrome:") || driverInstance.Url.Contains("data:") || driverInstance.Url.Contains("about:")))
+                {
+                    ((IJavaScriptExecutor)driverInstance).ExecuteScript("if(typeof(Storage) !== undefined) { localStorage.clear(); }");
+                    ((IJavaScriptExecutor)driverInstance).ExecuteScript("if(typeof(Storage) !== undefined) { sessionStorage.clear(); }");
+                }
+
+                driverInstance.Navigate().GoToUrl("about:blank");
+            }, s =>
+            {
+                Factory.LogInfo($"Session cleaned in {s.ElapsedMilliseconds} ms.");
+
+            });
+
         }
-        
+
         /// <summary>
         /// Takes care of disposing the web driver.
         /// </summary>

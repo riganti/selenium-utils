@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
+using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Net;
@@ -90,8 +91,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public string CurrentUrlPath => new Uri(CurrentUrl).GetLeftPart(UriPartial.Path);
 
-        
-      
+
+
         /// <summary>
         /// Clicks on element.
         /// </summary>
@@ -134,15 +135,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 {
                     throw new InvalidRedirectException();
                 }
-                LogVerbose($"Start navigation to: {BaseUrl}");
-                Driver.Navigate().GoToUrl(BaseUrl);
+                NavigateToUrlCore(BaseUrl);
                 return;
             }
             //redirect if is absolute
             if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
             {
-                LogVerbose($"Start navigation to: {url}");
-                Driver.Navigate().GoToUrl(url);
+                NavigateToUrlCore(url);
                 return;
             }
             //redirect absolute with same schema
@@ -150,8 +149,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 var schema = new Uri(CurrentUrl).Scheme;
                 var navigateUrltmp = $"{schema}:{url}";
-                LogVerbose($"Start navigation to: {navigateUrltmp}");
-                Driver.Navigate().GoToUrl(navigateUrltmp);
+
+                NavigateToUrlCore(navigateUrltmp);
                 return;
             }
             var builder = new UriBuilder(BaseUrl);
@@ -161,14 +160,33 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 builder.Path = "";
                 var urlToNavigate = builder.ToString().TrimEnd('/') + "/" + url.TrimStart('/');
-                LogVerbose($"Start navigation to: {urlToNavigate}");
-                Driver.Navigate().GoToUrl(urlToNavigate);
+                NavigateToUrlCore(urlToNavigate);
                 return;
             }
 
             var navigateUrl = builder.ToString().TrimEnd('/') + "/" + url.TrimStart('/');
-            LogVerbose($"Start navigation to: {navigateUrl}");
-            Driver.Navigate().GoToUrl(navigateUrl);
+            NavigateToUrlCore(navigateUrl);
+        }
+
+        private void NavigateToUrlCore(string url)
+        {
+            StopWatchedAction(() =>
+            {
+                LogVerbose($"Start navigation to: {url}");
+                Driver.Navigate().GoToUrl(url);
+            }, s =>
+            {
+                LogVerbose($"Navigation to: '{url}' executed in {s.ElapsedMilliseconds} ms.");
+            });
+        }
+
+        private void StopWatchedAction(Action action, Action<Stopwatch> afterActionExecuted)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            action();
+            stopwatch.Stop();
+            afterActionExecuted(stopwatch);
         }
 
         public void LogVerbose(string message)
@@ -233,7 +251,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return alert?.Text;
         }
 
-     
+
         public bool HasAlert()
         {
             try
@@ -264,7 +282,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return alert;
         }
 
-    
+
         /// <summary>
         /// Confirms modal dialog (Alert).
         /// </summary>
@@ -469,7 +487,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             Driver.Dispose();
         }
 
-       
+
 
         #region FileUploadDialog
 
@@ -501,10 +519,10 @@ namespace Riganti.Utils.Testing.Selenium.Core
             iframe.CheckIfTagName(new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
             var frame = browser.Driver.SwitchTo().Frame(iframe.WebElement);
             testInstance.TestClass.CurrentScope = options.ScopeId;
-            
+
             // create a new browser wrapper
             var type = testInstance.TestClass.TestSuiteRunner.ServiceFactory.Resolve<BrowserWrapper>();
-            var wrapper = (BrowserWrapper) Activator.CreateInstance(type, browser, frame, testInstance, options);
+            var wrapper = (BrowserWrapper)Activator.CreateInstance(type, browser, frame, testInstance, options);
 
             return wrapper;
         }
@@ -609,7 +627,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-     
+
         /// <summary>
         /// Transforms relative Url to absolute. Uses base URL.
         /// </summary>
@@ -674,6 +692,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return Driver;
         }
 
-    
+
     }
 }

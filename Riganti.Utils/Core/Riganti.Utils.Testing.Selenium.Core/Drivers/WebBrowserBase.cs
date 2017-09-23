@@ -58,7 +58,14 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers
         {
             KillDriver();
         }
+        protected void StopWatchedAction(Action action, Action<Stopwatch> afterActionExecuted)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            action();
+            stopwatch.Stop();
+            afterActionExecuted(stopwatch);
+        }
 
-        
     }
 }
