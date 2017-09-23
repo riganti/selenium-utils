@@ -14,12 +14,6 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
     [Serializable]
     public sealed class SeleniumTestFailedException : WebDriverException
     {
-        /// <summary>
-        /// Represents current sub-section name. 
-        /// </summary>
-        [Obsolete]
-        public string CurrentSubSection { get; set; }
-
         private readonly List<Exception> innerExceptions;
 
         public ICheckResult[] InnerCheckResults { get; }
@@ -77,22 +71,14 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
         }
 
 
-        internal SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsPath = null, string currentSubsection = null) : this((string) $"Test failed in browser '{browserName}'", (Exception) null)
+        internal SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsPath = null) : this((string) $"Test failed in browser '{browserName}'", (Exception) null)
         {
-            CurrentSubSection = currentSubsection;
             ScreenshotPath = screenshotsPath;
             BrowserName = browserName;
             this.innerExceptions = innerExceptions;
             InnerCheckResults = CreateCheckResult(this.innerExceptions).ToArray();
         }
-        /// <inheritdoc/>
 
-        internal SeleniumTestFailedException(Exception innerException, string browserName, string screenshotsPath, string currentSubSection) : this((string) $"Test failed in browser '{browserName}'.", innerException)
-        {
-            CurrentSubSection = currentSubSection;
-            ScreenshotPath = screenshotsPath;
-            BrowserName = browserName;
-        }
         /// <summary>
         /// Path to stored screenshot.
         /// </summary>
@@ -117,7 +103,6 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
             RenderMessage(sb);
             RenderInnerCheckResults(sb);
             RenderBrowserName(sb);
-            RenderSubsection(sb);
             RenderScreenshotPath(sb);
             RenderUrl(sb);
 
@@ -125,9 +110,6 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 
             //render base
             RenderStackTrace(sb, 0, this);
-            //sb.AppendLine();
-            //sb.AppendLine();
-            //sb.AppendLine();
 
             RenderInnerAgregatedExceptions(sb);
 
@@ -225,10 +207,6 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
             RenderWhenNotNull(sb, ExceptionMessage, $"Message: {ExceptionMessage}");
         }
 
-        private void RenderSubsection(StringBuilder sb)
-        {
-            RenderWhenNotNull(sb, CurrentSubSection, $"Current subsection: '{CurrentSubSection}'.");
-        }
 
         private void RenderScreenshotPath(StringBuilder sb)
         {

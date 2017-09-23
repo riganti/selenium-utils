@@ -101,7 +101,6 @@ namespace Selenium.Core.UnitTests
         public void ElementWaitForTimeoutTest5()
         {
             var element = new ElementWrapper(new MockIWebElement(), browser);
-            var i = 0;
             element.WaitFor((elm) => elm.CheckIfValue("asdasdasdasd"), 2000, "test timeouted", checkInterval: 100);
         }
 

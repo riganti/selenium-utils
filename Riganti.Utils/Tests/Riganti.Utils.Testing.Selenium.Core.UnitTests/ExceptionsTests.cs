@@ -16,7 +16,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.UnitTests
 
         {
             var exps = new List<Exception>() { new Exception("Exception1"), new Exception("Exception2"), new Exception("Exception3") };
-            var exp = new SeleniumTestFailedException(exps, "SpecificBrowserName", "SpecificScreen", "SpecificSession")
+            var exp = new SeleniumTestFailedException(exps, "SpecificBrowserName", "SpecificScreen")
             {
                 Url = UrlConst
             };
@@ -29,10 +29,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.UnitTests
             Assert.IsTrue(str.Contains("Exception3"));
             Assert.IsTrue(str.Contains("SpecificBrowserName"));
             Assert.IsTrue(str.Contains("SpecificScreen"));
-            Assert.IsTrue(str.Contains("SpecificSession"));
             Assert.IsTrue(str.Contains(UrlConst));
-
-
         }
     }
 }
