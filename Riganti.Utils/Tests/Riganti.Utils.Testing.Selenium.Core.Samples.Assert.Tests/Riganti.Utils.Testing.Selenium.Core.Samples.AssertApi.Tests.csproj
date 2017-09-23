@@ -1,7 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Riganti.Utils.Testing.Selenium.AssertApi\Riganti.Utils.Testing.Selenium.AssertApi.csproj" />
+    <ProjectReference Include="..\..\Core\Riganti.Utils.Testing.Selenium.Core.Abstractions\Riganti.Utils.Testing.Selenium.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Core\Riganti.Utils.Testing.Selenium.Core\Riganti.Utils.Testing.Selenium.Core.csproj" />
+    <ProjectReference Include="..\..\Integrations\Riganti.Utils.Testing.Selenium.xUnit\XUnitTestProject1\Riganti.Utils.Testing.Selenium.xUnitIntegration.csproj" />
+  </ItemGroup>
 
 </Project>

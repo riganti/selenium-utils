@@ -1,8 +1,9 @@
 ﻿using Riganti.Utils.Testing.Selenium.Core.Configuration;
 using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.xUnitIntegration;
 using Xunit.Abstractions;
 
-namespace Riganti.Utils.Testing.Selenium.xUnitIntegration
+namespace Riganti.Utils.Testing.Selenium.Core
 {
     /// <summary>
     /// Represents implementation of base for selenium tests for MSTest. 
@@ -13,13 +14,13 @@ namespace Riganti.Utils.Testing.Selenium.xUnitIntegration
 
         public SeleniumTest(ITestOutputHelper output)
         {
-            this.TestOutput = output;
+            TestOutput = output;
         }
 
 
         protected override TestSuiteRunner InitializeTestSuiteRunner(SeleniumTestsConfiguration configuration)
         {
-            return (TestSuiteRunner)new XunitTestSuiteRunner(configuration, new TestContextProvider());
+            return new XunitTestSuiteRunner(configuration, new TestContextProvider());
         }
 
     }
