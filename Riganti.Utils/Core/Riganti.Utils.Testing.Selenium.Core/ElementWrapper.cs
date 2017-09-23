@@ -278,7 +278,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             var obj = this.browser.GetJavaScriptExecutor().ExecuteScript(@"
                 if(arguments.length === 0) {
-                    throw ""Function CheckIfIsClickable requires element in arguments."";
+                    throw ""Function IsClickableValidator requires element in arguments."";
                 }
                 var elm = arguments[0];
                 var rec = elm.getBoundingClientRect();
@@ -735,7 +735,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual IElementWrapper CheckIfIsChecked()
         {
-            CheckTagName("input", "Function CheckIfIsNotChecked() can be used on input element only.");
+            CheckTagName("input", "Function IsNotCheckedValidator() can be used on input element only.");
             CheckAttribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox.");
 
             if (!IsChecked())
@@ -745,7 +745,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual IElementWrapper CheckIfIsNotChecked()
         {
-            CheckTagName("input", "Function CheckIfIsNotChecked() can be used on input element only.");
+            CheckTagName("input", "Function IsNotCheckedValidator() can be used on input element only.");
             CheckAttribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox or radio.");
 
             if (IsChecked())

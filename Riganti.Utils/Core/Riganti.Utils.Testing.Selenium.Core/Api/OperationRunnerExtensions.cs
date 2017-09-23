@@ -9,9 +9,9 @@ using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheckers;
 using Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers;
-using CheckIfHyperLinkEquals = Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers.CheckIfHyperLinkEquals;
-using CheckIfIsDisplayed = Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers.CheckIfIsDisplayed;
-using CheckIfIsNotDisplayed = Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers.CheckIfIsNotDisplayed;
+using HyperLinkEquals = Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers.HyperLinkEqualsValidator;
+using IsDisplayed = Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers.IsDisplayedValidator;
+using IsNotDisplayed = Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers.IsNotDisplayedValidator;
 using Riganti.Utils.Testing.Selenium.Validators;
 using Riganti.Utils.Testing.Selenium.Validators.Checkers;
 
@@ -19,199 +19,199 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
 {
     public static class OperationRunnerExtensions
     {
-        public static void CheckIfInnerText(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule)
+        public static void InnerText(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule)
         {
-            var checkIfInnerText = new CheckIfInnerText(rule);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfInnerText);
+            var InnerText = new InnerTextValidator(rule);
+            operationRunner.Evaluate<UnexpectedElementStateException>(InnerText);
         }
 
-        public static void CheckIfValue(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false, bool trim = true)
+        public static void Value(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false, bool trim = true)
         {
-            var checkIfValue = new CheckIfValue(value, caseSensitive, trim);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfValue);
+            var Value = new ValueValidator(value, caseSensitive, trim);
+            operationRunner.Evaluate<UnexpectedElementStateException>(Value);
         }
 
-        public static void CheckIfInnerTextEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
+        public static void InnerTextEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
         {
-            var checkIfInnerTextEquals = new CheckIfInnerTextEquals(text, caseSensitive, trim);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfInnerTextEquals);
+            var InnerTextEquals = new InnerTextEqualsValidator(text, caseSensitive, trim);
+            operationRunner.Evaluate<UnexpectedElementStateException>(InnerTextEquals);
         }
 
-        public static void CheckIfText(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule, string failureMessage = null)
+        public static void Text(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule, string failureMessage = null)
         {
-            var checkIfText = new CheckIfText(rule, failureMessage);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfText);
+            var Text = new TextValidator(rule, failureMessage);
+            operationRunner.Evaluate<UnexpectedElementStateException>(Text);
         }
 
-        public static void CheckIfTextEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
+        public static void TextEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
         {
-            var checkIfTextEquals = new CheckIfTextEquals(text, caseSensitive, trim);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfTextEquals);
+            var TextEquals = new TextEqualsValidator(text, caseSensitive, trim);
+            operationRunner.Evaluate<UnexpectedElementStateException>(TextEquals);
         }
-        public static void CheckIfTextNotEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
+        public static void TextNotEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
         {
-            var checkIfTextNotEquals = new CheckIfTextNotEquals(text, caseSensitive, trim);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfTextNotEquals);
-        }
-
-        public static void CheckIfIsDisplayed(this IOperationRunner<IElementWrapper> operationRunner)
-        {
-            var checkIfIsDisplayed = new CheckIfIsDisplayed();
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsDisplayed);
+            var TextNotEquals = new TextNotEqualsValidator(text, caseSensitive, trim);
+            operationRunner.Evaluate<UnexpectedElementStateException>(TextNotEquals);
         }
 
-        public static void CheckIfIsNotDisplayed(this IOperationRunner<IElementWrapper> operationRunner)
+        public static void IsDisplayed(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var checkIfIsNotDisplayed = new CheckIfIsNotDisplayed();
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsNotDisplayed);
+            var IsDisplayed = new IsDisplayed();
+            operationRunner.Evaluate<UnexpectedElementStateException>(IsDisplayed);
         }
 
-        public static void CheckIfIsChecked(this IOperationRunner<IElementWrapper> operationRunner)
+        public static void IsNotDisplayed(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            operationRunner.CheckTagName("input", "Function CheckIfIsNotChecked() can be used on input element only.");
+            var IsNotDisplayed = new IsNotDisplayed();
+            operationRunner.Evaluate<UnexpectedElementStateException>(IsNotDisplayed);
+        }
+
+        public static void IsChecked(this IOperationRunner<IElementWrapper> operationRunner)
+        {
+            operationRunner.CheckTagName("input", "Function IsNotChecked() can be used on input element only.");
             operationRunner.CheckAttribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox.");
 
-            var checkIfIsChecked = new CheckIfIsChecked();
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsChecked);
+            var IsChecked = new IsCheckedValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(IsChecked);
         }
 
-        public static void CheckIfIsNotChecked(this IOperationRunner<IElementWrapper> operationRunner)
+        public static void IsNotChecked(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            operationRunner.CheckTagName("input", "Function CheckIfIsNotChecked() can be used on input element only.");
+            operationRunner.CheckTagName("input", "Function IsNotChecked() can be used on input element only.");
             operationRunner.CheckAttribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox or radio.");
 
-            var checkIfIsNotChecked = new CheckIfIsNotChecked();
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsNotChecked);
+            var IsNotChecked = new IsNotCheckedValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(IsNotChecked);
         }
 
-        public static void CheckIfIsSelected(this IOperationRunner<IElementWrapper> operationRunner)
+        public static void IsSelected(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var checkIfIsSelected = new CheckIfIsSelected();
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsSelected);
+            var IsSelected = new IsSelectedValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(IsSelected);
         }
 
-        public static void CheckIfIsNotSelected(this IOperationRunner<IElementWrapper> operationRunner)
+        public static void IsNotSelected(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var checkIfIsNotSelected = new CheckIfIsNotSelected();
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsNotSelected);
+            var IsNotSelected = new IsNotSelectedValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(IsNotSelected);
         }
 
-        public static void CheckIfIsEnabled(this IOperationRunner<IElementWrapper> operationRunner)
+        public static void IsEnabled(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var checkIfIsEnabled = new CheckIfIsEnabled();
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsEnabled);
+            var IsEnabled = new IsEnabledValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(IsEnabled);
         }
 
-        public static void CheckIfIsClickable(this IOperationRunner<IElementWrapper> operationRunner)
+        public static void IsClickable(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var checkIfIsClickable = new CheckIfIsClickable();
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsClickable);
+            var IsClickable = new IsClickableValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(IsClickable);
         }
 
-        public static void CheckIfIsNotClickable(this IOperationRunner<IElementWrapper> operationRunner)
+        public static void IsNotClickable(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var checkIfIsNotClickable = new CheckIfIsNotClickable();
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsNotClickable);
+            var IsNotClickable = new IsNotClickableValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(IsNotClickable);
         }
 
-        public static void CheckIfIsNotEnabled(this IOperationRunner<IElementWrapper> operationRunner)
+        public static void IsNotEnabled(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var checkIfIsNotEnabled = new CheckIfIsNotEnabled();
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsNotEnabled);
+            var IsNotEnabled = new IsNotEnabledValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(IsNotEnabled);
         }
 
-        public static void CheckIfContainsText(this IOperationRunner<IElementWrapper> operationRunner)
+        public static void ContainsText(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var checkIfContainsText = new CheckIfContainsText();
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfContainsText);
+            var ContainsText = new ContainsTextValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(ContainsText);
         }
-        public static void CheckIfDoesNotContainsText(this IOperationRunner<IElementWrapper> operationRunner)
+        public static void DoesNotContainsText(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var checkIfDoesNotContainsText = new CheckIfDoesNotContainText();
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfDoesNotContainsText);
-        }
-
-        public static void CheckIfHyperLineEquals(this IOperationRunner<IElementWrapper> operationRunner, string url, UrlKind kind, params UriComponents[] components)
-        {
-            var checkIfHyperLinkEquals = new CheckIfHyperLinkEquals(url, kind, components);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfHyperLinkEquals);
+            var DoesNotContainsText = new DoesNotContainTextValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(DoesNotContainsText);
         }
 
-        public static void CheckIfIsElementInView(this IOperationRunner<IElementWrapper> operationRunner, ElementWrapper element)
+        public static void HyperLineEquals(this IOperationRunner<IElementWrapper> operationRunner, string url, UrlKind kind, params UriComponents[] components)
         {
-            var checkIfIsElementInView = new CheckIfIsElementInView(element);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsElementInView);
+            var HyperLinkEquals = new HyperLinkEquals(url, kind, components);
+            operationRunner.Evaluate<UnexpectedElementStateException>(HyperLinkEquals);
         }
 
-        public static void CheckIfIsElementNotInView(this IOperationRunner<IElementWrapper> operationRunner, ElementWrapper element)
+        public static void IsElementInView(this IOperationRunner<IElementWrapper> operationRunner, ElementWrapper element)
         {
-            var checkIfIsElementNotInView = new CheckIfIsElementNotInView(element);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsElementNotInView);
+            var IsElementInView = new IsElementInViewValidator(element);
+            operationRunner.Evaluate<UnexpectedElementStateException>(IsElementInView);
+        }
+
+        public static void IsElementNotInView(this IOperationRunner<IElementWrapper> operationRunner, ElementWrapper element)
+        {
+            var IsElementNotInView = new IsElementNotInViewValidator(element);
+            operationRunner.Evaluate<UnexpectedElementStateException>(IsElementNotInView);
         }
 
         public static void CheckTagName(this IOperationRunner<IElementWrapper> operationRunner, string expectedTagName, string failureMessage = null)
         {
-            operationRunner.CheckIfTagName(expectedTagName, failureMessage);
+            operationRunner.TagName(expectedTagName, failureMessage);
         }
 
-        public static void CheckIfTagName(this IOperationRunner<IElementWrapper> operationRunner, string expectedTagName, string failureMessage = null)
+        public static void TagName(this IOperationRunner<IElementWrapper> operationRunner, string expectedTagName, string failureMessage = null)
         {
-            var checkTagName = new CheckTagName(expectedTagName, failureMessage);
+            var checkTagName = new TagNameValidator(expectedTagName, failureMessage);
             operationRunner.Evaluate<UnexpectedElementStateException>(checkTagName);
         }
 
-        public static void CheckIfTagName(this IOperationRunner<IElementWrapper> operationRunner, string[] expectedTagNames, string failureMessage = null)
+        public static void TagName(this IOperationRunner<IElementWrapper> operationRunner, string[] expectedTagNames, string failureMessage = null)
         {
-            var checkTagName = new CheckTagName(expectedTagNames, failureMessage);
+            var checkTagName = new TagNameValidator(expectedTagNames, failureMessage);
             operationRunner.Evaluate<UnexpectedElementStateException>(checkTagName);
         }
 
-        //public static void CheckTagName(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule, string failureMessage = null)
+        //public static void TagNameValidator(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule, string failureMessage = null)
         //{
-        //    operationRunner.CheckIfTagName(rule, failureMessage);
+        //    operationRunner.TagName(rule, failureMessage);
         //}
 
-        //public static void CheckIfTagName(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule, string failureMessage = null)
+        //public static void TagName(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule, string failureMessage = null)
         //{
-        //    var checkIfTagName = new CheckIfTagName(rule, failureMessage, operationRunner);
-        //    operationRunner.Evaluate<UnexpectedElementStateException>(checkIfTagName);
+        //    var TagName = new TagName(rule, failureMessage, operationRunner);
+        //    operationRunner.Evaluate<UnexpectedElementStateException>(TagName);
         //}
 
 
-        public static void CheckIfContainsElement(this IOperationRunner<IElementWrapper> operationRunner, string cssSelector, Expression<Func<string, By>> tmpSelectMethod = null)
+        public static void ContainsElement(this IOperationRunner<IElementWrapper> operationRunner, string cssSelector, Expression<Func<string, By>> tmpSelectMethod = null)
         {
-            var checkIfContainsElement = new CheckIfContainsElement(cssSelector, tmpSelectMethod);
-            operationRunner.Evaluate<EmptySequenceException>(checkIfContainsElement);
+            var ContainsElement = new ContainsElementValidator(cssSelector, tmpSelectMethod);
+            operationRunner.Evaluate<EmptySequenceException>(ContainsElement);
         }
 
-        public static void CheckIfNotContainsElement(this IOperationRunner<IElementWrapper> operationRunner, string cssSelector, Expression<Func<string, By>> tmpSelectMethod = null)
+        public static void NotContainsElement(this IOperationRunner<IElementWrapper> operationRunner, string cssSelector, Expression<Func<string, By>> tmpSelectMethod = null)
         {
-            var checkIfNotContainsElement = new CheckIfNotContainsElement(cssSelector, tmpSelectMethod);
-            operationRunner.Evaluate<MoreElementsInSequenceException>(checkIfNotContainsElement);
+            var NotContainsElement = new NotContainsElementValidator(cssSelector, tmpSelectMethod);
+            operationRunner.Evaluate<MoreElementsInSequenceException>(NotContainsElement);
         }
 
-        public static void CheckIfJsPropertyInnerText(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule, string failureMesssage = null, bool trim = true)
+        public static void JsPropertyInnerText(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule, string failureMesssage = null, bool trim = true)
         {
-            var checkIfJsPropertyInnerText = new CheckIfJsPropertyInnerText(rule, failureMesssage, trim);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfJsPropertyInnerText);
+            var JsPropertyInnerText = new JsPropertyInnerTextValidator(rule, failureMesssage, trim);
+            operationRunner.Evaluate<UnexpectedElementStateException>(JsPropertyInnerText);
         }
 
-        public static void CheckIfJsPropertyInnerTextEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true)
+        public static void JsPropertyInnerTextEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true)
         {
-            var checkIfJsPropertyInnerTextEquals = new CheckIfJsPropertyInnerTextEquals(text, caseSensitive, trim);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfJsPropertyInnerTextEquals);
+            var JsPropertyInnerTextEquals = new JsPropertyInnerTextEqualsValidator(text, caseSensitive, trim);
+            operationRunner.Evaluate<UnexpectedElementStateException>(JsPropertyInnerTextEquals);
         }
 
-        public static void CheckIfJsPropertyInnerHtmlEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true)
+        public static void JsPropertyInnerHtmlEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true)
         {
-            var checkIfJsPropertyInnerHtmlEquals = new CheckIfJsPropertyInnerHtmlEquals(text, caseSensitive, trim);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfJsPropertyInnerHtmlEquals);
+            var JsPropertyInnerHtmlEquals = new JsPropertyInnerHtmlEqualsValidator(text, caseSensitive, trim);
+            operationRunner.Evaluate<UnexpectedElementStateException>(JsPropertyInnerHtmlEquals);
         }
 
-        public static void CheckIfJsPropertyInnerHtml(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = null)
+        public static void JsPropertyInnerHtml(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
-            var checkIfJsPropertyInnerHtml = new CheckIfJsPropertyInnerHtml(expression, failureMessage);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfJsPropertyInnerHtml);
+            var JsPropertyInnerHtml = new JsPropertyInnerHtmlValidator(expression, failureMessage);
+            operationRunner.Evaluate<UnexpectedElementStateException>(JsPropertyInnerHtml);
         }
 
         public static void CheckAttribute(this IOperationRunner<IElementWrapper> operationRunner, string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
@@ -228,8 +228,8 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
 
         public static void CheckAttribute(this IOperationRunner<IElementWrapper> operationRunner, string attributeName, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
-            var checkIfAttribute = new CheckIfAttribute(attributeName, expression, failureMessage);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfAttribute);
+            var Attribute = new AttributeValidator(attributeName, expression, failureMessage);
+            operationRunner.Evaluate<UnexpectedElementStateException>(Attribute);
         }
 
         public static void CheckClassAttribute(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false, bool trimValue = true)
@@ -242,52 +242,52 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
             operationRunner.CheckAttribute("class", expression, failureMessage);
         }
 
-        public static void CheckIfHasClass(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false)
+        public static void HasClass(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false)
         {
             operationRunner.CheckAttribute("class", p => p.Split(' ').Any(c => string.Equals(c, value,
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
         }
 
-        public static void CheckIfHasNotClass(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false)
+        public static void HasNotClass(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false)
         {
             operationRunner.CheckAttribute("class", p => !p.Split(' ').Any(c => string.Equals(c, value,
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
         }
 
-        public static void CheckIfHasAttribute(this IOperationRunner<IElementWrapper> operationRunner, string name)
+        public static void HasAttribute(this IOperationRunner<IElementWrapper> operationRunner, string name)
         {
-            var checkIfHasAttribute = new CheckIfHasAttribute(name);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfHasAttribute);
+            var HasAttribute = new HasAttributeValidator(name);
+            operationRunner.Evaluate<UnexpectedElementStateException>(HasAttribute);
         }
 
-        public static void CheckIfHasNotAttribute(this IOperationRunner<IElementWrapper> operationRunner, string name)
+        public static void HasNotAttribute(this IOperationRunner<IElementWrapper> operationRunner, string name)
         {
-            var checkIfHasNotAttribute = new CheckIfHasNotAttribute(name);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfHasNotAttribute);
+            var HasNotAttribute = new HasNotAttributeValidator(name);
+            operationRunner.Evaluate<UnexpectedElementStateException>(HasNotAttribute);
         }
-        public static void CheckIfAlertTextEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string expectedValue,
+        public static void AlertTextEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string expectedValue,
             bool caseSensitive = false, bool trim = true)
         {
-            var checkIfAlertTextEquals = new CheckIfAlertTextEquals(expectedValue, caseSensitive, trim);
-            operationRunner.Evaluate<AlertException>(checkIfAlertTextEquals);
+            var AlertTextEquals = new AlertTextContainsValidator(expectedValue, caseSensitive, trim);
+            operationRunner.Evaluate<AlertException>(AlertTextEquals);
         }
 
-        public static void CheckIfAlertText(this IOperationRunner<IBrowserWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = "")
+        public static void AlertText(this IOperationRunner<IBrowserWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = "")
         {
-            var checkIfAlertText = new CheckIfAlertText(expression, failureMessage);
-            operationRunner.Evaluate<AlertException>(checkIfAlertText);
+            var AlertText = new AlertTextValidator(expression, failureMessage);
+            operationRunner.Evaluate<AlertException>(AlertText);
         }
 
-        public static void CheckIfAlertTextContains(this IOperationRunner<IBrowserWrapper> operationRunner, string expectedValue, bool trim = true)
+        public static void AlertTextContains(this IOperationRunner<IBrowserWrapper> operationRunner, string expectedValue, bool trim = true)
         {
-            var checkIfAlertTextContains = new CheckIfAlertTextContains(expectedValue, trim);
-            operationRunner.Evaluate<AlertException>(checkIfAlertTextContains);
+            var AlertTextContains = new AlertTextContainsValidator(expectedValue, trim);
+            operationRunner.Evaluate<AlertException>(AlertTextContains);
         }
 
         public static void CheckUrl(this IOperationRunner<IBrowserWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
-            var checkIfUrl = new CheckIfUrl(expression, failureMessage);
-            operationRunner.Evaluate<BrowserLocationException>(checkIfUrl);
+            var Url = new UrlValidator(expression, failureMessage);
+            operationRunner.Evaluate<BrowserLocationException>(Url);
         }
 
         public static void CheckUrl(this IOperationRunner<IBrowserWrapper> operationRunner, string url, UrlKind urlKind, params UriComponents[] components)
@@ -302,45 +302,45 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
             operationRunner.Evaluate<BrowserLocationException>(checkUrlExquals);
         }
 
-        public static void CheckIfHyperLinkEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string selector, string url, UrlKind kind, params UriComponents[] components)
+        public static void HyperLinkEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string selector, string url, UrlKind kind, params UriComponents[] components)
         {
-            var checkIfHyperLinkEquals = new Validators.Checkers.BrowserWrapperCheckers.CheckIfHyperLinkEquals(selector, url, kind, components);
-            operationRunner.Evaluate<UnexpectedElementStateException>(checkIfHyperLinkEquals);
+            var HyperLinkEquals = new Validators.Checkers.BrowserWrapperCheckers.HyperLinkEqualsValidator(selector, url, kind, components);
+            operationRunner.Evaluate<UnexpectedElementStateException>(HyperLinkEquals);
         }
 
-        //public static void CheckIfIsDisplayed(this IOperationRunner<IBrowserWrapper> operationRunner, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
+        //public static void IsDisplayed(this IOperationRunner<IBrowserWrapper> operationRunner, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
         //{
-        //    var checkIfIsDisplayed = new CheckIfIsDisplayed();
-        //    operationRunner.Evaluate<UnexpectedElementStateException>(checkIfIsDisplayed);
+        //    var IsDisplayed = new IsDisplayed();
+        //    operationRunner.Evaluate<UnexpectedElementStateException>(IsDisplayed);
         //}
-        //public static void CheckIfIsNotDisplayed(this IOperationRunner<IBrowserWrapper> operationRunner, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
+        //public static void IsNotDisplayed(this IOperationRunner<IBrowserWrapper> operationRunner, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
         //{
-        //    var checkIfIsNotDisplayed = new Checkers.BrowserWrapperCheckers.CheckIfIsNotDisplayed(selector, tmpSelectedMethod);
-        //    operationRunner.Evaluate<BrowserException>(checkIfIsNotDisplayed);
+        //    var IsNotDisplayed = new Checkers.BrowserWrapperCheckers.IsNotDisplayed(selector, tmpSelectedMethod);
+        //    operationRunner.Evaluate<BrowserException>(IsNotDisplayed);
         //}
 
-        public static void CheckIfUrlIsAccessible(this IOperationRunner<IBrowserWrapper> operationRunner, string url, UrlKind urlKind)
+        public static void UrlIsAccessible(this IOperationRunner<IBrowserWrapper> operationRunner, string url, UrlKind urlKind)
         {
-            var checkIfUrlIsAccessible = new CheckIfUrlIsAccessible(url, urlKind);
-            operationRunner.Evaluate<BrowserException>(checkIfUrlIsAccessible);
+            var UrlIsAccessible = new UrlIsAccessibleValidator(url, urlKind);
+            operationRunner.Evaluate<BrowserException>(UrlIsAccessible);
         }
 
-        public static void CheckIfTitleEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string title, bool caseSensitive = false, bool trim = true)
+        public static void TitleEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string title, bool caseSensitive = false, bool trim = true)
         {
-            var checkIfTitleEquals = new CheckIfTitleEquals(title, caseSensitive, trim);
-            operationRunner.Evaluate<BrowserException>(checkIfTitleEquals);
+            var TitleEquals = new TitleEqualsValidator(title, caseSensitive, trim);
+            operationRunner.Evaluate<BrowserException>(TitleEquals);
         }
 
-        public static void CheckIfTitleNotEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string title, bool caseSensitive = false, bool trim = true)
+        public static void TitleNotEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string title, bool caseSensitive = false, bool trim = true)
         {
-            var checkIfTitleNotEquals = new CheckIfTitleNotEquals(title, caseSensitive, trim);
-            operationRunner.Evaluate<BrowserException>(checkIfTitleNotEquals);
+            var TitleNotEquals = new TitleNotEqualsValidator(title, caseSensitive, trim);
+            operationRunner.Evaluate<BrowserException>(TitleNotEquals);
         }
 
-        public static void CheckIfTitle(this IOperationRunner<IBrowserWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = "")
+        public static void Title(this IOperationRunner<IBrowserWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = "")
         {
-            var checkIfTitle = new CheckIfTitle(expression, failureMessage);
-            operationRunner.Evaluate<BrowserException>(checkIfTitle);
+            var Title = new TitleValidator(expression, failureMessage);
+            operationRunner.Evaluate<BrowserException>(Title);
         }
 
 

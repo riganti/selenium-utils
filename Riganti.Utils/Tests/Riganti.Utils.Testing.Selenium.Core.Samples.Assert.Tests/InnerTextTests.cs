@@ -9,7 +9,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.AssertApi.Tests
         {
             RunInAllBrowsers(browser =>
             {
-               Assert.CheckIfAlertText(browser, s=> s.Contains("red"));
+               Assert.AlertText(browser, s=> s.Contains("red"));
             });
         }
     }

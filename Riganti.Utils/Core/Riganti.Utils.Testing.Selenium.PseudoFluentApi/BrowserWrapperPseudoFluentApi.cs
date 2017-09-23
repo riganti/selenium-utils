@@ -387,7 +387,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
 
             HttpWebResponse response = null;
-            LogVerbose($"CheckIfUrlIsAccessible: Checking of url: '{url}'");
+            LogVerbose($"UrlIsAccessibleValidator: Checking of url: '{url}'");
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
 
