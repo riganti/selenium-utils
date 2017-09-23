@@ -165,7 +165,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("NoParentTest.aspx");
+                browser.NavigateToUrl("/test/NoParentTest");
                 var parent = browser.First("html").ParentElement;
             });
         }
@@ -175,8 +175,8 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/NoParentTest.aspx");
-                browser.CheckUrl(url => url.Contains("NoParentTest.aspx"));
+                browser.NavigateToUrl("/test/NoParentTest");
+                browser.CheckUrl(url => url.Contains("/test/NoParentTest"));
             });
         }
 
@@ -185,7 +185,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Alert.aspx");
+                browser.NavigateToUrl("/test/alert");
 
                 browser.First("#button").Click();
                 browser.CheckIfAlertTextEquals("confirm test");
@@ -197,7 +197,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Alert.aspx");
+                browser.NavigateToUrl("/test/alert");
 
                 browser.First("#button").Click();
                 try
@@ -216,7 +216,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Alert.aspx");
+                browser.NavigateToUrl("/test/alert");
 
                 browser.First("#button").Click();
                 browser.CheckIfAlertTextEquals("confirm test");
@@ -228,7 +228,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Alert.aspx");
+                browser.NavigateToUrl("/test/alert");
 
                 browser.First("#button").Click();
                 try
@@ -246,7 +246,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Alert.aspx");
+                browser.NavigateToUrl("/test/alert");
 
                 browser.First("#button").Click();
                 browser.CheckIfAlertTextContains("confirm");
@@ -258,7 +258,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Alert.aspx");
+                browser.NavigateToUrl("/test/alert");
                 browser.First("#button").Click();
                 browser.CheckIfAlertText(s => s.EndsWith("test"), "alert text doesn't end with 'test.'");
             });
@@ -270,7 +270,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Alert.aspx");
+                browser.NavigateToUrl("/test/alert");
                 browser.First("#button").Click();
                 browser.CheckIfAlertText(s => s.EndsWith("test."), "alert text doesn't end with 'test.'");
             });
@@ -282,7 +282,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Alert.aspx");
+                browser.NavigateToUrl("/test/alert");
                 browser.First("#button").Click();
                 browser.CheckIfAlertText(s => s.EndsWith("test."), "alert text doesn't end with 'test.'");
             });
@@ -293,7 +293,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Confirm.aspx");
+                browser.NavigateToUrl("/test/Confirm");
 
                 var button = browser.First("#button");
                 button.Click();
@@ -310,7 +310,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/SelectMethod.aspx");
+                browser.NavigateToUrl("/test/SelectMethod");
 
                 Func<string, By> sMethod = s => By.CssSelector($"[data-ui='{s}']");
                 browser.SelectMethod = sMethod;
@@ -338,7 +338,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("FileDialog.aspx");
+                browser.NavigateToUrl("/test/FileDialog");
 
                 var tempFile = Path.GetTempFileName();
                 File.WriteAllText(tempFile, "test content");
@@ -355,7 +355,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("text.aspx");
+                browser.NavigateToUrl("/test/text");
                 browser.First("#button").CheckIfTextEquals("text", false);
                 browser.First("#input").CheckIfTextEquals("text", false);
                 browser.First("#area").CheckIfTextEquals("text", false);
@@ -371,7 +371,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("JsTestSite.aspx");
+                browser.NavigateToUrl("/test/JsTestSite");
                 var elm = browser.First("#hiddenElement");
                 MSAssert.IsTrue(string.Equals(elm.GetJsInnerText()?.Trim(), "InnerText",
                     StringComparison.OrdinalIgnoreCase));
@@ -385,7 +385,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("JsHtmlTest.aspx");
+                browser.NavigateToUrl("/test/JsHtmlTest");
                 var elm = browser.First("#htmlTest");
                 var content = elm.GetJsInnerHtml()?.Trim() ?? "";
                 MSAssert.IsTrue(content.Contains("<span>") && content.Contains("</span>"));
@@ -398,7 +398,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("elementatfirst.aspx");
+                browser.NavigateToUrl("/test/elementatfirst");
                 MSAssert.AreEqual(
                     browser
                         .ElementAt("div > div", 0)
@@ -412,7 +412,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("elementatfirst.aspx");
+                browser.NavigateToUrl("/test/elementatfirst");
                 MSAssert.AreEqual(browser
                     .ElementAt("#divs > div", 1)
                     .First("div")
@@ -425,7 +425,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("elementatfirst.aspx");
+                browser.NavigateToUrl("/test/elementatfirst");
                 MSAssert.AreEqual(browser
                     .ElementAt("#divs > div", 2)
                     .ParentElement.First("#first2")
@@ -438,7 +438,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("TemporarySelector.aspx");
+                browser.NavigateToUrl("/test/TemporarySelector");
                 browser.SelectMethod = s => SelectBy.CssSelector(s, "[data-ui='{0}']");
                 browser.First("p", By.TagName).CheckIfTextEquals("p");
                 browser.First("id", By.Id).CheckIfTextEquals("id");
@@ -452,7 +452,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("ElementContained.aspx");
+                browser.NavigateToUrl("/test/ElementContained");
 
                 var a = browser.First("#no");
                 a.CheckIfContainsElement("span");
@@ -464,7 +464,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("ElementContained.aspx");
+                browser.NavigateToUrl("/test/ElementContained");
                 browser.First("#no").CheckIfNotContainsElement("span");
             });
         }
@@ -476,7 +476,7 @@ namespace SeleniumCore.Samples.Tests
             {
                 this.RunInAllBrowsers(browser =>
                 {
-                    browser.NavigateToUrl("ElementContained.aspx");
+                    browser.NavigateToUrl("/test/ElementContained");
                     browser.First("#one").CheckIfNotContainsElement("span");
                 });
             }
@@ -494,7 +494,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("ElementContained.aspx");
+                browser.NavigateToUrl("/test/ElementContained");
                 browser.First("#one").CheckIfContainsElement("span");
             });
 
@@ -519,7 +519,7 @@ namespace SeleniumCore.Samples.Tests
             {
                 this.RunInAllBrowsers(browser =>
                 {
-                    browser.NavigateToUrl("ElementContained.aspx");
+                    browser.NavigateToUrl("/test/ElementContained");
                     browser.First("#two").CheckIfNotContainsElement("span");
                 });
             }
@@ -538,7 +538,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("ElementContained.aspx");
+                browser.NavigateToUrl("/test/ElementContained");
                 browser.First("#two").CheckIfContainsElement("span");
             });
         }
@@ -548,7 +548,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("valuetest.aspx");
+                browser.NavigateToUrl("/test/valuetest");
                 browser.First("#input-radio").CheckIfValue("radio1");
                 browser.First("#input-radio2").CheckIfValue("radio2");
                 browser.First("#checkbox1").CheckIfValue("checkboxvalue1");
@@ -565,7 +565,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("JSPropertySetTest.aspx");
+                browser.NavigateToUrl("/test/JSPropertySetTest");
                 var input = browser.First("#input1");
                 const string inputValue = "4012 5770 5655";
                 input.SetJsElementProperty("value", inputValue);
@@ -579,10 +579,10 @@ namespace SeleniumCore.Samples.Tests
         {
             Action<IBrowserWrapper> test = browser =>
             {
-                browser.NavigateToUrl("CookiesTest.aspx");
+                browser.NavigateToUrl("/test/CookiesTest");
                 browser.First("#CookieIndicator").CheckIfTextEquals("False");
                 browser.Click("#SetCookies").Wait();
-                browser.NavigateToUrl("CookiesTest.aspx");
+                browser.NavigateToUrl("/test/CookiesTest");
                 browser.First("#CookieIndicator").CheckIfTextEquals("True");
             };
             this.RunInAllBrowsers(test);
@@ -594,7 +594,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("CookiesTest.aspx");
+                browser.NavigateToUrl("/test/CookiesTest");
                 var label = browser.First("#CookieIndicator");
                 label.CheckIfTextNotEquals("True");
                 label.CheckIfTextEquals("False");
@@ -614,7 +614,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("hyperlink.aspx");
+                browser.NavigateToUrl("/test/hyperlink");
                 browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "/path/test?query=test#fragment",
                     UrlKind.Relative,
                     UriComponents.PathAndQuery);
@@ -642,7 +642,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("hyperlink.aspx");
+                browser.NavigateToUrl("/test/hyperlink");
 
                 MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
                 {
@@ -657,7 +657,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("hyperlink.aspx");
+                browser.NavigateToUrl("/test/hyperlink");
 
                 MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
                 {
@@ -672,7 +672,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("hyperlink.aspx");
+                browser.NavigateToUrl("/test/hyperlink");
 
                 MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
                 {
@@ -687,7 +687,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("hyperlink.aspx");
+                browser.NavigateToUrl("/test/hyperlink");
                 try
                 {
                     browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema",
@@ -705,7 +705,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("hyperlink.aspx");
+                browser.NavigateToUrl("/test/hyperlink");
 
                 MSAssert.ThrowsException<EmptySequenceException>(() =>
                 {
@@ -721,7 +721,7 @@ namespace SeleniumCore.Samples.Tests
             {
                 MSAssert.ThrowsException<EmptySequenceException>(() =>
                 {
-                    browser.CheckIfUrlIsAccessible("hyperlink.aspx", UrlKind.Relative);
+                    browser.CheckIfUrlIsAccessible("/test/hyperlink", UrlKind.Relative);
                 });
             });
         }
@@ -733,7 +733,7 @@ namespace SeleniumCore.Samples.Tests
             {
                 MSAssert.ThrowsException<SeleniumTestFailedException>(() =>
                 {
-                    browser.CheckIfUrlIsAccessible("NonExistent359.aspx", UrlKind.Relative);
+                    browser.CheckIfUrlIsAccessible("/test/NonExistent359", UrlKind.Relative);
                 });
             });
         }

@@ -12,7 +12,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Alert.aspx");
+                browser.NavigateToUrl("/test/alert");
 
                 browser.First("#button").Click();
                 browser.CheckIfAlertTextEquals("confirm test");
@@ -24,7 +24,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Alert.aspx");
+                browser.NavigateToUrl("/test/alert");
 
                 browser.First("#button").Click();
                 try
@@ -42,7 +42,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Alert.aspx");
+                browser.NavigateToUrl("/test/alert");
 
                 browser.First("#button").Click();
                 browser.CheckIfAlertTextContains("confirm");
@@ -54,7 +54,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Alert.aspx");
+                browser.NavigateToUrl("/test/alert");
                 browser.First("#button").Click();
                 browser.CheckIfAlertText(s => s.EndsWith("test"), "alert text doesn't end with 'test.'");
             });

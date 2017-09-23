@@ -1,9 +1,9 @@
 ﻿{
   "factories": {
-    "chrome:dev": {}
+    "chrome:fast": {}
   },
   "baseUrls": [
-    "http://localhost:5633/"
+    "http://localhost:6277/"
   ],
   "testRunOptions": {
     "runInParallel": false,

@@ -13,7 +13,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#checkbox2").CheckIfIsNotChecked();
             });
         }
@@ -23,7 +23,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#checkbox1").CheckIfIsChecked();
             });
         }
@@ -33,7 +33,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#checkbox1").CheckIfIsChecked();
             });
         }
@@ -44,7 +44,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#textbox1").CheckIfIsChecked();
             });
         }
@@ -55,7 +55,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#textbox1").CheckIfIsNotChecked();
             });
         }
@@ -66,7 +66,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#span1").CheckIfIsChecked();
             });
         }
@@ -77,7 +77,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#span1").CheckIfIsNotChecked();
             });
         }
@@ -87,7 +87,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#RadioChecked").CheckIfIsChecked();
             });
         }
@@ -98,7 +98,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#RadioNotChecked").CheckIfIsChecked();
             });
         }
@@ -109,7 +109,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#RadioChecked").CheckIfIsNotChecked();
             });
         }
@@ -120,7 +120,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#RadioChecked").CheckIfIsNotChecked();
             });
         }
@@ -130,7 +130,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#RadioNotChecked").CheckIfIsNotChecked();
             });
         }
@@ -140,7 +140,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/Checkboxes.aspx");
+                browser.NavigateToUrl("/test/Checkboxes");
                 browser.First("#checkbox1").Wait(1200)
                                            .CheckIfIsChecked()
                                            .Wait(1200)

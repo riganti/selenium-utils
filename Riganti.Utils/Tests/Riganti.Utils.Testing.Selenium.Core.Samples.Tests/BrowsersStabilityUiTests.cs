@@ -17,7 +17,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/ClickTest.aspx");
+                browser.NavigateToUrl("/test/ClickTest");
 
                 var button = browser.First("button");
                 var input = browser.First("#testInput");
@@ -59,7 +59,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/ClickTest.aspx");
+                browser.NavigateToUrl("/test/ClickTest");
                 browser.Single("..", By.XPath);
             });
         }
@@ -70,7 +70,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/ClickTest.aspx");
+                browser.NavigateToUrl("/test/ClickTest");
                 browser.Single("///***-*///@@##@šš+š++++---><<>''", By.XPath);
             });
         }
