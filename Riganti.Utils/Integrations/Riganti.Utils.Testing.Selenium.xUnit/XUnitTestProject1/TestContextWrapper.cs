@@ -1,20 +1,17 @@
 ﻿using System;
 using System.IO;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
-using Riganti.Utils.Testing.Selenium.Core.Drivers;
 using Xunit.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    internal class TestContextWrapper : ITestContext
+    public class TestContextWrapper : ITestContext
     {
-        private readonly TestInstance testInstance;
-        private ITestOutputHelper context;
+        protected ITestOutputHelper context;
 
-        public TestContextWrapper(ITestOutputHelper context, TestInstance testInstance)
+        public TestContextWrapper(ITestOutputHelper context)
         {
             this.context = context;
-            this.testInstance = testInstance;
         }
 
         public string DeploymentDirectory
@@ -48,22 +45,17 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 return UnitTestResult.Unknown;
                 //UnitTestResult value;
-                //Enum.TryParse(context.CurrentTestOutcome.ToString(), out value);
+                //Enum.TryParse(instanceContext.CurrentTestOutcome.ToString(), out value);
                 //return value;
             }
         }
 
-    
+
 
         public void AddResultFile(string fileName)
         {
             throw new NotImplementedException();
         }
-
-        public IWebBrowser CurrentWebBrowser => testInstance.CurrentWebBrowser;
-
-        public string BaseUrl => testInstance.TestConfiguration.BaseUrl;
-
         public void WriteLine(string format, params object[] args)
         {
             context.WriteLine(format, args);

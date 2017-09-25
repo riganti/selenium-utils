@@ -21,8 +21,8 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
     {
         public static void InnerText(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule)
         {
-            var InnerText = new InnerTextValidator(rule);
-            operationRunner.Evaluate<UnexpectedElementStateException>(InnerText);
+            var innerText = new InnerTextValidator(rule);
+            operationRunner.Evaluate<UnexpectedElementStateException>(innerText);
         }
 
         public static void Value(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false, bool trim = true)
@@ -33,8 +33,8 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
 
         public static void InnerTextEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
         {
-            var InnerTextEquals = new InnerTextEqualsValidator(text, caseSensitive, trim);
-            operationRunner.Evaluate<UnexpectedElementStateException>(InnerTextEquals);
+            var innerTextEquals = new InnerTextEqualsValidator(text, caseSensitive, trim);
+            operationRunner.Evaluate<UnexpectedElementStateException>(innerTextEquals);
         }
 
         public static void Text(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule, string failureMessage = null)
@@ -110,14 +110,14 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
 
         public static void IsNotClickable(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var IsNotClickable = new IsNotClickableValidator();
-            operationRunner.Evaluate<UnexpectedElementStateException>(IsNotClickable);
+            var isNotClickable = new IsNotClickableValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(isNotClickable);
         }
 
         public static void IsNotEnabled(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var IsNotEnabled = new IsNotEnabledValidator();
-            operationRunner.Evaluate<UnexpectedElementStateException>(IsNotEnabled);
+            var isNotEnabled = new IsNotEnabledValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(isNotEnabled);
         }
 
         public static void ContainsText(this IOperationRunner<IElementWrapper> operationRunner)
@@ -268,7 +268,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
         public static void AlertTextEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string expectedValue,
             bool caseSensitive = false, bool trim = true)
         {
-            var AlertTextEquals = new AlertTextContainsValidator(expectedValue, caseSensitive, trim);
+            var AlertTextEquals = new AlertTextEqualsValidator(expectedValue, caseSensitive, trim);
             operationRunner.Evaluate<AlertException>(AlertTextEquals);
         }
 

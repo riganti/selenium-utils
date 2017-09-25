@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Configuration;
 using Riganti.Utils.Testing.Selenium.Core.Discovery;
 using Riganti.Utils.Testing.Selenium.Core.Factories;
@@ -14,7 +15,7 @@ using Riganti.Utils.Testing.Selenium.Core.Logging;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    public class TestSuiteRunner : IDisposable 
+    public class TestSuiteRunner : IDisposable
     {
 
         private readonly Dictionary<string, IWebBrowserFactory> factories;
@@ -24,7 +25,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
 
         public SeleniumTestsConfiguration Configuration { get; }
-        
+
         public TestContextAccessor TestContextAccessor { get; }
 
         public WebBrowserPool WebBrowserPool { get; }
@@ -39,7 +40,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public TestSuiteRunner(SeleniumTestsConfiguration configuration, ITestContextProvider testContextProvider)
         {
             searchAssemblies = new[] { Assembly.GetExecutingAssembly() };
-            
+
             this.Configuration = configuration;
             this.TestContextProvider = testContextProvider;
             this.WebBrowserPool = new WebBrowserPool(this);
@@ -94,31 +95,35 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }))
             .ToList();
         }
-        
 
-        public virtual void RunInAllBrowsers(ISeleniumTest testClass, Action<IBrowserWrapper> action, string callerMemberName, string callerFilePath, int callerLineNumber) 
+
+        public virtual void RunInAllBrowsers(ISeleniumTest testClass, Action<IBrowserWrapper> action, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
             var testName = callerMemberName;
             this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Entering RunInAllBrowsers from {callerFilePath}:{callerLineNumber}");
 
             try
             {
-                if (Configuration.TestRunOptions.RunInParallel)
+                FormatFinalException(() =>
                 {
-                    RunInAllBrowsersParallel(testClass, testName, action);
-                }
-                else
-                {
-                    RunInAllBrowsersSequential(testClass, testName, action);
-                }
+                    if (Configuration.TestRunOptions.RunInParallel)
+                    {
+                        RunInAllBrowsersParallel(testClass, testName, action);
+                    }
+                    else
+                    {
+                        RunInAllBrowsersSequential(testClass, testName, action);
+                    }
+                });
             }
+
             finally
             {
                 this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Leaving RunInAllBrowsers");
             }
         }
 
-        private void RunInAllBrowsersSequential(ISeleniumTest testClass, string testName, Action<IBrowserWrapper> action) 
+        private void RunInAllBrowsersSequential(ISeleniumTest testClass, string testName, Action<IBrowserWrapper> action)
         {
             foreach (var testConfiguration in testConfigurations)
             {
@@ -126,12 +131,36 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
-        private void RunInAllBrowsersParallel(ISeleniumTest testClass, string testName, Action<IBrowserWrapper> action) 
+        private static void FormatFinalException(Action action)
+        {
+            if (action == null) throw new ArgumentNullException(nameof(action));
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                var exceptions = new List<Exception>();
+                if (e is AggregateException)
+                {
+                    var a = (AggregateException)e;
+                    exceptions.AddRange(a.InnerExceptions);
+                }
+                else if(e is SeleniumTestFailedException)
+                {
+                    var a = e as SeleniumTestFailedException;
+                    exceptions.AddRange(a.InnerExceptions);
+                }
+                throw new SeleniumTestFailedException(exceptions);
+            }
+        }
+
+        private void RunInAllBrowsersParallel(ISeleniumTest testClass, string testName, Action<IBrowserWrapper> action)
         {
             Parallel.ForEach(testConfigurations, c => RunSingleTest(testClass, c, testName, action).Wait());
         }
 
-        private async Task RunSingleTest(ISeleniumTest testClass, TestConfiguration testConfiguration, string testName, Action<IBrowserWrapper> action) 
+        private async Task RunSingleTest(ISeleniumTest testClass, TestConfiguration testConfiguration, string testName, Action<IBrowserWrapper> action)
         {
             var testFullName = $"{testName} for {testConfiguration.BaseUrl} in {testConfiguration.Factory.Name}";
 

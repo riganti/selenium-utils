@@ -36,8 +36,6 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers
         {
             StopWatchedAction(() =>
             {
-
-
                 if (driverInstance == null) return;
 
                 Factory.LogInfo("Cleaning session");

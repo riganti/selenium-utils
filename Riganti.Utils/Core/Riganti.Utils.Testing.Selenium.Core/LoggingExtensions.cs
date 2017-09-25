@@ -26,17 +26,17 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
 
         public static void LogVerbose(this TestSuiteRunner runner, string message) {
-            runner.LoggerService.WriteLine(runner.TestContextAccessor.GetTestContext(), message, TraceLevel.Verbose);
+            runner.LoggerService.WriteLine(runner.TestContextProvider.GetGlobalScopeTestContext(), message, TraceLevel.Verbose);
         }
 
         public static void LogInfo(this TestSuiteRunner runner, string message) 
         {
-            runner.LoggerService.WriteLine(runner.TestContextAccessor.GetTestContext(), message, TraceLevel.Info);
+            runner.LoggerService.WriteLine(runner.TestContextProvider.GetGlobalScopeTestContext(), message, TraceLevel.Info);
         }
 
         public static void LogError(this TestSuiteRunner runner, Exception ex) 
         {
-            runner.LoggerService.WriteLine(runner.TestContextAccessor.GetTestContext(), ex.ToString(), TraceLevel.Error);
+            runner.LoggerService.WriteLine(runner.TestContextProvider.GetGlobalScopeTestContext(), ex.ToString(), TraceLevel.Error);
         }
 
     }

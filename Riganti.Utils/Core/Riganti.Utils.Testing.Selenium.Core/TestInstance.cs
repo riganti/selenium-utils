@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
 using Riganti.Utils.Testing.Selenium.Core.Factories;
 
@@ -12,7 +13,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class TestInstance : ITestInstance
     {
-
         private readonly Action<IBrowserWrapper> testAction;
         private int testAttemptNumber;
 
@@ -23,7 +23,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public IWebBrowser CurrentWebBrowser { get; private set; }
 
 
-        public TestInstance(TestSuiteRunner runner, ISeleniumTest testClass, TestConfiguration testConfiguration, string testName, Action<IBrowserWrapper> testAction)
+        public TestInstance(TestSuiteRunner runner, ISeleniumTest testClass, TestConfiguration testConfiguration,
+            string testName, Action<IBrowserWrapper> testAction)
         {
             this.TestSuiteRunner = runner;
             this.TestClass = testClass;
@@ -41,30 +42,62 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             try
             {
-                TestSuiteRunner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Acquiring browser from browser pool");
+                TestSuiteRunner.LogVerbose(
+                    $"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Acquiring browser from browser pool");
                 CurrentWebBrowser = await TestSuiteRunner.WebBrowserPool.GetOrCreateBrowser(TestConfiguration.Factory);
 
                 RunTest(CurrentWebBrowser);
 
                 await TestSuiteRunner.WebBrowserPool.ReturnBrowserToPool(CurrentWebBrowser);
-                TestSuiteRunner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Browser {CurrentWebBrowser.UniqueName} returned to browser pool");
+                TestSuiteRunner.LogVerbose(
+                    $"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Browser {CurrentWebBrowser.UniqueName} returned to browser pool");
                 CurrentWebBrowser = null;
             }
             catch (Exception ex)
             {
-                await TestSuiteRunner.WebBrowserPool.DisposeBrowser(CurrentWebBrowser);
-                TestSuiteRunner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Test failed {ex}");
-                CurrentWebBrowser = null;
-
+                await RunCrashed(ex);
                 throw;
             }
+        }
+
+        private void AddExceptionMetadata(TestExceptionBase exception, IBrowserWrapper wrapper)
+        {
+            ExecuteSafe(() => { exception.WebBrowser = CurrentWebBrowser.Factory.Name; });
+
+            var result = ExecuteSafe(() => { exception.CurrentUrl = CurrentWebBrowser.Driver.Url; });
+            
+            // when browser is frozen then taking screenshot is non-sense.
+            if (!result) return;
+
+            ExecuteSafe(() => { exception.Screenshot = TakeScreenshot(wrapper); });
+        }
+
+        private bool ExecuteSafe(Action action)
+        {
+            try
+            {
+                action();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private async Task RunCrashed(Exception ex)
+        {
+            await TestSuiteRunner.WebBrowserPool.DisposeBrowser(CurrentWebBrowser);
+            TestSuiteRunner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Test failed {ex}");
+            CurrentWebBrowser = null;
         }
 
         private void RunTest(IWebBrowser browser)
         {
             // create a new browser wrapper
             var type = TestSuiteRunner.ServiceFactory.Resolve<BrowserWrapper>();
-            var wrapper = (BrowserWrapper) Activator.CreateInstance(type, browser, browser.Driver, this, new ScopeOptions());
+            var wrapper =
+                (BrowserWrapper)Activator.CreateInstance(type, browser, browser.Driver, this, new ScopeOptions());
 
             // prepare test context
             var testContext = TestSuiteRunner.TestContextProvider.CreateTestContext(this);
@@ -72,17 +105,21 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 try
                 {
-                    TestSuiteRunner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Running test in browser instance {browser.UniqueName}");
+                    TestSuiteRunner.LogVerbose(
+                        $"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Running test in browser instance {browser.UniqueName}");
 
                     // run actual test
                     testAction(wrapper);
 
                     TestSuiteRunner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Test passed");
                 }
+                catch (TestExceptionBase ex)
+                {
+                    AddExceptionMetadata(ex, wrapper);
+                    throw;
+                }
                 catch
                 {
-                    TakeScreenshot(wrapper);
-
                     // recreate the browser
                     TestSuiteRunner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Test failed");
                     throw;
@@ -102,26 +139,33 @@ namespace Riganti.Utils.Testing.Selenium.Core
                 }
                 catch (Exception ex)
                 {
-                    TestSuiteRunner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Test attempt #{testAttemptNumber} failed.");
+                    TestSuiteRunner.LogVerbose(
+                        $"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Test attempt #{testAttemptNumber} failed.");
                     errors.Add(ex);
                 }
             }
-            throw new AggregateException(errors);
+
+            throw new SeleniumTestFailedException(errors);
         }
 
-        private void TakeScreenshot(IBrowserWrapper browserWrapper)
+        private string TakeScreenshot(IBrowserWrapper browserWrapper)
         {
             var testContext = TestSuiteRunner.TestContextAccessor.GetTestContext();
             try
             {
-                var filename = Path.Combine(testContext.DeploymentDirectory, $"{testContext.FullyQualifiedTestClassName}_{testContext.TestName}_{testAttemptNumber}.png");
-                TestSuiteRunner.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Taking screenshot {filename}");
+                var filename = Path.Combine(testContext.DeploymentDirectory,
+                    $"{testContext.FullyQualifiedTestClassName}_{testContext.TestName}_{testAttemptNumber}.png");
+                TestSuiteRunner.LogVerbose(
+                    $"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Taking screenshot {filename}");
                 browserWrapper.TakeScreenshot(filename);
                 TestSuiteRunner.TestContextAccessor.GetTestContext().AddResultFile(filename);
+                return filename;
             }
             catch (Exception ex)
             {
-                TestSuiteRunner.LogError(new Exception($"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Failed to take screenshot.", ex));
+                TestSuiteRunner.LogError(new Exception(
+                    $"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Failed to take screenshot.", ex));
+                return null;
             }
         }
     }

@@ -8,14 +8,16 @@ namespace Riganti.Utils.Testing.Selenium.Core
     /// </summary>
     public class SeleniumTest : SeleniumTestExecutor
     {
-        
+
         public TestContext TestContext { get; set; }
 
 
         protected override TestSuiteRunner InitializeTestSuiteRunner(SeleniumTestsConfiguration configuration)
         {
-            return new TestSuiteRunner(configuration, new TestContextProvider());
+            var testContextProvider = new TestContextProvider();
+            testContextProvider.SetContext(TestContext);
+            return new TestSuiteRunner(configuration, testContextProvider);
         }
-        
+
     }
 }

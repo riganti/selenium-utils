@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Drawing.Text;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization;
+using System.Text;
 using OpenQA.Selenium;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
@@ -10,34 +15,113 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
     {
         public string FullStackTrace => base.StackTrace;
 
+        public override string Message => RenderMetadata();
+
         public override string StackTrace
         {
             get
             {
-                var frames = new StackTrace(this, true)?.GetFrames()
-                    ?.Where(frame => frame.GetMethod()?.ReflectedType?.Namespace
-                                         ?.Contains("Riganti.Utils.Testing.Selenium") != true)
-                    ?.Select(frame => new StackTrace(frame).ToString());
+                var allFrames = new StackTrace(this, true).GetFrames().Select(s => new { Frame = s, s.GetMethod()?.ReflectedType }).Where(frame => frame.ReflectedType?.Namespace?.Contains("Riganti.Utils.Testing.Selenium") != true).ToList();
+                var lastIndex = allFrames.LastIndexOf(allFrames.LastOrDefault(s => s.ReflectedType.FullName.Contains("System.Runtime")));
+                var lastIndex2 = -1;
+                for (int i = lastIndex; i > -1; i--)
+                {
+                    if (!allFrames[i].ReflectedType.FullName.Contains("System.Runtime"))
+                    {
+                        lastIndex2 = i+1;
+                        break;
+                    }
+                }
+
+                if (lastIndex2 > -1 && lastIndex > -1)
+                {
+                    allFrames.RemoveRange(lastIndex2, lastIndex - lastIndex2 + 1);
+                }
+
+                var frames = allFrames.Select(frame => new StackTrace(frame.Frame).ToString());
                 return frames == null ? String.Empty : string.Concat(frames);
             }
         }
 
         public ICheckResult CheckResult { get; set; }
+        public string WebBrowser { get; set; }
+        public string CurrentUrl { get; set; }
+        public string Screenshot { get; set; }
 
-        public TestExceptionBase()
+
+        protected TestExceptionBase()
         {
         }
 
-        public TestExceptionBase(string message) : base(message)
+        protected TestExceptionBase(string message) : base()
         {
+            ExceptionMessage = message;
+
         }
 
-        public TestExceptionBase(string message, Exception innerException) : base(message, innerException)
+        public string ExceptionMessage { get; set; }
+
+        protected TestExceptionBase(string message, Exception innerException) : base(message, innerException)
         {
         }
 
         protected TestExceptionBase(SerializationInfo info, StreamingContext context) : base(info, context)
         {
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine(Message);
+
+            if (InnerException != null)
+            {
+                sb.Append(" ---> ");
+                sb.AppendLine(InnerException.ToString());
+                sb.AppendLine(" --- End of inner exception --- ");
+            }
+            sb.AppendLine(StackTrace);
+
+
+
+            return sb.ToString();
+        }
+        private string RenderMetadata()
+        {
+            var sb = new StringBuilder();
+            RenderExceptionMessage(sb);
+            sb.AppendLine();
+            AppendField(sb, "Browser", WebBrowser);
+            AppendField(sb, "Url", CurrentUrl);
+            AppendField(sb, "Screenshot", Screenshot);
+            return sb.ToString();
+
+        }
+
+        private void RenderExceptionMessage(StringBuilder sb)
+        {
+
+            if (ExceptionMessage.Length <= 0)
+            {
+                sb.AppendLine(GetClassName());
+            }
+            else
+            {
+                sb.Append(GetClassName());
+                sb.Append(": ");
+                sb.AppendLine(ExceptionMessage);
+            }
+        }
+
+        private void AppendField(StringBuilder sb, string fieldName, string value)
+        {
+            sb.Append(fieldName);
+            sb.Append(": ");
+            sb.AppendLine(value);
+        }
+        private string GetClassName()
+        {
+            return GetType().ToString();
         }
     }
 }

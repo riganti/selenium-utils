@@ -20,7 +20,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         protected override TestSuiteRunner InitializeTestSuiteRunner(SeleniumTestsConfiguration configuration)
         {
-            return new XunitTestSuiteRunner(configuration, new TestContextProvider());
+            var provider = new TestContextProvider();
+            provider.SetContext(TestOutput);
+            return new XunitTestSuiteRunner(configuration, provider);
         }
 
     }

@@ -1,4 +1,4 @@
-﻿namespace Riganti.Utils.Testing.Selenium.Core
+﻿namespace Riganti.Utils.Testing.Selenium.Core.Abstractions
 {
     public enum UnitTestResult
     {

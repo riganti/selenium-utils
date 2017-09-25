@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Text;
 using OpenQA.Selenium;
@@ -14,44 +15,38 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
     [Serializable]
     public sealed class SeleniumTestFailedException : WebDriverException
     {
-        private readonly List<Exception> innerExceptions;
+        public List<Exception> InnerExceptions { get; }
 
         public ICheckResult[] InnerCheckResults { get; }
 
 
         /// <inheritdoc />
-        public override string Message => ToString();
-        /// <summary>
-        /// 
-        /// </summary>
+        public override string Message => RenderMetadata();
+
         public string ExceptionMessage { get; set; }
 
         public string FullStackTrace => base.StackTrace;
 
-        public override string StackTrace => innerExceptions?.FirstOrDefault()?.StackTrace ?? FullStackTrace;
+        public override string StackTrace => InnerExceptions?.FirstOrDefault()?.StackTrace ?? FullStackTrace;
 
-        /// <inheritdoc/>
-        internal SeleniumTestFailedException()
+        public SeleniumTestFailedException(List<Exception> exps)
         {
+            InnerExceptions = UnwrapExceptions(exps);
+            InnerCheckResults = CreateCheckResult(exps).ToArray();
         }
-        /// <inheritdoc/>
 
-        internal SeleniumTestFailedException(string message) : base(message)
+        private List<Exception> UnwrapExceptions(List<Exception> exps)
         {
-            ExceptionMessage = message;
-        }
-        /// <inheritdoc/>
+            var l = new List<Exception>();
+            var expToUnwrap = exps.OfType<SeleniumTestFailedException>();
+            var okExceptions = exps.Where(s => !(s is SeleniumTestFailedException)).ToArray();
+            l.AddRange(okExceptions);
 
-        internal SeleniumTestFailedException(Exception innerException) : this((string) "", innerException)
-        {
-        }
-        /// <inheritdoc/>
-
-        internal SeleniumTestFailedException(string message, Exception innerException) : base(message, innerException)
-        {
-            ExceptionMessage = message;
-            this.innerExceptions = new List<Exception>(new[] { innerException });
-            InnerCheckResults = CreateCheckResult(innerExceptions).ToArray();
+            foreach (var exp in expToUnwrap)
+            {
+                l.AddRange(UnwrapExceptions(exp.InnerExceptions));
+            }
+            return l;
         }
 
         private IEnumerable<ICheckResult> CreateCheckResult(IEnumerable<Exception> exceptions)
@@ -59,38 +54,6 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
             return exceptions.OfType<TestExceptionBase>().Select(e => e.CheckResult);
         }
 
-        /// <inheritdoc/>
-        private SeleniumTestFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-        /// <inheritdoc/>
-        internal SeleniumTestFailedException(Exception innerException, string browserName, string screenshotsPath) : this((string) $"Test failed in browser '{browserName}'.", innerException)
-        {
-            this.ScreenshotPath = screenshotsPath;
-            this.BrowserName = browserName;
-        }
-
-
-        internal SeleniumTestFailedException(List<Exception> innerExceptions, string browserName, string screenshotsPath = null) : this((string) $"Test failed in browser '{browserName}'", (Exception) null)
-        {
-            ScreenshotPath = screenshotsPath;
-            BrowserName = browserName;
-            this.innerExceptions = innerExceptions;
-            InnerCheckResults = CreateCheckResult(this.innerExceptions).ToArray();
-        }
-
-        /// <summary>
-        /// Path to stored screenshot.
-        /// </summary>
-        public string ScreenshotPath { get; set; }
-        /// <summary>
-        /// Name of browser where the test failed.
-        /// </summary>
-        public string BrowserName { get; set; }
-        /// <summary>
-        /// Current url of the tested website.
-        /// </summary>
-        public string Url { get; set; }
 
         ///<summary>
         /// Returns basic informations to debug exception trown in selenium test.
@@ -98,24 +61,20 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
         /// <inheritdoc/>
         public override string ToString()
         {
+            return RenderMetadata();
+        }
+        private string RenderMetadata()
+        {
             var sb = new StringBuilder();
 
             RenderMessage(sb);
-            RenderInnerCheckResults(sb);
-            RenderBrowserName(sb);
-            RenderScreenshotPath(sb);
-            RenderUrl(sb);
-
             sb.AppendLine();
 
-            //render base
-            RenderStackTrace(sb, 0, this);
-
-            RenderInnerAgregatedExceptions(sb);
+            RenderInnerAggregatedExceptions(sb);
 
             return sb.ToString();
-        }
 
+        }
         private void RenderInnerCheckResults(StringBuilder sb)
         {
             RenderCollectionIfNotEmpty(sb, InnerCheckResults, "Inner check results", (index, result) => $"Inner check result #{index}: '{result}'.");
@@ -161,15 +120,17 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
             }
         }
 
-        private void RenderInnerAgregatedExceptions(StringBuilder sb)
+        private void RenderInnerAggregatedExceptions(StringBuilder sb)
         {
 
             // add all exceptions to report
-            if (innerExceptions != null && innerExceptions.Count > 1)
+            if (InnerExceptions != null && InnerExceptions.Count > 0)
             {
-                sb.AppendLine("-----------  Agregated Inner Exceptions  -----------");
+                sb.AppendLine();
+                sb.AppendLine("-----------  Aggregated Inner Exceptions  -----------");
+                sb.AppendLine();
 
-                for (int i = 0; i < innerExceptions.Count; i++)
+                for (int i = 0; i < InnerExceptions.Count; i++)
                 {
                     RenderInnerException(sb, i);
                 }
@@ -178,20 +139,15 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 
         private void RenderInnerException(StringBuilder sb, int i)
         {
-            sb.AppendLine($"// Exception #{i + 1}");
-            sb.AppendLine(innerExceptions[i].ToString());
+            sb.AppendLine($"// Exception #{i + 1}: ");
+            sb.AppendLine(InnerExceptions[i].ToString());
 
             //add separator
-            if (i != innerExceptions.Count - 1)
+            if (i != InnerExceptions.Count - 1)
             {
                 sb.AppendLine();
                 sb.AppendLine();
             }
-        }
-
-        private void RenderBrowserName(StringBuilder sb)
-        {
-            RenderWhenNotNull(sb, BrowserName, $"Test failed in browser '{BrowserName}'.");
         }
 
         private void RenderWhenNotNull<T>(StringBuilder builder, T testedObject, string message)
@@ -204,18 +160,9 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
         }
         private void RenderMessage(StringBuilder sb)
         {
-            RenderWhenNotNull(sb, ExceptionMessage, $"Message: {ExceptionMessage}");
+            RenderWhenNotNull(sb, ExceptionMessage, ExceptionMessage);
         }
 
 
-        private void RenderScreenshotPath(StringBuilder sb)
-        {
-            RenderWhenNotNull(sb, ScreenshotPath, $"Screenshot path: '{ScreenshotPath}' ");
-        }
-
-        private void RenderUrl(StringBuilder sb)
-        {
-            RenderWhenNotNull(sb, Url, $"Url: {Url} ");
-        }
     }
 }

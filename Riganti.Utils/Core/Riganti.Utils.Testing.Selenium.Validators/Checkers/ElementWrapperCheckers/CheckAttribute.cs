@@ -38,12 +38,12 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheck
             if (trimValue)
             {
                 attribute = attribute.Trim();
-                tempAllowedValues = Enumerable.Select<string, string>(allowedValues, s => s.Trim()).ToArray();
+                tempAllowedValues = allowedValues.Select(s => s.Trim()).ToArray();
             }
-            var isSuceeded = tempAllowedValues.Any(v => string.Equals(v, attribute,
+            var isSucceeded = tempAllowedValues.Any(v => string.Equals(v, attribute,
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase));
                 
-            if (!isSuceeded){
+            if (!isSucceeded){
                 return new CheckResult(failureMessage ?? $"Attribute contains unexpected value. Expected value: '{string.Concat("|", tempAllowedValues)}', Provided value: '{attribute}' \r\n Element selector: {wrapper.FullSelector} \r\n");
             }
             return CheckResult.Succeeded;

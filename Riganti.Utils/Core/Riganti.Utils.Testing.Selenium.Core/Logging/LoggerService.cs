@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Configuration;
 using Riganti.Utils.Testing.Selenium.Core.Discovery;
 
@@ -27,28 +28,28 @@ namespace Riganti.Utils.Testing.Selenium.Core.Logging
         /// <summary>
         /// Write message to log.
         /// </summary>
-        /// <param name="context">Current test context.</param>
+        /// <param name="instanceContext">Current test instanceContext.</param>
         /// <param name="message">Text to write.</param>
         /// <param name="level">Message information level.</param>
-        public void WriteLine(ITestContext context, string message, TraceLevel level)
+        public void WriteLine(ITestContext instanceContext, string message, TraceLevel level)
         {
-            RunOnAllLoggers(l => l.WriteLine(context, message, level));
+            RunOnAllLoggers(l => l.WriteLine(instanceContext, message, level));
         }
 
         /// <summary>
         /// This method is called when test started.
         /// </summary>
-        public void OnTestStarted(ITestContext context)
+        public void OnTestStarted(ITestContext instanceContext)
         {
-            RunOnAllLoggers(l => l.OnTestStarted(context));
+            RunOnAllLoggers(l => l.OnTestStarted(instanceContext));
         }
 
         /// <summary>
         /// This method is called when test finished.
         /// </summary>
-        public void OnTestFinished(ITestContext context)
+        public void OnTestFinished(ITestContext instanceContext)
         {
-            RunOnAllLoggers(l => l.OnTestFinished(context));
+            RunOnAllLoggers(l => l.OnTestFinished(instanceContext));
         }
 
 

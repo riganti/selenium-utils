@@ -16,10 +16,8 @@ namespace Riganti.Utils.Testing.Selenium.Core.UnitTests
 
         {
             var exps = new List<Exception>() { new Exception("Exception1"), new Exception("Exception2"), new Exception("Exception3") };
-            var exp = new SeleniumTestFailedException(exps, "SpecificBrowserName", "SpecificScreen")
-            {
-                Url = UrlConst
-            };
+            var exp = new SeleniumTestFailedException(exps);
+            exp.Url = UrlConst;
             var str = exp.ToString();
 
             TestContext.WriteLine(str);

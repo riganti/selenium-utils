@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Logging
+namespace Riganti.Utils.Testing.Selenium.Core.Abstractions
 {
 
     /// <summary>
@@ -25,17 +24,17 @@ namespace Riganti.Utils.Testing.Selenium.Core.Logging
         /// </summary>
         /// <param name="message">Text to write.</param>
         /// <param name="level">Message information level.</param>
-        void WriteLine(ITestContext context, string message, TraceLevel level);
+        void WriteLine(ITestContext instanceContext, string message, TraceLevel level);
 
         /// <summary>
         /// This method is called when test started.
         /// </summary>
-        void OnTestStarted(ITestContext context);
+        void OnTestStarted(ITestContext instanceContext);
 
         /// <summary>
         /// This method is called when test finished.
         /// </summary>
-        void OnTestFinished(ITestContext context);
+        void OnTestFinished(ITestContext instanceContext);
 
     }
 }

@@ -103,7 +103,7 @@ namespace SeleniumCore.Samples.Tests
             });
         }
 
-       
+
 
         [TestMethod]
         public void HasAttributeTest()
@@ -233,7 +233,7 @@ namespace SeleniumCore.Samples.Tests
                 browser.First("#button").Click();
                 try
                 {
-                    browser.CheckIfAlertTextEquals( "Confirm test", true);
+                    browser.CheckIfAlertTextEquals("Confirm test", true);
                 }
                 catch (AlertException)
                 {
@@ -470,23 +470,14 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
+
         public void ElementContained_OneElement_ExpectedFailure()
         {
-            try
+            this.RunInAllBrowsers(browser =>
             {
-                this.RunInAllBrowsers(browser =>
-                {
-                    browser.NavigateToUrl("/test/ElementContained");
-                    browser.First("#one").CheckIfNotContainsElement("span");
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("children"))
-                {
-                    throw;
-                }
-            }
+                browser.NavigateToUrl("/test/ElementContained");
+                browser.First("#one").CheckIfNotContainsElement("span");
+            });
         }
 
         [TestMethod]

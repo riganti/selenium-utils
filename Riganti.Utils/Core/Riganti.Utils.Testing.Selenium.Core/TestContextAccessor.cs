@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Net.NetworkInformation;
 using System.Threading;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+using Riganti.Utils.Testing.Selenium.Core.Configuration;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class TestContextAccessor
     {
 
-        private readonly ThreadLocal<ITestContext> testContextStore = new ThreadLocal<ITestContext>();
+        private readonly ThreadLocal<ITestInstanceContext> testContextStore = new ThreadLocal<ITestInstanceContext>();
 
         
-        public ITestContext GetTestContext()
+        public ITestInstanceContext GetTestContext()
         {
             return testContextStore.Value;
         }
 
-        public IDisposable Scope(ITestContext testContext)
+        public IDisposable Scope(ITestInstanceContext testInstanceContext)
         {
-            testContextStore.Value = testContext;
+            testContextStore.Value = testInstanceContext;
             return new TestContextScope(this);
         }
 

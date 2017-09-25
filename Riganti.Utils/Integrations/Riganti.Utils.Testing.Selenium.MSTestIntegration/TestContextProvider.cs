@@ -1,14 +1,32 @@
-﻿using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+using Riganti.Utils.Testing.Selenium.Core.Configuration;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
     public class TestContextProvider : ITestContextProvider
     {
-        public ITestContext CreateTestContext(TestInstance testInstance)
+        private TestContext context;
+
+        public void SetContext(TestContext testContext)
         {
-            var context = ((SeleniumTest)testInstance.TestClass).TestContext;
-            return new TestContextWrapper(context, testInstance);
+            if (testContext == null) throw new ArgumentNullException(nameof(testContext));
+            context = testContext;
         }
 
+        public ITestInstanceContext CreateTestContext(TestInstance testInstance)
+        {
+            if (testInstance == null) throw new ArgumentNullException(nameof(testInstance));
+            if (context == null)
+            {
+                throw new InvalidOperationException("TestContext is not set.");
+            }
+
+            return new TestInstanceContextWrapper(context, testInstance);
+
+        }
+
+        public ITestContext GetGlobalScopeTestContext() => new TestContextWrapper(context);
     }
 }

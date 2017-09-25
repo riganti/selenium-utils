@@ -1,22 +1,33 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
+using Riganti.Utils.Testing.Selenium.Core.Configuration;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
 using Riganti.Utils.Testing.Selenium.Core.Factories;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    internal class TestContextWrapper : ITestContext 
+    internal class TestInstanceContextWrapper : TestContextWrapper, ITestInstanceContext
     {
-        private readonly TestContext context;
+        public string BaseUrl => testInstance.TestConfiguration.BaseUrl;
+        public IWebBrowser CurrentWebBrowser => testInstance.CurrentWebBrowser;
         private readonly TestInstance testInstance;
 
-        public TestContextWrapper(TestContext context, TestInstance testInstance)
+        public TestInstanceContextWrapper(TestContext context, TestInstance testInstance) : base(context)
         {
-            this.context = context;
             this.testInstance = testInstance;
         }
 
+
+    }
+
+    internal class TestContextWrapper : ITestContext
+    {
+        public TestContextWrapper(TestContext context)
+        {
+            this.context = context;
+
+        }
         public UnitTestResult CurrentTestResult
         {
             get
@@ -33,14 +44,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public string TestName => context.TestName;
 
+        private readonly TestContext context;
         public void AddResultFile(string fileName)
         {
             context.AddResultFile(fileName);
         }
 
-        public IWebBrowser CurrentWebBrowser => testInstance.CurrentWebBrowser;
 
-        public string BaseUrl => testInstance.TestConfiguration.BaseUrl;
 
         public void WriteLine(string format, params object[] args)
         {

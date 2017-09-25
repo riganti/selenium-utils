@@ -45,7 +45,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleniumTest.cs" />
     <Compile Include="TestContextProvider.cs" />
-    <Compile Include="TestContextWrapper.cs" />
+    <Compile Include="TestInstanceContextWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Riganti.Utils.Testing.Selenium.Core.Abstractions\Riganti.Utils.Testing.Selenium.Core.Abstractions.csproj">
