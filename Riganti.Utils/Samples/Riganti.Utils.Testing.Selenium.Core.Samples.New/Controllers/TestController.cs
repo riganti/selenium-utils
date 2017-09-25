@@ -6,13 +6,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Samples.New.Controllers
 {
-    public class TestController :Controller
+    public class TestController : Controller
     {
         public ActionResult Alert() { return View(null); }
         public ActionResult Checkboxes() { return View(null); }
         public ActionResult ClickTest() { return View(null); }
         public ActionResult Confirm() { return View(null); }
-        public ActionResult CookiesTest() { return View(null); }
+
+        public ActionResult CookiesTest()
+        {
+            return View(new CookieModel(){Text = ControllerContext.HttpContext.Request.Cookies["test_cookie"] });
+        }
+
+        public ActionResult CookiesSetCookie()
+        {
+            ControllerContext.HttpContext.Response.Cookies.Append("test_cookie", "cookie set to this value");
+            return View("CookiesTest", new CookieModel() { Text = ControllerContext.HttpContext.Request.Cookies["test_cookie"] });
+        }
         public ActionResult ElementAtFirst() { return View(null); }
         public ActionResult ElementContained() { return View(null); }
         public ActionResult ElementSelectionTest() { return View(null); }
@@ -31,5 +41,10 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.New.Controllers
         public ActionResult TemporarySelector() { return View(null); }
         public ActionResult Text() { return View(null); }
 
+    }
+
+    public class CookieModel
+    {
+        public string Text { get; set; }
     }
 }

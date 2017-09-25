@@ -28,5 +28,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.UnitTests
             Assert.IsTrue(str.Contains("SpecificScreen"));
             Assert.IsTrue(str.Contains(UrlConst));
         }
+
     }
+
 }

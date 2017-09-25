@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.Selenium.Core;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
+using Riganti.Utils.Testing.Selenium.Core.Configuration;
+using Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests;
 
 namespace SeleniumCore.Samples.Tests
 {
@@ -20,7 +22,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void AlertTest2()
+        public void AlertTextCasingTest()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -38,7 +40,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void AlertTest3()
+        public void AlertContainsTest()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -48,9 +50,21 @@ namespace SeleniumCore.Samples.Tests
                 browser.CheckIfAlertTextContains("confirm");
             });
         }
+        [TestMethod]
+        [ExpectedSeleniumException(typeof(AlertException))]
+        public void AlertContainsExceptionExpectedTest()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/alert");
+
+                browser.First("#button").Click();
+                browser.CheckIfAlertTextContains("confirms");
+            });
+        }
 
         [TestMethod]
-        public void AlertTest4()
+        public void AlertRuleEndsWithTest()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -59,5 +73,20 @@ namespace SeleniumCore.Samples.Tests
                 browser.CheckIfAlertText(s => s.EndsWith("test"), "alert text doesn't end with 'test.'");
             });
         }
+
+        [TestMethod]
+        [ExpectedSeleniumException(typeof(AlertException))]
+        public void AlertEndsWIthExceptionExpectedTest()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/alert");
+                browser.First("#button").Click();
+                browser.CheckIfAlertText(s => s.EndsWith("test."), "alert text doesn't end with 'test.'");
+            });
+        }
+  
+    
     }
+
 }

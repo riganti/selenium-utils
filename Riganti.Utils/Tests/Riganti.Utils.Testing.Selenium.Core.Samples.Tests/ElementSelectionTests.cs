@@ -11,7 +11,7 @@ namespace SeleniumCore.Samples.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("ElementSelectionTest.aspx");
+                browser.NavigateToUrl("/test/ElementSelectionTest");
 
                 var elm = browser.First("#top-element");
                 Assert.AreEqual(elm.Children.Count, 4);
