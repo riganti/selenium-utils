@@ -21,14 +21,17 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
         {
             get
             {
-                var allFrames = new StackTrace(this, true).GetFrames().Select(s => new { Frame = s, s.GetMethod()?.ReflectedType }).Where(frame => frame.ReflectedType?.Namespace?.Contains("Riganti.Utils.Testing.Selenium") != true).ToList();
-                var lastIndex = allFrames.LastIndexOf(allFrames.LastOrDefault(s => s.ReflectedType.FullName.Contains("System.Runtime")));
+                var allFrames = new StackTrace(this, true).GetFrames()?.Select(s => new { Frame = s, s.GetMethod()?.ReflectedType }).Where(frame => frame.ReflectedType?.Namespace?.Contains("Riganti.Utils.Testing.Selenium") != true).ToList();
+                if (allFrames == null) return "";
+
+                var lastIndex = allFrames.LastIndexOf(allFrames.LastOrDefault(s => s.ReflectedType.FullName?.Contains("System.Runtime") == true));
                 var lastIndex2 = -1;
+
                 for (int i = lastIndex; i > -1; i--)
                 {
-                    if (!allFrames[i].ReflectedType.FullName.Contains("System.Runtime"))
+                    if (!allFrames[i].ReflectedType.FullName?.Contains("System.Runtime") == true)
                     {
-                        lastIndex2 = i+1;
+                        lastIndex2 = i + 1;
                         break;
                     }
                 }
@@ -39,7 +42,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
                 }
 
                 var frames = allFrames.Select(frame => new StackTrace(frame.Frame).ToString());
-                return frames == null ? String.Empty : string.Concat(frames);
+                return string.Concat(frames);
             }
         }
 

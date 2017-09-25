@@ -3,11 +3,13 @@ using MSAssert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Api;
+using Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests;
 
 namespace SeleniumCore.Samples.Tests
 {
@@ -447,7 +449,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(EmptySequenceException))]
+        [ExpectedSeleniumException(typeof(EmptySequenceException))]
         public void ElementContained_NoElement_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
@@ -471,12 +473,15 @@ namespace SeleniumCore.Samples.Tests
 
         [TestMethod]
 
+
         public void ElementContained_OneElement_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/ElementContained");
-                browser.First("#one").CheckIfNotContainsElement("span");
+                MSAssert.ThrowsException<MoreElementsInSequenceException>(() =>{
+                    browser.First("#one").CheckIfNotContainsElement("span");
+                });
             });
         }
 
@@ -581,7 +586,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void TextNotEquals()
+        public void TextNotEquals_ExceptionExpected()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -589,14 +594,10 @@ namespace SeleniumCore.Samples.Tests
                 var label = browser.First("#CookieIndicator");
                 label.CheckIfTextNotEquals("True");
                 label.CheckIfTextEquals("False");
-                try
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
                 {
                     label.CheckIfTextNotEquals("False");
-                    throw new Exception("Exception was expected.");
-                }
-                catch (UnexpectedElementStateException)
-                {
-                }
+                });
             });
         }
 
