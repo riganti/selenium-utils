@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Text;
 using OpenQA.Selenium;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Attributes;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 {
@@ -27,7 +30,18 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 
         public string FullStackTrace => base.StackTrace;
 
-        public override string StackTrace => InnerExceptions?.FirstOrDefault()?.StackTrace ?? FullStackTrace;
+        public override string StackTrace => GetStackTrace();
+
+        private string GetStackTrace()
+        {
+            var useFullStack = new StackTrace(this, true).GetFrames()?
+                .Any(s => s.GetMethod().GetCustomAttributes<FullStackTraceAttribute>().Any()) ?? false;
+            if (useFullStack)
+            {
+                return FullStackTrace;
+            }
+            return InnerExceptions?.FirstOrDefault()?.StackTrace ?? FullStackTrace;
+        }
 
         public SeleniumTestFailedException(List<Exception> exps)
         {

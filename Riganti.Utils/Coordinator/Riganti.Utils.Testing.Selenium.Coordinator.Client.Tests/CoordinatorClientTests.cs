@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Attributes;
 using Xunit;
 
 namespace Riganti.Utils.Testing.Selenium.Coordinator.Client.Tests
@@ -31,4 +32,6 @@ namespace Riganti.Utils.Testing.Selenium.Coordinator.Client.Tests
             Assert.ThrowsAsync<Exception>(() => httpClient.GetAsync(lease.Url)).Wait();
         }
     }
+
+
 }
