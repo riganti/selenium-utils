@@ -42,7 +42,6 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers
 
                 ExpectedConditions.AlertIsPresent()(driverInstance)?.Dismiss();
                 driverInstance.Manage().Cookies.DeleteAllCookies();
-                driverInstance.Manage().Cookies.DeleteCookie(new Cookie("cookie1", "asdasdasd")); //TODO: WTF?
 
                 if (!(driverInstance.Url.Contains("chrome:") || driverInstance.Url.Contains("data:") || driverInstance.Url.Contains("about:")))
                 {
