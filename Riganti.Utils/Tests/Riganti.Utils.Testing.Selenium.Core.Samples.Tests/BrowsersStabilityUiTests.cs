@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
+using Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests;
 
 namespace SeleniumCore.Samples.Tests
 {
@@ -13,7 +15,7 @@ namespace SeleniumCore.Samples.Tests
     public class BrowsersStabilityUiTests : SeleniumTest
     {
         [TestMethod]
-        public void ButtonClickTest()
+        public void BrowserStability_ButtonClick()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -50,12 +52,22 @@ namespace SeleniumCore.Samples.Tests
                 button.Click();
                 input.CheckIfValue("13");
             });
-
-
         }
 
-        [TestMethod, ExpectedException(typeof(Exception))]
-        public void XPathSelectorToRootTest()
+        [TestMethod]
+        public void SelectMethod_XPath()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/ClickTest");
+                var elem = browser.Single("#span");
+                elem.Single("..", By.XPath);
+            });
+        }
+
+        [TestMethod]
+        [ExpectedSeleniumException(typeof(EmptySequenceException))]
+        public void SelectMethod_XPathToRoot_ExpectedException()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -64,14 +76,15 @@ namespace SeleniumCore.Samples.Tests
             });
         }
 
-
-        [TestMethod, ExpectedException(typeof(Exception))]
-        public void InvalidXPathSelectorToRootTest()
+        [TestMethod]
+        [ExpectedSeleniumException(typeof(InvalidSelectorException))]
+        public void SelectMethod_InvalidXPathSelector_ExpectedException()
         {
             this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/ClickTest");
-                browser.Single("///***-*///@@##@šš+š++++---><<>''", By.XPath);
+                var elem = browser.Single("#span");
+                elem.Single("///***-*///@@##@šš+š++++---><<>''", By.XPath);
             });
         }
     }
