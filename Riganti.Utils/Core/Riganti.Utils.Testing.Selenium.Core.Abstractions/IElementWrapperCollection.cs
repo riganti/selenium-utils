@@ -4,7 +4,7 @@ using OpenQA.Selenium;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Abstractions
 {
-    public interface IElementWrapperCollection: ISeleniumWrapper, IEnumerable<IElementWrapper>
+    public interface IElementWrapperCollection: ISeleniumWrapper, IReadOnlyCollection<IElementWrapper>
     {
         IElementWrapper  this[int index] { get; set; }
 
@@ -12,10 +12,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions
         int Count { get; }
         bool IsReadOnly { get; }
 
-        void Add(IElementWrapper  item);
-        void Clear();
         bool Contains(IElementWrapper  item);
-        void CopyTo(IElementWrapper [] array, int arrayIndex);
         IElementWrapper  ElementAt(int index);
         IElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null);
         IElementWrapper  First(string selector, Func<string, By> tmpSelectMethod = null);

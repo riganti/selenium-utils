@@ -39,19 +39,19 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
 
         public static void Text(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule, string failureMessage = null)
         {
-            var Text = new TextValidator(rule, failureMessage);
-            operationRunner.Evaluate<UnexpectedElementStateException>(Text);
+            var text = new TextValidator(rule, failureMessage);
+            operationRunner.Evaluate<UnexpectedElementStateException>(text);
         }
 
         public static void TextEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
         {
-            var TextEquals = new TextEqualsValidator(text, caseSensitive, trim);
-            operationRunner.Evaluate<UnexpectedElementStateException>(TextEquals);
+            var textEquals = new TextEqualsValidator(text, caseSensitive, trim);
+            operationRunner.Evaluate<UnexpectedElementStateException>(textEquals);
         }
         public static void TextNotEquals(this IOperationRunner<IElementWrapper> operationRunner, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
         {
-            var TextNotEquals = new TextNotEqualsValidator(text, caseSensitive, trim);
-            operationRunner.Evaluate<UnexpectedElementStateException>(TextNotEquals);
+            var textNotEquals = new TextNotEqualsValidator(text, caseSensitive, trim);
+            operationRunner.Evaluate<UnexpectedElementStateException>(textNotEquals);
         }
 
         public static void IsDisplayed(this IOperationRunner<IElementWrapper> operationRunner)
@@ -62,8 +62,8 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
 
         public static void IsNotDisplayed(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var IsNotDisplayed = new IsNotDisplayed();
-            operationRunner.Evaluate<UnexpectedElementStateException>(IsNotDisplayed);
+            var isNotDisplayed = new IsNotDisplayed();
+            operationRunner.Evaluate<UnexpectedElementStateException>(isNotDisplayed);
         }
 
         public static void IsChecked(this IOperationRunner<IElementWrapper> operationRunner)
