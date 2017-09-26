@@ -43,7 +43,10 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.New
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Test}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}");
+                routes.MapRoute(
+                    name: "test",
+                    template: "{controller=Test}/{action}/{id?}");
             });
         }
     }

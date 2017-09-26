@@ -17,154 +17,147 @@ namespace SeleniumCore.Samples.Tests
     [TestClass]
     public class FunctionsUiTests : SeleniumTest
     {
+        #region DisplayedTests
         [TestMethod]
-        public void CheckIfIsDisplayed()
+        public void Displayed_CheckIfIsDisplayed()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
-                browser.CheckIfIsDisplayed("#dispblayed");
+                browser.NavigateToUrl("/test/Displayed");
+                browser.CheckIfIsDisplayed("#displayed");
                 browser.First("#displayed").CheckIfIsDisplayed();
-            });
-        }
-
-        [TestMethod]
-        public void CheckIfIsNotDisplayed()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
-                browser.CheckIfIsNotDisplayed("#non-displayed");
-                browser.First("#non-displayed").CheckIfIsNotDisplayed();
                 browser.First("#displayed-zero-draw-rec").CheckIfIsDisplayed();
             });
         }
 
         [TestMethod]
-        public void CheckIfHasAttribute()
+        public void Displayed_CheckIfIsNotDisplayed()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
+                browser.NavigateToUrl("/test/Displayed");
+                browser.CheckIfIsNotDisplayed("#non-displayed");
+                browser.First("#non-displayed").CheckIfIsNotDisplayed();
+            });
+        }
+
+        [TestMethod]
+        public void Displayed_ExpectedException()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/Displayed");
+
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#displayed").CheckIfIsNotDisplayed();
+                });
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#non-displayed").CheckIfIsDisplayed();
+                });
+            });
+        }
+        #endregion
+
+        #region AttributeTests
+        [TestMethod]
+        public void Attribute_CheckIfHasAttribute()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/Attribute");
                 browser.First("#content").CheckIfHasAttribute("class");
+                browser.First("#dis-button").CheckIfHasAttribute("disabled");
             });
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException), AllowDerivedTypes = true)]
-        public void CheckIfHasAttributeExpectedException()
+        public void Attribute_CheckIfHasNotAttribute()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
-                browser.First("#content").CheckIfHasAttribute("title");
-            });
-        }
-
-        [TestMethod]
-        public void CheckIfHasNotAttribute()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
+                browser.NavigateToUrl("/test/Attribute");
 
                 browser.First("#content").CheckIfHasNotAttribute("title");
-            });
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void CheckIfHasNotAttributeExpectedException()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
-
-                browser.First("#content").CheckIfHasNotAttribute("class");
-            });
-        }
-
-        [TestMethod]
-        public void GetFullSelector()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
-                TestContext.WriteLine(
-                    browser.First("#displayed").FindElements("div p")
-                        .FullSelector);
-            });
-        }
-
-        [TestMethod]
-        public void SearchInElementsCollection()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
-                browser.FindElements("form").FindElements("div").ThrowIfSequenceEmpty();
-            });
-        }
-
-
-
-        [TestMethod]
-        public void HasAttributeTest()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
-                browser.First("#dis-button").CheckIfHasAttribute("disabled");
                 browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
             });
         }
 
         [TestMethod]
-        [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
-        public void HasAttributeTest2()
+        public void Attribute_CheckIfHasAttribute_ExpectedException()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
-                browser.First("#dis-button").CheckIfHasNotAttribute("disabled");
+                browser.NavigateToUrl("/test/Attribute");
+
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#content").CheckIfHasAttribute("title");
+                });
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#submit-button").CheckIfHasAttribute("disabled");
+                });
             });
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void HasAttributeTest3()
+        public void Attribute_CheckIfHasNotAttribute_ExpectedException()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
-                browser.First("#submit-button").CheckIfHasAttribute("disabled");
+                browser.NavigateToUrl("/test/Attribute");
+
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#content").CheckIfHasNotAttribute("class");
+                });
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#dis-button").CheckIfHasNotAttribute("disabled");
+                });
             });
         }
 
         [TestMethod]
-        public void HasAttributeTest4()
+        public void Attribute_CheckAttribute()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
-                browser.First("#dis-button").CheckIfHasAttribute("disabled");
-                browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
-            });
-        }
-
-        [TestMethod]
-        public void CheckAttributeTest()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
+                browser.NavigateToUrl("/test/Attribute");
                 browser.First("#submit-button").CheckAttribute("type", "submit");
             });
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NoSuchElementException))]
-        public void NoParentTest()
+        [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
+        public void Attribute_CheckAttribute_ExpectedException()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/Attribute");
+                browser.First("#submit-button").CheckAttribute("type", "button");
+            });
+        }
+        #endregion
+
+        #region ElementTests
+        [TestMethod]
+        [ExpectedSeleniumException(typeof(EmptySequenceException))]
+        public void Element_Single_ExpectedException()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/FindElements");
+
+                browser.Single("nonexistent");
+            });
+        }
+
+        [TestMethod]
+        [ExpectedSeleniumException(typeof(NoSuchElementException))]
+        public void Element_NoParentTest()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -174,17 +167,89 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void UrlComparisonTest1()
+        public void Element_FindElements_SearchInElementsCollection()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/NoParentTest");
-                browser.CheckUrl(url => url.Contains("/test/NoParentTest"));
+                browser.NavigateToUrl("/test/FindElements");
+                browser.First("#full-selector").FindElements("p").ThrowIfSequenceEmpty();
+                browser.First("#full-selector").FindElements("div p").ThrowIfSequenceEmpty();
             });
         }
 
         [TestMethod]
-        public void AlertTest()
+        public void Element_FindElements_GetFullSelector()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/FindElements");
+                TestContext.WriteLine(
+                    browser.First("#full-selector").FindElements("div p")
+                        .FullSelector);
+
+                TestContext.WriteLine(
+                    browser.First("#full-selector-empty").FindElements("div p")
+                        .FullSelector);
+            });
+        }
+
+        [TestMethod]
+        public void Element_ElementAtFirst1()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/elementatfirst");
+                MSAssert.AreEqual(
+                    browser
+                        .ElementAt("div > div", 0)
+                        .First("#first0")
+                        .GetInnerText()?.ToLower(), "first0");
+            });
+        }
+
+        [TestMethod]
+        public void Element_ElementAtFirst2()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/elementatfirst");
+                MSAssert.AreEqual(browser
+                    .ElementAt("#divs > div", 1)
+                    .First("div")
+                    .GetInnerText()?.ToLower(), "first1");
+            });
+        }
+
+        [TestMethod]
+        public void Element_ElementAtFirst3()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/elementatfirst");
+                MSAssert.AreEqual(browser
+                    .ElementAt("#divs > div", 2)
+                    .ParentElement.First("#first2")
+                    .GetInnerText()?.ToLower(), "first2");
+            });
+        }
+
+        [TestMethod]
+        public void Element_First_SelectBy()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/TemporarySelector");
+                browser.SelectMethod = s => SelectBy.CssSelector(s, "[data-ui='{0}']");
+                browser.First("p", By.TagName).CheckIfTextEquals("p");
+                browser.First("id", By.Id).CheckIfTextEquals("id");
+                browser.First("id").CheckIfTextEquals("data");
+            });
+        }
+        #endregion
+
+        #region AlertTests
+        [TestMethod]
+        public void Alert_CheckIfAlertText()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -195,11 +260,9 @@ namespace SeleniumCore.Samples.Tests
             });
         }
 
-
-
         [TestMethod]
-        [ExpectedException(typeof(AlertException))]
-        public void ExpectedExceptionTest2()
+        [ExpectedSeleniumException(typeof(AlertException))]
+        public void Alert_CheckIfAlertText_ExpectedException()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -210,7 +273,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void ConfirmTest()
+        public void Alert_ConfirmAlert()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -225,6 +288,9 @@ namespace SeleniumCore.Samples.Tests
                 browser.DismissAlert().First("#message").CheckIfInnerTextEquals("Dismiss", false);
             });
         }
+        #endregion
+
+        #region SelectMethodTests
 
         [TestMethod]
         public void SelectMethodTest()
@@ -233,26 +299,77 @@ namespace SeleniumCore.Samples.Tests
             {
                 browser.NavigateToUrl("/test/SelectMethod");
 
-                Func<string, By> sMethod = s => By.CssSelector($"[data-ui='{s}']");
-                browser.SelectMethod = sMethod;
+                Func<string, By> selectMethod = s => By.CssSelector($"[data-ui='{s}']");
+                browser.SelectMethod = selectMethod;
 
-                var d = browser.First("d");
-                d.SetCssSelectMethod();
-                var c = d.First("#c");
-                c.ParentElement.CheckIfHasAttribute("data-ui");
+                var outerElem = browser.First("outer-data-ui");
+                var innerElem = outerElem.First("inner-data-ui");
 
-                //select css method - test switching
-                browser.SetCssSelector();
-
-                var a = browser.First("#a");
-                a.SelectMethod = sMethod;
-                var e = a.First("e");
-                e.First("#b");
-
-                a.SetBrowserSelectMethod();
-                a.First("#c");
+                innerElem.CheckIfHasAttribute("data-ui");
+                innerElem.CheckIfHasNotAttribute("id");
+                innerElem.ParentElement.CheckIfHasNotAttribute("data-ui");
             });
         }
+
+        [TestMethod]
+        public void SelectMethod_Failure()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/SelectMethod");
+
+                Func<string, By> selectMethod = s => By.CssSelector($"[data-ui='{s}']");
+                browser.SelectMethod = selectMethod;
+
+                var outerElem = browser.First("outer-data-ui");
+                MSAssert.ThrowsException<NoSuchElementException>(() =>
+                {
+                    var innerElem = outerElem.First("#inner-id");
+                });
+            });
+        }
+
+        [TestMethod]
+        public void SelectMethod_InnerCss()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/SelectMethod");
+
+                Func<string, By> selectMethod = s => By.CssSelector($"[data-ui='{s}']");
+                browser.SelectMethod = selectMethod;
+
+                var outerElem = browser.First("outer-data-ui");
+                outerElem.SetCssSelectMethod();
+                var innerElem = outerElem.First("#inner-id");
+
+                innerElem.CheckIfHasAttribute("id");
+                innerElem.CheckIfHasNotAttribute("data-ui");
+                innerElem.ParentElement.CheckIfHasNotAttribute("id");
+            });
+        }
+
+        [TestMethod]
+        public void SelectMethod_BrowserCss()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/SelectMethod");
+
+                Func<string, By> selectMethod = s => By.CssSelector($"[data-ui='{s}']");
+                browser.SelectMethod = selectMethod;
+
+                var outerElem = browser.First("outer-data-ui");
+                outerElem.SetCssSelectMethod();
+
+                browser.SetCssSelector();
+                var innerElem = browser.First("#inner-id");
+
+                innerElem.CheckIfHasAttribute("id");
+                innerElem.CheckIfHasNotAttribute("data-ui");
+            });
+        }
+        #endregion
 
         [TestMethod]
         public void FileDialogTest()
@@ -271,16 +388,44 @@ namespace SeleniumCore.Samples.Tests
             });
         }
 
+        #region TextTests
         [TestMethod]
-        public void TextTest()
+        public void Text_CheckIfTextEquals()
         {
             this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/text");
                 browser.First("#button").CheckIfTextEquals("text", false);
                 browser.First("#input").CheckIfTextEquals("text", false);
-                browser.First("#area").CheckIfTextEquals("text", false);
 
+                browser.First("#area").CheckIfTextEquals("TeXt", false);
+                browser.First("#area").CheckIfTextEquals("text");
+            });
+        }
+
+        [TestMethod]
+        public void Text_CheckIfTextEquals_ExpectedException()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/text");
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#input").CheckIfTextEquals("text2", false);
+                });
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#area").CheckIfTextEquals("TeXt");
+                });
+            });
+        }
+
+        [TestMethod]
+        public void Text_CheckIfText()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/text");
                 browser.First("#button").CheckIfText(s => s.ToLower().Contains("text"));
                 browser.First("#input").CheckIfText(s => s.Contains("text"));
                 browser.First("#area").CheckIfText(s => s.Contains("text"));
@@ -288,12 +433,50 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void JsInnerTextTest()
+        [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
+        public void Text_CheckIfText_ExpectedException()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/JsTestSite");
-                var elm = browser.First("#hiddenElement");
+                browser.NavigateToUrl("/test/text");
+                browser.First("#input").CheckIfText(s => !s.Contains("text"));
+            });
+        }
+        #endregion
+
+        #region JsTests
+        [TestMethod]
+        public void SetJsInputPropertyTest()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/JSView");
+                var input = browser.First("#input-set");
+                const string inputValue = "new value";
+                input.SetJsElementProperty("value", inputValue);
+                input.CheckIfValue(inputValue);
+            });
+        }
+
+        [TestMethod]
+        public void GetJsInputPropertyTest()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/JSView");
+                var input = browser.First("#input-get");
+                input.CheckIfValue("input1");
+                MSAssert.AreEqual(input.GetJsElementPropertyValue("value"), "input1");
+            });
+        }
+
+        [TestMethod]
+        public void JsInnerText()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/JSView");
+                var elm = browser.First("#input-hidden");
                 MSAssert.IsTrue(string.Equals(elm.GetJsInnerText()?.Trim(), "InnerText",
                     StringComparison.OrdinalIgnoreCase));
                 elm.CheckIfJsPropertyInnerText(c => c == "InnerText")
@@ -302,98 +485,45 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void JsInnerHtmlTest()
+        public void JsInnerHtml()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/JsHtmlTest");
+                browser.NavigateToUrl("/test/JSView");
                 var elm = browser.First("#htmlTest");
                 var content = elm.GetJsInnerHtml()?.Trim() ?? "";
                 MSAssert.IsTrue(content.Contains("<span>") && content.Contains("</span>"));
                 elm.CheckIfJsPropertyInnerHtml(c => c.Contains("<span>") && c.Contains("</span>"));
             });
         }
+        #endregion
 
-        [TestMethod]
-        public void ElementAtFirst1()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/elementatfirst");
-                MSAssert.AreEqual(
-                    browser
-                        .ElementAt("div > div", 0)
-                        .First("#first0")
-                        .GetInnerText()?.ToLower(), "first0");
-            });
-        }
-
-        [TestMethod]
-        public void ElementAtFirst2()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/elementatfirst");
-                MSAssert.AreEqual(browser
-                    .ElementAt("#divs > div", 1)
-                    .First("div")
-                    .GetInnerText()?.ToLower(), "first1");
-            });
-        }
-
-        [TestMethod]
-        public void ElementAtFirst3()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/elementatfirst");
-                MSAssert.AreEqual(browser
-                    .ElementAt("#divs > div", 2)
-                    .ParentElement.First("#first2")
-                    .GetInnerText()?.ToLower(), "first2");
-            });
-        }
-
-        [TestMethod]
-        public void First()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/TemporarySelector");
-                browser.SelectMethod = s => SelectBy.CssSelector(s, "[data-ui='{0}']");
-                browser.First("p", By.TagName).CheckIfTextEquals("p");
-                browser.First("id", By.Id).CheckIfTextEquals("id");
-                browser.First("id").CheckIfTextEquals("data");
-            });
-        }
-
+        #region ElementContained
         [TestMethod]
         [ExpectedSeleniumException(typeof(EmptySequenceException))]
-        public void ElementContained_NoElement_ExpectedFailure()
+        public void ElementContained_CheckIfContainsElement_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/ElementContained");
 
-                var a = browser.First("#no");
-                a.CheckIfContainsElement("span");
+                var elem = browser.First("#none");
+                elem.CheckIfContainsElement("span");
             });
         }
 
         [TestMethod]
-        public void ElementContained_NoElement()
+        public void ElementContained_CheckIfNotContainsElement_NoElement()
         {
             this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/ElementContained");
-                browser.First("#no").CheckIfNotContainsElement("span");
+                browser.First("#none").CheckIfNotContainsElement("span");
             });
         }
 
         [TestMethod]
-
-
-        public void ElementContained_OneElement_ExpectedFailure()
+        public void ElementContained_CheckIfNotContainsElement_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -402,69 +532,32 @@ namespace SeleniumCore.Samples.Tests
                 {
                     browser.First("#one").CheckIfNotContainsElement("span");
                 });
+                MSAssert.ThrowsException<MoreElementsInSequenceException>(() =>
+                {
+                    browser.First("#two").CheckIfNotContainsElement("span");
+                });
             });
         }
 
         [TestMethod]
-        public void ElementContained_OneElement()
+        public void ElementContained_CheckIfContainsElement()
         {
             this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/ElementContained");
                 browser.First("#one").CheckIfContainsElement("span");
-            });
-
-            try
-            {
-            }
-            catch (Exception ex)
-            {
-                var message = ex.ToString();
-
-                if (message.Contains("child") || !message.Contains("2"))
-                {
-                    throw;
-                }
-            }
-        }
-
-        [TestMethod]
-        public void ElementContained_TwoElement_ExpectedFailure()
-        {
-            try
-            {
-                this.RunInAllBrowsers(browser =>
-                {
-                    browser.NavigateToUrl("/test/ElementContained");
-                    browser.First("#two").CheckIfNotContainsElement("span");
-                });
-            }
-            catch (Exception ex)
-            {
-                var message = ex.ToString();
-                if (!message.Contains("children") || !message.Contains("2"))
-                {
-                    throw;
-                }
-            }
-        }
-
-        [TestMethod]
-        public void ElementContained_TwoElement()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/ElementContained");
                 browser.First("#two").CheckIfContainsElement("span");
             });
         }
+        #endregion
 
+        #region ValueTests
         [TestMethod]
-        public void CheckValueTest()
+        public void Value_CheckIfValue()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/valuetest");
+                browser.NavigateToUrl("/test/value");
                 browser.First("#input-radio").CheckIfValue("radio1");
                 browser.First("#input-radio2").CheckIfValue("radio2");
                 browser.First("#checkbox1").CheckIfValue("checkboxvalue1");
@@ -477,18 +570,30 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void SetJsInputPropertyTest()
+        public void Value_CheckIfValue_ExpectedException()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/JSPropertySetTest");
-                var input = browser.First("#input1");
-                const string inputValue = "4012 5770 5655";
-                input.SetJsElementProperty("value", inputValue);
-                input.CheckIfValue(inputValue);
-                MSAssert.AreEqual(input.GetJsElementPropertyValue("value"), inputValue);
+                browser.NavigateToUrl("/test/value");
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#input-radio2").CheckIfValue("radio1");
+                });
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#area").CheckIfValue("wrongvalue");
+                });
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#input-text").CheckIfValue("texT1");
+                });
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#input-text").CheckIfValue("   text1   ", trimValue: false);
+                });
             });
         }
+        #endregion
 
         [TestMethod]
         public void CookieTest()
@@ -521,12 +626,13 @@ namespace SeleniumCore.Samples.Tests
             });
         }
 
+        #region UrlTests
         [TestMethod]
-        public void CheckHyperLink()
+        public void Url_CheckHyperLink_Relative()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/hyperlink");
+                browser.NavigateToUrl("/test/HyperLink");
                 browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "/path/test?query=test#fragment",
                     UrlKind.Relative,
                     UriComponents.PathAndQuery);
@@ -538,6 +644,15 @@ namespace SeleniumCore.Samples.Tests
                     UriComponents.PathAndQuery);
                 browser.CheckIfHyperLinkEquals("#RelativeLink", "path/test?query=test#fragment", UrlKind.Relative,
                     UriComponents.PathAndQuery);
+            });
+        }
+
+        [TestMethod]
+        public void Url_CheckHyperLink_Absolute()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/HyperLink");
                 browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.google.com/path/test?query=test#fragment",
                     UrlKind.Absolute, UriComponents.PathAndQuery);
                 browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.google.com/path/test?query=test#fragment",
@@ -545,117 +660,97 @@ namespace SeleniumCore.Samples.Tests
                 browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema", "//localhost:1234/path/test?query=test#fragment",
                     UrlKind.Absolute, UriComponents.PathAndQuery);
                 browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema",
-                    "//localhostads:1234/path/test?query=test#fragment", UrlKind.Absolute, UriComponents.PathAndQuery);
+                    "//localhostads:1234/path/test?query=test#fragment",
+                    UrlKind.Absolute, UriComponents.PathAndQuery);
             });
         }
 
         [TestMethod]
-        public void CheckHyperLink_Failure1()
+        public void Url_CheckHyperLink_Relative_Failure()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/hyperlink");
+                browser.NavigateToUrl("/test/HyperLink");
 
                 MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
                 {
                     browser.CheckIfHyperLinkEquals("#RelativeLink", "/path0/test?query=test#fragment", UrlKind.Relative,
                         UriComponents.PathAndQuery);
                 });
-            });
-        }
-
-        [TestMethod]
-        public void CheckHyperLink_Failure2()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/hyperlink");
-
                 MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
                 {
-                    browser.CheckIfHyperLinkEquals("#RelativeLink", "https://www.google.com/path/test?query=test#fragment",
-                        UrlKind.Absolute);
+                    browser.CheckIfHyperLinkEquals("#RelativeLink", "/path/test?query=test#fragment_nonexistent",
+                        UrlKind.Relative, UriComponents.AbsoluteUri);
                 });
             });
         }
 
         [TestMethod]
-        public void CheckHyperLink_Failure3()
+        public void Url_CheckHyperLink_Absolute_Failure()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/hyperlink");
+                browser.NavigateToUrl("/test/HyperLink");
 
                 MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
                 {
-                    browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.googles.com/path/test?query=test#fragment",
+                    browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.google.com/path0/test?query=test#fragment",
+                        UrlKind.Absolute, UriComponents.PathAndQuery);
+                });
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema",
+                        "https://localhost:1234/path/test?query=test#fragment", UrlKind.Absolute,
+                        UriComponents.AbsoluteUri);
+                });
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.CheckIfHyperLinkEquals("#AbsoluteLink", "https://www.google.com/path/test?query=test#fragment_nonexistent",
                         UrlKind.Absolute, UriComponents.AbsoluteUri);
                 });
             });
         }
 
         [TestMethod]
-        public void CheckHyperLink_Failure4()
+        public void Url_CheckUrl()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/hyperlink");
-                try
-                {
-                    browser.CheckIfHyperLinkEquals("#AbsoluteSameSchema",
-                        "https://localhost:1234/path/test?query=test#fragment", UrlKind.Absolute,
-                        UriComponents.AbsoluteUri);
-                }
-                catch (UnexpectedElementStateException)
-                {
-                }
+                browser.NavigateToUrl("/test/HyperLink");
+                browser.CheckUrl(url => url.Contains("/test/HyperLink"));
             });
         }
 
         [TestMethod]
-        public void SingleExceptionTest()
+        [ExpectedSeleniumException(typeof(BrowserLocationException))]
+        public void Url_CheckUrl_Failure()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/hyperlink");
-
-                MSAssert.ThrowsException<EmptySequenceException>(() =>
-                {
-                    browser.Single("asdasd");
-                });
+                browser.NavigateToUrl("/test/HyperLink");
+                browser.CheckUrl(url => url.Contains("/test/HyperLink_nonexistent"));
             });
         }
 
         [TestMethod]
-        public void CheckIfUrlExistsTest()
+        public void Url_CheckIfUrlExists()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.CheckIfUrlIsAccessible("/test/hyperlink", UrlKind.Relative);
+                browser.CheckIfUrlIsAccessible("/test/HyperLink", UrlKind.Relative);
             });
         }
-        [TestMethod]
-        public void CheckIfUrlExistsTest_ExceptionExpected()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                MSAssert.ThrowsException<WebException>(() =>
-                {
 
-                    browser.CheckIfUrlIsAccessible("/test/hyperlink_notexisting", UrlKind.Relative);
-                });
-            });
-        }
         [TestMethod]
-        public void CheckIfUrlExistsTest2()
+        [ExpectedSeleniumException(typeof(WebException))]
+        public void Url_CheckIfUrlExists_ExceptionExpected()
         {
             this.RunInAllBrowsers(browser =>
             {
-                MSAssert.ThrowsException<SeleniumTestFailedException>(() =>
-                {
-                    browser.CheckIfUrlIsAccessible("/test/NonExistent359", UrlKind.Relative);
-                });
+                browser.CheckIfUrlIsAccessible("/test/HyperLink_notexisting", UrlKind.Relative);
             });
         }
+        #endregion
+
     }
 }
