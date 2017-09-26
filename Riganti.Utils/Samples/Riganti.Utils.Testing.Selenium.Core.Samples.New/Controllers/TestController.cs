@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Samples.New.Controllers
@@ -19,12 +20,18 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.New.Controllers
 
         public ActionResult CookiesTest()
         {
+            if (!ControllerContext.HttpContext.Request.Cookies.ContainsKey("test_cookie"))
+            {
+                CookieOptions cookie = new CookieOptions();
+                Response.Cookies.Append("test_cookie", "default value", cookie);
+            }
             return View(new CookieModel(){Text = ControllerContext.HttpContext.Request.Cookies["test_cookie"] });
         }
 
         public ActionResult CookiesSetCookie()
         {
-            ControllerContext.HttpContext.Response.Cookies.Append("test_cookie", "cookie set to this value");
+            CookieOptions cookie = new CookieOptions();
+            Response.Cookies.Append("test_cookie", "new value", cookie);
             return View("CookiesTest", new CookieModel() { Text = ControllerContext.HttpContext.Request.Cookies["test_cookie"] });
         }
         public ActionResult Displayed()

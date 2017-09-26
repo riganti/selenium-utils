@@ -693,29 +693,15 @@ namespace SeleniumCore.Samples.Tests
             Action<IBrowserWrapper> test = browser =>
             {
                 browser.NavigateToUrl("/test/CookiesTest");
-                browser.First("#CookieIndicator").CheckIfTextEquals("False");
+                browser.NavigateToUrl("/test/CookiesTest");
+                browser.First("#CookieIndicator").CheckIfInnerTextEquals("default value");
+                
                 browser.Click("#SetCookies").Wait();
                 browser.NavigateToUrl("/test/CookiesTest");
-                browser.First("#CookieIndicator").CheckIfTextEquals("True");
+                browser.First("#CookieIndicator").CheckIfInnerTextEquals("new value");
             };
             this.RunInAllBrowsers(test);
             this.RunInAllBrowsers(test);
-        }
-
-        [TestMethod]
-        public void TextNotEquals_ExceptionExpected()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/CookiesTest");
-                var label = browser.First("#CookieIndicator");
-                label.CheckIfTextNotEquals("True");
-                label.CheckIfTextEquals("False");
-                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
-                {
-                    label.CheckIfTextNotEquals("False");
-                });
-            });
         }
 
         [TestMethod]

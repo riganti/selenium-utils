@@ -90,7 +90,7 @@ namespace SeleniumCore.Samples.Tests
 
 
         [TestMethod]
-        public void Checked_CheckSwitchState()
+        public void Checked_CheckStateSwitching()
         {
             this.RunInAllBrowsers(browser =>
             {
