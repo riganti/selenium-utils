@@ -1,7 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.Selenium.Core;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
-using Riganti.Utils.Testing.Selenium.Core.Configuration;
+using MSAssert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests;
 
 namespace SeleniumCore.Samples.Tests
 {
@@ -9,92 +10,64 @@ namespace SeleniumCore.Samples.Tests
     public class IsCheckedTests : SeleniumTest
     {
         [TestMethod]
-        public void IsNotCheckedTest()
+        public void Checked_CheckIfIsNotChecked()
         {
             this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#checkbox2").CheckIfIsNotChecked();
+                browser.Single("#RadioNotChecked").CheckIfIsNotChecked();
             });
         }
 
         [TestMethod]
-        public void IsCheckedTest()
+        public void Checked_CheckIfIsChecked()
         {
             this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#checkbox1").CheckIfIsChecked();
-            });
-        }
-
-        [TestMethod]
-        public void IsCheckedApiTest()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/Checkboxes");
-                browser.Single("#checkbox1").CheckIfIsChecked();
-            });
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void CheckIfIsChecked_TypeTest()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/Checkboxes");
-                browser.Single("#textbox1").CheckIfIsChecked();
-            });
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void CheckIfIsNotChecked_TypeTest()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/Checkboxes");
-                browser.Single("#textbox1").CheckIfIsNotChecked();
-            });
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void CheckIfIsChecked_TagnameTest()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/Checkboxes");
-                browser.Single("#span1").CheckIfIsChecked();
-            });
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void CheckIfIsNotChecked_TagnameTest()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/Checkboxes");
-                browser.Single("#span1").CheckIfIsNotChecked();
-            });
-        }
-
-        [TestMethod]
-        public void CheckIfIsChecked_RadioButton()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#RadioChecked").CheckIfIsChecked();
             });
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void CheckIfIsChecked_RadioButton_ExceptionExpected()
+        public void Checked_CheckIfIsChecked_TypeFailure()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/Checkboxes");
+                MSAssert.ThrowsException<UnexpectedElementStateException>((() =>
+                {
+                    browser.Single("#textbox1").CheckIfIsChecked();
+                }));
+                MSAssert.ThrowsException<UnexpectedElementStateException>((() =>
+                {
+                    browser.Single("#span1").CheckIfIsChecked();
+                }));
+            });
+        }
+
+        [TestMethod]
+        public void Checked_CheckIfIsNotChecked_TypeFailure()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/Checkboxes");
+                MSAssert.ThrowsException<UnexpectedElementStateException>((() =>
+                {
+                    browser.Single("#textbox1").CheckIfIsNotChecked();
+                }));
+                MSAssert.ThrowsException<UnexpectedElementStateException>((() =>
+                {
+                    browser.Single("#span1").CheckIfIsNotChecked();
+                }));
+            });
+        }
+
+        [TestMethod]
+        [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
+        public void Checked_CheckIfIsChecked_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -104,8 +77,8 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void CheckIfIsNotChecked_RadioButton()
+        [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
+        public void Checked_CheckIfIsNotChecked_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -114,29 +87,10 @@ namespace SeleniumCore.Samples.Tests
             });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void CheckIfIsNotChecked_RadioButtonApi()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/Checkboxes");
-                browser.Single("#RadioChecked").CheckIfIsNotChecked();
-            });
-        }
+
 
         [TestMethod]
-        public void CheckIfIsNotChecked_RadioButton_ExceptionExpected()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/Checkboxes");
-                browser.Single("#RadioNotChecked").CheckIfIsNotChecked();
-            });
-        }
-
-        [TestMethod]
-        public void CheckCheckboxes()
+        public void Checked_CheckSwitchState()
         {
             this.RunInAllBrowsers(browser =>
             {
