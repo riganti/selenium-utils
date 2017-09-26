@@ -56,6 +56,10 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.New.Controllers
         public ActionResult Site2() { return View(null); }
         public ActionResult TemporarySelector() { return View(null); }
         public ActionResult Text() { return View(null); }
+        public ActionResult Title()
+        {
+            return View(null);
+        }
         public ActionResult Value() { return View(null); }
 
     }
