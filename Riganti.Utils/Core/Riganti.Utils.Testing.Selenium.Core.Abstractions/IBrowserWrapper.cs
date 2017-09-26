@@ -44,8 +44,10 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions
         void NavigateToUrl();
         void NavigateToUrl(string url);
         void Refresh();
+#if net461
         IBrowserWrapper SendEnterKey();
         IBrowserWrapper SendEscKey();
+#endif
         IBrowserWrapper SendKeys(string selector, string text, Func<string, By> tmpSelectMethod = null);
         void SetCssSelector();
         void SetTimeouts(TimeSpan pageLoadTimeout, TimeSpan implicitlyWait);

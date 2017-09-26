@@ -8,7 +8,7 @@ using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    public class ElementWrapperCollection : ICollection<IElementWrapper>, IElementWrapperCollection
+    public class ElementWrapperCollection : IReadOnlyCollection<IElementWrapper>, IElementWrapperCollection
     {
         public string Selector { get; }
         public IElementWrapper this[int index]
@@ -181,7 +181,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public void CopyTo(IElementWrapper[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public bool Remove(IElementWrapper item)

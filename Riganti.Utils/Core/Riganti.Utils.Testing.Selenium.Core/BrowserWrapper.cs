@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Diagnostics;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -490,7 +489,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
 
         #region FileUploadDialog
-
+#if net461
         public virtual IBrowserWrapper SendEnterKey()
         {
 
@@ -505,6 +504,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             Wait();
             return this;
         }
+#endif
 
         #endregion FileUploadDialog
 
