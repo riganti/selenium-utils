@@ -85,7 +85,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void Attribute_CheckIfHasAttribute_ExpectedException()
+        public void Attribute_CheckIfHasAttribute_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -103,7 +103,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void Attribute_CheckIfHasNotAttribute_ExpectedException()
+        public void Attribute_CheckIfHasNotAttribute_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -157,7 +157,7 @@ namespace SeleniumCore.Samples.Tests
 
         [TestMethod]
         [ExpectedSeleniumException(typeof(NoSuchElementException))]
-        public void Element_NoParentTest()
+        public void Element_NoParentTest_ExpectedException()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -194,7 +194,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void Element_ElementAtFirst1()
+        public void Element_ElementAtFirst()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -204,28 +204,12 @@ namespace SeleniumCore.Samples.Tests
                         .ElementAt("div > div", 0)
                         .First("#first0")
                         .GetInnerText()?.ToLower(), "first0");
-            });
-        }
 
-        [TestMethod]
-        public void Element_ElementAtFirst2()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/elementatfirst");
                 MSAssert.AreEqual(browser
                     .ElementAt("#divs > div", 1)
                     .First("div")
                     .GetInnerText()?.ToLower(), "first1");
-            });
-        }
 
-        [TestMethod]
-        public void Element_ElementAtFirst3()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/elementatfirst");
                 MSAssert.AreEqual(browser
                     .ElementAt("#divs > div", 2)
                     .ParentElement.First("#first2")
@@ -262,7 +246,7 @@ namespace SeleniumCore.Samples.Tests
 
         [TestMethod]
         [ExpectedSeleniumException(typeof(AlertException))]
-        public void Alert_CheckIfAlertText_ExpectedException()
+        public void Alert_CheckIfAlertText_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -291,9 +275,8 @@ namespace SeleniumCore.Samples.Tests
         #endregion
 
         #region SelectMethodTests
-
         [TestMethod]
-        public void SelectMethodTest()
+        public void SelectMethod_Basic()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -312,7 +295,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void SelectMethod_Failure()
+        public void SelectMethod_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -330,7 +313,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void SelectMethod_InnerCss()
+        public void SelectMethod_SwitchElementSelector()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -350,7 +333,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void SelectMethod_BrowserCss()
+        public void SelectMethod_SwitchBrowserSelector()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -371,23 +354,6 @@ namespace SeleniumCore.Samples.Tests
         }
         #endregion
 
-        [TestMethod]
-        public void FileDialogTest()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/FileDialog");
-
-                var tempFile = Path.GetTempFileName();
-                File.WriteAllText(tempFile, "test content");
-
-                browser.FileUploadDialogSelect(browser.First("input[type=file]"), tempFile);
-                browser.First("input[type=file]").CheckAttribute("value", s => !string.IsNullOrWhiteSpace(s));
-
-                File.Delete(tempFile);
-            });
-        }
-
         #region TextTests
         [TestMethod]
         public void Text_CheckIfTextEquals()
@@ -404,7 +370,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void Text_CheckIfTextEquals_ExpectedException()
+        public void Text_CheckIfTextEquals_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -434,7 +400,7 @@ namespace SeleniumCore.Samples.Tests
 
         [TestMethod]
         [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
-        public void Text_CheckIfText_ExpectedException()
+        public void Text_CheckIfText_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -446,7 +412,7 @@ namespace SeleniumCore.Samples.Tests
 
         #region JsTests
         [TestMethod]
-        public void SetJsInputPropertyTest()
+        public void Js_SetJsElementProperty()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -459,7 +425,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void GetJsInputPropertyTest()
+        public void Js_GetJsElementPropertyValue()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -471,7 +437,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void JsInnerText()
+        public void Js_CheckIfJsPropertyInnerText()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -485,7 +451,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void JsInnerHtml()
+        public void Js_CheckIfJsPropertyInnerHtml()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -595,37 +561,6 @@ namespace SeleniumCore.Samples.Tests
         }
         #endregion
 
-        [TestMethod]
-        public void CookieTest()
-        {
-            Action<IBrowserWrapper> test = browser =>
-            {
-                browser.NavigateToUrl("/test/CookiesTest");
-                browser.First("#CookieIndicator").CheckIfTextEquals("False");
-                browser.Click("#SetCookies").Wait();
-                browser.NavigateToUrl("/test/CookiesTest");
-                browser.First("#CookieIndicator").CheckIfTextEquals("True");
-            };
-            this.RunInAllBrowsers(test);
-            this.RunInAllBrowsers(test);
-        }
-
-        [TestMethod]
-        public void TextNotEquals_ExceptionExpected()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/CookiesTest");
-                var label = browser.First("#CookieIndicator");
-                label.CheckIfTextNotEquals("True");
-                label.CheckIfTextEquals("False");
-                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
-                {
-                    label.CheckIfTextNotEquals("False");
-                });
-            });
-        }
-
         #region UrlTests
         [TestMethod]
         public void Url_CheckHyperLink_Relative()
@@ -666,7 +601,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void Url_CheckHyperLink_Relative_Failure()
+        public void Url_CheckHyperLink_Relative_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -686,7 +621,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void Url_CheckHyperLink_Absolute_Failure()
+        public void Url_CheckHyperLink_Absolute_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -723,7 +658,7 @@ namespace SeleniumCore.Samples.Tests
 
         [TestMethod]
         [ExpectedSeleniumException(typeof(BrowserLocationException))]
-        public void Url_CheckUrl_Failure()
+        public void Url_CheckUrl_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -743,7 +678,7 @@ namespace SeleniumCore.Samples.Tests
 
         [TestMethod]
         [ExpectedSeleniumException(typeof(WebException))]
-        public void Url_CheckIfUrlExists_ExceptionExpected()
+        public void Url_CheckIfUrlExists_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -752,5 +687,52 @@ namespace SeleniumCore.Samples.Tests
         }
         #endregion
 
+        [TestMethod]
+        public void CookieTest()
+        {
+            Action<IBrowserWrapper> test = browser =>
+            {
+                browser.NavigateToUrl("/test/CookiesTest");
+                browser.First("#CookieIndicator").CheckIfTextEquals("False");
+                browser.Click("#SetCookies").Wait();
+                browser.NavigateToUrl("/test/CookiesTest");
+                browser.First("#CookieIndicator").CheckIfTextEquals("True");
+            };
+            this.RunInAllBrowsers(test);
+            this.RunInAllBrowsers(test);
+        }
+
+        [TestMethod]
+        public void TextNotEquals_ExceptionExpected()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/CookiesTest");
+                var label = browser.First("#CookieIndicator");
+                label.CheckIfTextNotEquals("True");
+                label.CheckIfTextEquals("False");
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    label.CheckIfTextNotEquals("False");
+                });
+            });
+        }
+
+        [TestMethod]
+        public void FileDialogTest()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/FileDialog");
+
+                var tempFile = Path.GetTempFileName();
+                File.WriteAllText(tempFile, "test content");
+
+                browser.FileUploadDialogSelect(browser.First("input[type=file]"), tempFile);
+                browser.First("input[type=file]").CheckAttribute("value", s => !string.IsNullOrWhiteSpace(s));
+
+                File.Delete(tempFile);
+            });
+        }
     }
 }
