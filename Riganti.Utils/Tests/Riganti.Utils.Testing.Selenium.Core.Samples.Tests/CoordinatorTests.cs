@@ -25,7 +25,6 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
                 browser.NavigateToUrl();
                 browser.CheckIfTitleEquals("Google");
             });
-
         }
 
     }
