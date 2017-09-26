@@ -4,10 +4,12 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing.Text;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization;
 using System.Text;
 using OpenQA.Selenium;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Attributes;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 {
@@ -21,6 +23,14 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
         {
             get
             {
+                var useFullStack = new StackTrace(this, true).GetFrames()?
+                                       .Any(s => s.GetMethod().GetCustomAttributes<FullStackTraceAttribute>().Any()) ?? false;
+                if (useFullStack)
+                {
+                    return FullStackTrace;
+                }
+
+
                 var allFrames = new StackTrace(this, true).GetFrames()?.Select(s => new { Frame = s, s.GetMethod()?.ReflectedType }).Where(frame => frame.ReflectedType?.Namespace?.Contains("Riganti.Utils.Testing.Selenium") != true).ToList();
                 if (allFrames == null) return "";
 

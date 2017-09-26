@@ -11,5 +11,14 @@ namespace Riganti.Utils.Testing.Selenium.Coordinator.Client
         public DateTime ExpirationDateUtc { get; set; }
 
         public string Url { get; set; }
+        public Uri HubUri
+        {
+            get
+            {
+                if (Url == null) throw new ArgumentException(nameof(Url));
+                var builder = new UriBuilder(Url) { Path = "/wd/hub" };
+                return builder.Uri;
+            }
+        }
     }
 }

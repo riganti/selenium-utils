@@ -15,8 +15,9 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers.Implementation
 
         protected override IWebDriver CreateDriver()
         {
-            return new RemoteWebDriver(new Uri(Lease.Url), new ChromeOptions());
+
+            return new RemoteWebDriver(Lease.HubUri, new ChromeOptions());
         }
-        
+
     }
 }

@@ -15,7 +15,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers.Implementation
 
         protected override IWebDriver CreateDriver()
         {
-            return new RemoteWebDriver(new Uri(Lease.Url), new FirefoxOptions());
+            return new RemoteWebDriver( Lease.HubUri, new FirefoxOptions());
         }
         
     }
