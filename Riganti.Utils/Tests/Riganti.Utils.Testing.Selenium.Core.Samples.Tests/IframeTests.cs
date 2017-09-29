@@ -1,60 +1,48 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
+using Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests;
 
 namespace SeleniumCore.Samples.Tests
 {
     [TestClass]
-    public class IframeTests : SeleniumTest
+    public class IFrameTests : SeleniumTest
     {
         [TestMethod]
-        public void IFrameTest()
+        public void IFrame_CheckInsideIFrame()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("frametest1.aspx");
-                browser.First("#top");
-                browser.First("#topframe");
+                browser.NavigateToUrl("/test/FrameTest1");
+                browser.First("#iframe-test");
 
-                var frame = browser.GetFrameScope("#topframe");
-                frame.First("#frame2_text");
+                var frame = browser.GetFrameScope("#iframe-test");
+                frame.First("#frame2-text").CheckIfTextEquals("frame2 text");
             });
         }
         [TestMethod]
-        public void IFrameTest2()
+        public void IFrame_CheckAllView()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("frametest1.aspx");
-                var elm = browser.First("#top");
-                browser.First("#topframe");
+                browser.NavigateToUrl("/test/FrameTest1");
+                var frame = browser.GetFrameScope("#iframe-test");
+                frame.First("#frame2-text");
 
-                var frame = browser.GetFrameScope("#topframe");
-                frame.First("#frame2_text");
-                elm.First("#child");
-
+                var elm = browser.First("#outside-iframe");
+                elm.First("#child").CheckIfTextEquals("child");
             });
         }
         [TestMethod]
-        public void IFrameExceptionMessageTest()
+        [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
+        public void IFrame_GetFrameScope_ExceptionExpected()
         {
-            // test the exception message
-            try
+            this.RunInAllBrowsers(browser =>
             {
-                this.RunInAllBrowsers(browser =>
-                {
-                    browser.NavigateToUrl("frametest1.aspx");
-                    var frame = browser.GetFrameScope("#top");
-                });
-            }
-            catch (Exception ex)
-            {
-                if (!ex.ToString().Contains("is not a iframe element"))
-                {
-                    throw;
-                }
-            }
-
+                browser.NavigateToUrl("/test/FrameTest1");
+                var frame = browser.GetFrameScope("#outside-iframe");
+            });
         }
     }
 }
