@@ -11,7 +11,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/FrameTest1");
+                browser.NavigateToUrl("/test/IFrameMain");
                 browser.First("#iframe-test");
 
                 var frame = browser.GetFrameScope("#iframe-test");
@@ -23,7 +23,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/FrameTest1");
+                browser.NavigateToUrl("/test/IFrameMain");
                 var frame = browser.GetFrameScope("#iframe-test");
                 frame.First("#frame2-text");
 
@@ -37,7 +37,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/FrameTest1");
+                browser.NavigateToUrl("/test/IFrameMain");
                 var frame = browser.GetFrameScope("#outside-iframe");
             });
         }

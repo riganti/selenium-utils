@@ -304,12 +304,12 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
         {
             Action<IBrowserWrapper> test = browser =>
             {
-                browser.NavigateToUrl("/test/CookiesTest");
-                browser.NavigateToUrl("/test/CookiesTest");
+                browser.NavigateToUrl("/test/Cookies");
+                browser.NavigateToUrl("/test/Cookies");
                 browser.First("#CookieIndicator").CheckIfInnerTextEquals("default value");
                 
                 browser.Click("#SetCookies").Wait();
-                browser.NavigateToUrl("/test/CookiesTest");
+                browser.NavigateToUrl("/test/Cookies");
                 browser.First("#CookieIndicator").CheckIfInnerTextEquals("new value");
             };
             this.RunInAllBrowsers(test);

@@ -13,7 +13,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/ElementSelectionTest");
+                browser.NavigateToUrl("/test/ElementSelection");
 
                 var elm = browser.First("#top-element");
                 MSAssert.AreEqual(elm.Children.Count, 4);
@@ -38,7 +38,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl("/test/NoParentTest");
+                browser.NavigateToUrl("/test/ElementSelection");
                 var parent = browser.First("html").ParentElement;
             });
         }
