@@ -18,7 +18,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
     public class CoordinatorTests : SeleniumTest
     {
         [TestMethod]
-        public void GoogleTest()
+        public void Coordinator_Google()
         {
             this.RunInAllBrowsers(browser =>
             {

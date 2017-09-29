@@ -1,107 +1,89 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riganti.Utils.Testing.Selenium.Core;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
+using MSAssert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace SeleniumCore.Samples.Tests
+namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
 {
     [TestClass]
     public class AttributeTests : SeleniumTest
     {
         [TestMethod]
-        public void HasAttributeTest()
+        public void Attribute_CheckIfHasAttribute()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
-                browser.First("#dis-button").CheckIfHasAttribute("disabled");
-                browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
-            });
-        }
-
-        [TestMethod]
-        public void CheckIfHasAttribute()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
+                browser.NavigateToUrl("/test/Attribute");
                 browser.First("#content").CheckIfHasAttribute("class");
-            });
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException), AllowDerivedTypes = true)]
-        public void CheckIfHasAttributeExpectedException()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
-                browser.First("#content").CheckIfHasAttribute("title");
-            });
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void HasAttributeTest3()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
-                browser.First("#submit-button").CheckIfHasAttribute("disabled");
-            });
-        }
-
-        [TestMethod]
-        public void HasAttributeTest4()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
                 browser.First("#dis-button").CheckIfHasAttribute("disabled");
-                browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
             });
         }
 
         [TestMethod]
-        public void CheckIfHasNotAttribute()
+        public void Attribute_CheckIfHasNotAttribute()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
+                browser.NavigateToUrl("/test/Attribute");
 
                 browser.First("#content").CheckIfHasNotAttribute("title");
+                browser.First("#submit-button").CheckIfHasNotAttribute("disabled");
             });
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void CheckIfHasNotAttributeExpectedException()
+        public void Attribute_CheckIfHasAttribute_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
+                browser.NavigateToUrl("/test/Attribute");
 
-                browser.First("#content").CheckIfHasNotAttribute("class");
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#content").CheckIfHasAttribute("title");
+                });
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#submit-button").CheckIfHasAttribute("disabled");
+                });
             });
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedElementStateException))]
-        public void HasAttributeTest2()
+        public void Attribute_CheckIfHasNotAttribute_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
-                browser.First("#dis-button").CheckIfHasNotAttribute("disabled");
+                browser.NavigateToUrl("/test/Attribute");
+
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#content").CheckIfHasNotAttribute("class");
+                });
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#dis-button").CheckIfHasNotAttribute("disabled");
+                });
             });
         }
 
         [TestMethod]
-        public void CheckAttributeTest()
+        public void Attribute_CheckAttribute()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
+                browser.NavigateToUrl("/test/Attribute");
                 browser.First("#submit-button").CheckAttribute("type", "submit");
+            });
+        }
+
+        [TestMethod]
+        [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
+        public void Attribute_CheckAttribute_ExpectedFailure()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/Attribute");
+                browser.First("#submit-button").CheckAttribute("type", "button");
             });
         }
     }

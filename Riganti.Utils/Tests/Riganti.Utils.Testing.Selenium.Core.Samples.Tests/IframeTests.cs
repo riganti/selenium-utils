@@ -1,10 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riganti.Utils.Testing.Selenium.Core;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
-using Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests;
 
-namespace SeleniumCore.Samples.Tests
+namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
 {
     [TestClass]
     public class IFrameTests : SeleniumTest

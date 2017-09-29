@@ -1,53 +1,50 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riganti.Utils.Testing.Selenium.Core;
+using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
+using MSAssert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace SeleniumCore.Samples.Tests
+namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
 {
     [TestClass]
     public class IsDisplayedTests : SeleniumTest
     {
         [TestMethod]
-        public void CheckIfIsDisplayed()
+        public void IsDisplayed_CheckIfIsDisplayed()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
-                browser.Wait();
+                browser.NavigateToUrl("/test/Displayed");
                 browser.CheckIfIsDisplayed("#displayed");
                 browser.First("#displayed").CheckIfIsDisplayed();
+                browser.First("#displayed-zero-draw-rec").CheckIfIsDisplayed();
             });
-        }
-        [TestMethod]
-        public void CheckIfIsDisplayed_ExceptionCheck()
-        {
-            try
-            {
-                this.RunInAllBrowsers(browser =>
-                {
-                    browser.NavigateToUrl();
-                    browser.CheckIfIsDisplayed("#non-displayed");
-                });
-                throw new TestFrameworkWrongBehaviorException("The element is not visible and test framework does not reacted corectly.");
-            }
-            catch (Exception e)
-            {
-                if (e is  TestFrameworkWrongBehaviorException)
-                {
-                    throw;
-                } 
-            }
         }
 
         [TestMethod]
-        public void CheckIfIsNotDisplayed()
+        public void IsDisplayed_CheckIfIsNotDisplayed()
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
+                browser.NavigateToUrl("/test/Displayed");
                 browser.CheckIfIsNotDisplayed("#non-displayed");
                 browser.First("#non-displayed").CheckIfIsNotDisplayed();
-                browser.First("#displayed-zero-draw-rec").CheckIfIsDisplayed();
+            });
+        }
+
+        [TestMethod]
+        public void IsDisplayed_ExpectedFailure()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/Displayed");
+
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#displayed").CheckIfIsNotDisplayed();
+                });
+                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
+                {
+                    browser.First("#non-displayed").CheckIfIsDisplayed();
+                });
             });
         }
     }

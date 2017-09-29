@@ -1,16 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riganti.Utils.Testing.Selenium.Core;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
-using Riganti.Utils.Testing.Selenium.Core.Configuration;
-using Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests;
 
-namespace SeleniumCore.Samples.Tests
+namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
 {
     [TestClass]
     public class AlertTests : SeleniumTest
     {
         [TestMethod]
-        public void AlertTest()
+        public void Alert_CheckIfAlertTextEquals()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -22,25 +19,32 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void AlertTextCasingTest()
+        [ExpectedSeleniumException(typeof(AlertException))]
+        public void Alert_CheckIfAlertTextEquals_ExpectedFailure()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/alert");
+                browser.First("#button").Click();
+                browser.CheckIfAlertText(s => s.EndsWith("test."), "alert text doesn't end with 'test.'");
+            });
+        }
+
+        [TestMethod]
+        [ExpectedSeleniumException(typeof(AlertException))]
+        public void Alert_CheckIfAlertTextEquals_CaseSensitive_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/alert");
 
                 browser.First("#button").Click();
-                try
-                {
-                    browser.CheckIfAlertTextEquals("Confirm test", true);
-                }
-                catch (AlertException)
-                {
-                }
+                browser.CheckIfAlertTextEquals("Confirm test", true);
             });
         }
 
         [TestMethod]
-        public void AlertContainsTest()
+        public void Alert_CheckIfAlertTextContains()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -52,7 +56,7 @@ namespace SeleniumCore.Samples.Tests
         }
         [TestMethod]
         [ExpectedSeleniumException(typeof(AlertException))]
-        public void AlertContainsExceptionExpectedTest()
+        public void Alert_CheckIfAlertTextContains_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -64,7 +68,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void AlertRuleEndsWithTest()
+        public void Alert_CheckIfAlertText()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -76,7 +80,7 @@ namespace SeleniumCore.Samples.Tests
 
         [TestMethod]
         [ExpectedSeleniumException(typeof(AlertException))]
-        public void AlertEndsWIthExceptionExpectedTest()
+        public void Alert_CheckIfAlertText_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -85,8 +89,22 @@ namespace SeleniumCore.Samples.Tests
                 browser.CheckIfAlertText(s => s.EndsWith("test."), "alert text doesn't end with 'test.'");
             });
         }
-  
-    
-    }
 
+        [TestMethod]
+        public void Alert_ConfirmAlert()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/Confirm");
+
+                var button = browser.First("#button");
+                button.Click();
+
+                browser.ConfirmAlert().First("#message").CheckIfInnerTextEquals("Accept", false);
+
+                button.Click();
+                browser.DismissAlert().First("#message").CheckIfInnerTextEquals("Dismiss", false);
+            });
+        }
+    }
 }

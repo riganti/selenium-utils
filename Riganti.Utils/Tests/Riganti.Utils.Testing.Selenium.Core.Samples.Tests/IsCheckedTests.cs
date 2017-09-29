@@ -1,16 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riganti.Utils.Testing.Selenium.Core;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using MSAssert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-using Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests;
 
-namespace SeleniumCore.Samples.Tests
+namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
 {
     [TestClass]
     public class IsCheckedTests : SeleniumTest
     {
         [TestMethod]
-        public void Checked_CheckIfIsNotChecked()
+        public void IsChecked_CheckIfIsNotChecked()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -21,7 +19,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void Checked_CheckIfIsChecked()
+        public void IsChecked_CheckIfIsChecked()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -32,7 +30,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void Checked_CheckIfIsChecked_TypeFailure()
+        public void IsChecked_CheckIfIsChecked_TypeFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -49,7 +47,7 @@ namespace SeleniumCore.Samples.Tests
         }
 
         [TestMethod]
-        public void Checked_CheckIfIsNotChecked_TypeFailure()
+        public void IsChecked_CheckIfIsNotChecked_TypeFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -67,7 +65,7 @@ namespace SeleniumCore.Samples.Tests
 
         [TestMethod]
         [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
-        public void Checked_CheckIfIsChecked_ExpectedFailure()
+        public void IsChecked_CheckIfIsChecked_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -78,7 +76,7 @@ namespace SeleniumCore.Samples.Tests
 
         [TestMethod]
         [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
-        public void Checked_CheckIfIsNotChecked_ExpectedFailure()
+        public void IsChecked_CheckIfIsNotChecked_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>
             {
@@ -90,7 +88,7 @@ namespace SeleniumCore.Samples.Tests
 
 
         [TestMethod]
-        public void Checked_CheckStateSwitching()
+        public void IsChecked_CheckStateSwitching()
         {
             this.RunInAllBrowsers(browser =>
             {
