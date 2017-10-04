@@ -9,7 +9,7 @@ using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.AssertApi
 {
-    public static class SeleniumTestExecutorExtensions
+    public static class AssertApiSeleniumTestExecutorExtensions
     {
         /// <summary>
         /// Runs the specified testBody in all configured browsers.

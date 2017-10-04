@@ -150,7 +150,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         private string TakeScreenshot(IBrowserWrapper browserWrapper)
         {
-            var testContext = TestSuiteRunner.TestContextAccessor.GetTestContext();
+            var testContext = TestSuiteRunner.TestContextProvider.GetGlobalScopeTestContext();
             try
             {
                 var filename = Path.Combine(testContext.DeploymentDirectory,

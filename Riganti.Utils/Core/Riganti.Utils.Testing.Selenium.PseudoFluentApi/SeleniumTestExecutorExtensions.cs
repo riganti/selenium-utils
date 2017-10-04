@@ -4,7 +4,7 @@ using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    public static class SeleniumTestExecutorExtensions
+    public static class PseudoFluentApiSeleniumTestExecutorExtensions
     {
         /// <summary>
         /// Runs the specified testBody in all configured browsers.
@@ -14,11 +14,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
             executor.TestSuiteRunner.ServiceFactory.RegisterTransient<BrowserWrapper, BrowserWrapperPseudoFluentApi>();
             executor.TestSuiteRunner.RunInAllBrowsers(executor, Convert(testBody), callerMemberName, callerFilePath, callerLineNumber);
         }
-      
+
 
         public static Action<IBrowserWrapper> Convert(Action<BrowserWrapperPseudoFluentApi> action)
         {
             return o => action((BrowserWrapperPseudoFluentApi)o);
         }
     }
+    
 }
