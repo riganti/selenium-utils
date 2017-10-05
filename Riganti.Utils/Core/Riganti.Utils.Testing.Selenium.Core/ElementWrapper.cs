@@ -7,7 +7,10 @@ using System.Linq;
 using System.Threading;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
+using Riganti.Utils.Testing.Selenium.Core.Api;
 using Riganti.Utils.Testing.Selenium.Core.Comparators;
+using Riganti.Utils.Testing.Selenium.Validators.Checkers;
+using Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
@@ -485,14 +488,19 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual IElementWrapper CheckIfInnerTextEquals(string text, bool caseSensitive = true, bool trim = true)
         {
-            if (!string.Equals(text, GetInnerText(),
-                caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
-            {
-                throw new UnexpectedElementStateException($"Element contains wrong content. Expected content: '{text}', Provided content: '{GetInnerText()}' \r\n Element selector: {FullSelector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new InnerTextEqualsValidator(text, caseSensitive, trim));
         }
 
+
+        private readonly OperationValidator OperationValidator = new OperationValidator();
+
+        private IElementWrapper EvaluateElementCheck<TException>(ICheck<IElementWrapper> check)
+            where TException : TestExceptionBase, new()
+        {
+            var operationResult = check.Validate(this);
+            OperationValidator.Validate<TException>(operationResult);
+            return this;
+        }
         public virtual IElementWrapper CheckIfInnerText(Func<string, bool> expression, string failureMessage = null)
         {
             if (!expression(GetInnerText()))
@@ -754,7 +762,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-      
+
 
         public virtual IElementWrapper CheckIfValue(string value, bool caseInsensitive = false, bool trimValue = true)
         {
