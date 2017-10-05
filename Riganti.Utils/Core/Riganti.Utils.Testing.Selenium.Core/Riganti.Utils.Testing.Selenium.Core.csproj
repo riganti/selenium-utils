@@ -5,10 +5,10 @@
 
     <AssemblyName>Riganti.Utils.Testing.Selenium.Core</AssemblyName>
     <ApplicationIcon></ApplicationIcon>
-    <AssemblyVersion>1.0.4</AssemblyVersion>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
     <IncludeContentInPack>False</IncludeContentInPack>
     <IncludeSymbols>True</IncludeSymbols>
-    <FileVersion>1.0.4</FileVersion>
+    <FileVersion>2.0.0</FileVersion>
     <Description>Basic utilities for performing UI tests based on selenium on CI servers.</Description>
     <Company>RIGANTI s.r.o.</Company>
     <Authors>Ladislav Šesták</Authors>
