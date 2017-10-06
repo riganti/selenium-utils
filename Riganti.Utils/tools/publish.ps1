@@ -21,6 +21,6 @@ $files = dir $PWD\.. -Recurse | where {$_.Name.EndsWith(".nupkg")} | where {!$_.
 foreach($file in $files)
 {
     echo "Uploading package: " + $file.FullName 
-    & nuget.exe push $file.FullName -source $source -apiKey $key
+    & .\nuget.exe push $file.FullName -source $source -apiKey $key
 }
 
