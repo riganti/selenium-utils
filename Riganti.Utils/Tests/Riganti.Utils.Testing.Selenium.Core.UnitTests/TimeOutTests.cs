@@ -24,7 +24,7 @@ namespace Selenium.Core.UnitTests
         public void TestInit()
         {
             var mockIWebBrowser = new MockIWebBrowser();
-            browser = new BrowserWrapperPseudoFluentApi(mockIWebBrowser, mockIWebBrowser.Driver, new MockITestInstance(), new ScopeOptions());
+            browser = new BrowserWrapperFluentApi(mockIWebBrowser, mockIWebBrowser.Driver, new MockITestInstance(), new ScopeOptions());
         }
 
 

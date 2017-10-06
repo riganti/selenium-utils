@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
+namespace Riganti.Utils.Testing.Selenium.Core.Samples.FluentApi.Tests
 {
     /// <summary>
     /// Attribute that specifies to expect an exception of the specified type

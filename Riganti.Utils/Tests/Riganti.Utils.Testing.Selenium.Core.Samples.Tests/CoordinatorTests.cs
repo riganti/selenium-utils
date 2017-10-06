@@ -11,7 +11,7 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Extensions;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Attributes;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
+namespace Riganti.Utils.Testing.Selenium.Core.Samples.FluentApi.Tests
 {
     [TestClass]
     [FullStackTrace]

@@ -19,7 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Riganti.Utils.Testing.Selenium.Core\Riganti.Utils.Testing.Selenium.Core.csproj" />
     <ProjectReference Include="..\..\Integrations\Riganti.Utils.Testing.Selenium.MSTest2Integration\Riganti.Utils.Testing.Selenium.MSTest2Integration.csproj" />
-    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Core.Samples.Tests\Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests.csproj" />
+    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Core.Samples.Tests\Riganti.Utils.Testing.Selenium.Core.Samples.FluentApi.Tests.csproj" />
   </ItemGroup>
 
   <ItemGroup>

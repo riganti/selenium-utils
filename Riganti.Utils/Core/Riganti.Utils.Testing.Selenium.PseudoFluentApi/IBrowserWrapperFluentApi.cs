@@ -4,7 +4,7 @@ using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    public interface IBrowserWrapperPseudoFluentApi
+    public interface IBrowserWrapperFluentApi
     {
         int ActionWaitTime { get; set; }
         string BaseUrl { get; }

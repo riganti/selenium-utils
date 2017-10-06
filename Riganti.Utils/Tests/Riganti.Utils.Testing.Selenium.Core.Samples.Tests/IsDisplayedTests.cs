@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using MSAssert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
+namespace Riganti.Utils.Testing.Selenium.Core.Samples.FluentApi.Tests
 {
     [TestClass]
     public class IsDisplayedTests : SeleniumTest

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.MSTest2Integration", "Integrations\Riganti.Utils.Testing.Selenium.MSTest2Integration\Riganti.Utils.Testing.Selenium.MSTest2Integration.csproj", "{421F5B2A-AEDD-41F0-81B6-D6603B574C0E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests", "Tests\Riganti.Utils.Testing.Selenium.Core.Samples.Tests\Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests.csproj", "{D31B7A50-9AFD-43ED-9520-43D51DCF07B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.Core.Samples.FluentApi.Tests", "Tests\Riganti.Utils.Testing.Selenium.Core.Samples.Tests\Riganti.Utils.Testing.Selenium.Core.Samples.FluentApi.Tests.csproj", "{D31B7A50-9AFD-43ED-9520-43D51DCF07B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.DotVVM", "Integrations\Riganti.Utils.Testing.Selenium.DotVVM.MSTest2\Riganti.Utils.Testing.Selenium.DotVVM.csproj", "{359F976A-6222-4CD7-BE4B-DE33C0E46ADC}"
 EndProject
@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selen
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{522555E0-D971-4C48-AD27-C3888DB383C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.PseudoFluentApi", "Core\Riganti.Utils.Testing.Selenium.PseudoFluentApi\Riganti.Utils.Testing.Selenium.PseudoFluentApi.csproj", "{0E82904E-9F34-4679-9B66-702ADC067062}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.FluentApi", "Core\Riganti.Utils.Testing.Selenium.PseudoFluentApi\Riganti.Utils.Testing.Selenium.FluentApi.csproj", "{0E82904E-9F34-4679-9B66-702ADC067062}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.AssertApi", "Core\Riganti.Utils.Testing.Selenium.AssertApi\Riganti.Utils.Testing.Selenium.AssertApi.csproj", "{3FB8ACCF-C2D3-4B6B-858E-B2AD2E1858E6}"
 EndProject
