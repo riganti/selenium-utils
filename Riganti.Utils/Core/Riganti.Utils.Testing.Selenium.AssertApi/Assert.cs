@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using OpenQA.Selenium;
@@ -362,7 +363,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return new AnyOperationRunner<T>(wrappers);
         }
 
-        public static AllOperationRunner<T> All<T>(T[] elementWrappers)
+        public static AllOperationRunner<T> All<T>(IEnumerable<T> elementWrappers)
         {
             return new AllOperationRunner<T>(elementWrappers);
         }

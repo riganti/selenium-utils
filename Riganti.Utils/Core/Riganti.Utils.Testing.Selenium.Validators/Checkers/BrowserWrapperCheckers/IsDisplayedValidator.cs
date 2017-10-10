@@ -6,6 +6,10 @@ using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheckers
 {
+    /// <summary>
+    /// TODO: REMOVE THIS VALIDATOR
+    /// Ladislav Schumacher
+    /// </summary>
     public class IsDisplayedValidator : ICheck<IBrowserWrapper>
     {
         private readonly string selector;

@@ -11,10 +11,14 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
         {
             this.wrappers = wrappers;
         }
-
-        public override void Evaluate<TException>(ICheck<T> check)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TException">Exception based on TestExceptionBase.</typeparam>
+        /// <param name="validator">The validator.</param>
+        public override void Evaluate<TException>(ICheck<T> validator)
         {
-            var checkResults = wrappers.Select(check.Validate).ToArray();
+            var checkResults = wrappers.Select(validator.Validate).ToArray();
             var checkResult = CreateCheckResult(checkResults);
             EvaluateResult<TException>(checkResult);
         }
@@ -26,7 +30,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
             {
                 return CheckResult.Succeeded;
             }
-            return new CheckResult($"The check doesn't match on any element. See {nameof(CheckResult.InnerResults)} for more details:", checkResults);
+            return new CheckResult($"The validator doesn't match on any element. See {nameof(CheckResult.InnerResults)} for more details:", checkResults);
         }
     }
 }

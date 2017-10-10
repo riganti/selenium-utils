@@ -6,6 +6,10 @@ using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 
 namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheckers
 {
+
+    /// <summary>
+    /// TODO : Rename to "CurrentUrlValidator"
+    /// </summary>
     public class UrlValidator : ICheck<IBrowserWrapper>
     {
         private readonly string failureMessage;
@@ -24,6 +28,11 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheck
             return isSucceeded ? CheckResult.Succeeded : new CheckResult($"Current url is not expected. Current url: '{wrapper.CurrentUrl}'. " + (failureMessage ?? ""));
         }
     }
+
+    /// <summary>
+    /// TODO: Move to separate file. Check whether all validators that validate URL are not duplicated
+    /// Ladislav Schumacher
+    /// </summary>
     public class CheckUrl : ICheck<IBrowserWrapper>
     {
         private readonly string url;
@@ -47,35 +56,36 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheck
         /// <summary>
         /// Compates current Url and given url.
         /// </summary>
-        /// <param name="url">This url is compared with CurrentUrl.</param>
-        /// <param name="urlKind">Determine whether url parameter contains relative or absolute path.</param>
-        /// <param name="components">Determine what parts of urls are compared.</param>
-        public bool CompareUrl(string currentUrl, string url, UrlKind urlKind, params UriComponents[] components)
+        /// <param name="currentUrl">Url of currently loaded page.</param>
+        /// <param name="urlToCompare">This url is compared with CurrentUrl.</param>
+        /// <param name="urlToCompareKind">Determine whether url parameter contains relative or absolute path.</param>
+        /// <param name="uriComponents">Determine what parts of urls are compared.</param>
+        public bool CompareUrl(string currentUrl, string urlToCompare, UrlKind urlToCompareKind, params UriComponents[] uriComponents)
         {
             var currentUri = new Uri(currentUrl);
             //support relative domain
             //(new Uri() cannot parse the url correctly when the host is missing
-            if (urlKind == UrlKind.Relative)
+            if (urlToCompareKind == UrlKind.Relative)
             {
-                url = url.StartsWith("/") ? $"{currentUri.Scheme}://{currentUri.Host}{url}" : $"{currentUri.Scheme}://{currentUri.Host}/{url}";
+                urlToCompare = urlToCompare.StartsWith("/") ? $"{currentUri.Scheme}://{currentUri.Host}{urlToCompare}" : $"{currentUri.Scheme}://{currentUri.Host}/{urlToCompare}";
             }
 
-            if (urlKind == UrlKind.Absolute && url.StartsWith("//"))
+            if (urlToCompareKind == UrlKind.Absolute && urlToCompare.StartsWith("//"))
             {
                 if (!string.IsNullOrWhiteSpace(currentUri.Scheme))
                 {
-                    url = currentUri.Scheme + ":" + url;
+                    urlToCompare = currentUri.Scheme + ":" + urlToCompare;
                 }
             }
 
-            var expectedUri = new Uri(url, UriKind.Absolute);
+            var expectedUri = new Uri(urlToCompare, UriKind.Absolute);
 
-            if (components.Length == 0)
+            if (uriComponents.Length == 0)
             {
                 throw new BrowserLocationException($"Function CheckUrlCheckUrl(string, UriKind, params UriComponents) has to have one UriComponents at least.");
             }
-            UriComponents finalComponent = components[0];
-            components.ToList().ForEach(s => finalComponent |= s);
+            UriComponents finalComponent = uriComponents[0];
+            uriComponents.ToList().ForEach(s => finalComponent |= s);
 
             return Uri.Compare(currentUri, expectedUri, finalComponent, UriFormat.SafeUnescaped, StringComparison.OrdinalIgnoreCase) == 0;
         }
