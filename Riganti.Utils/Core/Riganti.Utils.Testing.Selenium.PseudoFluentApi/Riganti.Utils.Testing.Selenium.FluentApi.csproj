@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <Version>2.0.0-alpha1</Version>
+    <Product>Riganti.Utils.Testing.Selenium.FluentApi</Product>
+    <Company>Riganti s.r.o.</Company>
+    <Authors>Ladislav Šesták</Authors>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Core.Abstractions\Riganti.Utils.Testing.Selenium.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\Riganti.Utils.Testing.Selenium.Core\Riganti.Utils.Testing.Selenium.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -2,7 +2,7 @@
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Samples.PseudoFluentApi.Tests
+namespace Riganti.Utils.Testing.Selenium.Core.Samples.FluentApi.Tests
 {
     [TestClass]
     public class BrowsersStabilityUiTests : SeleniumTest
