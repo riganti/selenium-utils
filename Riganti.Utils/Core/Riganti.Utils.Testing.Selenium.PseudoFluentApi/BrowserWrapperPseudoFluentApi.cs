@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading;
 using OpenQA.Selenium;
@@ -7,6 +8,7 @@ using OpenQA.Selenium.Interactions;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
+using Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheckers;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
@@ -99,20 +101,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public IBrowserWrapper CheckIfAlertTextEquals(string expectedValue, bool caseSensitive = false, bool trim = true)
         {
-            var alert = GetAlert();
-            var alertText = "";
-            if (trim)
-            {
-                alertText = alert.Text?.Trim();
-                expectedValue = expectedValue.Trim();
-            }
-
-            if (!string.Equals(alertText, expectedValue,
-                caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
-            {
-                throw new AlertException($"Alert does not contain expected value. Expected value: '{expectedValue}', provided value: '{alertText}'");
-            }
-            return this;
+            return EvaluateElementCheck<AlertException>(
+                new AlertTextEqualsValidator(expectedValue, caseSensitive, trim));
         }
 
         public bool HasAlert()
@@ -150,19 +140,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public IBrowserWrapper CheckIfAlertTextContains(string expectedValue, bool trim = true)
         {
-            var alert = GetAlert();
-            var alertText = "";
-            if (trim)
-            {
-                alertText = alert.Text?.Trim();
-                expectedValue = expectedValue.Trim();
-            }
-
-            if (alertText == null || !alertText.Contains(expectedValue))
-            {
-                throw new AlertException($"Alert does not contain expected value. Expected value: '{expectedValue}', provided value: '{alertText}'");
-            }
-            return this;
+            return EvaluateElementCheck<AlertException>(new AlertTextContainsValidator(expectedValue, trim));
+            
         }
 
         /// <summary>
@@ -170,12 +149,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public IBrowserWrapper CheckIfAlertText(Func<string, bool> expression, string failureMessage = "")
         {
-            var alert = Driver.SwitchTo().Alert()?.Text;
-            if (!expression(alert))
-            {
-                throw new AlertException($"Alert text is not correct. Provided value: '{alert}' \n { failureMessage } ");
-            }
-            return this;
+            return EvaluateElementCheck<AlertException>(new AlertTextValidator(expression == null
+                ? default(Expression<Func<string, bool>>)
+                : (s => expression(s)))); //TODO change method parametr Expression<Func<string, bool>>
         }
 
         /// <summary>
@@ -261,13 +237,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="url">This url is compared with CurrentUrl.</param>
         public IBrowserWrapper CheckUrlEquals(string url)
         {
-            var uri1 = new Uri(CurrentUrl, UriKind.Absolute);
-            var uri2 = new Uri(url, UriKind.RelativeOrAbsolute);
-            if (uri1 != uri2)
-            {
-                throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}', Expected url: '{url}'.");
-            }
-            return this;
+            return EvaluateElementCheck<BrowserLocationException>(new CheckUrlEquals(url));
         }
 
         /// <summary>
@@ -292,11 +262,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="components">Determine what parts of urls are compared.</param>
         public IBrowserWrapper CheckUrl(string url, UrlKind urlKind, params UriComponents[] components)
         {
-            if (!CompareUrl(url, urlKind, components))
-            {
-                throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}'. Expected url: '{url}'");
-            }
-            return this;
+            return EvaluateElementCheck<BrowserLocationException>(new CheckUrl(url, urlKind, components));
         }
 
         #endregion CheckUrl
@@ -371,89 +337,28 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <returns></returns>
         public IBrowserWrapper CheckIfUrlIsAccessible(string url, UrlKind urlKind)
         {
-            var currentUri = new Uri(CurrentUrl);
-
-            if (urlKind == UrlKind.Relative)
-            {
-                url = GetAbsoluteUrl(url);
-            }
-
-            if (urlKind == UrlKind.Absolute && url.StartsWith("//"))
-            {
-                if (!string.IsNullOrWhiteSpace(currentUri.Scheme))
-                {
-                    url = currentUri.Scheme + ":" + url;
-                }
-            }
-
-            HttpWebResponse response = null;
-            LogVerbose($"UrlIsAccessibleValidator: Checking of url: '{url}'");
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "HEAD";
-
-            try
-            {
-                response = (HttpWebResponse)request.GetResponse();
-            }
-            catch (WebException e)
-            {
-                throw new WebException($"Unable to access {url}! {e.Status}", e);
-            }
-            finally
-            {
-                response?.Close();
-            }
-            return this;
+            return EvaluateElementCheck<BrowserException>(new UrlIsAccessibleValidator(url, urlKind));
         }
-
-     
-     
-
-      
 
         public string GetTitle() => Driver.Title;
 
         public IBrowserWrapper CheckIfTitleEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
         {
-            var browserTitle = GetTitle();
-            if (trim)
-            {
-                browserTitle = browserTitle.Trim();
-                title = title.Trim();
-            }
-
-            if (!string.Equals(title, browserTitle, comparison))
-            {
-                throw new BrowserException($"Provided content in tab's title is not expected. Expected value: '{title}', provided value: '{browserTitle}'");
-            }
-            return this;
+            return EvaluateElementCheck<BrowserException>(new TitleEqualsValidator(title,
+                comparison == StringComparison.Ordinal, trim));
         }
 
         public IBrowserWrapper CheckIfTitleNotEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
         {
-            var browserTitle = GetTitle();
-            if (trim)
-            {
-                browserTitle = browserTitle.Trim();
-                title = title.Trim();
-            }
-
-            if (string.Equals(title, browserTitle, comparison))
-            {
-                throw new BrowserException($"Provided content in tab's title is not expected. Title should NOT to be equal to '{title}', but provided value is '{browserTitle}'");
-            }
-            return this;
+            return EvaluateElementCheck<BrowserException>(new TitleNotEqualsValidator(title,
+                comparison == StringComparison.Ordinal, trim));
         }
 
         public IBrowserWrapper CheckIfTitle(Func<string, bool> func, string failureMessage = "")
         {
-            var browserTitle = GetTitle();
-
-            if (!func(browserTitle))
-            {
-                throw new BrowserException($"Provided content in tab's title is not expected. Provided content: '{browserTitle}' \r\n{failureMessage}");
-            }
-            return this;
+            return EvaluateElementCheck<BrowserException>(
+                new TitleValidator(func == null ? default(Expression<Func<string, bool>>) : (s => func(s)),
+                    failureMessage));  //TODO change method parametr Expression<Func<string, bool>>
         }
 
         /// <summary>

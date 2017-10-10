@@ -11,7 +11,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
         {
             if (!checkResult.IsSucceeded)
             {
-                throw new TException() {CheckResult = checkResult};
+                throw new TException() { CheckResult = checkResult };
             }
         }
     }
