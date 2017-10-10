@@ -315,7 +315,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             var isDisplayed = new BrowserCheckers.IsDisplayedValidator(selector, tmpSelectedMethod);
             EvaluateCheck<UnexpectedElementStateException, IBrowserWrapper>(wrapper, isDisplayed);
         }
-        public static void IsNotDisplayed(BrowserWrapper wrapper, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
+        public static void IsNotDisplayed(BrowserWrapper wrapper, string selector, Func<string, By> tmpSelectedMethod = null)
         {
             var isNotDisplayed = new BrowserCheckers.IsNotDisplayedValidator(selector, tmpSelectedMethod);
             EvaluateCheck<BrowserException, IBrowserWrapper>(wrapper, isNotDisplayed);
