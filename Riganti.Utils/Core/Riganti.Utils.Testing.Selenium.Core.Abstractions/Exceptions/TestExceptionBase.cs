@@ -110,8 +110,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
 
         private void RenderExceptionMessage(StringBuilder sb)
         {
-
-            if (ExceptionMessage.Length <= 0)
+            if (ExceptionMessage == null || ExceptionMessage.Length <= 0)
             {
                 sb.AppendLine(GetClassName());
             }

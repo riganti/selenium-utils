@@ -8,7 +8,7 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheck
     {
         private readonly string[] expectedTagNames;
         private readonly string failureMessage;
-        private Expression<Func<string, bool>> rule = s => s.Equals(s, StringComparison.OrdinalIgnoreCase);
+        private readonly Expression<Func<string, bool>> rule;
 
         public TagNameValidator(string extpectedTagName, string failureMessage = null)
         {
@@ -30,7 +30,6 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheck
 
         public CheckResult Validate(IElementWrapper wrapper)
         {
-            var validateFunc = rule.Compile();
             var isSucceeded = false;
             ValidateExpectedNames(wrapper, ref isSucceeded);
             ValidateRule(wrapper, ref isSucceeded);

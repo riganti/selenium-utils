@@ -11,6 +11,7 @@ using Riganti.Utils.Testing.Selenium.Core.Drivers;
 using Riganti.Utils.Testing.Selenium.Core;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
+using Riganti.Utils.Testing.Selenium.Validators.Checkers;
 using Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers;
 
 namespace Riganti.Utils.Testing.Selenium.Core
@@ -26,6 +27,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public string BaseUrl => testInstance.TestConfiguration.BaseUrl;
 
+        private readonly OperationValidator OperationValidator = new OperationValidator();
 
         /// <summary>
         /// Generic representation of browser driver.
@@ -692,6 +694,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return Driver;
         }
 
-
+        protected IBrowserWrapper EvaluateElementCheck<TException>(ICheck<IBrowserWrapper> check)
+            where TException : TestExceptionBase, new()
+        {
+            var operationResult = check.Validate(this);
+            OperationValidator.Validate<TException>(operationResult);
+            return this;
+        }
     }
 }

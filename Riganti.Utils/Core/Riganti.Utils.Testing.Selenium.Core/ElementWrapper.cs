@@ -4,6 +4,7 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
@@ -68,6 +69,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
             get { return selectMethod ?? browser.SelectMethod; }
             set { selectMethod = value; }
         }
+
+        private readonly OperationValidator OperationValidator = new OperationValidator();
 
         /// <summary>
         /// Returns html direct parent element.
@@ -164,11 +167,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <exception cref="UnexpectedElementStateException"></exception>
         public virtual IElementWrapper CheckTagName(string expectedTagName, string failureMessage = null)
         {
-            if (!string.Equals(GetTagName(), expectedTagName, StringComparison.OrdinalIgnoreCase))
-            {
-                throw new UnexpectedElementStateException(failureMessage ?? $"Element has wrong tagName. Expected value: '{expectedTagName}', Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new TagNameValidator(expectedTagName,
+                failureMessage));
         }
 
         /// <summary>
@@ -179,23 +179,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <returns></returns>
         /// <exception cref="UnexpectedElementStateException"></exception>
         public virtual IElementWrapper CheckIfTagName(string[] expectedTagNames, string failureMessage = null)
-        {
-            var valid = false;
-
-            foreach (var expectedTagName in expectedTagNames)
-            {
-                if (string.Equals(GetTagName(), expectedTagName, StringComparison.OrdinalIgnoreCase))
-                {
-                    valid = true;
-                }
-            }
-
-            if (!valid)
-            {
-                var allowed = string.Join(", ", expectedTagNames);
-                throw new UnexpectedElementStateException(failureMessage ?? $"Element has wrong tagName. Expected value: '{allowed}', Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n");
-            }
-            return this;
+        { 
+            return EvaluateElementCheck<UnexpectedElementStateException>(new TagNameValidator(expectedTagNames,
+                failureMessage));
         }
 
         /// <summary>
@@ -218,22 +204,14 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <exception cref="EmptySequenceException"></exception>
         public virtual IElementWrapper CheckIfContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
-            if (FindElements(cssSelector, tmpSelectMethod).Count == 0)
-            {
-                throw new EmptySequenceException($"This element ('{FullSelector}') does not contain child selectable by '{cssSelector}'.");
-            }
-            return this;
+            return EvaluateElementCheck<EmptySequenceException>(
+                new ContainsElementValidator(cssSelector, tmpSelectMethod == null ? default(Expression<Func<string, By>>) : s => tmpSelectMethod(s))); //TODO change method parametr Expression<Func<string, by>>
         }
 
         public virtual IElementWrapper CheckIfNotContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
-            var count = FindElements(cssSelector, tmpSelectMethod).Count;
-            if (count != 0)
-            {
-                var children = count == 1 ? "child" : $"children ({count})";
-                throw new MoreElementsInSequenceException($"This element ('{FullSelector}') contains {children} selectable by '{cssSelector}' and should not.");
-            }
-            return this;
+            return EvaluateElementCheck<MoreElementsInSequenceException>(
+                new NotContainsElementValidator(cssSelector, tmpSelectMethod == null ? default(Expression<Func<string, By>>) : s => tmpSelectMethod(s))); //TODO change method parametr Expression<Func<string, by>>
         }
 
         public virtual string GetJsElementPropertyValue(string elementPropertyName)
@@ -262,18 +240,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual IElementWrapper CheckIfIsClickable()
         {
-            bool a = IsClickable();
-            if (!a)
-                throw new UnexpectedElementStateException($"The element '{FullSelector}' is not clickable.");
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new IsClickableValidator());
         }
 
         public virtual IElementWrapper CheckIfIsNotClickable()
         {
-            bool a = IsClickable();
-            if (!a)
-                throw new UnexpectedElementStateException($"The element '{FullSelector}' is clickable and should not be.");
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new IsNotClickableValidator());
         }
 
         public bool IsClickable()
@@ -304,13 +276,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public virtual IElementWrapper CheckIfJsPropertyInnerTextEquals(string text, bool caseSensitive = true, bool trim = true)
         {
-            var value = GetJsInnerText(trim);
-            if (!string.Equals(text, value,
-                caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
-            {
-                throw new UnexpectedElementStateException($"Element contains incorrect content in innerText/textContent property. Expected content: '{text}', Provided content: '{value}' \r\n Element selector: {FullSelector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(
+                new JsPropertyInnerTextEqualsValidator(text, caseSensitive, trim));
         }
 
         /// <summary>
@@ -318,12 +285,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public virtual IElementWrapper CheckIfJsPropertyInnerText(Func<string, bool> expression, string failureMesssage = null, bool trim = true)
         {
-            var value = GetJsInnerText(trim);
-            if (!expression(value))
-            {
-                throw new UnexpectedElementStateException($"Element contains incorrect content in innerText property of element. Provided content: '{value}' \r\n Element selector: {FullSelector} \r\n{failureMesssage ?? ""}");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(
+                new JsPropertyInnerTextValidator(s => expression(s), failureMesssage));
         }
 
         /// <summary>
@@ -341,17 +304,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Be sure that all browsers you are using are generating the same result to prevent unexpected results of this method.</remarks>
         public virtual IElementWrapper CheckIfJsPropertyInnerHtmlEquals(string text, bool caseSensitive = true, bool trim = true)
         {
-            var value = GetJsInnerHtml();
-            if (trim)
-            {
-                value = value?.Trim();
-            }
-            if (!string.Equals(text, value,
-                caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
-            {
-                throw new UnexpectedElementStateException($"Element contains incorrect content in innerHTML property. Expected content: '{text}', Provided content: '{value}' \r\n Element selector: {FullSelector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(
+                new JsPropertyInnerTextEqualsValidator(text, caseSensitive, trim));
         }
 
         /// <summary>
@@ -361,24 +315,17 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual IElementWrapper CheckIfJsPropertyInnerHtml(Func<string, bool> expression, string failureMessage = null)
         {
-            var value = GetJsInnerHtml();
-            if (!expression(value))
-            {
-                throw new UnexpectedElementStateException($"Element contains incorrect content in innerHTML property of element. Provided content: '{value}' \r\n Element selector: {FullSelector} \r\n{failureMessage ?? ""}");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(
+                new JsPropertyInnerHtmlValidator(s => expression(s), failureMessage));
         }
 
         /// <summary>
         /// Checks name of tag
         /// </summary>
+        [Obsolete]
         public virtual IElementWrapper CheckTagName(Func<string, bool> expression, string failureMessage = null)
         {
-            if (!expression(GetTagName()))
-            {
-                throw new UnexpectedElementStateException($"Element has wrong tagName. Provided value: '{GetTagName()}' \r\n Element selector: {Selector} \r\n { (failureMessage ?? "")}");
-            }
-            return this;
+            return CheckIfTagName(expression, failureMessage);
         }
 
         /// <summary>
@@ -386,7 +333,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public virtual IElementWrapper CheckIfTagName(Func<string, bool> expression, string failureMessage = null)
         {
-            return CheckTagName(expression, failureMessage);
+            return EvaluateElementCheck<UnexpectedElementStateException>(new TagNameValidator(s => expression(s),
+                failureMessage));
         }
 
         /// <param name="attributeName">write name of attribute to check</param>
@@ -395,44 +343,20 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <returns></returns>
         public virtual IElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression, string failureMessage = null)
         {
-            var attribute = WebElement.GetAttribute(attributeName);
-            if (!expression(attribute))
-            {
-                throw new UnexpectedElementStateException($"Attribute '{attributeName}' contains unexpected value. Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n {failureMessage ?? ""}");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(
+                new AttributeValidator(attributeName, s => expression(s), failureMessage));
         }
 
         public virtual IElementWrapper CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var attribute = WebElement.GetAttribute(attributeName);
-            if (trimValue)
-            {
-                attribute = attribute.Trim();
-                value = value.Trim();
-            }
-            if (!string.Equals(value, attribute,
-                caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
-            {
-                throw new UnexpectedElementStateException(failureMessage ?? $"Attribute '{attributeName}' contains unexpected value. Expected value: '{value}', Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new CheckAttribute(attributeName, value,
+                caseInsensitive, trimValue, failureMessage));
         }
 
         public virtual IElementWrapper CheckAttribute(string attributeName, string[] allowedValues, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var attribute = WebElement.GetAttribute(attributeName);
-            if (trimValue)
-            {
-                attribute = attribute.Trim();
-                allowedValues = allowedValues.Select(s => s.Trim()).ToArray();
-            }
-            if (allowedValues.All(v => !string.Equals(v, attribute,
-                caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal)))
-            {
-                throw new UnexpectedElementStateException(failureMessage ?? $"Attribute contains unexpected value. Expected value: '{string.Concat("|", allowedValues)}', Provided value: '{attribute}' \r\n Element selector: {FullSelector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new CheckAttribute(attributeName, allowedValues,
+                caseInsensitive, trimValue, failureMessage));
         }
 
         public virtual IElementWrapper CheckClassAttribute(Func<string, bool> expression, string failureMessage = "")
@@ -470,20 +394,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public IElementWrapper CheckIfHasAttribute(string name)
         {
-            if (!HasAttribute(name))
-            {
-                throw new UnexpectedElementStateException($"Element has not attribute '{name}'. Element selector: '{FullSelector}'.");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new HasAttributeValidator(name));
         }
 
         public IElementWrapper CheckIfHasNotAttribute(string name)
         {
-            if (HasAttribute(name))
-            {
-                throw new UnexpectedElementStateException($"Attribute '{name}' was not expected. Element selector: '{FullSelector}'.");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new HasNotAttributeValidator(name));
         }
 
         public virtual IElementWrapper CheckIfInnerTextEquals(string text, bool caseSensitive = true, bool trim = true)
@@ -491,33 +407,16 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return EvaluateElementCheck<UnexpectedElementStateException>(new InnerTextEqualsValidator(text, caseSensitive, trim));
         }
 
-
-        private readonly OperationValidator OperationValidator = new OperationValidator();
-
-        private IElementWrapper EvaluateElementCheck<TException>(ICheck<IElementWrapper> check)
-            where TException : TestExceptionBase, new()
-        {
-            var operationResult = check.Validate(this);
-            OperationValidator.Validate<TException>(operationResult);
-            return this;
-        }
         public virtual IElementWrapper CheckIfInnerText(Func<string, bool> expression, string failureMessage = null)
         {
-            if (!expression(GetInnerText()))
-            {
-                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetInnerText()}' \r\n Element selector: {FullSelector} \r\n {failureMessage ?? ""}");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(
+                new InnerTextValidator(s => expression(s), failureMessage));
         }
 
         public virtual IElementWrapper CheckIfTextEquals(string text, bool caseSensitive = true, bool trim = true)
         {
-            if (!string.Equals(text, GetTrimmedText(trim),
-                caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
-            {
-                throw new UnexpectedElementStateException($"Element contains wrong content. Expected content: '{text}', Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(
+                new TextEqualsValidator(text, caseSensitive, trim));
         }
 
         private string GetTrimmedText(bool trim)
@@ -534,21 +433,14 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual IElementWrapper CheckIfTextNotEquals(string text, bool caseSensitive = true, bool trim = true)
         {
-            if (string.Equals(text, GetTrimmedText(trim),
-                caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))
-            {
-                throw new UnexpectedElementStateException($"Element contains wrong content. Content cannot contain: '{text}', Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(
+                new TextNotEqualsValidator(text, caseSensitive, trim));
         }
 
         public virtual IElementWrapper CheckIfText(Func<string, bool> expression, string failureMessage = null)
         {
-            if (!expression(GetText()))
-            {
-                throw new UnexpectedElementStateException($"Element contains wrong content. Provided content: '{GetText()}' \r\n Element selector: {FullSelector} \r\n {failureMessage ?? ""}");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new TextValidator(s => expression(s),
+                failureMessage));
         }
 
         /// <summary>
@@ -724,20 +616,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual IElementWrapper CheckIfIsDisplayed()
         {
-            if (!IsDisplayed())
-            {
-                throw new UnexpectedElementStateException($"Element is not displayed. \r\n Element selector: {Selector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new IsDisplayedValidator());
         }
 
         public virtual IElementWrapper CheckIfIsNotDisplayed()
         {
-            if (IsDisplayed())
-            {
-                throw new UnexpectedElementStateException($"Element is displayed and should not be. \r\n Element selector: {Selector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new IsNotDisplayedValidator());
         }
 
         public virtual IElementWrapper CheckIfIsChecked()
@@ -745,9 +629,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             CheckTagName("input", "Function IsNotCheckedValidator() can be used on input element only.");
             CheckAttribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox.");
 
-            if (!IsChecked())
-                throw new UnexpectedElementStateException($"Element is NOT checked and should be. \r\n Element selector: {Selector} \r\n");
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new IsCheckedValidator());
         }
 
         public virtual IElementWrapper CheckIfIsNotChecked()
@@ -755,30 +637,15 @@ namespace Riganti.Utils.Testing.Selenium.Core
             CheckTagName("input", "Function IsNotCheckedValidator() can be used on input element only.");
             CheckAttribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox or radio.");
 
-            if (IsChecked())
-            {
-                throw new UnexpectedElementStateException($"Element is checked and should NOT be. \r\n Element selector: {Selector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new IsNotCheckedValidator());
         }
 
 
 
         public virtual IElementWrapper CheckIfValue(string value, bool caseInsensitive = false, bool trimValue = true)
         {
-            string elementValue = GetValue();
-
-            if (trimValue)
-            {
-                elementValue = elementValue?.Trim();
-                value = value.Trim();
-            }
-            if (!string.Equals(value, elementValue,
-                caseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
-            {
-                throw new UnexpectedElementStateException($"Attribute contains unexpected value. Expected value: '{value}', Provided value: '{elementValue}' \r\n Element selector: {FullSelector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new ValueValidator(value, !caseInsensitive,
+                trimValue));
         }
 
         public string GetValue()
@@ -813,11 +680,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual IElementWrapper CheckIfIsEnabled()
         {
-            if (!IsEnabled())
-            {
-                throw new UnexpectedElementStateException($"Element is not enabled. \r\n Element selector: {Selector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new IsEnabledValidator());
         }
 
         public IElementWrapper CheckIfIsSelected()
@@ -839,29 +702,17 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual IElementWrapper CheckIfContainsText()
         {
-            if (string.IsNullOrWhiteSpace(GetInnerText()))
-            {
-                throw new UnexpectedElementStateException($"Element doesn't contain text. \r\n Element selector: {Selector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new ContainsTextValidator());
         }
 
         public virtual IElementWrapper CheckIfIsNotEnabled()
         {
-            if (IsEnabled())
-            {
-                throw new UnexpectedElementStateException($"Element is enabled and should not be. \r\n Element selector: {Selector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new IsNotEnabledValidator());
         }
 
         public IElementWrapper CheckIfIsNotSelected()
         {
-            if (IsSelected())
-            {
-                throw new UnexpectedElementStateException($"Element is selected and should not be.\r\n Element selector: {Selector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new IsNotSelectedValidator());
         }
 
         /// <summary>
@@ -869,11 +720,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public virtual IElementWrapper CheckIfDoesNotContainsText()
         {
-            if (!string.IsNullOrWhiteSpace(GetInnerText()))
-            {
-                throw new UnexpectedElementStateException($"Element does contain text. Element should be empty.\r\n Element selector: {Selector} \r\n");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new DoesNotContainTextValidator());
         }
 
         /// <summary>
@@ -1017,41 +864,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <returns></returns>
         public IElementWrapper CheckIfHyperLinkEquals(string url, UrlKind kind, params UriComponents[] components)
         {
-            if (components.Length == 0)
-            {
-                components = new UriComponents[1];
-                components[0] = kind == UrlKind.Relative ? UriComponents.PathAndQuery : UriComponents.AbsoluteUri;
-            }
-
-            var providedHref = new Uri(WebElement.GetAttribute("href"));
-            if (kind == UrlKind.Relative)
-            {
-                var host = BaseUrl;
-                if (string.IsNullOrWhiteSpace(host))
-                {
-                    host = "http://example.com/";
-                }
-                else if (!host.EndsWith("/"))
-                {
-                    host += "/";
-                }
-                url = host + (url.StartsWith("/") ? url.Substring(1) : url);
-            }
-            if (kind == UrlKind.Absolute && url.StartsWith("//"))
-            {
-                url = providedHref.Scheme + ":" + url;
-            }
-            var expectedHref = new Uri(url);
-            UriComponents finalComponent = components[0];
-            components.ToList().ForEach(s => finalComponent |= s);
-
-            if (Uri.Compare(providedHref, expectedHref, finalComponent, UriFormat.SafeUnescaped,
-                    StringComparison.OrdinalIgnoreCase) != 0)
-            {
-                throw new UnexpectedElementStateException($"Link '{FullSelector}' provided value '{providedHref}' of attribute href. Provided value does not match with expected value '{url}'.");
-            }
-
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(
+                new HyperLinkEqualsValidator(url, kind, components));
         }
 
         public IElementWrapper ScrollTo(IElementWrapper element)
@@ -1076,20 +890,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public IElementWrapper CheckIfIsElementInView(IElementWrapper element)
         {
-            if (!IsElementInView(element))
-            {
-                throw new UnexpectedElementStateException($"Element is not in browser view. {element.ToString()}");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new IsElementInViewValidator(element));
         }
 
         public IElementWrapper CheckIfIsElementNotInView(IElementWrapper element)
         {
-            if (IsElementInView(element))
-            {
-                throw new UnexpectedElementStateException($"Element is in browser view. {element.ToString()}");
-            }
-            return this;
+            return EvaluateElementCheck<UnexpectedElementStateException>(new IsElementNotInViewValidator(element));
         }
 
         public bool IsElementInView(IElementWrapper element)
@@ -1148,6 +954,14 @@ return elementInViewport2(arguments[0]);
         {
             var attr = GetAttribute("class");
             return attr.Split(' ').Any(s => string.Equals(cssClass, s, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private IElementWrapper EvaluateElementCheck<TException>(ICheck<IElementWrapper> check)
+            where TException : TestExceptionBase, new()
+        {
+            var operationResult = check.Validate(this);
+            OperationValidator.Validate<TException>(operationResult);
+            return this;
         }
     }
 }

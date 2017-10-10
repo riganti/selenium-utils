@@ -20,18 +20,7 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheck
         {
             var tagName = wrapper.GetTagName();
             var tempValue = value;
-            string elementValue = null;
-
-            if (tagName == "input")
-            {
-                elementValue = wrapper.WebElement.GetAttribute("value");
-            }
-
-            if (tagName == "textarea")
-            {
-                elementValue = wrapper.GetInnerText();
-            }
-
+            string elementValue = wrapper.GetValue();
 
             if (trim)
             {
