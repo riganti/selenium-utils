@@ -1965,7 +1965,7 @@
     },
     "pug": {
       "version": "2.0.0-beta3",
-      "from": "pug@>=2.0.0-alpha3 <3.0.0",
+      "from": "pug@>=2.0.0-alpha4 <3.0.0",
       "resolved": "https://registry.npmjs.org/pug/-/pug-2.0.0-beta3.tgz"
     },
     "pug-attrs": {

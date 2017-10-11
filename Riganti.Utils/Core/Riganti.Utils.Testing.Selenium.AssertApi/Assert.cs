@@ -21,48 +21,48 @@ namespace Riganti.Utils.Testing.Selenium.Core
     {
         private static readonly OperationValidator OperationValidator = new OperationValidator();
 
-        public static void InnerText(ElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
+        public static void InnerText(IElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
         {
             var innerText = new InnerTextValidator(rule, failureMessage);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, innerText);
         }
 
-        public static void InnerTextEquals(ElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
+        public static void InnerTextEquals(IElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
         {
             var innerTextEquals = new InnerTextEqualsValidator(text, caseSensitive, trim);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, innerTextEquals);
         }
 
-        public static void Text(ElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
+        public static void Text(IElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
         {
             var text = new TextValidator(rule, failureMessage);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, text);
         }
 
-        public static void TextEquals(ElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
+        public static void TextEquals(IElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
         {
             var textEquals = new TextEqualsValidator(text, caseSensitive, trim);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, textEquals);
         }
-        public static void TextNotEquals(ElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
+        public static void TextNotEquals(IElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true, string failureMessage = null)
         {
             var textNotEquals = new TextNotEqualsValidator(text, caseSensitive, trim);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, textNotEquals);
         }
 
-        public static void IsDisplayed(ElementWrapper wrapper)
+        public static void IsDisplayed(IElementWrapper wrapper)
         {
             var isDisplayed = new  ElementCheckers.IsDisplayedValidator();
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, isDisplayed);
         }
 
-        public static void IsNotDisplayed(ElementWrapper wrapper)
+        public static void IsNotDisplayed(IElementWrapper wrapper)
         {
             var isNotDisplayed = new ElementCheckers.IsNotDisplayedValidator();
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, isNotDisplayed);
         }
 
-        public static void IsChecked(ElementWrapper wrapper)
+        public static void IsChecked(IElementWrapper wrapper)
         {
             CheckTagName(wrapper, "input", "Function IsNotChecked() can be used on input element only.");
             CheckAttribute(wrapper, "type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox.");
@@ -71,7 +71,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, isChecked);
         }
 
-        public static void IsNotChecked(ElementWrapper wrapper)
+        public static void IsNotChecked(IElementWrapper wrapper)
         {
             CheckTagName(wrapper, "input", "Function IsNotChecked() can be used on input element only.");
             CheckAttribute(wrapper, "type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox or radio.");
@@ -80,189 +80,189 @@ namespace Riganti.Utils.Testing.Selenium.Core
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, isNotChecked);
         }
 
-        public static void IsSelected(ElementWrapper wrapper)
+        public static void IsSelected(IElementWrapper wrapper)
         {
             var isSelected = new IsSelectedValidator();
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, isSelected);
         }
 
-        public static void IsNotSelected(ElementWrapper wrapper)
+        public static void IsNotSelected(IElementWrapper wrapper)
         {
             var isNotSelected = new IsNotSelectedValidator();
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, isNotSelected);
         }
 
-        public static void IsEnabled(ElementWrapper wrapper)
+        public static void IsEnabled(IElementWrapper wrapper)
         {
             var isEnabled = new IsEnabledValidator();
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, isEnabled);
         }
 
-        public static void IsClickable(ElementWrapper wrapper)
+        public static void IsClickable(IElementWrapper wrapper)
         {
             var isClickable = new IsClickableValidator();
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, isClickable);
         }
 
-        public static void IsNotClickable(ElementWrapper wrapper)
+        public static void IsNotClickable(IElementWrapper wrapper)
         {
             var isNotClickable = new IsNotClickableValidator();
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, isNotClickable);
         }
 
-        public static void IsNotEnabled(ElementWrapper wrapper)
+        public static void IsNotEnabled(IElementWrapper wrapper)
         {
             var isNotEnabled = new IsNotEnabledValidator();
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, isNotEnabled);
         }
 
-        public static void Value(ElementWrapper wrapper, string value, bool caseSensitive = false, bool trim = true)
+        public static void Value(IElementWrapper wrapper, string value, bool caseSensitive = false, bool trim = true)
         {
             var Value = new ValueValidator(value, caseSensitive, trim);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, Value);
         }
 
-        public static void ContainsText(ElementWrapper wrapper)
+        public static void ContainsText(IElementWrapper wrapper)
         {
             var containsText = new ContainsTextValidator();
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, containsText);
         }
-        public static void DoesNotContainsText(ElementWrapper wrapper)
+        public static void DoesNotContainsText(IElementWrapper wrapper)
         {
             var doesNotContainsText = new DoesNotContainTextValidator();
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, doesNotContainsText);
         }
 
-        public static void HyperLinkEquals(ElementWrapper wrapper, string url, UrlKind kind, params UriComponents[] components)
+        public static void HyperLinkEquals(IElementWrapper wrapper, string url, UrlKind kind, params UriComponents[] components)
         {
             var hyperLinkEquals = new HyperLinkEqualsValidator(url, kind, components);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, hyperLinkEquals);
         }
 
-        public static void IsElementInView(ElementWrapper wrapper, ElementWrapper element)
+        public static void IsElementInView(IElementWrapper wrapper, ElementWrapper element)
         {
             var isElementInView = new IsElementInViewValidator(element);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, isElementInView);
         }
 
-        public static void IsElementNotInView(ElementWrapper wrapper, ElementWrapper element)
+        public static void IsElementNotInView(IElementWrapper wrapper, ElementWrapper element)
         {
             var isElementNotInView = new IsElementNotInViewValidator(element);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, isElementNotInView);
         }
 
-        public static void CheckTagName(ElementWrapper wrapper, string expectedTagName, string failureMessage = null)
+        public static void CheckTagName(IElementWrapper wrapper, string expectedTagName, string failureMessage = null)
         {
             TagName(wrapper, expectedTagName, failureMessage);
         }
 
-        public static void TagName(ElementWrapper wrapper, string expectedTagName, string failureMessage = null)
+        public static void TagName(IElementWrapper wrapper, string expectedTagName, string failureMessage = null)
         {
             var checkTagName = new TagNameValidator(expectedTagName, failureMessage);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkTagName);
         }
 
-        public static void TagName(ElementWrapper wrapper, string[] expectedTagNames, string failureMessage = null)
+        public static void TagName(IElementWrapper wrapper, string[] expectedTagNames, string failureMessage = null)
         {
             var checkTagName = new TagNameValidator(expectedTagNames, failureMessage);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkTagName);
         }
 
-        public static void CheckTagName(ElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
+        public static void CheckTagName(IElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
         {
             TagName(wrapper, rule, failureMessage);
         }
 
-        public static void TagName(ElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
+        public static void TagName(IElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
         {
             var tagName = new TagNameValidator(rule, failureMessage);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, tagName);
         }
 
 
-        public static void ContainsElement(ElementWrapper wrapper, string cssSelector, Func<string, By> tmpSelectMethod = null)
+        public static void ContainsElement(IElementWrapper wrapper, string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             var containsElement = new ContainsElementValidator(cssSelector, tmpSelectMethod);
             EvaluateCheck<EmptySequenceException, IElementWrapper>(wrapper, containsElement);
         }
 
-        public static void NotContainsElement(ElementWrapper wrapper, string cssSelector, Func<string, By> tmpSelectMethod = null)
+        public static void NotContainsElement(IElementWrapper wrapper, string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             var notContainsElement = new NotContainsElementValidator(cssSelector, tmpSelectMethod);
             EvaluateCheck<MoreElementsInSequenceException, IElementWrapper>(wrapper, notContainsElement);
         }
 
-        public static void JsPropertyInnerText(ElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMesssage = null, bool trim = true)
+        public static void JsPropertyInnerText(IElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMesssage = null, bool trim = true)
         {
             var jsPropertyInnerText = new JsPropertyInnerTextValidator(rule, failureMesssage, trim);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, jsPropertyInnerText);
         }
 
-        public static void JsPropertyInnerTextEquals(ElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true)
+        public static void JsPropertyInnerTextEquals(IElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true)
         {
             var jsPropertyInnerTextEquals = new JsPropertyInnerTextEqualsValidator(text, caseSensitive, trim);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, jsPropertyInnerTextEquals);
         }
 
-        public static void JsPropertyInnerHtmlEquals(ElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true)
+        public static void JsPropertyInnerHtmlEquals(IElementWrapper wrapper, string text, bool caseSensitive = false, bool trim = true)
         {
             var jsPropertyInnerHtmlEquals = new JsPropertyInnerHtmlEqualsValidator(text, caseSensitive, trim);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, jsPropertyInnerHtmlEquals);
         }
 
-        public static void JsPropertyInnerHtml(ElementWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = null)
+        public static void JsPropertyInnerHtml(IElementWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
             var jsPropertyInnerHtml = new JsPropertyInnerHtmlValidator(expression, failureMessage);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, jsPropertyInnerHtml);
         }
 
-        public static void CheckAttribute(ElementWrapper wrapper, string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
+        public static void CheckAttribute(IElementWrapper wrapper, string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
             var checkAttribute = new CheckAttributeValidator(attributeName, value, caseSensitive, trimValue, failureMessage);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkAttribute);
         }
 
-        public static void CheckAttribute(ElementWrapper wrapper, string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
+        public static void CheckAttribute(IElementWrapper wrapper, string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
             var checkAttribute = new CheckAttributeValidator(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkAttribute);
         }
 
-        public static void CheckAttribute(ElementWrapper wrapper, string attributeName, Expression<Func<string, bool>> expression, string failureMessage = null)
+        public static void CheckAttribute(IElementWrapper wrapper, string attributeName, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
             var attribute = new AttributeValidator(attributeName, expression, failureMessage);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, attribute);
         }
 
-        public static void CheckClassAttribute(ElementWrapper wrapper, string value, bool caseSensitive = false, bool trimValue = true)
+        public static void CheckClassAttribute(IElementWrapper wrapper, string value, bool caseSensitive = false, bool trimValue = true)
         {
             CheckAttribute(wrapper, "class", value, caseSensitive, trimValue);
         }
 
-        public static void CheckClassAttribute(ElementWrapper wrapper, string attributeName, Expression<Func<string, bool>> expression, string failureMessage = "")
+        public static void CheckClassAttribute(IElementWrapper wrapper, string attributeName, Expression<Func<string, bool>> expression, string failureMessage = "")
         {
             CheckAttribute(wrapper, "class", expression, failureMessage);
         }
 
-        public static void HasClass(ElementWrapper wrapper, string value, bool caseSensitive = false)
+        public static void HasClass(IElementWrapper wrapper, string value, bool caseSensitive = false)
         {
             CheckAttribute(wrapper, "class", p => p.Split(' ').Any(c => string.Equals(c, value,
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
         }
 
-        public static void HasNotClass(ElementWrapper wrapper, string value, bool caseSensitive = false)
+        public static void HasNotClass(IElementWrapper wrapper, string value, bool caseSensitive = false)
         {
             CheckAttribute(wrapper, "class", p => !p.Split(' ').Any(c => string.Equals(c, value,
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
         }
 
-        public static void HasAttribute(ElementWrapper wrapper, string name)
+        public static void HasAttribute(IElementWrapper wrapper, string name)
         {
             var hasAttribute = new HasAttributeValidator(name);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, hasAttribute);
         }
 
-        public static void HasNotAttribute(ElementWrapper wrapper, string name)
+        public static void HasNotAttribute(IElementWrapper wrapper, string name)
         {
             var hasNotAttribute = new HasNotAttributeValidator(name);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, hasNotAttribute);
