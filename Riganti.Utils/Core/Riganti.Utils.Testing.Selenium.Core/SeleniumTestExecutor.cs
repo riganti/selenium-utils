@@ -58,7 +58,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
             var builder = new ConfigurationBuilder();
 
             var defaultConfigurationPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "seleniumconfig.json");
-            builder.AddJsonFile(defaultConfigurationPath, true);
+            Trace.WriteLine($"Default selenium configuration location: {defaultConfigurationPath}");
+            builder.AddJsonFile(defaultConfigurationPath, isOptional: true);
 
             return builder;
         }

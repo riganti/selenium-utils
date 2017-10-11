@@ -36,7 +36,6 @@ namespace Selenium.DotVVM.Samples.Tests
                 var tempPath = Path.GetTempFileName();
                 File.WriteAllBytes(tempPath, Enumerable.Range(0, 255).Select(i => (byte)i).ToArray());
 
-
                 DotVVMAssert.UploadFile(browser.First("#FUpload"), tempPath);
                 
                 browser.WaitFor(() =>

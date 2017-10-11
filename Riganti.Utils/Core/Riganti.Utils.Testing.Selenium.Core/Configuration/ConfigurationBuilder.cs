@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,12 +24,17 @@ namespace Riganti.Utils.Testing.Selenium.Core.Configuration
         {
             if (File.Exists(file))
             {
+                Trace.WriteLine($"Selenium configuration file on '{file}'.");
                 var json = File.ReadAllText(file, Encoding.UTF8);
                 JsonConvert.PopulateObject(json, configuration);
             }
             else if (!isOptional)
             {
                 throw new SeleniumTestConfigurationException($"The configuration file '{file}' was not found!");
+            }
+            else
+            {
+                Trace.WriteLine($"Selenium configuration file on '{file}'.");
             }
 
             return this;
