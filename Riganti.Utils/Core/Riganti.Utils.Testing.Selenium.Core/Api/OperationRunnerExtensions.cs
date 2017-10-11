@@ -216,13 +216,13 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
 
         public static void CheckAttribute(this IOperationRunner<IElementWrapper> operationRunner, string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var checkAttribute = new CheckAttribute(attributeName, value, caseSensitive, trimValue, failureMessage);
+            var checkAttribute = new CheckAttributeValidator(attributeName, value, caseSensitive, trimValue, failureMessage);
             operationRunner.Evaluate<UnexpectedElementStateException>(checkAttribute);
         }
 
         public static void CheckAttribute(this IOperationRunner<IElementWrapper> operationRunner, string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var checkAttribute = new CheckAttribute(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
+            var checkAttribute = new CheckAttributeValidator(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
             operationRunner.Evaluate<UnexpectedElementStateException>(checkAttribute);
         }
 
@@ -286,27 +286,27 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
 
         public static void CheckUrl(this IOperationRunner<IBrowserWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
-            var Url = new UrlValidator(expression, failureMessage);
+            var Url = new CurrentUrlValidator(expression, failureMessage);
             operationRunner.Evaluate<BrowserLocationException>(Url);
         }
 
         public static void CheckUrl(this IOperationRunner<IBrowserWrapper> operationRunner, string url, UrlKind urlKind, params UriComponents[] components)
         {
-            var checkUrl = new CheckUrl(url, urlKind, components);
+            var checkUrl = new UrlValidator(url, urlKind, components);
             operationRunner.Evaluate<BrowserLocationException>(checkUrl);
         }
 
         public static void CheckUrlEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string url)
         {
-            var checkUrlExquals = new CheckUrlEquals(url);
+            var checkUrlExquals = new UrlEqualsValidator(url);
             operationRunner.Evaluate<BrowserLocationException>(checkUrlExquals);
         }
-
-        public static void HyperLinkEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string selector, string url, UrlKind kind, params UriComponents[] components)
-        {
-            var HyperLinkEquals = new Validators.Checkers.BrowserWrapperCheckers.HyperLinkEqualsValidator(selector, url, kind, components);
-            operationRunner.Evaluate<UnexpectedElementStateException>(HyperLinkEquals);
-        }
+        //TODO
+        //public static void HyperLinkEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string selector, string url, UrlKind kind, params UriComponents[] components)
+        //{
+        //    var HyperLinkEquals = new HyperLinkEqualsValidator(selector, url, kind, components);
+        //    operationRunner.Evaluate<UnexpectedElementStateException>(HyperLinkEquals);
+        //}
 
         //public static void IsDisplayed(this IOperationRunner<IBrowserWrapper> operationRunner, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
         //{

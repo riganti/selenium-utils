@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -134,7 +135,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public static void HyperLinkEquals(ElementWrapper wrapper, string url, UrlKind kind, params UriComponents[] components)
         {
-            var hyperLinkEquals = new ElementCheckers.HyperLinkEqualsValidator(url, kind, components);
+            var hyperLinkEquals = new HyperLinkEqualsValidator(url, kind, components);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, hyperLinkEquals);
         }
 
@@ -217,13 +218,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public static void CheckAttribute(ElementWrapper wrapper, string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var checkAttribute = new CheckAttribute(attributeName, value, caseSensitive, trimValue, failureMessage);
+            var checkAttribute = new CheckAttributeValidator(attributeName, value, caseSensitive, trimValue, failureMessage);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkAttribute);
         }
 
         public static void CheckAttribute(ElementWrapper wrapper, string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var checkAttribute = new CheckAttribute(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
+            var checkAttribute = new CheckAttributeValidator(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
             EvaluateCheck<UnexpectedElementStateException, IElementWrapper>(wrapper, checkAttribute);
         }
 
@@ -288,37 +289,43 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public static void CheckUrl(BrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
-            var url = new UrlValidator(expression, failureMessage);
+            var url = new CurrentUrlValidator(expression, failureMessage);
             EvaluateCheck<BrowserLocationException, IBrowserWrapper>(wrapper, url);
         }
 
         public static void CheckUrl(BrowserWrapper wrapper, string url, UrlKind urlKind, params UriComponents[] components)
         {
-            var checkUrl = new CheckUrl(url, urlKind, components);
+            var checkUrl = new UrlValidator(url, urlKind, components);
             EvaluateCheck<BrowserLocationException, IBrowserWrapper>(wrapper, checkUrl);
         }
 
         public static void CheckUrlEquals(BrowserWrapper wrapper, string url)
         {
-            var checkUrlExquals = new CheckUrlEquals(url);
+            var checkUrlExquals = new UrlEqualsValidator(url);
             EvaluateCheck<BrowserLocationException, IBrowserWrapper>(wrapper, checkUrlExquals);
         }
 
         public static void HyperLinkEquals(BrowserWrapper wrapper, string selector, string url, UrlKind kind, params UriComponents[] components)
         {
-            var hyperLinkEquals = new BrowserCheckers.HyperLinkEqualsValidator(selector, url, kind, components);
-            EvaluateCheck<UnexpectedElementStateException, IBrowserWrapper>(wrapper, hyperLinkEquals);
+            var elements = wrapper.FindElements(selector);
+            var operationRunner = All(elements);
+            var hyperLinkEquals = new HyperLinkEqualsValidator(url, kind, components);
+            operationRunner.Evaluate<UnexpectedElementStateException>(hyperLinkEquals);
         }
 
-        public static void IsDisplayed(BrowserWrapper wrapper, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
+        public static void IsDisplayed(BrowserWrapper wrapper, string selector, Func<string, By> tmpSelectedMethod = null)
         {
-            var isDisplayed = new BrowserCheckers.IsDisplayedValidator(selector, tmpSelectedMethod);
-            EvaluateCheck<UnexpectedElementStateException, IBrowserWrapper>(wrapper, isDisplayed);
+            var elements = wrapper.FindElements(selector, tmpSelectedMethod);
+            var operationRunner = All(elements);
+            var isDisplayedValidator = new IsDisplayedValidator();
+            operationRunner.Evaluate<UnexpectedElementStateException>(isDisplayedValidator);
         }
         public static void IsNotDisplayed(BrowserWrapper wrapper, string selector, Func<string, By> tmpSelectedMethod = null)
         {
-            var isNotDisplayed = new BrowserCheckers.IsNotDisplayedValidator(selector, tmpSelectedMethod);
-            EvaluateCheck<BrowserException, IBrowserWrapper>(wrapper, isNotDisplayed);
+            var elements = wrapper.FindElements(selector, tmpSelectedMethod);
+            var operationRunner = All(elements);
+            var isNotDisplayedValidator = new IsNotDisplayedValidator();
+            operationRunner.Evaluate<BrowserException>(isNotDisplayedValidator);
         }
 
         public static void UrlIsAccessible(BrowserWrapper wrapper, string url, UrlKind urlKind)
@@ -358,7 +365,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             OperationValidator.Validate<TException>(operationResult);
         }
 
-        public static AnyOperationRunner<T> Any<T>(T[] wrappers)
+        public static AnyOperationRunner<T> Any<T>(IEnumerable<T> wrappers)
         {
             return new AnyOperationRunner<T>(wrappers);
         }

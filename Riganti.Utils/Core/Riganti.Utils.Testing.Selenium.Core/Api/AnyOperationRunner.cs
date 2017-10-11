@@ -1,13 +1,14 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Riganti.Utils.Testing.Selenium.Validators.Checkers;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Api
 {
     public class AnyOperationRunner<T> : OperationRunnerBase<T>
     {
-        private readonly T[] wrappers;
+        private readonly IEnumerable<T> wrappers;
 
-        public AnyOperationRunner(T[] wrappers)
+        public AnyOperationRunner(IEnumerable<T> wrappers)
         {
             this.wrappers = wrappers;
         }

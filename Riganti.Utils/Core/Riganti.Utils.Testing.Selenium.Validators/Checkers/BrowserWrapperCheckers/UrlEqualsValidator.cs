@@ -3,11 +3,11 @@ using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheckers
 {
-    public class CheckUrlEquals : ICheck<IBrowserWrapper>
+    public class UrlEqualsValidator : ICheck<IBrowserWrapper>
     {
         private readonly string url;
 
-        public CheckUrlEquals(string url)
+        public UrlEqualsValidator(string url)
         {
             this.url = url;
         }

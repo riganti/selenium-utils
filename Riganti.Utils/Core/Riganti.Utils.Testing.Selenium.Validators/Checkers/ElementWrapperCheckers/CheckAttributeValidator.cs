@@ -4,7 +4,7 @@ using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers
 {
-    public class CheckAttribute : ICheck<IElementWrapper>
+    public class CheckAttributeValidator : ICheck<IElementWrapper>
     {
         private readonly string[] allowedValues;
         private readonly string attributeName;
@@ -12,7 +12,7 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheck
         private bool trimValue;
         private readonly string failureMessage;
 
-        public CheckAttribute(string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
+        public CheckAttributeValidator(string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
             this.allowedValues = new[] {value};
             this.attributeName = attributeName;
@@ -21,7 +21,7 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheck
             this.failureMessage = failureMessage;
         }
 
-        public CheckAttribute(string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
+        public CheckAttributeValidator(string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
 
             this.allowedValues = allowedValues;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using OpenQA.Selenium;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
@@ -14,17 +15,17 @@ namespace Riganti.Utils.Testing.Selenium.Core
         Func<string, By> SelectMethod { get; set; }
 
         void ActivateScope();
-        IBrowserWrapper CheckIfAlertText(Func<string, bool> expression, string failureMessage = "");
+        IBrowserWrapper CheckIfAlertText(Expression<Func<string, bool>> expression, string failureMessage = "");
         IBrowserWrapper CheckIfAlertTextContains(string expectedValue, bool trim = true);
         IBrowserWrapper CheckIfAlertTextEquals(string expectedValue, bool caseSensitive = false, bool trim = true);
         IBrowserWrapper CheckIfHyperLinkEquals(string selector, string url, UrlKind kind, params UriComponents[] components);
         IElementWrapperCollection CheckIfIsDisplayed(string selector, Func<string, By> tmpSelectMethod = null);
         IElementWrapperCollection CheckIfIsNotDisplayed(string selector, Func<string, By> tmpSelectMethod = null);
-        IBrowserWrapper CheckIfTitle(Func<string, bool> func, string failureMessage = "");
+        IBrowserWrapper CheckIfTitle(Expression<Func<string, bool>> expression, string failureMessage = "");
         IBrowserWrapper CheckIfTitleEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true);
         IBrowserWrapper CheckIfTitleNotEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true);
         IBrowserWrapper CheckIfUrlIsAccessible(string url, UrlKind urlKind);
-        IBrowserWrapper CheckUrl(Func<string, bool> expression, string failureMessage = null);
+        IBrowserWrapper CheckUrl(Expression<Func<string, bool>> expression, string failureMessage = null);
         IBrowserWrapper CheckUrl(string url, UrlKind urlKind, params UriComponents[] components);
         IBrowserWrapper CheckUrlEquals(string url);
         IBrowserWrapper ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null);

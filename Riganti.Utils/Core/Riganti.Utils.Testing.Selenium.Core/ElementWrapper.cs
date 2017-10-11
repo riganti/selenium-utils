@@ -349,13 +349,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public virtual IElementWrapper CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new CheckAttribute(attributeName, value,
+            return EvaluateElementCheck<UnexpectedElementStateException>(new CheckAttributeValidator(attributeName, value,
                 caseInsensitive, trimValue, failureMessage));
         }
 
         public virtual IElementWrapper CheckAttribute(string attributeName, string[] allowedValues, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new CheckAttribute(attributeName, allowedValues,
+            return EvaluateElementCheck<UnexpectedElementStateException>(new CheckAttributeValidator(attributeName, allowedValues,
                 caseInsensitive, trimValue, failureMessage));
         }
 

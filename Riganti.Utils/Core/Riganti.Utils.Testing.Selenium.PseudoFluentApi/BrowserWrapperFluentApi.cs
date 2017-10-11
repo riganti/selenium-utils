@@ -11,6 +11,7 @@ using Riganti.Utils.Testing.Selenium.Core.Api;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
 using Riganti.Utils.Testing.Selenium.Validators.Checkers;
 using Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheckers;
+using Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
@@ -41,32 +42,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="components">Determine what parts of urls are compared.</param>
         public bool CompareUrl(string url, UrlKind urlKind, params UriComponents[] components)
         {
-            var currentUri = new Uri(CurrentUrl);
-            //support relative domain
-            //(new Uri() cannot parse the url correctly when the host is missing
-            if (urlKind == UrlKind.Relative)
-            {
-                url = url.StartsWith("/") ? $"{currentUri.Scheme}://{currentUri.Host}{url}" : $"{currentUri.Scheme}://{currentUri.Host}/{url}";
-            }
-
-            if (urlKind == UrlKind.Absolute && url.StartsWith("//"))
-            {
-                if (!string.IsNullOrWhiteSpace(currentUri.Scheme))
-                {
-                    url = currentUri.Scheme + ":" + url;
-                }
-            }
-
-            var expectedUri = new Uri(url, UriKind.Absolute);
-
-            if (components.Length == 0)
-            {
-                throw new BrowserLocationException($"Function CheckUrlCheckUrl(string, UriKind, params UriComponents) has to have one UriComponents at least.");
-            }
-            UriComponents finalComponent = components[0];
-            components.ToList().ForEach(s => finalComponent |= s);
-
-            return Uri.Compare(currentUri, expectedUri, finalComponent, UriFormat.SafeUnescaped, StringComparison.OrdinalIgnoreCase) == 0;
+            return new UrlValidator(url, urlKind, components).CompareUrl(CurrentUrl);
         }
 
         /// <summary>
@@ -94,7 +70,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-    
+
         public string GetAlertText()
         {
             var alert = GetAlert();
@@ -103,7 +79,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         public IBrowserWrapper CheckIfAlertTextEquals(string expectedValue, bool caseSensitive = false, bool trim = true)
         {
-            return EvaluateElementCheck<AlertException>(
+            return EvaluateBrowserCheck<AlertException>(
                 new AlertTextEqualsValidator(expectedValue, caseSensitive, trim));
         }
 
@@ -124,7 +100,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             IAlert alert;
             try
-
             {
                 alert = Driver.SwitchTo().Alert();
             }
@@ -142,18 +117,16 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         public IBrowserWrapper CheckIfAlertTextContains(string expectedValue, bool trim = true)
         {
-            return EvaluateElementCheck<AlertException>(new AlertTextContainsValidator(expectedValue, trim));
-            
+            return EvaluateBrowserCheck<AlertException>(new AlertTextContainsValidator(expectedValue, trim));
+
         }
 
         /// <summary>
         /// Checks if modal dialog (Alert) text equals with specified text.
         /// </summary>
-        public IBrowserWrapper CheckIfAlertText(Func<string, bool> expression, string failureMessage = "")
+        public IBrowserWrapper CheckIfAlertText(Expression<Func<string, bool>> expression, string failureMessage = "")
         {
-            return EvaluateElementCheck<AlertException>(new AlertTextValidator(expression == null
-                ? default(Expression<Func<string, bool>>)
-                : (s => expression(s)))); //TODO change method parametr Expression<Func<string, bool>>
+            return EvaluateBrowserCheck<AlertException>(new AlertTextValidator(expression));
         }
 
         /// <summary>
@@ -183,12 +156,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public IElementWrapperCollection CheckIfIsDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var collection = FindElements(selector, tmpSelectMethod);
-            var result = collection.ThrowIfSequenceEmpty().All(s => s.IsDisplayed());
-            if (!result)
-            {
-                var index = collection.IndexOf(collection.First(s => !s.IsDisplayed()));
-                throw new UnexpectedElementStateException($"One or more elements are not displayed. Selector '{selector}', Index of non-displayed element: {index}");
-            }
+
+            var validator = new IsDisplayedValidator();
+
+            var runner = new AllOperationRunner<IElementWrapper>(collection);
+            runner.Evaluate<UnexpectedElementStateException>(validator);
+
             return collection;
         }
 
@@ -198,21 +171,12 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             var collection = FindElements(selector, tmpSelectMethod);
 
-            var validator = new Validators.Checkers.ElementWrapperCheckers.IsNotDisplayedValidator();
+            var validator = new IsNotDisplayedValidator();
 
             var runner = new AllOperationRunner<IElementWrapper>(collection);
             runner.Evaluate<UnexpectedElementStateException>(validator);
 
             return collection;
-
-            //TODO: check 
-            //var result = collection.All(s => s.IsDisplayed()) && collection.Any();
-            //if (result)
-            //{
-            //    var index = collection.Any() ? collection.IndexOf(collection.First(s => !s.IsDisplayed())) : -1;
-            //    throw new UnexpectedElementStateException($"One or more elements are displayed and they shouldn't be. Selector '{selector}', Index of non-displayed element: {index}");
-            //}
-            //return collection;
         }
 
         public IBrowserWrapper FireJsBlur()
@@ -221,7 +185,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-    
+
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
         public IBrowserWrapper SendKeys(string selector, string text, Func<string, By> tmpSelectMethod = null)
@@ -248,7 +212,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="url">This url is compared with CurrentUrl.</param>
         public IBrowserWrapper CheckUrlEquals(string url)
         {
-            return EvaluateElementCheck<BrowserLocationException>(new CheckUrlEquals(url));
+            return EvaluateBrowserCheck<BrowserLocationException>(new UrlEqualsValidator(url));
         }
 
         /// <summary>
@@ -256,13 +220,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// </summary>
         /// <param name="expression">The condition</param>
         /// <param name="failureMessage">Failure message</param>
-        public IBrowserWrapper CheckUrl(Func<string, bool> expression, string failureMessage = null)
+        public IBrowserWrapper CheckUrl(Expression<Func<string, bool>> expression, string failureMessage = null)
         {
-            if (!expression(CurrentUrl))
-            {
-                throw new BrowserLocationException($"Current url is not expected. Current url: '{CurrentUrl}'. " + (failureMessage ?? ""));
-            }
-            return this;
+            return EvaluateBrowserCheck<BrowserLocationException>(new CurrentUrlValidator(expression, failureMessage));
         }
 
         /// <summary>
@@ -273,7 +233,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="components">Determine what parts of urls are compared.</param>
         public IBrowserWrapper CheckUrl(string url, UrlKind urlKind, params UriComponents[] components)
         {
-            return EvaluateElementCheck<BrowserLocationException>(new CheckUrl(url, urlKind, components));
+            return EvaluateBrowserCheck<BrowserLocationException>(new UrlValidator(url, urlKind, components));
         }
 
         #endregion CheckUrl
@@ -328,18 +288,19 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
         #endregion FileUploadDialog
 
-    
+
 
         public IBrowserWrapper CheckIfHyperLinkEquals(string selector, string url, UrlKind kind, params UriComponents[] components)
         {
-            ForEach(selector, element =>
-            {
-                element.CheckIfHyperLinkEquals(url, kind, components);
-            });
+            var elements = FindElements(selector);
+            var validator = new HyperLinkEqualsValidator(url, kind, components);
+            var runner = new AllOperationRunner<IElementWrapper>(elements);
+            runner.Evaluate<UnexpectedElementStateException>(validator);
+
             return this;
         }
 
-     
+
         /// <summary>
         /// Checks if browser can access given Url (browser returns status code 2??).
         /// </summary>
@@ -348,28 +309,26 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <returns></returns>
         public IBrowserWrapper CheckIfUrlIsAccessible(string url, UrlKind urlKind)
         {
-            return EvaluateElementCheck<BrowserLocationException>(new UrlIsAccessibleValidator(url, urlKind));
+            return EvaluateBrowserCheck<BrowserLocationException>(new UrlIsAccessibleValidator(url, urlKind));
         }
 
         public string GetTitle() => Driver.Title;
 
         public IBrowserWrapper CheckIfTitleEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
         {
-            return EvaluateElementCheck<BrowserException>(new TitleEqualsValidator(title,
+            return EvaluateBrowserCheck<BrowserException>(new TitleEqualsValidator(title,
                 comparison == StringComparison.Ordinal, trim));
         }
 
         public IBrowserWrapper CheckIfTitleNotEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
         {
-            return EvaluateElementCheck<BrowserException>(new TitleNotEqualsValidator(title,
+            return EvaluateBrowserCheck<BrowserException>(new TitleNotEqualsValidator(title,
                 comparison == StringComparison.Ordinal, trim));
         }
 
-        public IBrowserWrapper CheckIfTitle(Func<string, bool> func, string failureMessage = "")
+        public IBrowserWrapper CheckIfTitle(Expression<Func<string, bool>> expression, string failureMessage = "")
         {
-            return EvaluateElementCheck<BrowserException>(
-                new TitleValidator(func == null ? default(Expression<Func<string, bool>>) : (s => func(s)),
-                    failureMessage));  //TODO change method parametr Expression<Func<string, bool>>
+            return EvaluateBrowserCheck<BrowserException>(new TitleValidator(expression, failureMessage));
         }
 
         /// <summary>
