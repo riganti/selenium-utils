@@ -4,6 +4,10 @@ using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheckers
 {
+    /// <summary>
+    /// TODO: Check if this functionality is available for elements. 
+    /// Ladislav Schumacher
+    /// </summary>
     public class UrlIsAccessibleValidator : ICheck<IBrowserWrapper>
     {
         private readonly string url;

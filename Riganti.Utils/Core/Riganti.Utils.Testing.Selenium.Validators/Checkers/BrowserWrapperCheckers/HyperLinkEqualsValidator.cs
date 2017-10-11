@@ -3,6 +3,10 @@ using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheckers
 {
+    //TODO: remove
+    /// <summary>
+    /// TODO: REMOVE THIS VALIDATOR
+    /// </summary>
     public class HyperLinkEqualsValidator : ICheck<IBrowserWrapper>
     {
         private readonly string selector;

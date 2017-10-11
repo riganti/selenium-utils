@@ -7,7 +7,9 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions;
+using Riganti.Utils.Testing.Selenium.Core.Api;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
+using Riganti.Utils.Testing.Selenium.Validators.Checkers;
 using Riganti.Utils.Testing.Selenium.Validators.Checkers.BrowserWrapperCheckers;
 
 namespace Riganti.Utils.Testing.Selenium.Core
@@ -195,13 +197,22 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public IElementWrapperCollection CheckIfIsNotDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var collection = FindElements(selector, tmpSelectMethod);
-            var result = collection.All(s => s.IsDisplayed()) && collection.Any();
-            if (result)
-            {
-                var index = collection.Any() ? collection.IndexOf(collection.First(s => !s.IsDisplayed())) : -1;
-                throw new UnexpectedElementStateException($"One or more elements are displayed and they shouldn't be. Selector '{selector}', Index of non-displayed element: {index}");
-            }
+
+            var validator = new Validators.Checkers.ElementWrapperCheckers.IsNotDisplayedValidator();
+
+            var runner = new AllOperationRunner<IElementWrapper>(collection);
+            runner.Evaluate<UnexpectedElementStateException>(validator);
+
             return collection;
+
+            //TODO: check 
+            //var result = collection.All(s => s.IsDisplayed()) && collection.Any();
+            //if (result)
+            //{
+            //    var index = collection.Any() ? collection.IndexOf(collection.First(s => !s.IsDisplayed())) : -1;
+            //    throw new UnexpectedElementStateException($"One or more elements are displayed and they shouldn't be. Selector '{selector}', Index of non-displayed element: {index}");
+            //}
+            //return collection;
         }
 
         public IBrowserWrapper FireJsBlur()

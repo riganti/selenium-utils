@@ -5,6 +5,6 @@ namespace Riganti.Utils.Testing.Selenium.Core.Api
 {
     public interface IOperationRunner<T>
     {
-        void Evaluate<TException>(ICheck<T> check) where TException : TestExceptionBase, new();
+        void Evaluate<TException>(ICheck<T> validator) where TException : TestExceptionBase, new();
     }
 }

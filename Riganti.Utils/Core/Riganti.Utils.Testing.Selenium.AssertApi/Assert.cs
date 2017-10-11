@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using OpenQA.Selenium;
@@ -314,7 +315,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             var isDisplayed = new BrowserCheckers.IsDisplayedValidator(selector, tmpSelectedMethod);
             EvaluateCheck<UnexpectedElementStateException, IBrowserWrapper>(wrapper, isDisplayed);
         }
-        public static void IsNotDisplayed(BrowserWrapper wrapper, string selector, Expression<Func<string, By>> tmpSelectedMethod = null)
+        public static void IsNotDisplayed(BrowserWrapper wrapper, string selector, Func<string, By> tmpSelectedMethod = null)
         {
             var isNotDisplayed = new BrowserCheckers.IsNotDisplayedValidator(selector, tmpSelectedMethod);
             EvaluateCheck<BrowserException, IBrowserWrapper>(wrapper, isNotDisplayed);
@@ -362,7 +363,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return new AnyOperationRunner<T>(wrappers);
         }
 
-        public static AllOperationRunner<T> All<T>(T[] elementWrappers)
+        public static AllOperationRunner<T> All<T>(IEnumerable<T> elementWrappers)
         {
             return new AllOperationRunner<T>(elementWrappers);
         }
