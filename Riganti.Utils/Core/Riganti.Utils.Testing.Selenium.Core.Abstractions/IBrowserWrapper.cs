@@ -47,7 +47,11 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions
 #if net461
         IBrowserWrapper SendEnterKey();
         IBrowserWrapper SendEscKey();
+        void OpenFileDialog(IElementWrapper fileInputElement, string file);
 #endif
+        void OpenInputFileDialog(IElementWrapper fileInputElement, string file);
+
+
         IBrowserWrapper SendKeys(string selector, string text, Func<string, By> tmpSelectMethod = null);
         void SetCssSelector();
         void SetTimeouts(TimeSpan pageLoadTimeout, TimeSpan implicitlyWait);

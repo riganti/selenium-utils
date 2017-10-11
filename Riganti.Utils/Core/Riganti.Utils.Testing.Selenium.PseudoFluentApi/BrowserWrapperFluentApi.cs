@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -247,24 +248,19 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <param name="fullFileName">Full path to file that is intended to be uploaded.</param>
         public virtual IBrowserWrapper FileUploadDialogSelect(IElementWrapper fileUploadOpener, string fullFileName)
         {
-            if (fileUploadOpener.GetTagName() == "input" && fileUploadOpener.HasAttribute("type") && fileUploadOpener.GetAttribute("type") == "file")
+            try
             {
-                fileUploadOpener.SendKeys(fullFileName);
-                Wait();
+                OpenInputFileDialog(fileUploadOpener, fullFileName);
             }
-            else
+            catch (UnexpectedElementException)
             {
-                // open file dialog
-                fileUploadOpener.Click();
-                Wait();
-                //Another wait is needed because without it sometimes few chars from file path are skipped.
-                Wait(1000);
-                // write the full path to the dialog
-                throw new NotImplementedException();
-                //       System.Windows.Forms.SendKeys.SendWait(fullFileName);
-                Wait();
-                SendEnterKey();
+#if net461
+                base.OpenFileDialog(fileUploadOpener, fullFileName);
+#else
+                throw;
+#endif
             }
+
             return this;
         }
 
