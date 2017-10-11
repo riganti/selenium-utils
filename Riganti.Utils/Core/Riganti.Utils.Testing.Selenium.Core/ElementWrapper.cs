@@ -205,13 +205,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
         public virtual IElementWrapper CheckIfContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             return EvaluateElementCheck<EmptySequenceException>(
-                new ContainsElementValidator(cssSelector, tmpSelectMethod == null ? default(Expression<Func<string, By>>) : s => tmpSelectMethod(s))); //TODO change method parametr Expression<Func<string, by>>
+                new ContainsElementValidator(cssSelector, tmpSelectMethod)); 
         }
 
         public virtual IElementWrapper CheckIfNotContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             return EvaluateElementCheck<MoreElementsInSequenceException>(
-                new NotContainsElementValidator(cssSelector, tmpSelectMethod == null ? default(Expression<Func<string, By>>) : s => tmpSelectMethod(s))); //TODO change method parametr Expression<Func<string, by>>
+                new NotContainsElementValidator(cssSelector, tmpSelectMethod)); 
         }
 
         public virtual string GetJsElementPropertyValue(string elementPropertyName)

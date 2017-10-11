@@ -178,13 +178,13 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 
 
-        public static void ContainsElement(ElementWrapper wrapper, string cssSelector, Expression<Func<string, By>> tmpSelectMethod = null)
+        public static void ContainsElement(ElementWrapper wrapper, string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             var containsElement = new ContainsElementValidator(cssSelector, tmpSelectMethod);
             EvaluateCheck<EmptySequenceException, IElementWrapper>(wrapper, containsElement);
         }
 
-        public static void NotContainsElement(ElementWrapper wrapper, string cssSelector, Expression<Func<string, By>> tmpSelectMethod = null)
+        public static void NotContainsElement(ElementWrapper wrapper, string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             var notContainsElement = new NotContainsElementValidator(cssSelector, tmpSelectMethod);
             EvaluateCheck<MoreElementsInSequenceException, IElementWrapper>(wrapper, notContainsElement);

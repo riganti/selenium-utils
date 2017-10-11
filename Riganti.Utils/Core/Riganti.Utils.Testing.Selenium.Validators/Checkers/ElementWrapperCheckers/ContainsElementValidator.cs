@@ -8,9 +8,9 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheck
     public class ContainsElementValidator : ICheck<IElementWrapper>
     {
         public readonly string cssSelector;
-        public readonly Expression<Func<string, By>> tmpSelectMethod;
+        public readonly Func<string, By> tmpSelectMethod;
 
-        public ContainsElementValidator(string cssSelector, Expression<Func<string, By>> tmpSelectMethod = null)
+        public ContainsElementValidator(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             this.cssSelector = cssSelector;
             this.tmpSelectMethod = tmpSelectMethod;
@@ -18,7 +18,7 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheck
 
         public CheckResult Validate(IElementWrapper wrapper)
         {
-            var isSucceeded = wrapper.FindElements(cssSelector, tmpSelectMethod?.Compile()).Count != 0;
+            var isSucceeded = wrapper.FindElements(cssSelector, tmpSelectMethod).Count != 0;
             return isSucceeded ? CheckResult.Succeeded : new CheckResult($"This element ('{wrapper.FullSelector}') does not contain child selectable by '{cssSelector}'.");
         }
     }

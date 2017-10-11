@@ -125,7 +125,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.FluentApi.Tests
         }
 
         [TestMethod]
-        [ExpectedSeleniumException(typeof(WebException))]
+        [ExpectedSeleniumException(typeof(BrowserLocationException))]
         public void Url_CheckIfUrlExists_ExpectedFailure()
         {
             this.RunInAllBrowsers(browser =>

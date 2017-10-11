@@ -337,7 +337,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
         /// <returns></returns>
         public IBrowserWrapper CheckIfUrlIsAccessible(string url, UrlKind urlKind)
         {
-            return EvaluateElementCheck<BrowserException>(new UrlIsAccessibleValidator(url, urlKind));
+            return EvaluateElementCheck<BrowserLocationException>(new UrlIsAccessibleValidator(url, urlKind));
         }
 
         public string GetTitle() => Driver.Title;

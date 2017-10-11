@@ -8,9 +8,9 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheck
     public class NotContainsElementValidator : ICheck<IElementWrapper>
     {
         public readonly string cssSelector;
-        public readonly Expression<Func<string, By>> tmpSelectMethod;
+        public readonly Func<string, By> tmpSelectMethod;
 
-        public NotContainsElementValidator(string cssSelector, Expression<Func<string, By>> tmpSelectMethod = null)
+        public NotContainsElementValidator(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
             this.cssSelector = cssSelector;
             this.tmpSelectMethod = tmpSelectMethod;
@@ -18,7 +18,7 @@ namespace Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheck
 
         public CheckResult Validate(IElementWrapper wrapper)
         {
-            var count = wrapper.FindElements(cssSelector, tmpSelectMethod?.Compile()).Count;
+            var count = wrapper.FindElements(cssSelector, tmpSelectMethod).Count;
             if (count != 0)
             {
                 var children = count == 1 ? "child" : $"children ({count})";
