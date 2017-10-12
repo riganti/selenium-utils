@@ -15,7 +15,7 @@ namespace Riganti.Utils.Testing.Selenium.xUnitIntegration
         public override void RunInAllBrowsers(ISeleniumTest testClass, Action<IBrowserWrapper> action, string callerMemberName, string callerFilePath,
             int callerLineNumber)
         {
-            var context = (TestInstanceContextWrapper)TestContextAccessor.GetTestContext();
+            var context = (TestContextWrapper)TestContextProvider.GetGlobalScopeTestContext();
             context.TestName = callerMemberName;
             context.FullyQualifiedTestClassName = new System.Diagnostics.StackTrace().GetFrames()?.Select(s => s.GetMethod()?
                 .ReflectedType?.FullName).FirstOrDefault(s => !s?.Contains(this.GetType()?.Namespace ?? "") ?? false);

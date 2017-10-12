@@ -12,7 +12,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.AssertApi.Tests
     {
         public void RunInAllBrowsers(Action<BrowserWrapperAssertApi> testBody, [CallerMemberName]string callerMemberName = "", [CallerFilePath]string callerFilePath = "", [CallerLineNumber]int callerLineNumber = 0)
         {
-            TestSuiteRunner.RunInAllBrowsers(this, o => testBody((BrowserWrapperAssertApi)o), callerMemberName, callerFilePath, callerLineNumber);
+            AssertApiSeleniumTestExecutorExtensions.RunInAllBrowsers(this, testBody, callerMemberName, callerFilePath, callerLineNumber);
         }
         public AppSeleniumTest(ITestOutputHelper output) : base(output)
         {

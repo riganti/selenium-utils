@@ -1,15 +1,26 @@
 ﻿using Riganti.Utils.Testing.Selenium.AssertApi;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace Riganti.Utils.Testing.Selenium.Core.Samples.AssertApi.Tests
 {
-    class InnerTextTests : AppSeleniumTest
+    public class InnerTextTests : AppSeleniumTest
     {
         public InnerTextTests(ITestOutputHelper output) : base(output)
         {
+            
+        }
+
+        [Fact]
+        public void Test()
+        {
             RunInAllBrowsers(browser =>
             {
-               Assert.AlertText(browser, s=> s.Contains("red"));
+                browser.NavigateToUrl("/test/alert");
+
+                browser.First("#button").Click();
+                Assert.AlertTextEquals(browser, "confirm test");
+
             });
         }
     }

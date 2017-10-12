@@ -1,0 +1,22 @@
+﻿{
+  "factories": {
+    "chrome:fast": {}
+    //"chrome:coordinator": {
+    //  "options": {
+    //    "coordinatorUrl": "http://192.168.88.216:5001/"
+    //  }
+    //}
+  },
+  "baseUrls": [
+    "http://localhost:6277/"
+  ],
+  "testRunOptions": {
+    "runInParallel": false,
+    "testAttemptsCount": 1
+  },
+  "logging": {
+    "loggers": {
+      "testContext": {}
+    }
+  }
+}

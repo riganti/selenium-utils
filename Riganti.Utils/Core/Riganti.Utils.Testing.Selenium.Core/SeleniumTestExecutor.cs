@@ -57,7 +57,8 @@ namespace Riganti.Utils.Testing.Selenium.Core
         {
             var builder = new ConfigurationBuilder();
 
-            var defaultConfigurationPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "seleniumconfig.json");
+            var url = new Uri(Assembly.GetExecutingAssembly().CodeBase);
+            var defaultConfigurationPath = Path.Combine(Path.GetDirectoryName(Uri.UnescapeDataString(url.AbsolutePath)), "seleniumconfig.json");
             builder.AddJsonFile(defaultConfigurationPath, true);
 
             return builder;
