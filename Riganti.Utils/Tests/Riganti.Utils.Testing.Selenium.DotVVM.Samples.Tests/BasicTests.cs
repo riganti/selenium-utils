@@ -34,12 +34,10 @@ namespace Selenium.DotVVM.Samples.Tests
                 browser.NavigateToUrl("/FileUpload");
 
                 var tempPath = Path.GetTempFileName();
-                File.WriteAllBytes(tempPath, Enumerable.Range(0, 255).Select(i => (byte) i).ToArray());
+                File.WriteAllBytes(tempPath, Enumerable.Range(0, 255).Select(i => (byte)i).ToArray());
 
-
-                browser.First("#FUpload").UploadFile(tempPath);
-
-
+                DotVVMAssert.UploadFile(browser.First("#FUpload"), tempPath);
+                
                 browser.WaitFor(() =>
                 {
                     browser.First("#FUpload .dotvvm-upload-files").CheckIfInnerTextEquals("1 files", false);

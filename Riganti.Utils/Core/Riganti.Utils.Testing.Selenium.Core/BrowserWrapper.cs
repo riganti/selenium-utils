@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
 using Riganti.Utils.Testing.Selenium.Core.Api;
 using Riganti.Utils.Testing.Selenium.Core.Configuration;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
@@ -188,6 +189,46 @@ namespace Riganti.Utils.Testing.Selenium.Core
             action();
             stopwatch.Stop();
             afterActionExecuted(stopwatch);
+        }
+        /// <summary>
+        /// Sets file to input dialog.
+        /// </summary>
+        ///<exception cref="UnexpectedElementException">The element is not input or type is not file.</exception>
+        public void OpenInputFileDialog(IElementWrapper fileInputElement, string file)
+        {
+            if (!IsFileInput(fileInputElement))
+            {
+                throw new UnexpectedElementException("Tag name of the element has to be input and type has to be file.");
+            }
+            fileInputElement.SendKeys(file);
+            Wait();
+        }
+
+#if net461
+        [Obsolete]
+        public void OpenFileDialog(IElementWrapper fileInputElement, string file)
+        {
+            // open file dialog
+            fileInputElement.Click();
+            Wait();
+
+            //Another wait is needed because without it sometimes few chars from file path are skipped.
+            Wait(1000);
+
+            // write the full path to the dialog
+            System.Windows.Forms.SendKeys.SendWait(file);
+            Wait();
+            SendEnterKey();
+        }
+#endif
+
+
+        /// <summary>
+        /// Determinates whether element is file dialog. (input[type=file])
+        /// </summary>
+        public bool IsFileInput(IElementWrapper fileInputElement)
+        {
+            return fileInputElement.GetTagName() == "input" && fileInputElement.HasAttribute("type") && fileInputElement.GetAttribute("type") == "file";
         }
 
         public void LogVerbose(string message)
@@ -490,7 +531,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
 
 
-        #region FileUploadDialog
+#region FileUploadDialog
 #if net461
         public virtual IBrowserWrapper SendEnterKey()
         {
@@ -508,9 +549,9 @@ namespace Riganti.Utils.Testing.Selenium.Core
         }
 #endif
 
-        #endregion FileUploadDialog
+#endregion FileUploadDialog
 
-        #region Frames support
+#region Frames support
 
         public IBrowserWrapper GetFrameScope(string selector)
         {
@@ -529,7 +570,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return wrapper;
         }
 
-        #endregion Frames support
+#endregion Frames support
 
 
         /// <summary>

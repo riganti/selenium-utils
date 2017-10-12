@@ -1,19 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
-
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <IsPackable>True</IsPackable>
     <IncludeContentInPack>False</IncludeContentInPack>
     <IncludeSymbols>True</IncludeSymbols>
-    <AssemblyVersion>1.0.4</AssemblyVersion>
-    <FileVersion>1.0.4</FileVersion>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <FileVersion>2.0.0</FileVersion>
     <Description>Integration of Riganti.Utils.Testing.Selenium.DotVVM for DotVVM Framework.</Description>
-    <Version>1.0.4</Version>
+    <Version>2.0.0-alpha4</Version>
     <PackageProjectUrl>https://github.com/riganti/selenium-utils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/riganti/selenium-utils</RepositoryUrl>
     <PackageTags>selenium ui tests riganti ci dotvvm</PackageTags>
-    <PackageReleaseNotes>Added support for Selenium.WebDriver.3.4.0</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for Selenium.WebDriver.3.6.0</PackageReleaseNotes>
     <Authors>Ladislav Šesták</Authors>
     <Company>RIGANTI s.r.o.</Company>
     <PackageIconUrl>https://raw.githubusercontent.com/riganti/selenium-utils/new-api/Riganti.Utils/Riganti.Utils.Testing/Icon.png</PackageIconUrl>
@@ -25,8 +24,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
