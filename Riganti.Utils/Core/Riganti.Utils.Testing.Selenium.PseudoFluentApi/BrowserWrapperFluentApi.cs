@@ -264,23 +264,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
-        public virtual IBrowserWrapper SendEnterKey()
-        {
-
-            throw new NotImplementedException();
-            //System.Windows.Forms.SendKeys.SendWait("{Enter}");
-            Wait();
-            return this;
-        }
-
-        public virtual IBrowserWrapper SendEscKey()
-        {
-            throw new NotImplementedException();
-
-            //System.Windows.Forms.SendKeys.SendWait("{ESC}");
-            Wait();
-            return this;
-        }
+    
 
         #endregion FileUploadDialog
 

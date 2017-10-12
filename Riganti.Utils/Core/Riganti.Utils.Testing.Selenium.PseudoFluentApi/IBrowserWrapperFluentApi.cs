@@ -63,8 +63,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
         void NavigateToUrl();
         void NavigateToUrl(string url);
         void Refresh();
-        IBrowserWrapper SendEnterKey();
-        IBrowserWrapper SendEscKey();
         IBrowserWrapper SendKeys(string selector, string text, Func<string, By> tmpSelectMethod = null);
         void SetCssSelector();
         void SetTimeouts(TimeSpan pageLoadTimeout, TimeSpan implicitlyWait);
