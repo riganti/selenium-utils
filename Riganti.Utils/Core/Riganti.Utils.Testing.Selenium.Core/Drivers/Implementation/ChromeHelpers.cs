@@ -13,6 +13,8 @@ namespace Riganti.Utils.Testing.Selenium.Core.Drivers.Implementation
             options.AddArgument("test-type");
             options.AddArgument("disable-popup-blocking");
 
+            options.AddArguments(factory.Capabilities);
+
             if (factory.GetBooleanOption("disableExtensions"))
             {
                 options.AddArgument("--disable-extensions");

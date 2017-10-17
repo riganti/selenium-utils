@@ -1,6 +1,8 @@
 ﻿{
   "factories": {
-    "chrome:fast": {}
+    "chrome:fast": {
+      "capabilities": [ "--window-size=1920,1080" ]
+    }
     //"chrome:coordinator": {
     //  "options": {
     //    "coordinatorUrl": "http://192.168.88.216:5001/"

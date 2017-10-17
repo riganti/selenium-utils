@@ -13,7 +13,8 @@ namespace Riganti.Utils.Testing.Selenium.Core.Factories
         public abstract string Name { get; }
 
         public IDictionary<string, string> Options { get; } = new Dictionary<string, string>();
-        
+        public IList<string> Capabilities { get; } = new List<string>();
+
 
         public TestSuiteRunner TestSuiteRunner { get; }
 

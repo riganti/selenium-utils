@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Riganti.Utils.Testing.Selenium.Core.Abstractions;
 using Riganti.Utils.Testing.Selenium.Core.Drivers;
@@ -12,6 +13,8 @@ namespace Riganti.Utils.Testing.Selenium.Core.Factories
         string Name { get; }
 
         IDictionary<string, string> Options { get; }
+
+        IList<string> Capabilities { get; }
         
         TestSuiteRunner TestSuiteRunner { get; }
 

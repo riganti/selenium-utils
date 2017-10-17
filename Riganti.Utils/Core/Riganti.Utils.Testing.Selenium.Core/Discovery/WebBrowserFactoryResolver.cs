@@ -38,6 +38,12 @@ namespace Riganti.Utils.Testing.Selenium.Core.Discovery
                     instance.Options[entry.Key] = entry.Value;
                 }
 
+                //load capabilities
+                foreach (var entry in factoryConfiguration.Value.Capabilities)
+                {
+                    instance.Capabilities.Add(entry);
+                }
+
                 // return the instance
                 result[factoryConfiguration.Key] = instance;
             }
