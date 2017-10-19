@@ -16,7 +16,7 @@ dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Seleniu
 dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.MSTestIntegration\Riganti.Utils.Testing.Selenium.MSTestIntegration.csproj             
 dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.xUnit\XUnitTestProject1\Riganti.Utils.Testing.Selenium.xUnitIntegration.csproj        
 
-$files = dir $PWD\.. -Recurse | where {$_.Name.EndsWith(".nupkg")} | where {!$_.FullName.Contains("packages")} | where {!$_.FullName.Contains("symbols.nupkg")}
+$files = dir $PWD\.. -Recurse | where {$_.Name.EndsWith(".nupkg")} | where {!$_.FullName.Contains("packages")} | where {!$_.FullName.Contains(".symbols.nupkg")}
 
 foreach($file in $files)
 {
