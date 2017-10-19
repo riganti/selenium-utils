@@ -10,6 +10,7 @@ namespace Selenium.Core.UnitTests.Mock
     {
         public string Name => "factory";
         public IDictionary<string, string> Options { get; } = new Dictionary<string, string>();
+        public IList<string> Capabilities { get; set; }
         public TestSuiteRunner TestSuiteRunner => null;
         public Task<IWebBrowser> AcquireBrowser()
         {
