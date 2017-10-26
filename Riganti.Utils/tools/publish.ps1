@@ -12,6 +12,7 @@ dotnet pack -c  Release --no-build ..\Core\Riganti.Utils.Testing.Selenium.Core.A
 dotnet pack -c  Release --no-build ..\Core\Riganti.Utils.Testing.Selenium.LambdaApi\Riganti.Utils.Testing.Selenium.LambdaApi.csproj                                     
 dotnet pack -c  Release --no-build ..\Core\Riganti.Utils.Testing.Selenium.PseudoFluentApi\Riganti.Utils.Testing.Selenium.FluentApi.csproj                         
 dotnet pack -c  Release --no-build ..\Core\Riganti.Utils.Testing.Selenium.Validators\Riganti.Utils.Testing.Selenium.Validators.csproj                                   
+dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.DotVVM\Riganti.Utils.Testing.Selenium.DotVVM.csproj
 dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.MSTest2Integration\Riganti.Utils.Testing.Selenium.MSTest2Integration.csproj           
 dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.MSTestIntegration\Riganti.Utils.Testing.Selenium.MSTestIntegration.csproj             
 dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.xUnit\XUnitTestProject1\Riganti.Utils.Testing.Selenium.xUnitIntegration.csproj        
