@@ -332,5 +332,24 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.FluentApi.Tests
                 File.Delete(tempFile);
             });
         }
+
+        [TestMethod]
+        public void DragAndDropTest()
+        {
+            this.RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/DragAndDrop");
+                browser.Wait(1000);
+                var drag = browser.First("#draggable");
+                var drop = browser.First("#droppable");
+                browser.DragAndDrop(drag, drop);
+                browser.WaitFor(() =>
+                {
+                    var result = browser.First("#droppable > p");
+                    result.CheckIfTextEquals("Dropped!");
+                }, 3000);
+            });
+        }
+
     }
 }

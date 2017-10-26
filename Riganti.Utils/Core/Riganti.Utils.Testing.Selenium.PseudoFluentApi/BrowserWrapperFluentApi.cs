@@ -311,24 +311,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return EvaluateBrowserCheck<BrowserException>(new TitleValidator(expression, failureMessage));
         }
 
-        /// <summary>
-        /// Drag on element dragOnElement and drop to dropToElement with offsetX and offsetY.
-        /// </summary>
-        /// <param name="dragOnElement"></param>
-        /// <param name="dropToElement"></param>
-        /// <param name="offsetX"></param>
-        /// <param name="offsetY"></param>
-        /// <returns></returns>
-        public IBrowserWrapper DragAndDrop(IElementWrapper dragOnElement, IElementWrapper dropToElement, int offsetX = 0, int offsetY = 0)
-        {
-            var builder = new Actions(_GetInternalWebDriver());
-            var from = dragOnElement.WebElement;
-            var to = dropToElement.WebElement;
-            var dragAndDrop = builder.ClickAndHold(from).MoveToElement(to, offsetX, offsetY).Release(to).Build();
-            dragAndDrop.Perform();
-            return this;
-        }
-
         public BrowserWrapperFluentApi(IWebBrowser browser, IWebDriver driver, ITestInstance testInstance, ScopeOptions scope) : base(browser, driver, testInstance, scope)
         {
         }

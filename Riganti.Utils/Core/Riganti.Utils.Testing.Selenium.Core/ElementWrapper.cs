@@ -938,8 +938,7 @@ return elementInViewport2(arguments[0]);
         /// <returns></returns>
         public IElementWrapper DropTo(IElementWrapper dropToElement, int offsetX = 0, int offsetY = 0)
         {
-            throw new NotImplementedException();
-            //BrowserWrapper.DragAndDrop(this, dropToElement, offsetX, offsetY);
+            browser.DragAndDrop(this, dropToElement, offsetX, offsetY);
             return this;
         }
 
