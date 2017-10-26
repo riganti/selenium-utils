@@ -693,6 +693,16 @@ namespace Riganti.Utils.Testing.Selenium.Core
             return this;
         }
 
+        public IBrowserWrapper DragAndDrop(IElementWrapper elementWrapper, IElementWrapper dropToElement, int offsetX = 0, int offsetY = 0)
+        {
+            Actions dragAndDrop = new Actions(_GetInternalWebDriver());
+            dragAndDrop.ClickAndHold(elementWrapper.WebElement)
+                .MoveToElement(dropToElement.WebElement, offsetX, offsetY)
+                .Release(dropToElement.WebElement).Build().Perform();
+
+            return this;
+        }
+
         public void ActivateScope()
         {
             if (testInstance.TestClass.CurrentScope == ScopeOptions.ScopeId)

@@ -56,6 +56,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.New.Controllers
             return View(null);
         }
         public ActionResult Value() { return View(null); }
+        public ActionResult DragAndDrop() { return View(null); }
 
     }
 
