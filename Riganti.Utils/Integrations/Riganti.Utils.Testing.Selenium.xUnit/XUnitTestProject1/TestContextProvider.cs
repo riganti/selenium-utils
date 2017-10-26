@@ -21,9 +21,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             {
                 throw new InvalidOperationException("TestContext is not set.");
             }
-
             return new TestInstanceContextWrapper(outputHelper, testInstance);
-
         }
 
         public ITestContext GetGlobalScopeTestContext()

@@ -8,7 +8,6 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.AssertApi.Tests
     {
         public InnerTextTests(ITestOutputHelper output) : base(output)
         {
-            
         }
 
         [Fact]

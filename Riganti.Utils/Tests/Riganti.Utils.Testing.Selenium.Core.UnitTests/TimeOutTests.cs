@@ -51,10 +51,7 @@ namespace Selenium.Core.UnitTests
         [TestMethod, Timeout(5000), ExpectedException(typeof(WaitBlockException), AllowDerivedTypes = true)]
         public void BrowserWaitForTimeoutTest5()
         {
-            browser.WaitFor(new Action(() =>
-            {
-                throw new Exception("Condition is not valid.");
-            }), 2000, "test timeouted", checkInterval: 100);
+            browser.WaitFor(new Action(() => throw new Exception("Condition is not valid.")), 2000, "test timeouted", checkInterval: 100);
         }
         [TestMethod, Timeout(5000)]
         public void BrowserWaitForTimeoutTest6()
