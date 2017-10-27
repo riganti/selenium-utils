@@ -15,7 +15,7 @@
     <PackageReleaseNotes>Added support for Selenium.WebDriver.3.6.0</PackageReleaseNotes>
     <Authors>Ladislav Šesták</Authors>
     <Company>RIGANTI s.r.o.</Company>
-    <PackageIconUrl>https://raw.githubusercontent.com/riganti/selenium-utils/new-api/Riganti.Utils/Riganti.Utils.Testing/Icon.png</PackageIconUrl>
+    <PackageIconUrl>https://github.com/riganti/selenium-utils/raw/master/Riganti.Utils/Icon.png</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
   </ItemGroup>
 
