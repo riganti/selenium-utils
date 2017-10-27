@@ -69,7 +69,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
         IElementWrapper SingleOrDefault(string selector, Func<string, By> tmpSelectMethod = null);
         IBrowserWrapper Submit(string selector);
         IBrowserWrapper SwitchToTab(int index);
-        void TakeScreenshot(string filename, ScreenshotImageFormat? format = null);
         T ThrowIfIsNull<T>(T obj, string message);
         IBrowserWrapper Wait();
         IBrowserWrapper Wait(int milliseconds);

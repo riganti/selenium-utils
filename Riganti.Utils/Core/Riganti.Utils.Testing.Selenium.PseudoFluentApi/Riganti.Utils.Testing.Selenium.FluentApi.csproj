@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <Version>2.0.0-alpha8</Version>
     <Product>Riganti.Utils.Testing.Selenium.FluentApi</Product>
     <Company>Riganti s.r.o.</Company>

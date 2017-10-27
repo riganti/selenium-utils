@@ -16,11 +16,18 @@ namespace Riganti.Utils.Testing.Selenium.DotVVM
         public void Has()
         {
             throw new NotImplementedException();
+
+            // binding has this signiture:
+            // data-bind="text: some.expression() + something.inside, attr: { style: {color: '#711000', cursor: 'pointer'}}, displayed: IsDisplayed()" 
         }
 
         public void HasNot()
         {
+
             throw new NotImplementedException();
+            // binding has this signiture:
+            // data-bind="text: some.expression() + something.inside, attr: { style: {color: '#711000', cursor: 'pointer'}}, displayed: IsDisplayed()" 
+
         }
     }
 }
