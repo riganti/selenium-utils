@@ -58,6 +58,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions
         IElementWrapper Single(string selector, Func<string, By> tmpSelectMethod = null);
         IElementWrapper SingleOrDefault(string selector, Func<string, By> tmpSelectMethod = null);
         IBrowserWrapper Submit(string selector);
+        void DropTest(string message);
         IBrowserWrapper DragAndDrop(IElementWrapper elementWrapper, IElementWrapper dropToElement, int offsetX, int offsetY);
         IBrowserWrapper SwitchToTab(int index);
         void TakeScreenshot(string filename, ScreenshotImageFormat? format = null);

@@ -36,7 +36,6 @@ namespace Riganti.Utils.Testing.Selenium.Core
         IBrowserWrapper DismissAlert();
         void Dispose();
         IBrowserWrapper DragAndDrop(IElementWrapper dragOnElement, IElementWrapper dropToElement, int offsetX = 0, int offsetY = 0);
-        void DropTest(string message);
         IElementWrapper ElementAt(string selector, int index, Func<string, By> tmpSelectMethod = null);
         IBrowserWrapper FileUploadDialogSelect(IElementWrapper fileUploadOpener, string fullFileName);
         IElementWrapperCollection FindElements(By selector);

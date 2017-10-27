@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -80,6 +81,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions
         bool IsElementInView(IElementWrapper element);
         bool IsEnabled();
         bool IsSelected();
+        Size GetSize();
         IElementWrapper Last(string selector, Func<string, By> tmpSelectMethod = null);
         IElementWrapper LastOrDefault(string selector, Func<string, By> tmpSelectMethod = null);
         IElementWrapper PerformActionOnSelectElement(Action<SelectElement> process);
