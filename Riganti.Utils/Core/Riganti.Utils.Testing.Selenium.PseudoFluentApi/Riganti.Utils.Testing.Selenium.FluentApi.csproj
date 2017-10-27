@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <Version>2.0.0-alpha7</Version>
+    <Version>2.0.0-alpha8</Version>
     <Product>Riganti.Utils.Testing.Selenium.FluentApi</Product>
     <Company>Riganti s.r.o.</Company>
     <Authors>Ladislav Šesták</Authors>
