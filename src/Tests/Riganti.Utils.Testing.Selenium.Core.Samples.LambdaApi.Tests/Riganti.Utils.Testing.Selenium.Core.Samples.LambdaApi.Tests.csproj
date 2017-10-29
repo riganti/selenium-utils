@@ -21,7 +21,7 @@
     <ProjectReference Include="..\..\Core\Riganti.Utils.Testing.Selenium.Core.Abstractions\Riganti.Utils.Testing.Selenium.Core.Abstractions.csproj" />
     <ProjectReference Include="..\..\Core\Riganti.Utils.Testing.Selenium.Core\Riganti.Utils.Testing.Selenium.Core.csproj" />
     <ProjectReference Include="..\..\Core\Riganti.Utils.Testing.Selenium.LambdaApi\Riganti.Utils.Testing.Selenium.LambdaApi.csproj" />
-    <ProjectReference Include="..\..\Integrations\Riganti.Utils.Testing.Selenium.xUnit\XUnitTestProject1\Riganti.Utils.Testing.Selenium.xUnitIntegration.csproj" />
+    <ProjectReference Include="..\..\Integrations\Riganti.Utils.Testing.Selenium.xUnit\Riganti.Utils.Testing.Selenium.xUnitIntegration.csproj" />
   </ItemGroup>
 
 </Project>
