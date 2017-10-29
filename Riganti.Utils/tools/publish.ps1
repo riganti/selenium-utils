@@ -15,7 +15,7 @@ dotnet pack -c  Release --no-build ..\Core\Riganti.Utils.Testing.Selenium.Valida
 dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.DotVVM.MSTest2\Riganti.Utils.Testing.Selenium.DotVVM.csproj
 dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.MSTest2Integration\Riganti.Utils.Testing.Selenium.MSTest2Integration.csproj           
 dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.MSTestIntegration\Riganti.Utils.Testing.Selenium.MSTestIntegration.csproj             
-dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.xUnit\XUnitTestProject1\Riganti.Utils.Testing.Selenium.xUnitIntegration.csproj        
+dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.xUnit\Riganti.Utils.Testing.Selenium.xUnitIntegration.csproj        
 
 $files = dir $PWD\.. -Recurse | where {$_.Name.EndsWith(".nupkg")} | where {!$_.FullName.Contains("packages")} | where {!$_.FullName.Contains(".symbols.nupkg")}
 

@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.DotVVM.Samples.Tests", "Tests\Riganti.Utils.Testing.Selenium.DotVVM.Samples.Tests\Riganti.Utils.Testing.Selenium.DotVVM.Samples.Tests.csproj", "{F3AAEA4A-4321-4BFA-97F1-34EFCC96150F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.xUnitIntegration", "Integrations\Riganti.Utils.Testing.Selenium.xUnit\XUnitTestProject1\Riganti.Utils.Testing.Selenium.xUnitIntegration.csproj", "{2DC4F2AE-4956-4958-AFAF-538202E5CCEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Testing.Selenium.xUnitIntegration", "Integrations\Riganti.Utils.Testing.Selenium.xUnit\Riganti.Utils.Testing.Selenium.xUnitIntegration.csproj", "{2DC4F2AE-4956-4958-AFAF-538202E5CCEC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{522555E0-D971-4C48-AD27-C3888DB383C5}"
 EndProject
