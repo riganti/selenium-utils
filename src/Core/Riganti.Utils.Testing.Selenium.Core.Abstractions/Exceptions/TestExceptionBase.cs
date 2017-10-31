@@ -101,6 +101,8 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
             var sb = new StringBuilder();
             RenderExceptionMessage(sb);
             sb.AppendLine();
+            RenderCheckResult(sb);
+            sb.AppendLine();
             AppendField(sb, "Browser", WebBrowser);
             AppendField(sb, "Url", CurrentUrl);
             AppendField(sb, "Screenshot", Screenshot);
@@ -120,6 +122,11 @@ namespace Riganti.Utils.Testing.Selenium.Core.Abstractions.Exceptions
                 sb.Append(": ");
                 sb.AppendLine(ExceptionMessage);
             }
+        }
+
+        private void RenderCheckResult(StringBuilder sb)
+        {
+            AppendField(sb, "Check results", CheckResult.ToString());
         }
 
         private void AppendField(StringBuilder sb, string fieldName, string value)
