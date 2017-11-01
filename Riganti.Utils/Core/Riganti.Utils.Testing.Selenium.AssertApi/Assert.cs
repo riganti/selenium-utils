@@ -15,7 +15,7 @@ using Riganti.Utils.Testing.Selenium.Validators.Checkers.ElementWrapperCheckers;
 
 namespace Riganti.Utils.Testing.Selenium.Core
 {
-    public static class Assert
+    public static class AssertUI
     {
         private static readonly OperationValidator OperationValidator = new OperationValidator();
 
