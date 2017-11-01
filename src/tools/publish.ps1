@@ -1,5 +1,8 @@
 param([String]$source, [String]$key)
 
+echo "Working directory:" 
+$PWD | Write-host  
+
 & dir $PWD\.. -Recurse | where {$_.Name.EndsWith(".nupkg")} | where {!$_.FullName.Contains("packages")} | Remove-Item -Force | Write-Host
 
 dotnet restore ..\Riganti.Utils.Testing.Selenium.WithoutCoordinator.sln
