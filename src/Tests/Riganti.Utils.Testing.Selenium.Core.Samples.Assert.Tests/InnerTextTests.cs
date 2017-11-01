@@ -18,7 +18,7 @@ namespace Riganti.Utils.Testing.Selenium.Core.Samples.AssertApi.Tests
                 browser.NavigateToUrl("/test/alert");
 
                 browser.First("#button").Click();
-                Assert.AlertTextEquals(browser, "confirm test");
+                AssertUI.AlertTextEquals(browser, "confirm test");
 
             });
         }
