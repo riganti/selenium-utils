@@ -2,11 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <IsPackable>true</IsPackable>
-    <Version>2.0.0-beta</Version>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Company>Riganti s.r.o.</Company>
-    <Authors>Ladislav Šesták</Authors>
+
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Riganti.Utils.Testing.Selenium.Core\Riganti.Utils.Testing.Selenium.Core.csproj" />
+    <ProjectReference Include="..\..\Integrations\Riganti.Utils.Testing.Selenium.xUnit\Riganti.Utils.Testing.Selenium.xUnitIntegration.csproj" />
   </ItemGroup>
 
 </Project>

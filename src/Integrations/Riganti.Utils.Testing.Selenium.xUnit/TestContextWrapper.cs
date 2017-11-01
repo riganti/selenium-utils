@@ -28,7 +28,7 @@ namespace Riganti.Utils.Testing.Selenium.Core
             }
         }
 
-        private static void EnsureDirectoryExists(string path)
+        protected static void EnsureDirectoryExists(string path)
         {
             if (!Directory.Exists(path))
             {
@@ -52,9 +52,17 @@ namespace Riganti.Utils.Testing.Selenium.Core
 
 
 
-        public void AddResultFile(string fileName)
+        public virtual void AddResultFile(string fileName)
         {
-            throw new NotImplementedException();
+            // TODO: add files
+
+            //var fullpath = Path.GetFullPath(fileName);
+            //var fileInfo = new FileInfo(fileName);
+            //var fullpath2 = fileInfo.FullName;
+            //var uri = new Uri(fileName);
+            //var isAbsolut = uri.IsAbsoluteUri;
+
+            // var destination = DeploymentDirectory
         }
         public void WriteLine(string format, params object[] args)
         {
