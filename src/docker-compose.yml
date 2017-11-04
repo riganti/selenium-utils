@@ -4,5 +4,5 @@ services:
   seleniumcoordinator.service:
     image: seleniumcoordinator.service
     build:
-      context: ./Riganti.Utils.Testing.Selenium.Coordinator.Service
+      context: ./Riganti.Selenium.Coordinator.Service
       dockerfile: Dockerfile

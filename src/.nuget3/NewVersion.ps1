@@ -8,7 +8,7 @@ else {
 }
 
 $nuspecPath = ".\Riganti.Utils.Testing.dotvvm.nuspec"
-$assemblyInfoPath = "..\Riganti.Utils.Testing.Selenium.Dotvvm\Properties\AssemblyInfo.cs"
+$assemblyInfoPath = "..\Riganti.Selenium.Dotvvm\Properties\AssemblyInfo.cs"
 
 
 

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Riganti.Selenium.PseudoFluentApi\Riganti.Selenium.FluentApi.csproj" />
+    <ProjectReference Include="..\..\Integrations\Riganti.Selenium.DotVVM.MSTest2\Riganti.Selenium.DotVVM.csproj" />
+    <ProjectReference Include="..\..\Integrations\Riganti.Selenium.MSTest2Integration\Riganti.Selenium.MSTest2Integration.csproj" />
+  </ItemGroup>
+
+</Project>

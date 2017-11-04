@@ -1,0 +1,7 @@
+﻿@model Riganti.Selenium.Core.Samples.Models.UrlsModel
+@{
+    foreach (var url in Model.Urls)
+    {
+        @Html.Raw($"<a href=\"{url}\" target=\"_blank\">{url}</a><br />\r\n")
+    }
+}

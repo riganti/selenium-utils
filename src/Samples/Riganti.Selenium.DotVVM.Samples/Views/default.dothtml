@@ -1,0 +1,20 @@
+﻿@viewModel Riganti.Selenium.DotVVM.Samples.ViewModels.DefaultViewModel, Riganti.Selenium.DotVVM.Samples
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    Routes:
+    capacity:{{value:  Routes.Capacity}}
+    <ul>
+        <dot:Repeater DataSource="{value: Routes}">
+            <ItemTemplate>
+                <li><a href="{value: Url}">{{value:  Name}}</a></li>
+            </ItemTemplate>
+        </dot:Repeater>
+    </ul>
+</body>
+</html>

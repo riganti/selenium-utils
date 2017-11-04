@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>   
+   <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+
+
+    <IsPackable>true</IsPackable>
+
+
+    <Version>2.0.0-beta</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Riganti.Selenium.Core.Abstractions\Riganti.Selenium.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj" />
+  </ItemGroup>
+
+</Project>

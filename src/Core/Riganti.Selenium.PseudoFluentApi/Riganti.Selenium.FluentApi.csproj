@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+    <Version>2.0.0-beta</Version>
+    <Product>Riganti.Selenium.FluentApi</Product>
+    <Company>Riganti s.r.o.</Company>
+    <Authors>Ladislav Šesták</Authors>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Riganti.Selenium.Core.Abstractions\Riganti.Selenium.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj" />
+  </ItemGroup>
+
+</Project>

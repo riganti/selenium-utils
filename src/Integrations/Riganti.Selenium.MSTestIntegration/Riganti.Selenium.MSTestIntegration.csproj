@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7DB45AE2-D09E-4EA2-B691-4161485A32DC}</ProjectGuid>
+    <IsPackable>true</IsPackable>
+    <IncludeContentInPack>False</IncludeContentInPack>
+    <Version>2.0.0-beta</Version>
+    <Authors>Ladislav Šesták</Authors>
+    <Company>RIGANTI s.r.o.</Company>
+    <RootNamespace>Riganti.Selenium.MSTestIntegration</RootNamespace>
+    <AssemblyName>Riganti.Selenium.MSTestIntegration</AssemblyName>
+    <PackageId>Riganti.Selenium.MSTestIntegration</PackageId>
+    <Product>Riganti.Selenium.MSTestIntegration</Product>
+      <PackageProjectUrl>https://github.com/riganti/selenium-utils</PackageProjectUrl>
+    <PackageTags>selenium ui tests riganti ci mstest</PackageTags>
+    <PackageReleaseNotes>- Added support for Selenium.WebDriver.3.4.0</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/riganti/selenium-utils</RepositoryUrl>
+    <Description>Integration of Riganti.Selenium.Core for MSTest.TestFramework package.</Description>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageIconUrl>https://raw.githubusercontent.com/riganti/selenium-utils/new-api/Riganti.Utils/Riganti.Utils.Testing/Icon.png</PackageIconUrl>
+    <TargetFramework>net461</TargetFramework>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+     <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
+     <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Riganti.Selenium.Core.Abstractions\Riganti.Selenium.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Core\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj" />
+  </ItemGroup>
+</Project>

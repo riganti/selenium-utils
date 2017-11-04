@@ -1,8 +1,8 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using Riganti.Utils.Testing.Selenium.Core;
-using Riganti.Utils.Testing.Selenium.Core.Api;
+using Riganti.Selenium.Core;
+using Riganti.Selenium.Core.Api;
 
 namespace SeleniumCore.Samples.Tests
 {
@@ -68,7 +68,7 @@ namespace SeleniumCore.Samples.Tests
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/ClickTest.aspx");
-                browser.Single("///***-*///@@##@šš+š++++---><<>''", By.XPath);
+                browser.Single("///***-*///@@##@ï¿½ï¿½+ï¿½++++---><<>''", By.XPath);
             });
         }
     }

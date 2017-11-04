@@ -5,20 +5,20 @@ $PWD | Write-host
 
 & dir $PWD\.. -Recurse | where {$_.Name.EndsWith(".nupkg")} | where {!$_.FullName.Contains("packages")} | Remove-Item -Force | Write-Host
 
-dotnet restore ..\Riganti.Utils.Testing.Selenium.WithoutCoordinator.sln
-dotnet build ..\Riganti.Utils.Testing.Selenium.WithoutCoordinator.sln -c Release
+dotnet restore ..\Riganti.Selenium.WithoutCoordinator.sln
+dotnet build ..\Riganti.Selenium.WithoutCoordinator.sln -c Release
 
-dotnet pack -c  Release --no-build ..\Coordinator\Riganti.Utils.Testing.Selenium.Coordinator.Client\Riganti.Utils.Testing.Selenium.Coordinator.Client.csproj            
-dotnet pack -c  Release --no-build ..\Core\Riganti.Utils.Testing.Selenium.AssertApi\Riganti.Utils.Testing.Selenium.AssertApi.csproj                                     
-dotnet pack -c  Release --no-build ..\Core\Riganti.Utils.Testing.Selenium.Core\Riganti.Utils.Testing.Selenium.Core.csproj                                               
-dotnet pack -c  Release --no-build ..\Core\Riganti.Utils.Testing.Selenium.Core.Abstractions\Riganti.Utils.Testing.Selenium.Core.Abstractions.csproj                     
-dotnet pack -c  Release --no-build ..\Core\Riganti.Utils.Testing.Selenium.LambdaApi\Riganti.Utils.Testing.Selenium.LambdaApi.csproj                                     
-dotnet pack -c  Release --no-build ..\Core\Riganti.Utils.Testing.Selenium.PseudoFluentApi\Riganti.Utils.Testing.Selenium.FluentApi.csproj                         
-dotnet pack -c  Release --no-build ..\Core\Riganti.Utils.Testing.Selenium.Validators\Riganti.Utils.Testing.Selenium.Validators.csproj                                   
-dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.DotVVM.MSTest2\Riganti.Utils.Testing.Selenium.DotVVM.csproj
-dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.MSTest2Integration\Riganti.Utils.Testing.Selenium.MSTest2Integration.csproj           
-dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.MSTestIntegration\Riganti.Utils.Testing.Selenium.MSTestIntegration.csproj             
-dotnet pack -c  Release --no-build ..\Integrations\Riganti.Utils.Testing.Selenium.xUnit\Riganti.Utils.Testing.Selenium.xUnitIntegration.csproj        
+dotnet pack -c  Release --no-build ..\Coordinator\Riganti.Selenium.Coordinator.Client\Riganti.Selenium.Coordinator.Client.csproj            
+dotnet pack -c  Release --no-build ..\Core\Riganti.Selenium.AssertApi\Riganti.Selenium.AssertApi.csproj                                     
+dotnet pack -c  Release --no-build ..\Core\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj                                               
+dotnet pack -c  Release --no-build ..\Core\Riganti.Selenium.Core.Abstractions\Riganti.Selenium.Core.Abstractions.csproj                     
+dotnet pack -c  Release --no-build ..\Core\Riganti.Selenium.LambdaApi\Riganti.Selenium.LambdaApi.csproj                                     
+dotnet pack -c  Release --no-build ..\Core\Riganti.Selenium.PseudoFluentApi\Riganti.Selenium.FluentApi.csproj                         
+dotnet pack -c  Release --no-build ..\Core\Riganti.Selenium.Validators\Riganti.Selenium.Validators.csproj                                   
+dotnet pack -c  Release --no-build ..\Integrations\Riganti.Selenium.DotVVM.MSTest2\Riganti.Selenium.DotVVM.csproj
+dotnet pack -c  Release --no-build ..\Integrations\Riganti.Selenium.MSTest2Integration\Riganti.Selenium.MSTest2Integration.csproj           
+dotnet pack -c  Release --no-build ..\Integrations\Riganti.Selenium.MSTestIntegration\Riganti.Selenium.MSTestIntegration.csproj             
+dotnet pack -c  Release --no-build ..\Integrations\Riganti.Selenium.xUnit\Riganti.Selenium.xUnitIntegration.csproj        
 
 $files = dir $PWD\.. -Recurse | where {$_.Name.EndsWith(".nupkg")} | where {!$_.FullName.Contains("packages")} | where {!$_.FullName.Contains(".symbols.nupkg")}
 

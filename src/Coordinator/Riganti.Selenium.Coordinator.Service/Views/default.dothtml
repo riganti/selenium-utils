@@ -1,0 +1,80 @@
+﻿@viewModel Riganti.Selenium.Coordinator.Service.ViewModels.DefaultViewModel, Riganti.Selenium.Coordinator.Service
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Selenium Coordinator Dashboard</title>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/signalr-client/signalr-client.js"></script>
+</head>
+<body>
+
+    <div class="container-fluid">
+
+        <h1>Selenium Coordinator</h1>
+                
+		<div class="row">
+			<div class="col-lg-6">
+					
+				<p>
+					<dot:LinkButton Click="{command: AcquireBrowser('chrome')}" class="btn btn-default">
+						Acquire Chrome
+					</dot:LinkButton>
+					<dot:LinkButton Click="{command: AcquireBrowser('firefox')}" class="btn btn-default">
+						Acquire Firefox
+					</dot:LinkButton>
+					<dot:LinkButton Click="{command: null}" class="btn btn-default" id="refresh" ClientIDMode="Static">
+						<span class="glyphicon glyphicon-refresh"></span> Refresh
+					</dot:LinkButton>
+				</p>
+
+				<h2>Registered Browsers</h2>
+
+				<dot:GridView DataSource="{value: Browsers}" class="table table-bordered">
+					<RowDecorators>
+						<dot:Decorator class-state="{value: IsAvailable ? 'available' : 'in-use'}" />
+					</RowDecorators>
+
+					<dot:GridViewTextColumn ValueBinding="{value: BrowserType}" HeaderText="Browser" />
+					<dot:GridViewTextColumn ValueBinding="{value: Url}" HeaderText="URL" />
+					<dot:GridViewTextColumn ValueBinding="{value: ExpirationDateUtc}" HeaderText="Expires" FormatString="T" />
+					<dot:GridViewTextColumn ValueBinding="{value: ContainerId}" HeaderText="Container Id" />
+				</dot:GridView>
+			</div>
+			
+			<div class="col-lg-6">
+				<pre ID="console" style="height: 90vh; overflow-y: auto"></pre>
+			</div>
+		</div>
+    </div>       
+
+	<script type="text/javascript">
+		function addMessage(message, isError) {			
+			var line = $("<span></span>").text(message + "\r\n");
+			if (isError) {
+				line.css("color", "red");
+			}			
+			$("#console")
+				.append(line)
+				.scrollTop($("#console").height())
+		}
+		function refresh() {
+			window.setTimeout(function () {
+				$("#refresh").click();
+			}, 500);
+		}
+		
+		let http = new signalR.HttpConnection(`http://${document.location.host}/log`);
+		let connection = new signalR.HubConnection(http);
+	
+		connection.on('refresh', refresh);
+		connection.on('addMessage', addMessage);
+		connection.start().catch(function (err) { addMessage(err, true) });		
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,11 @@
+﻿namespace Riganti.Selenium.Coordinator.Service.Data
+{
+    public class BrowserContainerConfiguration
+    {
+        public string BrowserType { get; set; }
+
+        public string ImageName { get; set; }
+
+        public int MaxInstances { get; set; }
+    }
+}

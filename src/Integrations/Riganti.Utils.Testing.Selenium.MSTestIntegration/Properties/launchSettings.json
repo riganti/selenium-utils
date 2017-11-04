@@ -1,7 +1,0 @@
-{
-  "profiles": {
-    "Riganti.Utils.Testing.Selenium.MSTestIntegration": {
-      "commandName": "Executable"
-    }
-  }
-}

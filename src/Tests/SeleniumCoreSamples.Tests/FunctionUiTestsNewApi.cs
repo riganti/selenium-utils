@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using Riganti.Utils.Testing.Selenium.Core;
-using Riganti.Utils.Testing.Selenium.Core.Exceptions;
+using Riganti.Selenium.Core;
+using Riganti.Selenium.Core.Exceptions;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Riganti.Utils.Testing.Selenium.Core.Api;
+using Riganti.Selenium.Core.Api;
 
 namespace SeleniumCore.Samples.Tests
 {

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="seleniumconfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Riganti.Selenium.AssertApi\Riganti.Selenium.AssertApi.csproj" />
+    <ProjectReference Include="..\..\Core\Riganti.Selenium.Core.Abstractions\Riganti.Selenium.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Core\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj" />
+    <ProjectReference Include="..\..\Integrations\Riganti.Selenium.xUnit\Riganti.Selenium.xUnitIntegration.csproj" />
+  </ItemGroup>
+
+</Project>

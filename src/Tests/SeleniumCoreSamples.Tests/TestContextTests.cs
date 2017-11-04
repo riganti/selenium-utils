@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Riganti.Utils.Testing.Selenium.Core.Samples.Tests
+namespace Riganti.Selenium.Core.Samples.Tests
 {
     [TestClass]
     public class TestContextTests : SeleniumTest

@@ -6,4 +6,4 @@ services:
     volumes:
       - .:/src
     working_dir: /src
-    command: /bin/bash -c "dotnet restore ./Riganti.Utils.Testing.Selenium.sln && dotnet publish ./Riganti.Utils.Testing.Selenium.sln -c Release -o ./obj/Docker/publish"
+    command: /bin/bash -c "dotnet restore ./Riganti.Selenium.sln && dotnet publish ./Riganti.Selenium.sln -c Release -o ./obj/Docker/publish"

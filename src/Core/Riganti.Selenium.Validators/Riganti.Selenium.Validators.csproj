@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <Version>2.0.0-beta</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Selenium.Support" Version="3.7.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Riganti.Selenium.Core.Abstractions\Riganti.Selenium.Core.Abstractions.csproj" />
+  </ItemGroup>
+</Project>
