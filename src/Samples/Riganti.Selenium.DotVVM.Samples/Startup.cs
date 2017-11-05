@@ -37,7 +37,7 @@ namespace Riganti.Selenium.DotVVM.Samples
             // use static files
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(env.WebRootPath)
+                FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(env.ContentRootPath)
             });
         }
     }

@@ -32,7 +32,13 @@ namespace Riganti.Selenium.DotVVM
         /// <param name="timeout">Timeout in ms.</param>
         public static void WaitForPostback(this IBrowserWrapper browser, int timeout = 20000)
         {
-            browser.WaitFor(() => string.Equals("true", browser.GetJavaScriptExecutor().ExecuteScript("return dotvvm.isPostbackRunning()").ToString(), StringComparison.OrdinalIgnoreCase), timeout, "DotVVM postback still running.");
+            if (browser.IsDotvvmPage())
+            {
+                browser.WaitFor(() => 
+                string.Equals("false", browser.GetJavaScriptExecutor().ExecuteScript("return dotvvm.isPostbackRunning()").ToString(), StringComparison.OrdinalIgnoreCase)
+                , timeout, "DotVVM postback still running.");
+            }
+
         }
 
     }

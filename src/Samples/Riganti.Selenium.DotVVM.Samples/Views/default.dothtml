@@ -16,5 +16,8 @@
             </ItemTemplate>
         </dot:Repeater>
     </ul>
+
+	<dot:Button text="Wait button" Click="{command: Wait()}" id="WaitButton" ClientIDMode="Static" />
+	<dot:Literal Text="{value: LabelText}" ID="LabelText" ClientIDMode="Static"/>
 </body>
 </html>

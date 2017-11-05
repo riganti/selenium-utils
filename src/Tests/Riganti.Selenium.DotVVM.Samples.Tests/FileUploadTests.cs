@@ -11,25 +11,13 @@ using System.IO;
 namespace Selenium.DotVVM.Samples.Tests
 {
     [TestClass]
-    public class BasicTests : SeleniumTest
+    public class FileUploadTests :  AppSeleniumTest
     {
-        [TestMethod]
-        public void DetectDotvvm()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl();
-                Assert.IsTrue(browser.IsDotvvmPage());
-                browser.NavigateToUrl("//google.com/?query=wallpaper");
-                browser.Wait(1000);
-                Assert.IsFalse(browser.IsDotvvmPage());
-            });
-        }
 
         [TestMethod]
         public void FileUpload_ElementWrapper()
         {
-            this.RunInAllBrowsers(browser =>
+            RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/FileUpload");
 

@@ -24,7 +24,7 @@ namespace Riganti.Selenium.Core.Configuration
         {
             if (File.Exists(file))
             {
-                Trace.WriteLine($"Selenium configuration file on '{file}'.");
+                Trace.WriteLine($"Loading selenium configuration file on '{file}'.");
                 var json = File.ReadAllText(file, Encoding.UTF8);
                 JsonConvert.PopulateObject(json, configuration);
             }

@@ -21,5 +21,13 @@ namespace Riganti.Selenium.DotVVM.Samples.ViewModels
                 .Select(s => new RouteDTO() {Name = s.RouteName, Url = s.Url}).ToList();
             return base.Load();
         }
+
+        public async Task Wait()
+        {
+            await Task.Delay(2000);
+            LabelText = "PostbackEnd";
+        }
+
+        public string LabelText { get; set; }
     }
 }
