@@ -260,44 +260,44 @@ namespace Riganti.Selenium.Core
             EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, hasNotAttribute);
         }
 
-        public static void AlertTextEquals(BrowserWrapper wrapper, string expectedValue,
+        public static void AlertTextEquals(IBrowserWrapper wrapper, string expectedValue,
             bool caseSensitive = false, bool trim = true)
         {
             var alertTextEquals = new AlertTextEqualsValidator(expectedValue, caseSensitive, trim);
             EvaluateValidator<AlertException, IBrowserWrapper>(wrapper, alertTextEquals);
         }
 
-        public static void AlertText(BrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = "")
+        public static void AlertText(IBrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = "")
         {
             var alertText = new AlertTextValidator(expression, failureMessage);
             EvaluateValidator<AlertException, IBrowserWrapper>(wrapper, alertText);
         }
 
-        public static void AlertTextContains(BrowserWrapper wrapper, string expectedValue, bool trim = true)
+        public static void AlertTextContains(IBrowserWrapper wrapper, string expectedValue, bool trim = true)
         {
             var alertTextContains = new AlertTextContainsValidator(expectedValue, trim);
             EvaluateValidator<AlertException, IBrowserWrapper>(wrapper, alertTextContains);
         }
 
-        public static void Url(BrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = null)
+        public static void Url(IBrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
             var url = new CurrentUrlValidator(expression, failureMessage);
             EvaluateValidator<BrowserLocationException, IBrowserWrapper>(wrapper, url);
         }
 
-        public static void Url(BrowserWrapper wrapper, string url, UrlKind urlKind, params UriComponents[] components)
+        public static void Url(IBrowserWrapper wrapper, string url, UrlKind urlKind, params UriComponents[] components)
         {
             var checkUrl = new UrlValidator(url, urlKind, components);
             EvaluateValidator<BrowserLocationException, IBrowserWrapper>(wrapper, checkUrl);
         }
 
-        public static void UrlEquals(BrowserWrapper wrapper, string url)
+        public static void UrlEquals(IBrowserWrapper wrapper, string url)
         {
             var checkUrlExquals = new UrlEqualsValidator(url);
             EvaluateValidator<BrowserLocationException, IBrowserWrapper>(wrapper, checkUrlExquals);
         }
 
-        public static void HyperLinkEquals(BrowserWrapper wrapper, string selector, string url, UrlKind kind, params UriComponents[] components)
+        public static void HyperLinkEquals(IBrowserWrapper wrapper, string selector, string url, UrlKind kind, params UriComponents[] components)
         {
             var elements = wrapper.FindElements(selector);
             var operationRunner = All(elements);
@@ -305,14 +305,14 @@ namespace Riganti.Selenium.Core
             operationRunner.Evaluate<UnexpectedElementStateException>(hyperLinkEquals);
         }
 
-        public static void IsDisplayed(BrowserWrapper wrapper, string selector, Func<string, By> tmpSelectedMethod = null)
+        public static void IsDisplayed(IBrowserWrapper wrapper, string selector, Func<string, By> tmpSelectedMethod = null)
         {
             var elements = wrapper.FindElements(selector, tmpSelectedMethod);
             var operationRunner = All(elements);
             var isDisplayedValidator = new IsDisplayedValidator();
             operationRunner.Evaluate<UnexpectedElementStateException>(isDisplayedValidator);
         }
-        public static void IsNotDisplayed(BrowserWrapper wrapper, string selector, Func<string, By> tmpSelectedMethod = null)
+        public static void IsNotDisplayed(IBrowserWrapper wrapper, string selector, Func<string, By> tmpSelectedMethod = null)
         {
             var elements = wrapper.FindElements(selector, tmpSelectedMethod);
             var operationRunner = All(elements);
@@ -320,25 +320,25 @@ namespace Riganti.Selenium.Core
             operationRunner.Evaluate<BrowserException>(isNotDisplayedValidator);
         }
 
-        public static void UrlIsAccessible(BrowserWrapper wrapper, string url, UrlKind urlKind)
+        public static void UrlIsAccessible(IBrowserWrapper wrapper, string url, UrlKind urlKind)
         {
             var urlIsAccessible = new UrlIsAccessibleValidator(url, urlKind);
             EvaluateValidator<BrowserException, IBrowserWrapper>(wrapper, urlIsAccessible);
         }
 
-        public static void TitleEquals(BrowserWrapper wrapper, string title, bool caseSensitive = false, bool trim = true)
+        public static void TitleEquals(IBrowserWrapper wrapper, string title, bool caseSensitive = false, bool trim = true)
         {
             var titleEquals = new TitleEqualsValidator(title, caseSensitive, trim);
             EvaluateValidator<BrowserException, IBrowserWrapper>(wrapper, titleEquals);
         }
 
-        public static void TitleNotEquals(BrowserWrapper wrapper, string title, bool caseSensitive = false, bool trim = true)
+        public static void TitleNotEquals(IBrowserWrapper wrapper, string title, bool caseSensitive = false, bool trim = true)
         {
             var titleNotEquals = new TitleNotEqualsValidator(title, caseSensitive, trim);
             EvaluateValidator<BrowserException, IBrowserWrapper>(wrapper, titleNotEquals);
         }
 
-        public static void Title(BrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = "")
+        public static void Title(IBrowserWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = "")
         {
             var title = new TitleValidator(expression, failureMessage);
             EvaluateValidator<BrowserException, IBrowserWrapper>(wrapper, title);
