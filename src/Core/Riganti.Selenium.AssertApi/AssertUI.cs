@@ -17,7 +17,7 @@ namespace Riganti.Selenium.Core
 {
     public static class AssertUI
     {
-        private static readonly OperationValidator OperationValidator = new OperationValidator();
+        private static readonly OperationResultValidator OperationResultValidator = new OperationResultValidator();
 
         public static void InnerText(IElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
         {
@@ -354,7 +354,7 @@ namespace Riganti.Selenium.Core
             where TException : TestExceptionBase, new() where T : ISupportedByValidator
         {
             var operationResult = validator.Validate(wrapper);
-            OperationValidator.Validate<TException>(operationResult);
+            OperationResultValidator.Validate<TException>(operationResult);
         }
 
         public static AnyOperationRunner<T> Any<T>(IEnumerable<T> wrappers) where T : ISupportedByValidator

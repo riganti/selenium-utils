@@ -6,8 +6,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using Riganti.Selenium.Core;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
+using Riganti.Selenium.Core.Api;
 using Riganti.Selenium.Core.Drivers;
 using Riganti.Selenium.Core.Factories;
+using Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers;
 using Selenium.Core.UnitTests.Mock;
 using TestConfiguration = Riganti.Selenium.Core.TestConfiguration;
 
@@ -98,7 +100,13 @@ namespace Selenium.Core.UnitTests
         public void ElementWaitForTimeoutTest5()
         {
             var element = new ElementWrapper(new MockIWebElement(), browser);
-            element.WaitFor((elm) => elm.CheckIfValue("asdasdasdasd"), 2000, "test timeouted", checkInterval: 100);
+            element.WaitFor((elm) =>
+            {
+                var valueValidator = new ValueValidator("asdasdasdasd");
+                var v = new OperationResultValidator();
+                var result = valueValidator.Validate(elm);
+                v.Validate<UnexpectedElementException>(result);
+            }, 2000, "test timeouted", checkInterval: 100);
         }
 
         [TestMethod, Timeout(5000)]
@@ -108,10 +116,10 @@ namespace Selenium.Core.UnitTests
             var i = 0;
             element.WaitFor((elm) =>
             {
-                
+
                 if (i++ == 3)
                 {
-                    return;    
+                    return;
                 }
                 throw new Exception("Not valid.");
             }, 2000, "test timeouted", checkInterval: 100);

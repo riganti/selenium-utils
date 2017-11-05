@@ -22,13 +22,13 @@ namespace Riganti.Selenium.Core
 
         protected readonly IWebBrowser browser;
         protected readonly IWebDriver driver;
-        protected readonly ITestInstance testInstance;
-
+        protected internal ITestInstance TestInstance { get; protected set; }
+        public IServiceFactory ServiceFactory => TestInstance.TestClass.TestSuiteRunner.ServiceFactory;
         public int ActionWaitTime { get; set; }
 
-        public string BaseUrl => testInstance.TestConfiguration.BaseUrl;
+        public string BaseUrl => TestInstance.TestConfiguration.BaseUrl;
 
-        private readonly OperationValidator OperationValidator = new OperationValidator();
+        private readonly OperationResultValidator operationResultValidator = new OperationResultValidator();
 
         /// <summary>
         /// Generic representation of browser driver.
@@ -49,7 +49,7 @@ namespace Riganti.Selenium.Core
             this.browser = browser;
             this.driver = driver;
 
-            this.testInstance = testInstance;
+            this.TestInstance = testInstance;
             ActionWaitTime = browser.Factory?.TestSuiteRunner?.Configuration.TestRunOptions.ActionTimeout ?? 250;
 
             ScopeOptions = scope;
@@ -378,7 +378,7 @@ namespace Riganti.Selenium.Core
         /// <returns></returns>
         public IElementWrapperCollection FindElements(By selector)
         {
-            return Driver.FindElements(selector).ToElementsList(this, selector.GetSelector());
+            return Driver.FindElements(selector).ToElementsList(this, selector.GetSelector(), TestInstance.TestClass.TestSuiteRunner.ServiceFactory);
         }
 
         /// <summary>
@@ -388,7 +388,8 @@ namespace Riganti.Selenium.Core
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
         public IElementWrapperCollection FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
-            return Driver.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)).ToElementsList(this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector());
+
+            return Driver.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)).ToElementsList(this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector(), TestInstance.TestClass.TestSuiteRunner.ServiceFactory);
         }
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
@@ -531,7 +532,7 @@ namespace Riganti.Selenium.Core
 
 
 
-#region FileUploadDialog
+        #region FileUploadDialog
 #if net461
         public virtual IBrowserWrapper SendEnterKey()
         {
@@ -549,9 +550,9 @@ namespace Riganti.Selenium.Core
         }
 #endif
 
-#endregion FileUploadDialog
+        #endregion FileUploadDialog
 
-#region Frames support
+        #region Frames support
 
         public IBrowserWrapper GetFrameScope(string selector)
         {
@@ -559,18 +560,25 @@ namespace Riganti.Selenium.Core
             var iframe = First(selector);
             //AssertUI.CheckIfTagName(iframe, new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
 
-            iframe.CheckIfTagName(new[] { "iframe", "frame" }, $"The selected element '{iframe.FullSelector}' is not a iframe element.");
+
+            var resultValidator = new OperationResultValidator();
+            var validator = new TagNameValidator(new[] { "iframe", "frame" },
+                $"The selected element '{iframe.FullSelector}' is not a iframe element.");
+            var results = validator.Validate(iframe);
+
+            resultValidator.Validate<UnexpectedElementStateException>(results);
+
             var frame = browser.Driver.SwitchTo().Frame(iframe.WebElement);
-            testInstance.TestClass.CurrentScope = options.ScopeId;
+            TestInstance.TestClass.CurrentScope = options.ScopeId;
 
             // create a new browser wrapper
-            var type = testInstance.TestClass.TestSuiteRunner.ServiceFactory.Resolve<BrowserWrapper>();
-            var wrapper = (BrowserWrapper)Activator.CreateInstance(type, browser, frame, testInstance, options);
+            var type = TestInstance.TestClass.TestSuiteRunner.ServiceFactory.Resolve<IBrowserWrapper>();
+            var wrapper = (IBrowserWrapper)Activator.CreateInstance(type, browser, frame, TestInstance, options);
 
             return wrapper;
         }
 
-#endregion Frames support
+        #endregion Frames support
 
 
         /// <summary>
@@ -705,7 +713,7 @@ namespace Riganti.Selenium.Core
 
         public void ActivateScope()
         {
-            if (testInstance.TestClass.CurrentScope == ScopeOptions.ScopeId)
+            if (TestInstance.TestClass.CurrentScope == ScopeOptions.ScopeId)
             {
                 return;
             }
@@ -730,7 +738,7 @@ namespace Riganti.Selenium.Core
                     driver.SwitchTo().Frame(ScopeOptions.FrameSelector);
                 }
             }
-            testInstance.TestClass.CurrentScope = ScopeOptions.ScopeId;
+            TestInstance.TestClass.CurrentScope = ScopeOptions.ScopeId;
         }
 
         public string GetTitle() => Driver.Title;
@@ -741,7 +749,7 @@ namespace Riganti.Selenium.Core
         /// </summary>
         public IWebDriver _GetInternalWebDriver()
         {
-            testInstance.TestClass.CurrentScope = Guid.Empty;
+            TestInstance.TestClass.CurrentScope = Guid.Empty;
             return Driver;
         }
 
@@ -749,7 +757,7 @@ namespace Riganti.Selenium.Core
             where TException : TestExceptionBase, new()
         {
             var operationResult = validator.Validate(this);
-            OperationValidator.Validate<TException>(operationResult);
+            operationResultValidator.Validate<TException>(operationResult);
             return this;
         }
     }

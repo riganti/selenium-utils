@@ -17,8 +17,8 @@ namespace Riganti.Selenium.Core
 {
     public class ElementWrapper : IElementWrapper
     {
-        private readonly IWebElement element;
-        private readonly IBrowserWrapper browser;
+        protected readonly IWebElement element;
+        protected readonly IBrowserWrapper browser;
 
         /// <summary>
         /// Gets selector used to get this element.
@@ -62,7 +62,7 @@ namespace Riganti.Selenium.Core
         /// </summary>
         public ISeleniumWrapper ParentWrapper { get; set; }
 
-        private Func<string, By> selectMethod = null;
+        protected Func<string, By> selectMethod = null;
 
         public Func<string, By> SelectMethod
         {
@@ -70,7 +70,7 @@ namespace Riganti.Selenium.Core
             set { selectMethod = value; }
         }
 
-        private readonly OperationValidator OperationValidator = new OperationValidator();
+        protected readonly OperationResultValidator operationResultValidator = new OperationResultValidator();
 
         /// <summary>
         /// Returns html direct parent element.
@@ -105,11 +105,10 @@ namespace Riganti.Selenium.Core
         /// <param name="webElement">The web element.</param>
         /// <param name="browserWrapper">The browser wrapper.</param>
         /// <param name="selector">The selector.</param>
-        public ElementWrapper(IWebElement webElement, IBrowserWrapper browserWrapper, string selector = null)
+        public ElementWrapper(IWebElement webElement, IBrowserWrapper browserWrapper)
         {
             element = webElement;
             browser = browserWrapper;
-            Selector = selector;
             SelectMethod = browser.SelectMethod;
             BaseUrl = browser.BaseUrl;
             ActionWaitTime = browserWrapper.ActionWaitTime;
@@ -146,7 +145,7 @@ namespace Riganti.Selenium.Core
             return this;
         }
 
-        private string GenerateFullSelector()
+        protected string GenerateFullSelector()
         {
             var parent = ParentWrapper as ElementWrapperCollection;
             if (parent != null)
@@ -158,61 +157,7 @@ namespace Riganti.Selenium.Core
             return $"{Selector ?? ""}".Trim();
         }
 
-        /// <summary>
-        /// Checks the name of the tag.
-        /// </summary>
-        /// <param name="expectedTagName">Expected name of the tag.</param>
-        /// <param name="failureMessage">The failure message.</param>
-        /// <returns></returns>
-        /// <exception cref="UnexpectedElementStateException"></exception>
-        public virtual IElementWrapper CheckTagName(string expectedTagName, string failureMessage = null)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new TagNameValidator(expectedTagName,
-                failureMessage));
-        }
-
-        /// <summary>
-        /// Checks the name of tag.
-        /// </summary>
-        /// <param name="expectedTagNames">The expected tag names.</param>
-        /// <param name="failureMessage">The failure message.</param>
-        /// <returns></returns>
-        /// <exception cref="UnexpectedElementStateException"></exception>
-        public virtual IElementWrapper CheckIfTagName(string[] expectedTagNames, string failureMessage = null)
-        { 
-            return EvaluateElementCheck<UnexpectedElementStateException>(new TagNameValidator(expectedTagNames,
-                failureMessage));
-        }
-
-        /// <summary>
-        /// Checks the name of tag.
-        /// </summary>
-        /// <param name="expectedTagName">Expected name of the tag.</param>
-        /// <param name="failureMessage">The failure message.</param>
-        /// <returns></returns>
-        public virtual IElementWrapper CheckIfTagName(string expectedTagName, string failureMessage = null)
-        {
-            return CheckTagName(expectedTagName, failureMessage);
-        }
-
-        /// <summary>
-        /// Checks if this element contains other element(s) selected by <see cref="cssSelector"/>.
-        /// </summary>
-        /// <param name="cssSelector">The CSS selector.</param>
-        /// <param name="tmpSelectMethod">The temporary select method.</param>
-        /// <returns></returns>
-        /// <exception cref="EmptySequenceException"></exception>
-        public virtual IElementWrapper CheckIfContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
-        {
-            return EvaluateElementCheck<EmptySequenceException>(
-                new ContainsElementValidator(cssSelector, tmpSelectMethod)); 
-        }
-
-        public virtual IElementWrapper CheckIfNotContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null)
-        {
-            return EvaluateElementCheck<MoreElementsInSequenceException>(
-                new NotContainsElementValidator(cssSelector, tmpSelectMethod)); 
-        }
+    
 
         public virtual string GetJsElementPropertyValue(string elementPropertyName)
         {
@@ -238,16 +183,7 @@ namespace Riganti.Selenium.Core
             return trim ? obj?.ToString().Trim() : obj?.ToString();
         }
 
-        public virtual IElementWrapper CheckIfIsClickable()
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new IsClickableValidator());
-        }
-
-        public virtual IElementWrapper CheckIfIsNotClickable()
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new IsNotClickableValidator());
-        }
-
+    
         public bool IsClickable()
         {
             var obj = this.browser.GetJavaScriptExecutor().ExecuteScript(@"
@@ -271,25 +207,7 @@ namespace Riganti.Selenium.Core
             return a;
         }
 
-        /// <summary>
-        /// This check-method inserts javascript to the site and checks returned value of innerText/textContent property of specific element.
-        /// </summary>
-        public virtual IElementWrapper CheckIfJsPropertyInnerTextEquals(string text, bool caseSensitive = true, bool trim = true)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(
-                new JsPropertyInnerTextEqualsValidator(text, caseSensitive, trim));
-        }
-
-        /// <summary>
-        /// This check-method inserts javascript to the site and checks returned value of innerText/textContent property of specific element.
-        /// </summary>
-        public virtual IElementWrapper CheckIfJsPropertyInnerText(Func<string, bool> expression, string failureMesssage = null, bool trim = true)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(
-                new JsPropertyInnerTextValidator(s => expression(s), failureMesssage));
-        }
-
-        /// <summary>
+      /// <summary>
         /// Inserts javascript to the site and returns value of innerHTML property of this element.
         /// </summary>
         /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Comparison of raw html strings is NOT recommended.</remarks>
@@ -298,87 +216,7 @@ namespace Riganti.Selenium.Core
             return GetJsElementPropertyValue("innerHTML");
         }
 
-        /// <summary>
-        /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element.
-        /// </summary>
-        /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Be sure that all browsers you are using are generating the same result to prevent unexpected results of this method.</remarks>
-        public virtual IElementWrapper CheckIfJsPropertyInnerHtmlEquals(string text, bool caseSensitive = true, bool trim = true)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(
-                new JsPropertyInnerTextEqualsValidator(text, caseSensitive, trim));
-        }
-
-        /// <summary>
-        /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element.
-        /// </summary>
-        /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Be sure that all browsers you are using are generate the same result to prevent unexpected results of this method.</remarks>
-
-        public virtual IElementWrapper CheckIfJsPropertyInnerHtml(Func<string, bool> expression, string failureMessage = null)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(
-                new JsPropertyInnerHtmlValidator(s => expression(s), failureMessage));
-        }
-
-        /// <summary>
-        /// Checks name of tag
-        /// </summary>
-        [Obsolete]
-        public virtual IElementWrapper CheckTagName(Func<string, bool> expression, string failureMessage = null)
-        {
-            return CheckIfTagName(expression, failureMessage);
-        }
-
-        /// <summary>
-        /// Checks name of tag
-        /// </summary>
-        public virtual IElementWrapper CheckIfTagName(Func<string, bool> expression, string failureMessage = null)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new TagNameValidator(s => expression(s),
-                failureMessage));
-        }
-
-        /// <param name="attributeName">write name of attribute to check</param>
-        /// <param name="expression">define condition</param>
-        /// <param name="failureMessage">When value of the element does not satisfy the condition this fail failureMessage is written to the throwen exception in the output.</param>
-        /// <returns></returns>
-        public virtual IElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression, string failureMessage = null)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(
-                new AttributeValidator(attributeName, s => expression(s), failureMessage));
-        }
-
-        public virtual IElementWrapper CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new ValidatorAttributeValidator(attributeName, value,
-                caseInsensitive, trimValue, failureMessage));
-        }
-
-        public virtual IElementWrapper CheckAttribute(string attributeName, string[] allowedValues, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new ValidatorAttributeValidator(attributeName, allowedValues,
-                caseInsensitive, trimValue, failureMessage));
-        }
-
-        public virtual IElementWrapper CheckClassAttribute(Func<string, bool> expression, string failureMessage = "")
-        {
-            return CheckAttribute("class", expression, failureMessage);
-        }
-
-        public virtual IElementWrapper CheckClassAttribute(string value, bool caseInsensitive = false, bool trimValue = true)
-        {
-            return CheckAttribute("class", value, caseInsensitive, trimValue);
-        }
-
-        public virtual IElementWrapper CheckIfHasClass(string value, bool caseInsensitive = false)
-        {
-            return CheckAttribute("class", p => p.Split(' ').Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
-        }
-
-        public virtual IElementWrapper CheckIfHasNotClass(string value, bool caseInsensitive = false)
-        {
-            return CheckAttribute("class", p => !p.Split(' ').Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value should not contain: '{value}'.");
-        }
-
+      
         public string GetAttribute(string name)
         {
             return WebElement.GetAttribute(name);
@@ -392,34 +230,9 @@ namespace Riganti.Selenium.Core
             return result;
         }
 
-        public IElementWrapper CheckIfHasAttribute(string name)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new HasAttributeValidator(name));
-        }
 
-        public IElementWrapper CheckIfHasNotAttribute(string name)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new HasNotAttributeValidator(name));
-        }
 
-        public virtual IElementWrapper CheckIfInnerTextEquals(string text, bool caseSensitive = true, bool trim = true)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new InnerTextEqualsValidator(text, caseSensitive, trim));
-        }
-
-        public virtual IElementWrapper CheckIfInnerText(Func<string, bool> expression, string failureMessage = null)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(
-                new InnerTextValidator(s => expression(s), failureMessage));
-        }
-
-        public virtual IElementWrapper CheckIfTextEquals(string text, bool caseSensitive = true, bool trim = true)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(
-                new TextEqualsValidator(text, caseSensitive, trim));
-        }
-
-        private string GetTrimmedText(bool trim)
+        protected string GetTrimmedText(bool trim)
         {
             if (trim)
             {
@@ -431,18 +244,7 @@ namespace Riganti.Selenium.Core
             }
         }
 
-        public virtual IElementWrapper CheckIfTextNotEquals(string text, bool caseSensitive = true, bool trim = true)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(
-                new TextNotEqualsValidator(text, caseSensitive, trim));
-        }
-
-        public virtual IElementWrapper CheckIfText(Func<string, bool> expression, string failureMessage = null)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new TextValidator(s => expression(s),
-                failureMessage));
-        }
-
+     
         /// <summary>
         /// Sets current option of element &lt;select&gt;.
         /// </summary>
@@ -513,7 +315,7 @@ namespace Riganti.Selenium.Core
         /// <returns></returns>
         public virtual IElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var collection = WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList(browser, selector, this);
+            var collection = WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList(browser, selector, this, browser.ServiceFactory);
             collection.ParentWrapper = this;
             return collection;
         }
@@ -614,39 +416,10 @@ namespace Riganti.Selenium.Core
             return this;
         }
 
-        public virtual IElementWrapper CheckIfIsDisplayed()
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new IsDisplayedValidator());
-        }
-
-        public virtual IElementWrapper CheckIfIsNotDisplayed()
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new IsNotDisplayedValidator());
-        }
-
-        public virtual IElementWrapper CheckIfIsChecked()
-        {
-            CheckTagName("input", "Function IsNotCheckedValidator() can be used on input element only.");
-            CheckAttribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox.");
-
-            return EvaluateElementCheck<UnexpectedElementStateException>(new IsCheckedValidator());
-        }
-
-        public virtual IElementWrapper CheckIfIsNotChecked()
-        {
-            CheckTagName("input", "Function IsNotCheckedValidator() can be used on input element only.");
-            CheckAttribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox or radio.");
-
-            return EvaluateElementCheck<UnexpectedElementStateException>(new IsNotCheckedValidator());
-        }
+     
 
 
 
-        public virtual IElementWrapper CheckIfValue(string value, bool caseInsensitive = false, bool trimValue = true)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new ValueValidator(value, !caseInsensitive,
-                trimValue));
-        }
 
         public string GetValue()
         {
@@ -666,63 +439,20 @@ namespace Riganti.Selenium.Core
             return elementValue;
         }
 
-        private bool IsChecked()
+        protected bool IsChecked()
         {
             return WebElement.Selected;
         }
 
-        private bool TryParseBool(string value)
+        protected bool TryParseBool(string value)
         {
             bool tmp;
             bool.TryParse(value, out tmp);
             return tmp;
         }
 
-        public virtual IElementWrapper CheckIfIsEnabled()
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new IsEnabledValidator());
-        }
-
-        public IElementWrapper CheckIfIsSelected()
-        {
-            if (!IsSelected())
-            {
-                throw new UnexpectedElementStateException($"Element is not selected. \r\n Element selector: {Selector} \r\n");
-            }
-            return this;
-        }
-
-        /// <summary>
-        /// Returns new api to define validation rules of the element.
-        /// </summary>
-        public CheckElementWrapper Check()
-        {
-            return new CheckElementWrapper(this);
-        }
-
-        public virtual IElementWrapper CheckIfContainsText()
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new ContainsTextValidator());
-        }
-
-        public virtual IElementWrapper CheckIfIsNotEnabled()
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new IsNotEnabledValidator());
-        }
-
-        public IElementWrapper CheckIfIsNotSelected()
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new IsNotSelectedValidator());
-        }
-
-        /// <summary>
-        /// Checks whether element contains some text.
-        /// </summary>
-        public virtual IElementWrapper CheckIfDoesNotContainsText()
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new DoesNotContainTextValidator());
-        }
-
+    
+       
         /// <summary>
         /// Indicates whether element is visible.
         /// An element that has zero width or height also counts as non visible.
@@ -855,18 +585,6 @@ namespace Riganti.Selenium.Core
             return this;
         }
 
-        /// <summary>
-        /// Checks href value of element A (hyperlink)
-        /// </summary>
-        /// <param name="url">Expected value of href.</param>
-        /// <param name="kind">Type of url of expected href.</param>
-        /// <param name="components">Determines what parts of url should be compared.</param>
-        /// <returns></returns>
-        public IElementWrapper CheckIfHyperLinkEquals(string url, UrlKind kind, params UriComponents[] components)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(
-                new HyperLinkEqualsValidator(url, kind, components));
-        }
 
         public IElementWrapper ScrollTo(IElementWrapper element)
         {
@@ -888,15 +606,6 @@ namespace Riganti.Selenium.Core
             return this;
         }
 
-        public IElementWrapper CheckIfIsElementInView(IElementWrapper element)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new IsElementInViewValidator(element));
-        }
-
-        public IElementWrapper CheckIfIsElementNotInView(IElementWrapper element)
-        {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new IsElementNotInViewValidator(element));
-        }
 
         public bool IsElementInView(IElementWrapper element)
         {
@@ -955,12 +664,5 @@ return elementInViewport2(arguments[0]);
             return attr.Split(' ').Any(s => string.Equals(cssClass, s, StringComparison.OrdinalIgnoreCase));
         }
 
-        private IElementWrapper EvaluateElementCheck<TException>(IValidator<IElementWrapper> validator)
-            where TException : TestExceptionBase, new()
-        {
-            var operationResult = validator.Validate(this);
-            OperationValidator.Validate<TException>(operationResult);
-            return this;
-        }
     }
 }

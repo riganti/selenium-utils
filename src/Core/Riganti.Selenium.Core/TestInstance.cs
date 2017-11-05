@@ -95,9 +95,9 @@ namespace Riganti.Selenium.Core
         private void RunTest(IWebBrowser browser)
         {
             // create a new browser wrapper
-            var type = TestSuiteRunner.ServiceFactory.Resolve<BrowserWrapper>();
+            var type = TestSuiteRunner.ServiceFactory.Resolve<IBrowserWrapper>();
             var wrapper =
-                (BrowserWrapper)Activator.CreateInstance(type, browser, browser.Driver, this, new ScopeOptions());
+                (IBrowserWrapper)Activator.CreateInstance(type, browser, browser.Driver, this, new ScopeOptions());
 
             // prepare test context
             var testContext = TestSuiteRunner.TestContextProvider.CreateTestContext(this);

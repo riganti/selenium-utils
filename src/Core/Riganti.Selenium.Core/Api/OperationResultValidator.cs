@@ -4,7 +4,7 @@ using Riganti.Selenium.Validators.Checkers;
 
 namespace Riganti.Selenium.Core.Api
 {
-    public class OperationValidator
+    public class OperationResultValidator
     {
         public void Validate<TException>(CheckResult checkResult)
             where TException : TestExceptionBase, new()

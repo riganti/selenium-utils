@@ -12,7 +12,7 @@ namespace Riganti.Selenium.Core.Abstractions
         string CurrentUrlPath { get; }
         IWebDriver Driver { get; }
         Func<string, By> SelectMethod { get; set; }
-
+        IServiceFactory ServiceFactory { get; }
         void ActivateScope();
         IBrowserWrapper ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null);
         IBrowserWrapper Click(string selector);

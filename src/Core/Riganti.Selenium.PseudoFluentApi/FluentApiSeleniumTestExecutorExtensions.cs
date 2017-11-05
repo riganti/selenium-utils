@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using Riganti.Selenium.Core.Abstractions;
+using Riganti.Selenium.FluentApi;
 
 namespace Riganti.Selenium.Core
 {
@@ -11,7 +12,8 @@ namespace Riganti.Selenium.Core
         /// </summary>
         public static void RunInAllBrowsers(this ISeleniumTest executor, Action<IBrowserWrapperFluentApi> testBody, [CallerMemberName]string callerMemberName = "", [CallerFilePath]string callerFilePath = "", [CallerLineNumber]int callerLineNumber = 0)
         {
-            executor.TestSuiteRunner.ServiceFactory.RegisterTransient<IBrowserWrapper, IBrowserWrapperFluentApi>();
+            executor.TestSuiteRunner.ServiceFactory.RegisterTransient<IBrowserWrapper, BrowserWrapperFluentApi>();
+            executor.TestSuiteRunner.ServiceFactory.RegisterTransient<IElementWrapper, ElementWrapperFluentApi>();
             executor.TestSuiteRunner.RunInAllBrowsers(executor, Convert(testBody), callerMemberName, callerFilePath, callerLineNumber);
         }
 

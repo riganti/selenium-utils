@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Core
 {
-    public class ServiceFactory
+    public class ServiceFactory : IServiceFactory 
     {
 
         private ConcurrentDictionary<Type, Type> Repository { get; set; } = new ConcurrentDictionary<Type, Type>();

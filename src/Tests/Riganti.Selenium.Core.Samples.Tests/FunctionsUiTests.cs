@@ -38,6 +38,7 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
             this.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/SelectMethod");
+                
 
                 Func<string, By> selectMethod = s => By.CssSelector($"[data-ui='{s}']");
                 browser.SelectMethod = selectMethod;
@@ -302,7 +303,7 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
        [TestMethod]
         public void CookieTest()
         {
-            Action<IBrowserWrapper> test = browser =>
+            Action<IBrowserWrapperFluentApi> test = browser =>
             {
                 browser.NavigateToUrl("/test/Cookies");
                 browser.NavigateToUrl("/test/Cookies");

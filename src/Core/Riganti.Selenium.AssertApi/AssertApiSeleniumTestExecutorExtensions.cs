@@ -16,7 +16,7 @@ namespace Riganti.Selenium.AssertApi
         /// </summary>
         public static void RunInAllBrowsers(this ISeleniumTest executor, Action<BrowserWrapperAssertApi> testBody, [CallerMemberName]string callerMemberName = "", [CallerFilePath]string callerFilePath = "", [CallerLineNumber]int callerLineNumber = 0)
         {
-            executor.TestSuiteRunner.ServiceFactory.RegisterTransient<BrowserWrapper, BrowserWrapperAssertApi>();
+            executor.TestSuiteRunner.ServiceFactory.RegisterTransient<IBrowserWrapper, BrowserWrapperAssertApi>();
             executor.TestSuiteRunner.RunInAllBrowsers(executor, o => testBody((BrowserWrapperAssertApi)o), callerMemberName, callerFilePath, callerLineNumber);
         }
 
