@@ -68,8 +68,8 @@ namespace Riganti.Selenium.Core.Api
 
         public static void IsChecked(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            operationRunner.CheckTagName("input", "Function IsNotChecked() can be used on input element only.");
-            operationRunner.CheckAttribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox.");
+            operationRunner.TagName("input", "Function IsNotChecked() can be used on input element only.");
+            operationRunner.Attribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox.");
 
             var IsChecked = new IsCheckedValidator();
             operationRunner.Evaluate<UnexpectedElementStateException>(IsChecked);
@@ -77,8 +77,8 @@ namespace Riganti.Selenium.Core.Api
 
         public static void IsNotChecked(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            operationRunner.CheckTagName("input", "Function IsNotChecked() can be used on input element only.");
-            operationRunner.CheckAttribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox or radio.");
+            operationRunner.TagName("input", "Function IsNotChecked() can be used on input element only.");
+            operationRunner.Attribute("type", new[] { "checkbox", "radio" }, failureMessage: "Input element must be type of checkbox or radio.");
 
             var IsNotChecked = new IsNotCheckedValidator();
             operationRunner.Evaluate<UnexpectedElementStateException>(IsNotChecked);
@@ -149,11 +149,7 @@ namespace Riganti.Selenium.Core.Api
             operationRunner.Evaluate<UnexpectedElementStateException>(IsElementNotInView);
         }
 
-        public static void CheckTagName(this IOperationRunner<IElementWrapper> operationRunner, string expectedTagName, string failureMessage = null)
-        {
-            operationRunner.TagName(expectedTagName, failureMessage);
-        }
-
+     
         public static void TagName(this IOperationRunner<IElementWrapper> operationRunner, string expectedTagName, string failureMessage = null)
         {
             var checkTagName = new TagNameValidator(expectedTagName, failureMessage);
@@ -214,43 +210,43 @@ namespace Riganti.Selenium.Core.Api
             operationRunner.Evaluate<UnexpectedElementStateException>(JsPropertyInnerHtml);
         }
 
-        public static void CheckAttribute(this IOperationRunner<IElementWrapper> operationRunner, string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
+        public static void Attribute(this IOperationRunner<IElementWrapper> operationRunner, string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var checkAttribute = new CheckAttributeValidator(attributeName, value, caseSensitive, trimValue, failureMessage);
+            var checkAttribute = new ValidatorAttributeValidator(attributeName, value, caseSensitive, trimValue, failureMessage);
             operationRunner.Evaluate<UnexpectedElementStateException>(checkAttribute);
         }
 
-        public static void CheckAttribute(this IOperationRunner<IElementWrapper> operationRunner, string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
+        public static void Attribute(this IOperationRunner<IElementWrapper> operationRunner, string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var checkAttribute = new CheckAttributeValidator(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
+            var checkAttribute = new ValidatorAttributeValidator(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
             operationRunner.Evaluate<UnexpectedElementStateException>(checkAttribute);
         }
 
-        public static void CheckAttribute(this IOperationRunner<IElementWrapper> operationRunner, string attributeName, Expression<Func<string, bool>> expression, string failureMessage = null)
+        public static void Attribute(this IOperationRunner<IElementWrapper> operationRunner, string attributeName, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
             var Attribute = new AttributeValidator(attributeName, expression, failureMessage);
             operationRunner.Evaluate<UnexpectedElementStateException>(Attribute);
         }
 
-        public static void CheckClassAttribute(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false, bool trimValue = true)
+        public static void ClassAttribute(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false, bool trimValue = true)
         {
-            operationRunner.CheckAttribute("class", value, caseSensitive, trimValue);
+            operationRunner.Attribute("class", value, caseSensitive, trimValue);
         }
 
-        public static void CheckClassAttribute(this IOperationRunner<IElementWrapper> operationRunner, string attributeName, Expression<Func<string, bool>> expression, string failureMessage = "")
+        public static void ClassAttribute(this IOperationRunner<IElementWrapper> operationRunner, string attributeName, Expression<Func<string, bool>> expression, string failureMessage = "")
         {
-            operationRunner.CheckAttribute("class", expression, failureMessage);
+            operationRunner.Attribute("class", expression, failureMessage);
         }
 
         public static void HasClass(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false)
         {
-            operationRunner.CheckAttribute("class", p => p.Split(' ').Any(c => string.Equals(c, value,
+            operationRunner.Attribute("class", p => p.Split(' ').Any(c => string.Equals(c, value,
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
         }
 
         public static void HasNotClass(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false)
         {
-            operationRunner.CheckAttribute("class", p => !p.Split(' ').Any(c => string.Equals(c, value,
+            operationRunner.Attribute("class", p => !p.Split(' ').Any(c => string.Equals(c, value,
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
         }
 
@@ -284,19 +280,19 @@ namespace Riganti.Selenium.Core.Api
             operationRunner.Evaluate<AlertException>(AlertTextContains);
         }
 
-        public static void CheckUrl(this IOperationRunner<IBrowserWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = null)
+        public static void Url(this IOperationRunner<IBrowserWrapper> operationRunner, Expression<Func<string, bool>> expression, string failureMessage = null)
         {
             var Url = new CurrentUrlValidator(expression, failureMessage);
             operationRunner.Evaluate<BrowserLocationException>(Url);
         }
 
-        public static void CheckUrl(this IOperationRunner<IBrowserWrapper> operationRunner, string url, UrlKind urlKind, params UriComponents[] components)
+        public static void Url(this IOperationRunner<IBrowserWrapper> operationRunner, string url, UrlKind urlKind, params UriComponents[] components)
         {
             var checkUrl = new UrlValidator(url, urlKind, components);
             operationRunner.Evaluate<BrowserLocationException>(checkUrl);
         }
 
-        public static void CheckUrlEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string url)
+        public static void UrlEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string url)
         {
             var checkUrlExquals = new UrlEqualsValidator(url);
             operationRunner.Evaluate<BrowserLocationException>(checkUrlExquals);
@@ -343,11 +339,6 @@ namespace Riganti.Selenium.Core.Api
             operationRunner.Evaluate<BrowserException>(Title);
         }
 
-
-        public static void Check<TException, T>(this IOperationRunner<T> operationRunner, ICheck<T> check)
-            where TException : TestExceptionBase, new()
-        {
-            operationRunner.Evaluate<TException>(check);
-        }
+        
     }
 }

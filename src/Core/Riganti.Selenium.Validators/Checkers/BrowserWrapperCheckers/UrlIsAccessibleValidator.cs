@@ -4,7 +4,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.BrowserWrapperCheckers
 {
-    public class UrlIsAccessibleValidator : ICheck<IBrowserWrapper>
+    public class UrlIsAccessibleValidator : IValidator<IBrowserWrapper>
     {
         private readonly string url;
         private readonly UrlKind urlKind;

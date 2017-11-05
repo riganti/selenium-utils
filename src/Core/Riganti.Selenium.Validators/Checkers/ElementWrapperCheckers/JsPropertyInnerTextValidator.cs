@@ -4,7 +4,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
 {
-    public class JsPropertyInnerTextValidator : ICheck<IElementWrapper>
+    public class JsPropertyInnerTextValidator : IValidator<IElementWrapper>
     {
         private readonly Expression<Func<string, bool>> rule;
         private readonly string failureMessage;

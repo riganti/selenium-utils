@@ -3,7 +3,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.BrowserWrapperCheckers
 {
-    public class TitleEqualsValidator : ICheck<IBrowserWrapper>
+    public class TitleEqualsValidator : IValidator<IBrowserWrapper>
     {
         private readonly string expectedValue;
         private readonly bool caseSensitive;

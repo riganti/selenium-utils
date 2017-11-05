@@ -2,7 +2,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
 {
-    public class HasAttributeValidator : ICheck<IElementWrapper>
+    public class HasAttributeValidator : IValidator<IElementWrapper>
     {
         private readonly string name;
 

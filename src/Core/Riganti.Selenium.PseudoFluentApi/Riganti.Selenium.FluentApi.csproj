@@ -10,6 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="IElementWrapper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="IElementWrapper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Riganti.Selenium.Core.Abstractions\Riganti.Selenium.Core.Abstractions.csproj" />
     <ProjectReference Include="..\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj" />
   </ItemGroup>

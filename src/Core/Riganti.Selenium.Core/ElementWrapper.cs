@@ -15,7 +15,7 @@ using Riganti.Selenium.Core.Comparators;
 
 namespace Riganti.Selenium.Core
 {
-    public class ElementWrapper : ISeleniumWrapper, IElementWrapper
+    public class ElementWrapper : IElementWrapper
     {
         private readonly IWebElement element;
         private readonly IBrowserWrapper browser;
@@ -349,13 +349,13 @@ namespace Riganti.Selenium.Core
 
         public virtual IElementWrapper CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new CheckAttributeValidator(attributeName, value,
+            return EvaluateElementCheck<UnexpectedElementStateException>(new ValidatorAttributeValidator(attributeName, value,
                 caseInsensitive, trimValue, failureMessage));
         }
 
         public virtual IElementWrapper CheckAttribute(string attributeName, string[] allowedValues, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new CheckAttributeValidator(attributeName, allowedValues,
+            return EvaluateElementCheck<UnexpectedElementStateException>(new ValidatorAttributeValidator(attributeName, allowedValues,
                 caseInsensitive, trimValue, failureMessage));
         }
 
@@ -955,10 +955,10 @@ return elementInViewport2(arguments[0]);
             return attr.Split(' ').Any(s => string.Equals(cssClass, s, StringComparison.OrdinalIgnoreCase));
         }
 
-        private IElementWrapper EvaluateElementCheck<TException>(ICheck<IElementWrapper> check)
+        private IElementWrapper EvaluateElementCheck<TException>(IValidator<IElementWrapper> validator)
             where TException : TestExceptionBase, new()
         {
-            var operationResult = check.Validate(this);
+            var operationResult = validator.Validate(this);
             OperationValidator.Validate<TException>(operationResult);
             return this;
         }

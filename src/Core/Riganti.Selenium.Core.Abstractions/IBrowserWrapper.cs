@@ -3,7 +3,7 @@ using OpenQA.Selenium;
 
 namespace Riganti.Selenium.Core.Abstractions
 {
-    public interface IBrowserWrapper
+    public interface IBrowserWrapper : ISupportedByValidator
     {
 
         int ActionWaitTime { get; set; }
@@ -59,7 +59,7 @@ namespace Riganti.Selenium.Core.Abstractions
         IElementWrapper SingleOrDefault(string selector, Func<string, By> tmpSelectMethod = null);
         IBrowserWrapper Submit(string selector);
         void DropTest(string message);
-        IBrowserWrapper DragAndDrop(IElementWrapper elementWrapper, IElementWrapper dropToElement, int offsetX, int offsetY);
+        IBrowserWrapper DragAndDrop(IElementWrapper elementWrapper, IElementWrapper dropToElement, int offsetX = 0, int offsetY = 0);
         IBrowserWrapper SwitchToTab(int index);
         void TakeScreenshot(string filename, ScreenshotImageFormat? format = null);
         T ThrowIfIsNull<T>(T obj, string message);

@@ -3,7 +3,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.BrowserWrapperCheckers
 {
-    public class UrlEqualsValidator : ICheck<IBrowserWrapper>
+    public class UrlEqualsValidator : IValidator<IBrowserWrapper>
     {
         private readonly string url;
 

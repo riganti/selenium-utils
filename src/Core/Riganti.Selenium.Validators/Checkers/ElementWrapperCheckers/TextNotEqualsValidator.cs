@@ -3,7 +3,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
 {
-    public class TextNotEqualsValidator : ICheck<IElementWrapper>
+    public class TextNotEqualsValidator : IValidator<IElementWrapper>
     {
         private readonly string text;
         private readonly bool caseSensitive;

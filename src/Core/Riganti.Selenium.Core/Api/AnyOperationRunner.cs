@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Validators.Checkers;
 
 namespace Riganti.Selenium.Core.Api
 {
-    public class AnyOperationRunner<T> : OperationRunnerBase<T>
+    public class AnyOperationRunner<T> : OperationRunnerBase<T> where T : ISupportedByValidator
     {
         private readonly IEnumerable<T> wrappers;
 
@@ -17,7 +18,7 @@ namespace Riganti.Selenium.Core.Api
         /// </summary>
         /// <typeparam name="TException">Exception based on TestExceptionBase.</typeparam>
         /// <param name="validator">The validator.</param>
-        public override void Evaluate<TException>(ICheck<T> validator)
+        public override void Evaluate<TException>(IValidator<T> validator)
         {
             var checkResults = wrappers.Select(validator.Validate).ToArray();
             var checkResult = CreateCheckResult(checkResults);

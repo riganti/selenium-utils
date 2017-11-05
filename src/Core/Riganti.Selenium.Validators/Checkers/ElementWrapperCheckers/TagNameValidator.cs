@@ -4,7 +4,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
 {
-    public class TagNameValidator : ICheck<IElementWrapper>
+    public class TagNameValidator : IValidator<IElementWrapper>
     {
         private readonly string[] expectedTagNames;
         private readonly string failureMessage;

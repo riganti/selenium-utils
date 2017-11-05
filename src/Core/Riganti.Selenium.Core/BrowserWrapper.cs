@@ -745,10 +745,10 @@ namespace Riganti.Selenium.Core
             return Driver;
         }
 
-        protected IBrowserWrapper EvaluateBrowserCheck<TException>(ICheck<IBrowserWrapper> check)
+        protected IBrowserWrapper EvaluateBrowserCheck<TException>(IValidator<IBrowserWrapper> validator)
             where TException : TestExceptionBase, new()
         {
-            var operationResult = check.Validate(this);
+            var operationResult = validator.Validate(this);
             OperationValidator.Validate<TException>(operationResult);
             return this;
         }

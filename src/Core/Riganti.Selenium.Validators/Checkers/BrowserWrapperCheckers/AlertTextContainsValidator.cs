@@ -2,7 +2,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.BrowserWrapperCheckers
 {
-    public class AlertTextContainsValidator : ICheck<IBrowserWrapper>
+    public class AlertTextContainsValidator : IValidator<IBrowserWrapper>
     {
         private readonly string expectedValue;
         private readonly bool caseSensitive;

@@ -5,7 +5,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
 {
-    public class ContainsElementValidator : ICheck<IElementWrapper>
+    public class ContainsElementValidator : IValidator<IElementWrapper>
     {
         public readonly string cssSelector;
         public readonly Func<string, By> tmpSelectMethod;

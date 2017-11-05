@@ -2,7 +2,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
 {
-    public class IsElementNotInViewValidator : ICheck<IElementWrapper>
+    public class IsElementNotInViewValidator : IValidator<IElementWrapper>
     {
         private readonly IElementWrapper element;
 

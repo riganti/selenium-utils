@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Validators.Checkers;
 
 namespace Riganti.Selenium.Core.Api
 {
-    public class AllOperationRunner<T> : OperationRunnerBase<T>
+    public class AllOperationRunner<T> : OperationRunnerBase<T> where T : ISupportedByValidator
     {
         private readonly IEnumerable<T> wrappers;
 
@@ -16,7 +17,7 @@ namespace Riganti.Selenium.Core.Api
             this.wrappers = wrappers;
         }
 
-        public override void Evaluate<TException>(ICheck<T> validator)
+        public override void Evaluate<TException>(IValidator<T> validator) 
         {
             var checkResults = wrappers.Select(validator.Validate).ToArray();
             var checkResult = CreateCheckResult(checkResults);

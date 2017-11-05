@@ -4,7 +4,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
 {
-    public class HyperLinkEqualsValidator : ICheck<IElementWrapper>
+    public class HyperLinkEqualsValidator : IValidator<IElementWrapper>
     {
         private readonly string url;
 

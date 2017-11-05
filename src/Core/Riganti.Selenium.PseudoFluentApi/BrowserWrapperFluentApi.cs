@@ -16,7 +16,7 @@ using Riganti.Selenium.Validators.Checkers;
 
 namespace Riganti.Selenium.Core
 {
-    public class BrowserWrapperFluentApi : BrowserWrapper, IBrowserWrapper, IBrowserWrapperFluentApi
+    public class BrowserWrapperFluentApi : BrowserWrapper, IBrowserWrapperFluentApi
     {
 
 
@@ -205,7 +205,7 @@ namespace Riganti.Selenium.Core
             return this;
         }
 
-        #region CheckUrl
+        #region Url
 
         /// <summary>
         /// Checks exact match with CurrentUrl
@@ -237,7 +237,7 @@ namespace Riganti.Selenium.Core
             return EvaluateBrowserCheck<BrowserLocationException>(new UrlValidator(url, urlKind, components));
         }
 
-        #endregion CheckUrl
+        #endregion Url
 
         #region FileUploadDialog
 

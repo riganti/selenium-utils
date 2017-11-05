@@ -210,13 +210,13 @@ namespace Riganti.Selenium.Core
 
         public static void Attribute(IElementWrapper wrapper, string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var checkAttribute = new CheckAttributeValidator(attributeName, value, caseSensitive, trimValue, failureMessage);
+            var checkAttribute = new ValidatorAttributeValidator(attributeName, value, caseSensitive, trimValue, failureMessage);
             EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, checkAttribute);
         }
 
         public static void Attribute(IElementWrapper wrapper, string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var checkAttribute = new CheckAttributeValidator(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
+            var checkAttribute = new ValidatorAttributeValidator(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
             EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, checkAttribute);
         }
 
@@ -344,25 +344,25 @@ namespace Riganti.Selenium.Core
             EvaluateValidator<BrowserException, IBrowserWrapper>(wrapper, title);
         }
 
-        public static void Check<TException, T>(ICheck<T> check, T wrapper)
-            where TException : TestExceptionBase, new()
+        public static void Check<TException, T>(IValidator<T> validator, T wrapper)
+            where TException : TestExceptionBase, new() where T: ISupportedByValidator
         {
-            EvaluateValidator<TException, T>(wrapper, check);
+            EvaluateValidator<TException, T>(wrapper, validator);
         }
 
-        private static void EvaluateValidator<TException, T>(T wrapper, ICheck<T> check)
-            where TException : TestExceptionBase, new()
+        private static void EvaluateValidator<TException, T>(T wrapper, IValidator<T> validator)
+            where TException : TestExceptionBase, new() where T : ISupportedByValidator
         {
-            var operationResult = check.Validate(wrapper);
+            var operationResult = validator.Validate(wrapper);
             OperationValidator.Validate<TException>(operationResult);
         }
 
-        public static AnyOperationRunner<T> Any<T>(IEnumerable<T> wrappers)
+        public static AnyOperationRunner<T> Any<T>(IEnumerable<T> wrappers) where T : ISupportedByValidator
         {
             return new AnyOperationRunner<T>(wrappers);
         }
 
-        public static AllOperationRunner<T> All<T>(IEnumerable<T> elementWrappers)
+        public static AllOperationRunner<T> All<T>(IEnumerable<T> elementWrappers) where T : ISupportedByValidator
         {
             return new AllOperationRunner<T>(elementWrappers);
         }

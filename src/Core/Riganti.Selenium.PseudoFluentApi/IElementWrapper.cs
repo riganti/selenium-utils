@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Drawing;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Riganti.Selenium.Core.Abstractions;
 
-namespace Riganti.Selenium.Core.Abstractions
+namespace Riganti.Selenium.FluentApi
 {
-    public interface IElementWrapper : ISeleniumWrapper, ISupportedByValidator
+    public interface IElementWrapperFluentApi : IElementWrapper
     {
         int ActionWaitTime { get; set; }
         new string Selector { get; set; }
@@ -15,8 +17,6 @@ namespace Riganti.Selenium.Core.Abstractions
         IElementWrapper ParentElement { get; }
         Func<string, By> SelectMethod { get; set; }
         IWebElement WebElement { get; }
-
-        //CheckIElementWrapper Check();
         IElementWrapper CheckAttribute(string attributeName, Func<string, bool> expression, string failureMessage = null);
         IElementWrapper CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null);
         IElementWrapper CheckAttribute(string attributeName, string[] allowedValues, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null);
@@ -103,5 +103,6 @@ namespace Riganti.Selenium.Core.Abstractions
         IElementWrapper Wait(TimeSpan interval);
         IElementWrapper WaitFor(Action<IElementWrapper> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500);
         IElementWrapper WaitFor(Func<IElementWrapper, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500);
+
     }
 }

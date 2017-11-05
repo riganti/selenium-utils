@@ -3,7 +3,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
 {
-    public class JsPropertyInnerTextEqualsValidator : ICheck<IElementWrapper>
+    public class JsPropertyInnerTextEqualsValidator : IValidator<IElementWrapper>
     {
         private readonly string text;
         private readonly bool caseSensitive;

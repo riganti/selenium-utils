@@ -4,7 +4,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.BrowserWrapperCheckers
 {
-    public class TitleValidator : ICheck<IBrowserWrapper>
+    public class TitleValidator : IValidator<IBrowserWrapper>
     {
         private readonly string failureMessage;
         private readonly Expression<Func<string, bool>> expression;

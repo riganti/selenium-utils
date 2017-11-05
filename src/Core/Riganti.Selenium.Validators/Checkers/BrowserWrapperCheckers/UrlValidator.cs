@@ -5,7 +5,7 @@ using Riganti.Selenium.Core.Abstractions.Exceptions;
 
 namespace Riganti.Selenium.Validators.Checkers.BrowserWrapperCheckers
 {
-    public class UrlValidator : ICheck<IBrowserWrapper>
+    public class UrlValidator : IValidator<IBrowserWrapper>
     {
         private readonly string url;
         private readonly UrlKind urlKind;
