@@ -22,7 +22,7 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
         {
             this.RunInAllBrowsers(browser =>
             {
-                browser.NavigateToUrl();
+                browser.NavigateToUrl("https://google.com");
                 browser.CheckIfTitleEquals("Google");
             });
         }

@@ -26,13 +26,12 @@ namespace Riganti.Selenium.Core.Samples.AssertApi.Tests
 
         public void AnyOpertaionRunner_FailureExpected()
         {
-            Assert.Throws<Exception>(() =>
+            Assert.ThrowsAny<Exception>(() =>
             {
-
                 RunInAllBrowsers(browser =>
                 {
                     browser.NavigateToUrl("/test/FindElements");
-                    AssertUI.Any(browser.FindElements("div p")).InnerTextEquals("a");
+                    AssertUI.Any(browser.FindElements("div p")).InnerTextEquals("1");
                 });
             });
 
@@ -42,4 +41,5 @@ namespace Riganti.Selenium.Core.Samples.AssertApi.Tests
         {
         }
     }
+
 }

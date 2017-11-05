@@ -15,7 +15,7 @@ namespace Riganti.Selenium.Core.UnitTests
         public void SeleniumTestFailedExceptionTest()
 
         {
-            var exps = new List<Exception>() { new Exception("Exception1"), new Exception("Exception2"), new Exception("Exception3") };
+            var exps = new List<Exception>() { new UnexpectedElementException("Exception1"){CurrentUrl = UrlConst, WebBrowser = "Chrome"}, new UnexpectedElementException("Exception2"), new UnexpectedElementException("Exception3") };
             var exp = new SeleniumTestFailedException(exps);
             var str = exp.ToString();
 
@@ -24,8 +24,8 @@ namespace Riganti.Selenium.Core.UnitTests
             Assert.IsTrue(str.Contains("Exception1"));
             Assert.IsTrue(str.Contains("Exception2"));
             Assert.IsTrue(str.Contains("Exception3"));
-            Assert.IsTrue(str.Contains("SpecificBrowserName"));
-            Assert.IsTrue(str.Contains("SpecificScreen"));
+            Assert.IsTrue(str.Contains("Url: https://example.com"));
+            Assert.IsTrue(str.Contains("Browser: Chrome"));
             Assert.IsTrue(str.Contains(UrlConst));
         }
 

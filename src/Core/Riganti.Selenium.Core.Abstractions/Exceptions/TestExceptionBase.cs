@@ -126,7 +126,7 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
 
         private void RenderCheckResult(StringBuilder sb)
         {
-            AppendField(sb, "Check results", CheckResult.ToString());
+            AppendField(sb, "Check results", CheckResult?.ToString());
         }
 
         private void AppendField(StringBuilder sb, string fieldName, string value)

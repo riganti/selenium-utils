@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using Riganti.Selenium.Core;
+using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
+using Riganti.Selenium.FluentApi;
 using Selenium.Core.UnitTests.Mock;
 
 namespace Selenium.Core.UnitTests
@@ -14,6 +16,7 @@ namespace Selenium.Core.UnitTests
     [TestClass]
     public class CheckIfTests
     {
+      
         [TestMethod]
         public void CheckIfTagName_ArrayTest()
         {

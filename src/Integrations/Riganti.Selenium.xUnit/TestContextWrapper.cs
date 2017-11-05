@@ -55,7 +55,7 @@ namespace Riganti.Selenium.Core
         public virtual void AddResultFile(string fileName)
         {
             // TODO: add files
-
+           
             //var fullpath = Path.GetFullPath(fileName);
             //var fileInfo = new FileInfo(fileName);
             //var fullpath2 = fileInfo.FullName;
