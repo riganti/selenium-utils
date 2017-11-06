@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using Riganti.Selenium.Core;
+using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Core.Api;
 using Riganti.Selenium.Core.Drivers;
@@ -18,7 +19,7 @@ namespace Selenium.Core.UnitTests
     [TestClass]
     public class TimeOutTests
     {
-        private BrowserWrapper browser;
+        private IBrowserWrapper browser;
 
         #region Browser tests
 
