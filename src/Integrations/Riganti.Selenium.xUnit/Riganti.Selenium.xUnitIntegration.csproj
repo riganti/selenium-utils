@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <IsPackable>true</IsPackable>
-    <Version>2.0.0-beta</Version>
+    <Version>2.0.0-beta2</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Company>Riganti s.r.o.</Company>
     <Authors>Ladislav Šesták</Authors>
