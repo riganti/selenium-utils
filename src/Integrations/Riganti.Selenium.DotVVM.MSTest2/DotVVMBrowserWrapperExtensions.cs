@@ -4,7 +4,7 @@ using Riganti.Selenium.Core;
 
 namespace Riganti.Selenium.DotVVM
 {
-    public static class BrowserWrapperExtensions
+    public static class DotVVMBrowserWrapperExtensions
     {
         /// <summary>
         /// Determines whether tested page is dotvvm.

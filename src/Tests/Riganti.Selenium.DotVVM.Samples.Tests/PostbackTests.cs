@@ -18,8 +18,6 @@ namespace Selenium.DotVVM.Samples.Tests
                 browser.WaitForPostback();
                 browser.First("#LabelText").CheckIfInnerTextEquals("PostbackEnd");
             });
-
-
         }
     }
 
