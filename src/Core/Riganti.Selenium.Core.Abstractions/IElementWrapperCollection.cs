@@ -28,6 +28,7 @@ namespace Riganti.Selenium.Core.Abstractions
         IElementWrapperCollection ThrowIfEmptyOrMoreThanOne();
         IElementWrapperCollection ThrowIfSequenceContainsMoreThanOneElement();
         IElementWrapperCollection ThrowIfSequenceEmpty();
+        
     }
 
 }

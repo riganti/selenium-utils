@@ -152,7 +152,7 @@ namespace Riganti.Selenium.Core
             return collection.Last();
         }
 
-        private readonly List<IElementWrapper> collection;
+        protected readonly List<IElementWrapper> collection;
 
         public IEnumerator<IElementWrapper> GetEnumerator()
         {

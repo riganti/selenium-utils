@@ -26,6 +26,8 @@ namespace Riganti.Selenium.Core
         new IElementWrapperCollectionFluetApi ThrowIfEmptyOrMoreThanOne();
         new IElementWrapperCollectionFluetApi ThrowIfSequenceContainsMoreThanOneElement();
         new IElementWrapperCollectionFluetApi ThrowIfSequenceEmpty();
+        new IEnumerator<IElementWrapperFluentApi> GetEnumerator();
+
 
     }
 }

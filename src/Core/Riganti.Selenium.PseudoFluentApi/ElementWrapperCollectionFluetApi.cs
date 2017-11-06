@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -73,5 +74,19 @@ namespace Riganti.Selenium.FluentApi
         public new IElementWrapperCollectionFluetApi ThrowIfSequenceContainsMoreThanOneElement() => (IElementWrapperCollectionFluetApi)base.ThrowIfSequenceContainsMoreThanOneElement();
 
         public new IElementWrapperCollectionFluetApi ThrowIfSequenceEmpty() => (IElementWrapperCollectionFluetApi)base.ThrowIfSequenceEmpty();
+        IEnumerator<IElementWrapperFluentApi> IElementWrapperCollectionFluetApi.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public new IEnumerator<IElementWrapperFluentApi> GetEnumerator()
+        {
+            return collection.Cast<IElementWrapperFluentApi>().GetEnumerator();
+        }
+
+
+
+
+       
     }
 }

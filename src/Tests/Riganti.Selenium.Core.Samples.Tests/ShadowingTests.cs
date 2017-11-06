@@ -18,6 +18,22 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
             });
         }
 
+        [TestMethod]
+        public void ElementWrapperShadow_GetEnumerableFuncTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/FindElements");
+                var a = browser.First("div");
+                var b = a.FindElements("p");
+
+                foreach (var p in b)
+                {
+                    p.CheckIfIsDisplayed();
+                }
+
+            });
+        }
 
     }
 }
