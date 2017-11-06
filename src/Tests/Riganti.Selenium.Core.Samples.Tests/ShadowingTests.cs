@@ -3,24 +3,21 @@
 namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
 {
     [TestClass]
-    public class ElementCollectionTests : AppSeleniumTest
+    public class ShadowingTests: AppSeleniumTest
     {
         [TestMethod]
-        public void TestBackingReferencesFromCollection()
+        public void ElementWrapperShadow_SingleFuncTest()
         {
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/FindElements");
-                var a = browser.FindElements("div");
+                var a = browser.First("div");
                 var b = a.FindElements("p");
-                var c = b.BrowserWrapper;
-                var d = c.FindElements("div");
-                var e = d.FindElements("p");
-                e.ThrowIfSequenceEmpty();
-
+                var e = b.ElementAt(0);
+                e.CheckIfInnerTextEquals("a");
             });
         }
-      
+
 
     }
 }

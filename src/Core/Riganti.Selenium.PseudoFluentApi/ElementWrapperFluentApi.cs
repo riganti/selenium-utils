@@ -519,6 +519,8 @@ namespace Riganti.Selenium.FluentApi
             return (IElementWrapperFluentApi)base.WaitFor((e) => condition((IElementWrapperFluentApi)e), maxTimeout, failureMessage, ignoreCertainException, checkInterval);
         }
 
+        public IElementWrapperCollectionFluetApi Children { get; }
+
         IElementWrapperFluentApi IElementWrapperFluentApi.WaitFor(Action<IElementWrapperFluentApi> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500)
         {
             return (IElementWrapperFluentApi)base.WaitFor((e) => checkExpression((IElementWrapperFluentApi)e), maxTimeout, failureMessage, checkInterval);

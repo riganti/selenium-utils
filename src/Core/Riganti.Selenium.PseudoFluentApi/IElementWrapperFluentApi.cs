@@ -75,5 +75,8 @@ namespace Riganti.Selenium.Core
         new IElementWrapperFluentApi Wait(TimeSpan interval);
         IElementWrapperFluentApi WaitFor(Action<IElementWrapperFluentApi> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500);
         IElementWrapperFluentApi WaitFor(Func<IElementWrapperFluentApi, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500);
+
+        new IElementWrapperCollectionFluetApi Children { get; }
+        new IElementWrapperCollectionFluetApi FindElements(string selector, Func<string, By> tmpSelectMethod = null);
     }
 }
