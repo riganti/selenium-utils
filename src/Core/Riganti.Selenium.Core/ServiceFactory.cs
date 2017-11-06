@@ -5,7 +5,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Core
 {
-    public class ServiceFactory : IServiceFactory 
+    public class ServiceFactory : IServiceFactory
     {
 
         private ConcurrentDictionary<Type, Type> Repository { get; set; } = new ConcurrentDictionary<Type, Type>();
@@ -24,7 +24,9 @@ namespace Riganti.Selenium.Core
         }
 
 
-        public Type Resolve<T>() 
+
+
+        public Type ResolveType<T>()
         {
             if (Repository.ContainsKey(typeof(T)))
             {
@@ -32,8 +34,15 @@ namespace Riganti.Selenium.Core
                 Repository.TryGetValue(typeof(T), out a);
                 return a;
             }
-            
+
             throw new ArgumentException($"Type {typeof(T).FullName} is not registered in container.");
+        }
+
+        /// <inheritdoc />
+        public T Resolve<T>(params object[] args)
+        {
+            var result = (T)Activator.CreateInstance(ResolveType<T>(), args);
+            return result;
         }
 
     }

@@ -24,6 +24,9 @@ namespace Riganti.Selenium.Core
         protected readonly IWebDriver driver;
         protected internal ITestInstance TestInstance { get; protected set; }
         public IServiceFactory ServiceFactory => TestInstance.TestClass.TestSuiteRunner.ServiceFactory;
+
+        
+
         public int ActionWaitTime { get; set; }
 
         public string BaseUrl => TestInstance.TestConfiguration.BaseUrl;
@@ -43,7 +46,6 @@ namespace Riganti.Selenium.Core
         }
 
         protected ScopeOptions ScopeOptions { get; set; }
-
         public BrowserWrapper(IWebBrowser browser, IWebDriver driver, ITestInstance testInstance, ScopeOptions scope)
         {
             this.browser = browser;
@@ -572,10 +574,7 @@ namespace Riganti.Selenium.Core
             TestInstance.TestClass.CurrentScope = options.ScopeId;
 
             // create a new browser wrapper
-            var type = TestInstance.TestClass.TestSuiteRunner.ServiceFactory.Resolve<IBrowserWrapper>();
-            var wrapper = (IBrowserWrapper)Activator.CreateInstance(type, browser, frame, TestInstance, options);
-
-            return wrapper;
+            return TestInstance.TestClass.TestSuiteRunner.ServiceFactory.Resolve<IBrowserWrapper>(browser, frame, TestInstance, options);
         }
 
         #endregion Frames support

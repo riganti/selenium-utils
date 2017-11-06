@@ -28,7 +28,8 @@ namespace Riganti.Selenium.Core
 
 
 
-
+        new IElementWrapperCollectionFluetApi FindElements(By selector);
+        new IElementWrapperCollectionFluetApi FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null);
         new IBrowserWrapperFluentApi ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null);
         new IBrowserWrapperFluentApi Click(string selector);
         new IBrowserWrapperFluentApi ConfirmAlert();

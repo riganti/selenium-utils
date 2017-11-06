@@ -4,7 +4,7 @@ namespace Riganti.Selenium.Core.Abstractions
 {
     public interface IServiceFactory
     {
-        Type Resolve<T>();
-
+        T Resolve<T>(params object[] args);
+        Type ResolveType<T>();
     }
 }

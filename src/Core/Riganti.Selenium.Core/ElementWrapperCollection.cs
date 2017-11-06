@@ -8,7 +8,7 @@ using Riganti.Selenium.Core.Abstractions.Exceptions;
 
 namespace Riganti.Selenium.Core
 {
-    public class ElementWrapperCollection : IReadOnlyCollection<IElementWrapper>, IElementWrapperCollection
+    public class ElementWrapperCollection : IElementWrapperCollection
     {
         public string Selector { get; }
         public IElementWrapper this[int index]
@@ -219,8 +219,7 @@ namespace Riganti.Selenium.Core
         public IElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var results = collection.SelectMany(item => item.FindElements(selector, tmpSelectMethod));
-
-            return new ElementWrapperCollection(results, selector, this);
+            return BrowserWrapper.ServiceFactory.Resolve<IElementWrapperCollection>(results, selector, this, BrowserWrapper);
         }
 
         /// <summary>

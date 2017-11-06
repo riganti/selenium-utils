@@ -5,7 +5,6 @@ namespace Riganti.Selenium.Core.Abstractions
 {
     public interface IBrowserWrapper : ISupportedByValidator
     {
-
         int ActionWaitTime { get; set; }
         string BaseUrl { get; }
         string CurrentUrl { get; }

@@ -16,7 +16,7 @@ using Riganti.Selenium.Validators.Checkers;
 
 namespace Riganti.Selenium.Core
 {
-    public class BrowserWrapperFluentApi : BrowserWrapper, IBrowserWrapperFluentApi  
+    public class BrowserWrapperFluentApi : BrowserWrapper, IBrowserWrapperFluentApi
     {
 
 
@@ -167,127 +167,132 @@ namespace Riganti.Selenium.Core
             return this;
         }
 
+        public new IElementWrapperCollectionFluetApi FindElements(By selector) => (IElementWrapperCollectionFluetApi)base.FindElements(selector);
+
+        public new IElementWrapperCollectionFluetApi FindElements(string cssSelector,
+            Func<string, By> tmpSelectMethod = null) => (IElementWrapperCollectionFluetApi)base.FindElements(cssSelector, tmpSelectMethod);
+
         public new IBrowserWrapperFluentApi ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return (IBrowserWrapperFluentApi) base.ClearElementsContent(selector, tmpSelectMethod);
+            return (IBrowserWrapperFluentApi)base.ClearElementsContent(selector, tmpSelectMethod);
         }
 
         public new IBrowserWrapperFluentApi Click(string selector)
         {
-            return (IBrowserWrapperFluentApi) base.Click(selector);
+            return (IBrowserWrapperFluentApi)base.Click(selector);
         }
 
         public new IBrowserWrapperFluentApi ConfirmAlert()
         {
-            return (IBrowserWrapperFluentApi) base.ConfirmAlert();
+            return (IBrowserWrapperFluentApi)base.ConfirmAlert();
         }
 
         public new IBrowserWrapperFluentApi DismissAlert()
         {
-            return (IBrowserWrapperFluentApi) base.DismissAlert();
+            return (IBrowserWrapperFluentApi)base.DismissAlert();
         }
 
         public new IElementWrapperFluentApi ElementAt(string selector, int index, Func<string, By> tmpSelectMethod = null)
         {
-            return (IElementWrapperFluentApi) base.ElementAt(selector, index, tmpSelectMethod);
+            return (IElementWrapperFluentApi)base.ElementAt(selector, index, tmpSelectMethod);
         }
 
         public new IBrowserWrapperFluentApi FireJsBlur()
         {
-            return (IBrowserWrapperFluentApi) base.FireJsBlur();
+            return (IBrowserWrapperFluentApi)base.FireJsBlur();
         }
 
         public new IElementWrapperFluentApi First(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return (IElementWrapperFluentApi) base.First(selector, tmpSelectMethod);
+            return (IElementWrapperFluentApi)base.First(selector, tmpSelectMethod);
         }
 
         public new IElementWrapperFluentApi FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return (IElementWrapperFluentApi) base.First(selector, tmpSelectMethod);
+            return (IElementWrapperFluentApi)base.First(selector, tmpSelectMethod);
         }
 
         public new IBrowserWrapperFluentApi ForEach(string selector, Action<IElementWrapper> action, Func<string, By> tmpSelectMethod = null)
         {
-            return (IBrowserWrapperFluentApi) base.ForEach(selector, action, tmpSelectMethod);
+            return (IBrowserWrapperFluentApi)base.ForEach(selector, action, tmpSelectMethod);
         }
 
         public new IBrowserWrapperFluentApi GetFrameScope(string selector)
         {
-            return (IBrowserWrapperFluentApi) base.GetFrameScope(selector);
+            return (IBrowserWrapperFluentApi)base.GetFrameScope(selector);
         }
 
         public new IElementWrapperFluentApi Last(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return (IElementWrapperFluentApi) base.Last(selector, tmpSelectMethod);
+            return (IElementWrapperFluentApi)base.Last(selector, tmpSelectMethod);
         }
 
         public new IElementWrapperFluentApi LastOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return (IElementWrapperFluentApi) base.LastOrDefault(selector, tmpSelectMethod);
+            return (IElementWrapperFluentApi)base.LastOrDefault(selector, tmpSelectMethod);
         }
 
         public new IBrowserWrapperFluentApi SendKeys(string selector, string text, Func<string, By> tmpSelectMethod = null)
         {
-            return (IBrowserWrapperFluentApi) base.SendKeys(selector, text, tmpSelectMethod);
+            return (IBrowserWrapperFluentApi)base.SendKeys(selector, text, tmpSelectMethod);
         }
 
         public new IElementWrapperFluentApi Single(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return (IElementWrapperFluentApi) base.Single(selector, tmpSelectMethod);
+            return (IElementWrapperFluentApi)base.Single(selector, tmpSelectMethod);
         }
 
         public new IElementWrapperFluentApi SingleOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return (IElementWrapperFluentApi) base.SingleOrDefault(selector, tmpSelectMethod);
+            return (IElementWrapperFluentApi)base.SingleOrDefault(selector, tmpSelectMethod);
         }
 
         public new IBrowserWrapperFluentApi Submit(string selector)
         {
-            return (IBrowserWrapperFluentApi) base.Submit(selector);
+            return (IBrowserWrapperFluentApi)base.Submit(selector);
         }
 
         public new IBrowserWrapperFluentApi DragAndDrop(IElementWrapper elementWrapper, IElementWrapper dropToElement, int offsetX = 0,
             int offsetY = 0)
         {
-            return (IBrowserWrapperFluentApi) base.DragAndDrop(elementWrapper, dropToElement, offsetX, offsetY);
+            return (IBrowserWrapperFluentApi)base.DragAndDrop(elementWrapper, dropToElement, offsetX, offsetY);
         }
 
         public new IBrowserWrapperFluentApi SwitchToTab(int index)
         {
-            return (IBrowserWrapperFluentApi) base.SwitchToTab(index);
+            return (IBrowserWrapperFluentApi)base.SwitchToTab(index);
         }
 
-        public new  IBrowserWrapperFluentApi Wait()
+        public new IBrowserWrapperFluentApi Wait()
         {
-            return(IBrowserWrapperFluentApi) base.Wait();
+            return (IBrowserWrapperFluentApi)base.Wait();
         }
 
         public new IBrowserWrapperFluentApi Wait(int milliseconds)
         {
-            return (IBrowserWrapperFluentApi) base.Wait(milliseconds);
+            return (IBrowserWrapperFluentApi)base.Wait(milliseconds);
         }
 
         public new IBrowserWrapperFluentApi Wait(TimeSpan interval)
         {
-            return (IBrowserWrapperFluentApi) base.Wait(interval);
+            return (IBrowserWrapperFluentApi)base.Wait(interval);
         }
 
         public new IBrowserWrapperFluentApi WaitFor(Action action, int maxTimeout, int checkInterval = 500, string failureMessage = null)
         {
-            return (IBrowserWrapperFluentApi) base.WaitFor(action, maxTimeout, checkInterval, failureMessage);
+            return (IBrowserWrapperFluentApi)base.WaitFor(action, maxTimeout, checkInterval, failureMessage);
         }
 
-        public new  IBrowserWrapperFluentApi WaitFor(Action checkExpression, int maxTimeout, string failureMessage,
+        public new IBrowserWrapperFluentApi WaitFor(Action checkExpression, int maxTimeout, string failureMessage,
             int checkInterval = 500)
         {
-            return (IBrowserWrapperFluentApi) base.WaitFor(checkExpression, maxTimeout, failureMessage, checkInterval);
+            return (IBrowserWrapperFluentApi)base.WaitFor(checkExpression, maxTimeout, failureMessage, checkInterval);
         }
 
-        public new  IBrowserWrapperFluentApi WaitFor(Func<bool> condition, int maxTimeout, string failureMessage,
+        public new IBrowserWrapperFluentApi WaitFor(Func<bool> condition, int maxTimeout, string failureMessage,
             bool ignoreCertainException = true, int checkInterval = 500)
         {
-            return (IBrowserWrapperFluentApi) base.WaitFor(condition, maxTimeout, failureMessage,
+            return (IBrowserWrapperFluentApi)base.WaitFor(condition, maxTimeout, failureMessage,
                 ignoreCertainException);
         }
 
@@ -326,7 +331,7 @@ namespace Riganti.Selenium.Core
 
         public IBrowserWrapperFluentApi CheckIfTitleNotEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true)
         {
-            return (IBrowserWrapperFluentApi) EvaluateBrowserCheck<BrowserException>(new TitleNotEqualsValidator(title,
+            return (IBrowserWrapperFluentApi)EvaluateBrowserCheck<BrowserException>(new TitleNotEqualsValidator(title,
                 comparison == StringComparison.Ordinal, trim));
         }
 

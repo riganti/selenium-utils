@@ -104,7 +104,6 @@ namespace Riganti.Selenium.Core
         /// </summary>
         /// <param name="webElement">The web element.</param>
         /// <param name="browserWrapper">The browser wrapper.</param>
-        /// <param name="selector">The selector.</param>
         public ElementWrapper(IWebElement webElement, IBrowserWrapper browserWrapper)
         {
             element = webElement;
@@ -147,8 +146,7 @@ namespace Riganti.Selenium.Core
 
         protected string GenerateFullSelector()
         {
-            var parent = ParentWrapper as ElementWrapperCollection;
-            if (parent != null)
+            if (ParentWrapper is IElementWrapperCollection parent)
             {
                 var index = parent.IndexOf(this);
                 var parentSelector = string.IsNullOrWhiteSpace(parent.FullSelector) ? "" : parent.FullSelector.Trim() + $":nth-child({index + 1})";

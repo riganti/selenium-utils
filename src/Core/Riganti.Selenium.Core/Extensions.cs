@@ -10,24 +10,14 @@ namespace Riganti.Selenium.Core
     {
         public static IElementWrapperCollection ToElementsList(this IEnumerable<IWebElement> elements, IBrowserWrapper browserWrapper, string selector, IServiceFactory serviceFactory)
         {
-            Func<IWebElement, IElementWrapper> initElementWrapper = new Func<IWebElement, IElementWrapper>((s) =>
-            {
-                var type = serviceFactory.Resolve<IElementWrapper>();
-                return (IElementWrapper)Activator.CreateInstance(type, s, browserWrapper);
-            });
-
-            return new ElementWrapperCollection(elements.Select(initElementWrapper), selector, browserWrapper);
+            Func<IWebElement, IElementWrapper> initElementWrapper = (s) => serviceFactory.Resolve<IElementWrapper>(s, browserWrapper);
+            return serviceFactory.Resolve<IElementWrapperCollection>(elements.Select(initElementWrapper), selector, browserWrapper);
         }
 
         public static IElementWrapperCollection ToElementsList(this IEnumerable<IWebElement> elements, IBrowserWrapper browserWrapper, string selector, IElementWrapper elementWrapper, IServiceFactory serviceFactory)
         {
-            Func<IWebElement,IElementWrapper> initElementWrapper = new Func<IWebElement, IElementWrapper>((s) =>
-            {
-                var type = serviceFactory.Resolve<IElementWrapper>();
-                return (IElementWrapper) Activator.CreateInstance(type, s, browserWrapper);
-            });
-
-            return new ElementWrapperCollection(elements.Select(initElementWrapper), selector, elementWrapper, browserWrapper);
+            IElementWrapper InitElementWrapper(IWebElement s) => serviceFactory.Resolve<IElementWrapper>(s, browserWrapper);
+            return serviceFactory.Resolve<IElementWrapperCollection>(elements.Select(InitElementWrapper), selector, elementWrapper, browserWrapper);
         }
     }
 }

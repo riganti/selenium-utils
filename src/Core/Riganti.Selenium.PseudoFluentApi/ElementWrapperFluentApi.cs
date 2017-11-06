@@ -336,9 +336,9 @@ namespace Riganti.Selenium.FluentApi
         /// <param name="selector"></param>
         /// <param name="tmpSelectMethod"> This select method is used only for selection of elements in this query. Not in the future.</param>
         /// <returns></returns>
-        public new virtual IElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null)
+        public new virtual IElementWrapperCollectionFluetApi FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var collection = WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList(browser, selector, this, browser.ServiceFactory);
+            var collection = (IElementWrapperCollectionFluetApi)WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList(browser, selector, this, browser.ServiceFactory);
             collection.ParentWrapper = this;
             return collection;
         }

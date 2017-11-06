@@ -14,6 +14,7 @@ namespace Riganti.Selenium.Core
         {
             executor.TestSuiteRunner.ServiceFactory.RegisterTransient<IBrowserWrapper, BrowserWrapperFluentApi>();
             executor.TestSuiteRunner.ServiceFactory.RegisterTransient<IElementWrapper, ElementWrapperFluentApi>();
+            executor.TestSuiteRunner.ServiceFactory.RegisterTransient<IElementWrapperCollection, ElementWrapperCollectionFluetApi>();
             executor.TestSuiteRunner.RunInAllBrowsers(executor, Convert(testBody), callerMemberName, callerFilePath, callerLineNumber);
         }
 

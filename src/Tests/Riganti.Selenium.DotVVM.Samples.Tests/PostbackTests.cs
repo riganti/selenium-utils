@@ -7,7 +7,7 @@ namespace Selenium.DotVVM.Samples.Tests
     [TestClass]
     public class PostbackTests : AppSeleniumTest
     {
-        [Timeout(15000)]
+        [Timeout(60000)]
         [TestMethod]
         public void WaitForPostbackTest()
         {

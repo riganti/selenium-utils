@@ -8,9 +8,12 @@ namespace Riganti.Selenium.Core
     {
         public Guid ScopeId { get; } = Guid.NewGuid();
 
-        public IBrowserWrapper Parent { get; set; }
-        public string FrameSelector { get; set; }
-        public string CurrentWindowHandle { get; set; }
-        public Action<IWebDriver> ChangeScope { get; set; } 
+        public IBrowserWrapper Parent { get; internal set; }
+        public string FrameSelector { get; internal set; }
+        public string CurrentWindowHandle { get; internal set; }
+        public Action<IWebDriver> ChangeScope { get; internal set; }
+
     }
+
+
 }

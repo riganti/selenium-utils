@@ -5,12 +5,12 @@ using MSAssert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
 {
     [TestClass]
-    public class IsCheckedTests : SeleniumTest
+    public class IsCheckedTests : AppSeleniumTest
     {
         [TestMethod]
         public void IsChecked_CheckIfIsNotChecked()
         {
-            this.RunInAllBrowsers(browser =>
+            RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#checkbox2").CheckIfIsNotChecked();
@@ -21,7 +21,7 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
         [TestMethod]
         public void IsChecked_CheckIfIsChecked()
         {
-            this.RunInAllBrowsers(browser =>
+            RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#checkbox1").CheckIfIsChecked();
@@ -32,7 +32,7 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
         [TestMethod]
         public void IsChecked_CheckIfIsChecked_TypeFailure()
         {
-            this.RunInAllBrowsers(browser =>
+            RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/Checkboxes");
                 MSAssert.ThrowsException<UnexpectedElementStateException>((() =>
@@ -49,7 +49,7 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
         [TestMethod]
         public void IsChecked_CheckIfIsNotChecked_TypeFailure()
         {
-            this.RunInAllBrowsers(browser =>
+            RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/Checkboxes");
                 MSAssert.ThrowsException<UnexpectedElementStateException>((() =>
@@ -67,7 +67,7 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
         [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
         public void IsChecked_CheckIfIsChecked_ExpectedFailure()
         {
-            this.RunInAllBrowsers(browser =>
+            RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#RadioNotChecked").CheckIfIsChecked();
@@ -78,7 +78,7 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
         [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
         public void IsChecked_CheckIfIsNotChecked_ExpectedFailure()
         {
-            this.RunInAllBrowsers(browser =>
+            RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/Checkboxes");
                 browser.Single("#RadioChecked").CheckIfIsNotChecked();
@@ -90,7 +90,7 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
         [TestMethod]
         public void IsChecked_CheckStateSwitching()
         {
-            this.RunInAllBrowsers(browser =>
+            RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/Checkboxes");
                 browser.First("#checkbox1").Wait(1200)
