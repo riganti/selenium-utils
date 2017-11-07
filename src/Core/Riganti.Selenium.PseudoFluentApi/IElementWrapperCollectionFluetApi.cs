@@ -13,6 +13,7 @@ namespace Riganti.Selenium.Core
         bool Contains(IElementWrapperFluentApi item);
         new IElementWrapperFluentApi ElementAt(int index);
         new IElementWrapperCollectionFluetApi FindElements(string selector, Func<string, By> tmpSelectMethod = null);
+        IElementWrapperFluentApi First();
         new IElementWrapperFluentApi First(string selector, Func<string, By> tmpSelectMethod = null);
         new IElementWrapperFluentApi FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null);
         void ForEach(Action<IElementWrapperFluentApi> action);

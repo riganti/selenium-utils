@@ -41,6 +41,10 @@ namespace Riganti.Selenium.FluentApi
         public new IElementWrapperFluentApi ElementAt(int index) => (IElementWrapperFluentApi)base.ElementAt(index);
 
         public new IElementWrapperCollectionFluetApi FindElements(string selector, Func<string, By> tmpSelectMethod = null) => (IElementWrapperCollectionFluetApi)base.FindElements(selector, tmpSelectMethod);
+        public IElementWrapperFluentApi First()
+        {
+            return (IElementWrapperFluentApi) collection.First();
+        }
 
         public new IElementWrapperFluentApi First(string selector, Func<string, By> tmpSelectMethod = null) =>
             (IElementWrapperFluentApi)base.First(selector, tmpSelectMethod);

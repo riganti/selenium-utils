@@ -1,9 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
 {
     [TestClass]
-    public class ShadowingTests: AppSeleniumTest
+    public class ShadowingTests : AppSeleniumTest
     {
         [TestMethod]
         public void ElementWrapperShadow_SingleFuncTest()
@@ -34,6 +35,33 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
 
             });
         }
+        [TestMethod]
+        public void ElementWrapperCollectionShadow_FirstFuncTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                //checking API
+
+                browser.NavigateToUrl("/test/FindElements");
+                var a = browser.FindElements("p");
+
+                var b = a.First();
+                b.CheckIfIsDisplayed();
+            });
+        }
+
+        [TestMethod]
+        public void ElementWrapperCollectionShadow_ThrowAndFirstFuncTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                //checking API
+                browser.NavigateToUrl("/test/FindElements");
+                browser.FindElements("p").ThrowIfDifferentCountThan(3)
+                    .First().CheckIfIsDisplayed();
+            });
+        }
+
 
     }
 }
