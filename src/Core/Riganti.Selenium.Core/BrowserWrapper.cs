@@ -749,7 +749,7 @@ namespace Riganti.Selenium.Core
         public IWebDriver _GetInternalWebDriver()
         {
             TestInstance.TestClass.CurrentScope = Guid.Empty;
-            return Driver;
+            return driver;
         }
 
         protected IBrowserWrapper EvaluateBrowserCheck<TException>(IValidator<IBrowserWrapper> validator)
