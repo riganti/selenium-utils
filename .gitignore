@@ -196,3 +196,4 @@ FakesAssemblies/
 *.opt
 /Riganti.Utils/Riganti.Utils.Testing/.nuget
 /Riganti.Utils/Riganti.Utils.Testing/.nuget2
+/src/tools/Artifacts
