@@ -10,5 +10,7 @@ namespace Riganti.Selenium.Core.Configuration
         public bool TryToKillWhenNotResponding { get; set; } = true;
 
         public bool RunInParallel { get; set; } = true;
+
+        public string ScreenshotPath { get; set; } = null;
     }
 }

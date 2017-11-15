@@ -12,7 +12,8 @@
   ],
   "testRunOptions": {
     "runInParallel": false,
-    "testAttemptsCount": 1
+    "testAttemptsCount": 1,
+    "ScreenshotPath": "C:\\g\\src\\Screenshots"
   },
   "logging": {
     "loggers": {

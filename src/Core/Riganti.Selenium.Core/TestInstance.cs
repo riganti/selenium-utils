@@ -8,6 +8,7 @@ using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Core.Drivers;
 using Riganti.Selenium.Core.Factories;
+using OpenQA.Selenium;
 
 namespace Riganti.Selenium.Core
 {
@@ -77,6 +78,19 @@ namespace Riganti.Selenium.Core
             try
             {
                 action();
+                return true;
+            }
+            catch(UnhandledAlertException ex) //when alert is still open and test is done
+            {
+                try
+                {
+                    CurrentWebBrowser.Driver.SwitchTo().Alert().Dismiss();
+                }
+                catch
+                {
+                    return false;
+                }
+                
                 return true;
             }
             catch
@@ -151,7 +165,13 @@ namespace Riganti.Selenium.Core
             var testContext = TestSuiteRunner.TestContextProvider.GetGlobalScopeTestContext();
             try
             {
-                var filename = Path.Combine(testContext.DeploymentDirectory,
+                var deploymentDirectory = testContext.DeploymentDirectory;
+                if (!string.IsNullOrWhiteSpace(TestSuiteRunner.Configuration.TestRunOptions.ScreenshotPath))
+                {
+                    deploymentDirectory = CreateDirectory(Path.Combine(TestSuiteRunner.Configuration.TestRunOptions.ScreenshotPath, DateTime.UtcNow.ToString("yyyyMMdd")));
+                }
+
+                var filename = Path.Combine(deploymentDirectory,
                     $"{testContext.FullyQualifiedTestClassName}_{testContext.TestName}_{testAttemptNumber}.png");
                 TestSuiteRunner.LogVerbose(
                     $"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Taking screenshot {filename}");
@@ -165,6 +185,15 @@ namespace Riganti.Selenium.Core
                     $"(#{Thread.CurrentThread.ManagedThreadId}) {TestName}: Failed to take screenshot.", ex));
                 return null;
             }
+        }
+
+        private string CreateDirectory(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            return path;
         }
     }
 }

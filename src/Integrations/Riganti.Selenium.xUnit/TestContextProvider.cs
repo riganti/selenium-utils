@@ -9,6 +9,8 @@ namespace Riganti.Selenium.Core
     public class TestContextProvider : ITestContextProvider
     {
         private ITestOutputHelper outputHelper;
+        private ITestContext testContext;
+
         public void SetContext(ITestOutputHelper helper)
         {
             outputHelper = helper ?? throw new ArgumentNullException(nameof(helper));
@@ -26,7 +28,12 @@ namespace Riganti.Selenium.Core
 
         public ITestContext GetGlobalScopeTestContext()
         {
-            return new TestContextWrapper(outputHelper);
+            if (testContext == null)
+            {
+                testContext = new TestContextWrapper(outputHelper); //TODO
+            }
+
+            return testContext;
         }
     }
 

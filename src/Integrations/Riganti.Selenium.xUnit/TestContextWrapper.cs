@@ -22,7 +22,7 @@ namespace Riganti.Selenium.Core
                     Directory.GetCurrentDirectory()
                         .Substring(0,
                             Directory.GetCurrentDirectory().IndexOf("\\bin\\", StringComparison.OrdinalIgnoreCase)),
-                    "TestResults");
+                    "TestResults", DateTime.UtcNow.ToString("yyyyMMdd"));
                 EnsureDirectoryExists(path);
                 return path;
             }
@@ -37,6 +37,7 @@ namespace Riganti.Selenium.Core
         }
 
         public string FullyQualifiedTestClassName { get; set; }
+
         public string TestName { get; set; }
 
         public UnitTestResult CurrentTestResult
@@ -55,7 +56,7 @@ namespace Riganti.Selenium.Core
         public virtual void AddResultFile(string fileName)
         {
             // TODO: add files
-           
+
             //var fullpath = Path.GetFullPath(fileName);
             //var fileInfo = new FileInfo(fileName);
             //var fullpath2 = fileInfo.FullName;
