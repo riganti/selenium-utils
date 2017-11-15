@@ -45,8 +45,8 @@ namespace Riganti.Selenium.DotVVM
             element.BrowserWrapper.GetJavaScriptExecutor()
            .ExecuteScript("dotvvm.fileUpload.createUploadId(arguments[0])", element.First("a", SelectBy.CssSelector).WebElement);
 
-            var iframe = element.First("iframe", SelectBy.CssSelector);
-            element.BrowserWrapper.Driver.SwitchTo().Frame(iframe.WebElement);
+            var iframe = element.First("iframe", SelectBy.CssSelector).WebElement;
+            element.BrowserWrapper.Driver.SwitchTo().Frame(iframe);
 
             var fileInput = element.BrowserWrapper._GetInternalWebDriver()
                 .FindElement(SelectBy.CssSelector("input[type=file]"));
@@ -62,8 +62,8 @@ namespace Riganti.Selenium.DotVVM
             element.BrowserWrapper.GetJavaScriptExecutor()
                 .ExecuteScript("dotvvm.fileUpload.createUploadId(arguments[0])", element.WebElement);
 
-            var iframe = element.ParentElement.ParentElement.First("iframe", SelectBy.CssSelector);
-            element.BrowserWrapper.Driver.SwitchTo().Frame(iframe.WebElement);
+            var iframe = element.ParentElement.ParentElement.First("iframe", SelectBy.CssSelector).WebElement;
+            element.BrowserWrapper.Driver.SwitchTo().Frame(iframe);
 
             var fileInput = element.BrowserWrapper._GetInternalWebDriver()
                 .FindElement(SelectBy.CssSelector("input[type=file]"));

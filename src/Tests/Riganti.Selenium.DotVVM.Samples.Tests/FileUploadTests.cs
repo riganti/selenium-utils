@@ -15,7 +15,7 @@ namespace Selenium.DotVVM.Samples.Tests
     {
 
         [TestMethod]
-        public void FileUpload_ElementWrapper()
+        public void FileUpload_ElementWrapperByDiv()
         {
             RunInAllBrowsers(browser =>
             {
@@ -26,6 +26,26 @@ namespace Selenium.DotVVM.Samples.Tests
 
                 DotVVMAssert.UploadFile(browser.First("#FUpload"), tempPath);
                 
+                browser.WaitFor(() =>
+                {
+                    browser.First("#FUpload .dotvvm-upload-files").CheckIfInnerTextEquals("1 files", false);
+
+                }, 4000, "File upload failed.");
+            });
+        }
+
+        [TestMethod]
+        public void FileUpload_ElementWrapperByA()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/FileUpload");
+
+                var tempPath = Path.GetTempFileName();
+                File.WriteAllBytes(tempPath, Enumerable.Range(0, 255).Select(i => (byte)i).ToArray());
+
+                DotVVMAssert.UploadFile(browser.First(".dotvvm-upload-button a"), tempPath);
+
                 browser.WaitFor(() =>
                 {
                     browser.First("#FUpload .dotvvm-upload-files").CheckIfInnerTextEquals("1 files", false);

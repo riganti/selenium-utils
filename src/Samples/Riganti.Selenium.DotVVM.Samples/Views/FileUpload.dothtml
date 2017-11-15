@@ -1,4 +1,4 @@
-﻿@viewModel Selenium.DotVVM.Samples.ViewModels.FileUploadViewModel, Selenium.DotVVM.Samples
+﻿@viewModel Riganti.Selenium.DotVVM.Samples.ViewModels.FileUploadViewModel, Riganti.Selenium.DotVVM.Samples
 
 <!DOCTYPE html>
 
