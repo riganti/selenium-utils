@@ -70,7 +70,18 @@ namespace Riganti.Selenium.Core
             // when browser is frozen then taking screenshot is non-sense.
             if (!result) return;
 
-            ExecuteSafe(() => { exception.Screenshot = TakeScreenshot(wrapper); });
+            ExecuteSafe(() => 
+            {
+                try
+                {
+                    exception.Screenshot = TakeScreenshot(wrapper);
+                }
+                catch
+                {
+                    //TODO try take a screenshot by other way
+
+                }
+            });
         }
 
         private bool ExecuteSafe(Action action)
@@ -80,17 +91,8 @@ namespace Riganti.Selenium.Core
                 action();
                 return true;
             }
-            catch(UnhandledAlertException ex) //when alert is still open and test is done
+            catch(UnhandledAlertException ex) 
             {
-                try
-                {
-                    CurrentWebBrowser.Driver.SwitchTo().Alert().Dismiss();
-                }
-                catch
-                {
-                    return false;
-                }
-                
                 return true;
             }
             catch
