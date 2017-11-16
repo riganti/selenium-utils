@@ -52,17 +52,28 @@ namespace Riganti.Selenium.Core
                 return testSuiteRunner;
             }
         }
-
+        /// <summary>
+        /// Creates configuration builder from seleniumconfig.json
+        /// </summary>
+        /// <returns></returns>
         protected virtual ConfigurationBuilder CreateConfigurationBuilder()
         {
             var builder = new ConfigurationBuilder();
 
-            var url = new Uri(Assembly.GetExecutingAssembly().CodeBase);
-            var defaultConfigurationPath = Path.Combine(Path.GetDirectoryName(Uri.UnescapeDataString(url.AbsolutePath)), "seleniumconfig.json");
-            Trace.WriteLine($"Default selenium configuration location: {defaultConfigurationPath}");
+            string defaultConfigurationPath = ResolveConfigurationFilePath();
             builder.AddJsonFile(defaultConfigurationPath, true);
 
             return builder;
+        }
+        /// <summary>
+        /// Resolves path to seleniumconfig.json
+        /// </summary>
+        public virtual string ResolveConfigurationFilePath()
+        {
+            var url = new Uri(Assembly.GetExecutingAssembly().CodeBase);
+            var defaultConfigurationPath = Path.Combine(Path.GetDirectoryName(Uri.UnescapeDataString(url.AbsolutePath)), "seleniumconfig.json");
+            Trace.WriteLine($"Default selenium configuration location: {defaultConfigurationPath}");
+            return defaultConfigurationPath;
         }
 
         protected abstract TestSuiteRunner InitializeTestSuiteRunner(SeleniumTestsConfiguration configuration);

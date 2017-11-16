@@ -12,6 +12,6 @@ namespace Selenium.DotVVM.Samples.Tests
         {
             FluentApiSeleniumTestExecutorExtensions.RunInAllBrowsers(this, testBody, callerMemberName, callerFilePath, callerLineNumber);
         }
-
+     
     }
 }
