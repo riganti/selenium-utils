@@ -7,7 +7,8 @@
 </h2>
 
 <div>
-    <input type="text" value="test" id="first-textbox" /><br />
+    <!-- textarea - preserve spaces !!! -->
+    <input type="text" value="test " id="first-textbox" /><br />
     <br />
     <input type="text" value="test2" id="second-textbox" />
     <br />
@@ -17,9 +18,8 @@
     <br />
     <input type="submit" id="submit-input" onclick="(function submitInput(elm) { var a = elm; a.innerText = a.textContent = 'submit click'; })(document.querySelectorAll('#indicator')[0]); return false;" />
     <br/>
-    <textarea>
-        some text
-    </textarea><br />
+    <!-- textarea - preserve spaces !!! -->
+    <textarea>some text </textarea><br />
 
 
     <input type="text" /><br />

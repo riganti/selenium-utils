@@ -239,8 +239,17 @@ namespace Riganti.Selenium.Core
             var result = executor.ExecuteScript(@"
 function setFocus(elm) {
  if(elm.focus){
-    elm.focus();
-return true; 
+ {
+	 elm.focus();
+ }
+	try{
+        if(elm.setSelectionRange && elm.value && elm.value.length)
+        {
+    	    elm.setSelectionRange(elm.value.length,elm.value.length);
+    	}
+	}catch(e){
+	}
+	return true; 
 }
 return false;
 }; return setFocus(arguments[0]);

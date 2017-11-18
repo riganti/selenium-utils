@@ -18,7 +18,8 @@ namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
 
         public CheckResult Validate(IElementWrapper wrapper)
         {
-            var innerText = trim ? wrapper.GetInnerText()?.Trim() : wrapper.GetInnerText();
+            var elmText = wrapper.GetText() ?? wrapper.GetInnerText() ?? "";
+            var innerText = trim ? elmText.Trim() : elmText;
             var isSucceeded = string.Equals(innerText, text,
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
             return isSucceeded ? CheckResult.Succeeded : new CheckResult($"Element contains wrong content. Expected content: '{text}', Provided content: '{innerText}' \r\n Element selector: {wrapper.FullSelector} \r\n");
