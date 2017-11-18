@@ -1,0 +1,73 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>
+    Focus tests
+</h2>
+
+<div>
+    <input type="text" value="test" id="first-textbox" /><br />
+    <br />
+    <input type="text" value="test2" id="second-textbox" />
+    <br />
+    <a href="https://www.google.com">Link to google</a>
+    <br />
+    <input type="radio" id="radio-input" />
+    <br />
+    <input type="submit" id="submit-input" onclick="(function submitInput(elm) { var a = elm; a.innerText = a.textContent = 'submit click'; })(document.querySelectorAll('#indicator')[0]); return false;" />
+    <br/>
+    <textarea>
+        some text
+    </textarea><br />
+
+
+    <input type="text" /><br />
+    <input type="week" /><br />
+    <input type="password" /><br />
+    <input type="email" /><br />
+    <input type="color" /><br />
+    <input type="date" /><br />
+    <input type="datetime-local" /><br />
+    <input type="email" /><br />
+    <input type="month" /><br />
+    <input type="number" /><br />
+    <input type="range" /><br />
+    <input type="search" /><br />
+    <input type="tel" /><br />
+    <input type="time" /><br />
+    <input type="url" /><br />
+    <input type="week" /><br />
+
+
+    <p id="indicator"></p>
+
+    <script>
+      
+        setInterval(function () {
+            var focus = document.querySelectorAll('#focus')[0];
+            var a = document.activeElement;
+            focus.innerText = focus.textContent = a.tagName + "[#" + a.id + "]" + "[type=" + a.type + "]" ;
+        }, 10);
+    </script>
+    <p id="focus"></p>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+</div>

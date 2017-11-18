@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
+using OpenQA.Selenium.Interactions;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Core.Api;
@@ -15,37 +16,32 @@ using Riganti.Selenium.Core.Comparators;
 
 namespace Riganti.Selenium.Core
 {
+    /// <inheritdoc />
     public class ElementWrapper : IElementWrapper
     {
         protected readonly IWebElement element;
         protected readonly IBrowserWrapper browser;
 
-        /// <summary>
-        /// Gets selector used to get this element.
-        /// </summary>
+        /// <inheritdoc cref="IElementWrapper.Selector"/>
         public string Selector { get; set; }
 
-        /// <summary>
-        /// Generated css selector to this element.
-        /// </summary>
+
+        /// <inheritdoc />
         public string FullSelector => GenerateFullSelector();
 
-        /// <summary>
-        /// Activates selenium SwitchTo function to change context to make element accessable.
-        /// </summary>
+
+        /// <inheritdoc />
         public void ActivateScope()
         {
             ParentWrapper.ActivateScope();
         }
 
-        /// <summary>
-        /// Default timeout for Wait function.
-        /// </summary>
+
+        /// <inheritdoc />
         public int ActionWaitTime { get; set; }
 
-        /// <summary>
-        /// Unwrapped IWebElement binding implementation (SeleniumHQ).
-        /// </summary>
+
+        /// <inheritdoc />
         public IWebElement WebElement
         {
             get
@@ -64,10 +60,11 @@ namespace Riganti.Selenium.Core
 
         protected Func<string, By> selectMethod = null;
 
+        /// <inheritdoc />
         public Func<string, By> SelectMethod
         {
-            get { return selectMethod ?? browser.SelectMethod; }
-            set { selectMethod = value; }
+            get => selectMethod ?? browser.SelectMethod;
+            set => selectMethod = value;
         }
 
         protected readonly OperationResultValidator operationResultValidator = new OperationResultValidator();
@@ -134,16 +131,17 @@ namespace Riganti.Selenium.Core
             selectMethod = null;
         }
 
-        /// <summary>
-        /// Sends enter key to browser.
-        /// </summary>
-        /// <returns></returns>
+
+        /// <inheritdoc />
         public IElementWrapper SendEnterKey()
         {
             SendKeys(Keys.Enter);
             return this;
         }
-
+        /// <summary>
+        /// Generates full selector from all parents.
+        /// </summary>
+        /// <returns></returns>
         protected string GenerateFullSelector()
         {
             if (ParentWrapper is IElementWrapperCollection parent)
@@ -155,7 +153,7 @@ namespace Riganti.Selenium.Core
             return $"{Selector ?? ""}".Trim();
         }
 
-    
+
 
         public virtual string GetJsElementPropertyValue(string elementPropertyName)
         {
@@ -181,7 +179,7 @@ namespace Riganti.Selenium.Core
             return trim ? obj?.ToString().Trim() : obj?.ToString();
         }
 
-    
+
         public bool IsClickable()
         {
             var obj = this.browser.GetJavaScriptExecutor().ExecuteScript(@"
@@ -205,7 +203,7 @@ namespace Riganti.Selenium.Core
             return a;
         }
 
-      /// <summary>
+        /// <summary>
         /// Inserts javascript to the site and returns value of innerHTML property of this element.
         /// </summary>
         /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Comparison of raw html strings is NOT recommended.</remarks>
@@ -214,7 +212,7 @@ namespace Riganti.Selenium.Core
             return GetJsElementPropertyValue("innerHTML");
         }
 
-      
+
         public string GetAttribute(string name)
         {
             return WebElement.GetAttribute(name);
@@ -228,21 +226,42 @@ namespace Riganti.Selenium.Core
             return result;
         }
 
+        /// <inheritdoc />
+        public bool HasFocus()
+        {
+            return WebElement.Equals(BrowserWrapper.Driver.SwitchTo().ActiveElement());
+        }
+
+        /// <inheritdoc />
+        public void SetFocus()
+        {
+            var executor = BrowserWrapper.GetJavaScriptExecutor();
+            var result = executor.ExecuteScript(@"
+function setFocus(elm) {
+ if(elm.focus){
+    elm.focus();
+return true; 
+}
+return false;
+}; return setFocus(arguments[0]);
+                ", WebElement);
 
 
+        }
+
+        /// <summary>
+        /// Returns trimmed text when trim parametr is true.
+        /// </summary>
         protected string GetTrimmedText(bool trim)
         {
             if (trim)
             {
                 return GetText()?.Trim();
             }
-            else
-            {
-                return GetText();
-            }
+            return GetText();
         }
 
-     
+
         /// <summary>
         /// Sets current option of element &lt;select&gt;.
         /// </summary>
@@ -401,12 +420,13 @@ namespace Riganti.Selenium.Core
             }
             return WebElement.Text;
         }
-
+        /// <inheritdoc/>
         public Size GetSize()
         {
             return WebElement.Size;
         }
 
+        /// <inheritdoc />
         public virtual IElementWrapper Click()
         {
             WebElement.Click();
@@ -414,11 +434,7 @@ namespace Riganti.Selenium.Core
             return this;
         }
 
-     
-
-
-
-
+        /// <inheritdoc />
         public string GetValue()
         {
             var tag = GetTagName();
@@ -449,8 +465,8 @@ namespace Riganti.Selenium.Core
             return tmp;
         }
 
-    
-       
+
+
         /// <summary>
         /// Indicates whether element is visible.
         /// An element that has zero width or height also counts as non visible.
