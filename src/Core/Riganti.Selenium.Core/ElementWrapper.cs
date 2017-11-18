@@ -609,7 +609,7 @@ return false;
         }
 
 
-        public IElementWrapper ScrollTo(IElementWrapper element)
+        public IElementWrapper ScrollTo()
         {
             var javascript = @"
             function findPosition(element) {
@@ -624,8 +624,8 @@ return false;
 
             window.scroll(0,findPosition(arguments[0]));
         ";
-            var executor = element.BrowserWrapper.GetJavaScriptExecutor();
-            executor.ExecuteScript(javascript, element.WebElement);
+            var executor = browser.GetJavaScriptExecutor();
+            executor.ExecuteScript(javascript, element);
             return this;
         }
 

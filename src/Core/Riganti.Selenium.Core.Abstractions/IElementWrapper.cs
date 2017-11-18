@@ -90,7 +90,7 @@ namespace Riganti.Selenium.Core.Abstractions
         IElementWrapper Last(string selector, Func<string, By> tmpSelectMethod = null);
         IElementWrapper LastOrDefault(string selector, Func<string, By> tmpSelectMethod = null);
         IElementWrapper PerformActionOnSelectElement(Action<SelectElement> process);
-        IElementWrapper ScrollTo(IElementWrapper element);
+        IElementWrapper ScrollTo();
         IElementWrapper Select(Action<SelectElement> process);
         /// <summary>
         /// Selects option of SELECT element.

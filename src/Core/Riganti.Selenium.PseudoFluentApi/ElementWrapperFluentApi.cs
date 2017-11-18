@@ -547,9 +547,10 @@ namespace Riganti.Selenium.FluentApi
                 new HyperLinkEqualsValidator(url, kind, components));
         }
 
-        public IElementWrapperFluentApi ScrollTo(IElementWrapperFluentApi element)
+        /// <inheritdoc cref="IElementWrapper.ScrollTo()" />
+        public new IElementWrapperFluentApi ScrollTo()
         {
-            return (IElementWrapperFluentApi)base.ScrollTo(element);
+            return (IElementWrapperFluentApi)base.ScrollTo();
         }
 
         public IElementWrapperFluentApi CheckIfIsElementInView(IElementWrapperFluentApi element)

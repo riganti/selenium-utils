@@ -231,7 +231,7 @@ namespace Riganti.Selenium.Core
             Attribute(wrapper, "class", value, caseSensitive, trimValue);
         }
 
-        public static void ClassAttribute(IElementWrapper wrapper, string attributeName, Expression<Func<string, bool>> expression, string failureMessage = "")
+        public static void ClassAttribute(IElementWrapper wrapper, Expression<Func<string, bool>> expression, string failureMessage = "")
         {
             Attribute(wrapper, "class", expression, failureMessage);
         }
