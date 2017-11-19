@@ -218,19 +218,19 @@ namespace Riganti.Selenium.FluentApi
             return CheckAttribute("class", expression, failureMessage);
         }
 
-        public virtual IElementWrapperFluentApi CheckClassAttribute(string value, bool caseInsensitive = false, bool trimValue = true)
+        public virtual IElementWrapperFluentApi CheckClassAttribute(string value, bool caseInsensitive = true, bool trimValue = true)
         {
             return CheckAttribute("class", value, caseInsensitive, trimValue);
         }
 
-        public virtual IElementWrapperFluentApi CheckIfHasClass(string value, bool caseInsensitive = false)
+        public virtual IElementWrapperFluentApi CheckIfHasClass(string value, bool caseInsensitive = true)
         {
             return CheckAttribute("class", p => p.Split(' ').Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
         }
 
-        public virtual IElementWrapperFluentApi CheckIfHasNotClass(string value, bool caseInsensitive = false)
+        public virtual IElementWrapperFluentApi CheckIfHasNotClass(string value, bool caseInsensitive = true)
         {
-            return CheckAttribute("class", p => !p.Split(' ').Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value should not contain: '{value}'.");
+            return CheckAttribute("class", p => !p.Split(' ').Select(s => s.Trim()).Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value should not contain: '{value}'.");
         }
 
 

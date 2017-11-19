@@ -149,7 +149,7 @@ namespace Riganti.Selenium.Core.Api
             operationRunner.Evaluate<UnexpectedElementStateException>(IsElementNotInView);
         }
 
-     
+
         public static void TagName(this IOperationRunner<IElementWrapper> operationRunner, string expectedTagName, string failureMessage = null)
         {
             var checkTagName = new TagNameValidator(expectedTagName, failureMessage);
@@ -246,8 +246,8 @@ namespace Riganti.Selenium.Core.Api
 
         public static void HasNotClass(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false)
         {
-            operationRunner.Attribute("class", p => !p.Split(' ').Any(c => string.Equals(c, value,
-                caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
+            operationRunner.Attribute("class", p => !p.Split(' ').Select(s => s.Trim()).Any(c => string.Equals(c, value,
+                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
         }
 
         public static void HasAttribute(this IOperationRunner<IElementWrapper> operationRunner, string name)
@@ -339,6 +339,6 @@ namespace Riganti.Selenium.Core.Api
             operationRunner.Evaluate<BrowserException>(Title);
         }
 
-        
+
     }
 }

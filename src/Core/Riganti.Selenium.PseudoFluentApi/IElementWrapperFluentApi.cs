@@ -13,14 +13,14 @@ namespace Riganti.Selenium.Core
         IElementWrapperFluentApi CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null);
         IElementWrapperFluentApi CheckAttribute(string attributeName, string[] allowedValues, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null);
         IElementWrapperFluentApi CheckClassAttribute(Func<string, bool> expression, string failureMessage = "");
-        IElementWrapperFluentApi CheckClassAttribute(string value, bool caseInsensitive = false, bool trimValue = true);
+        IElementWrapperFluentApi CheckClassAttribute(string value, bool caseInsensitive = true, bool trimValue = true);
         IElementWrapperFluentApi CheckIfContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null);
         IElementWrapperFluentApi CheckIfContainsText();
         IElementWrapperFluentApi CheckIfDoesNotContainsText();
         IElementWrapperFluentApi CheckIfHasAttribute(string name);
-        IElementWrapperFluentApi CheckIfHasClass(string value, bool caseInsensitive = false);
+        IElementWrapperFluentApi CheckIfHasClass(string value, bool caseInsensitive = true);
         IElementWrapperFluentApi CheckIfHasNotAttribute(string name);
-        IElementWrapperFluentApi CheckIfHasNotClass(string value, bool caseInsensitive = false);
+        IElementWrapperFluentApi CheckIfHasNotClass(string value, bool caseInsensitive = true);
         IElementWrapperFluentApi CheckIfHyperLinkEquals(string url, UrlKind kind, params UriComponents[] components);
         IElementWrapperFluentApi CheckIfInnerText(Func<string, bool> expression, string failureMessage = null);
         IElementWrapperFluentApi CheckIfInnerTextEquals(string text, bool caseSensitive = true, bool trim = true);

@@ -58,7 +58,9 @@ namespace Riganti.Selenium.Core.Samples.New.Controllers
         }
         public ActionResult Value() { return View(null); }
         public ActionResult DragAndDrop() { return View(null); }
+        public ActionResult CssClasses() { return View(null); }
 
+        
     }
 
     public class CookieModel

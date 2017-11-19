@@ -226,7 +226,7 @@ namespace Riganti.Selenium.Core
             EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, attribute);
         }
 
-        public static void ClassAttribute(IElementWrapper wrapper, string value, bool caseSensitive = false, bool trimValue = true)
+        public static void ClassAttribute(IElementWrapper wrapper, string value, bool caseSensitive = true, bool trimValue = true)
         {
             Attribute(wrapper, "class", value, caseSensitive, trimValue);
         }
@@ -236,13 +236,13 @@ namespace Riganti.Selenium.Core
             Attribute(wrapper, "class", expression, failureMessage);
         }
 
-        public static void HasClass(IElementWrapper wrapper, string value, bool caseSensitive = false)
+        public static void HasClass(IElementWrapper wrapper, string value, bool caseSensitive = true)
         {
             Attribute(wrapper, "class", p => p.Split(' ').Any(c => string.Equals(c, value,
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
         }
 
-        public static void HasNotClass(IElementWrapper wrapper, string value, bool caseSensitive = false)
+        public static void HasNotClass(IElementWrapper wrapper, string value, bool caseSensitive = true)
         {
             Attribute(wrapper, "class", p => !p.Split(' ').Any(c => string.Equals(c, value,
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
