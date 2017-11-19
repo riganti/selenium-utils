@@ -109,12 +109,12 @@ namespace Riganti.Selenium.FluentApi
                 new NotContainsElementValidator(cssSelector, tmpSelectMethod));
         }
 
-      
+
 
         /// <summary>
         /// Inserts javascript to the site and returns value of innerText/textContent property of this element.
         /// </summary>
-        public  new  virtual IElementWrapperFluentApi SetJsElementProperty(string propertyName, object propertyValue)
+        public new virtual IElementWrapperFluentApi SetJsElementProperty(string propertyName, object propertyValue)
         {
             browser.GetJavaScriptExecutor()?.ExecuteScript(" var a = (arguments || [{}, null, null]);    var element = a[0];    var propertyName = a[1];    var propertyValue = a[2]; element[propertyName] = propertyValue;", WebElement, propertyName, propertyValue);
             return this;
@@ -131,7 +131,7 @@ namespace Riganti.Selenium.FluentApi
             return EvaluateElementCheck<UnexpectedElementStateException>(new IsNotClickableValidator());
         }
 
-      
+
 
         /// <summary>
         /// This check-method inserts javascript to the site and checks returned value of innerText/textContent property of specific element.
@@ -151,7 +151,7 @@ namespace Riganti.Selenium.FluentApi
                 new JsPropertyInnerTextValidator(s => expression(s), failureMesssage));
         }
 
-       
+
         /// <summary>
         /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element.
         /// </summary>
@@ -261,7 +261,7 @@ namespace Riganti.Selenium.FluentApi
                 new TextEqualsValidator(text, caseSensitive, trim));
         }
 
-     
+
         public virtual IElementWrapperFluentApi CheckIfTextNotEquals(string text, bool caseSensitive = true, bool trim = true)
         {
             return EvaluateElementCheck<UnexpectedElementStateException>(
@@ -519,7 +519,8 @@ namespace Riganti.Selenium.FluentApi
             return (IElementWrapperFluentApi)base.WaitFor((e) => condition((IElementWrapperFluentApi)e), maxTimeout, failureMessage, ignoreCertainException, checkInterval);
         }
 
-        public IElementWrapperCollectionFluetApi Children { get; }
+        /// <inheritdoc />
+        public new IElementWrapperCollectionFluetApi Children => (IElementWrapperCollectionFluetApi)base.Children;
 
         IElementWrapperFluentApi IElementWrapperFluentApi.WaitFor(Action<IElementWrapperFluentApi> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500)
         {
