@@ -26,7 +26,21 @@ namespace Riganti.Selenium.Core
 
         public void AddResultFile(string fileName)
         {
+            //TODO: netappcore - add support for files 
+
+#if NET461
             context.AddResultFile(fileName);
+#endif
+        }
+        public string DeploymentDirectory
+        {
+            get
+            {
+#if NET461
+                return context.TestDeploymentDir;
+#endif
+                return null;
+            }
         }
 
         public void WriteLine(string format, params object[] args)
@@ -35,7 +49,6 @@ namespace Riganti.Selenium.Core
         }
         public string FullyQualifiedTestClassName => context.FullyQualifiedTestClassName;
 
-        public string DeploymentDirectory => context.TestDeploymentDir;
 
     }
 }

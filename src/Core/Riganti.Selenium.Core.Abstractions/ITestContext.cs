@@ -9,6 +9,7 @@
         void WriteLine(string format, params object[] args);
         string DeploymentDirectory { get; }
         void AddResultFile(string filename);
+
         /// <summary>
         /// Gets the fully-qualified name of the class that contains the test method that is currently running.
         /// </summary>
