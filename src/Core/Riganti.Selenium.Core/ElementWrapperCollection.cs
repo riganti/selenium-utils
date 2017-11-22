@@ -216,7 +216,7 @@ namespace Riganti.Selenium.Core
 
 
         /// <summary>
-        /// Performs the specified action on each element of the <see cref="ElementWrapperCollection"/>.
+        /// Performs the specified action on each element of the <see cref="IElementWrapperCollection{TElement,TBrowser}"/>.
         /// </summary>
         /// <param name="action">The <see cref="T:System.Action`1"/> delegate to perform on each element of the <see cref="T:System.Collections.Generic.List`1"/>.</param><exception cref="T:System.ArgumentNullException"><paramref name="action"/> is null.</exception>
         public void ForEach(Action<TElement> action)
