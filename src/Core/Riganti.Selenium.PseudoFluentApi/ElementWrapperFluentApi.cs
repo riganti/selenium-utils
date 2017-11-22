@@ -336,9 +336,9 @@ namespace Riganti.Selenium.FluentApi
         /// <param name="selector"></param>
         /// <param name="tmpSelectMethod"> This select method is used only for selection of elements in this query. Not in the future.</param>
         /// <returns></returns>
-        public new virtual IElementWrapperCollectionFluetApi FindElements(string selector, Func<string, By> tmpSelectMethod = null)
+        public new virtual IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var collection = (IElementWrapperCollectionFluetApi)WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList(browser, selector, this, browser.ServiceFactory);
+            var collection = WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList<IElementWrapperFluentApi, IBrowserWrapperFluentApi>((IBrowserWrapperFluentApi)browser, selector, this, browser.ServiceFactory);
             collection.ParentWrapper = this;
             return collection;
         }
@@ -520,7 +520,7 @@ namespace Riganti.Selenium.FluentApi
         }
 
         /// <inheritdoc />
-        public new IElementWrapperCollectionFluetApi Children => (IElementWrapperCollectionFluetApi)base.Children;
+        public new IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> Children =>base.Children.Convert<IElementWrapperFluentApi, IBrowserWrapperFluentApi>();
 
         IElementWrapperFluentApi IElementWrapperFluentApi.WaitFor(Action<IElementWrapperFluentApi> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500)
         {

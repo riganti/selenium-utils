@@ -28,22 +28,30 @@ namespace Riganti.Selenium.Core
 
         public Type ResolveType<T>()
         {
-            if (Repository.ContainsKey(typeof(T)))
+            return ResolveType(typeof(T));
+        }
+
+        private Type ResolveType(Type type)
+        {
+            if (Repository.ContainsKey(type))
             {
                 Type a;
-                Repository.TryGetValue(typeof(T), out a);
+                Repository.TryGetValue(type, out a);
                 return a;
             }
 
-            throw new ArgumentException($"Type {typeof(T).FullName} is not registered in container.");
+            throw new ArgumentException($"Type {type.FullName} is not registered in container.");
         }
 
         /// <inheritdoc />
         public T Resolve<T>(params object[] args)
         {
-            var result = (T)Activator.CreateInstance(ResolveType<T>(), args);
-            return result;
+            return (T)Activator.CreateInstance(ResolveType<T>(), args);
         }
 
+        public object Resolve(Type type, params object[] args)
+        {
+            return Activator.CreateInstance(ResolveType(type), args);
+        }
     }
 }

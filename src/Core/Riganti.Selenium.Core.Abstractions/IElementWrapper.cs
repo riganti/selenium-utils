@@ -20,7 +20,7 @@ namespace Riganti.Selenium.Core.Abstractions
         new string Selector { get; set; }
         string BaseUrl { get; set; }
         IBrowserWrapper BrowserWrapper { get; }
-        IElementWrapperCollection Children { get; }
+        IElementWrapperCollection<IElementWrapper, IBrowserWrapper> Children { get; }
         IElementWrapper ParentElement { get; }
         /// <summary>
         /// Describes defautl way how to get element(s) from site. (by css selector, tag name, xpath,..)
@@ -40,7 +40,7 @@ namespace Riganti.Selenium.Core.Abstractions
         IElementWrapper Click();
         IElementWrapper DropTo(IElementWrapper dropToElement, int offsetX = 0, int offsetY = 0);
         IElementWrapper ElementAt(string selector, int index, Func<string, By> tmpSelectMethod = null);
-        IElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null);
+        IElementWrapperCollection<IElementWrapper, IBrowserWrapper> FindElements(string selector, Func<string, By> tmpSelectMethod = null);
         IElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null);
         IElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null);
         /// <summary>

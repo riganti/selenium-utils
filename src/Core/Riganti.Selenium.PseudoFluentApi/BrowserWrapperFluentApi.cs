@@ -81,7 +81,7 @@ namespace Riganti.Selenium.Core
 
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
 
-        public IElementWrapperCollection CheckIfIsDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> CheckIfIsDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var collection = FindElements(selector, tmpSelectMethod);
 
@@ -95,7 +95,7 @@ namespace Riganti.Selenium.Core
 
         ///<summary>Provides elements that satisfies the selector condition at specific position.</summary>
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
-        public IElementWrapperCollection CheckIfIsNotDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
+        public IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> CheckIfIsNotDisplayed(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var collection = FindElements(selector, tmpSelectMethod);
 
@@ -167,10 +167,10 @@ namespace Riganti.Selenium.Core
             return this;
         }
 
-        public new IElementWrapperCollectionFluetApi FindElements(By selector) => (IElementWrapperCollectionFluetApi)base.FindElements(selector);
+        public new IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> FindElements(By selector) => base.FindElements(selector).Convert<IElementWrapperFluentApi, IBrowserWrapperFluentApi>();
 
-        public new IElementWrapperCollectionFluetApi FindElements(string cssSelector,
-            Func<string, By> tmpSelectMethod = null) => (IElementWrapperCollectionFluetApi)base.FindElements(cssSelector, tmpSelectMethod);
+        public new IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> FindElements(string cssSelector,
+            Func<string, By> tmpSelectMethod = null) => base.FindElements(cssSelector, tmpSelectMethod).Convert<IElementWrapperFluentApi, IBrowserWrapperFluentApi>();
 
         public new IBrowserWrapperFluentApi ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null)
         {

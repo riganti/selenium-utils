@@ -19,7 +19,7 @@ namespace Selenium.Core.UnitTests.Mock
         {
             TestClass.TestSuiteRunner.ServiceFactory.RegisterTransient<IBrowserWrapper, BrowserWrapperFluentApi>();
             TestClass.TestSuiteRunner.ServiceFactory.RegisterTransient<IElementWrapper, ElementWrapperFluentApi>();
-            TestClass.TestSuiteRunner.ServiceFactory.RegisterTransient<IElementWrapperCollection, ElementWrapperCollection>();
+            TestClass.TestSuiteRunner.ServiceFactory.RegisterTransient<ISeleniumWrapperCollection, ElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi>>();
         }
     }
 }

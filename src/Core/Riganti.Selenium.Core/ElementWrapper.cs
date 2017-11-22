@@ -94,7 +94,7 @@ namespace Riganti.Selenium.Core
         /// <summary>
         /// Contains direct children of the element.
         /// </summary>
-        public IElementWrapperCollection Children => FindElements("child::*", By.XPath);
+        public IElementWrapperCollection<IElementWrapper, IBrowserWrapper> Children => FindElements("child::*", By.XPath);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ElementWrapper"/> class.
@@ -144,7 +144,7 @@ namespace Riganti.Selenium.Core
         /// <returns></returns>
         protected string GenerateFullSelector()
         {
-            if (ParentWrapper is IElementWrapperCollection parent)
+            if (ParentWrapper is IElementWrapperCollection<IElementWrapper, IBrowserWrapper> parent)
             {
                 var index = parent.IndexOf(this);
                 var parentSelector = string.IsNullOrWhiteSpace(parent.FullSelector) ? "" : parent.FullSelector.Trim() + $":nth-child({index + 1})";
@@ -339,9 +339,9 @@ return false;
         /// <param name="selector"></param>
         /// <param name="tmpSelectMethod"> This select method is used only for selection of elements in this query. Not in the future.</param>
         /// <returns></returns>
-        public virtual IElementWrapperCollection FindElements(string selector, Func<string, By> tmpSelectMethod = null)
+        public virtual IElementWrapperCollection<IElementWrapper, IBrowserWrapper> FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var collection = WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList(browser, selector, this, browser.ServiceFactory);
+            var collection = WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList<IElementWrapper, IBrowserWrapper>(browser, selector, this, browser.ServiceFactory);
             collection.ParentWrapper = this;
             return collection;
         }

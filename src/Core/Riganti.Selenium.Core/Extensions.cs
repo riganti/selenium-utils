@@ -8,16 +8,20 @@ namespace Riganti.Selenium.Core
 {
     public static class Extensions
     {
-        public static IElementWrapperCollection ToElementsList(this IEnumerable<IWebElement> elements, IBrowserWrapper browserWrapper, string selector, IServiceFactory serviceFactory)
+        public static IElementWrapperCollection<TElement, TBrowser> ToElementsList<TElement, TBrowser>(this IEnumerable<IWebElement> elements, TBrowser browserWrapper, string selector, IServiceFactory serviceFactory) where TElement : IElementWrapper where TBrowser : IBrowserWrapper
         {
             Func<IWebElement, IElementWrapper> initElementWrapper = (s) => serviceFactory.Resolve<IElementWrapper>(s, browserWrapper);
-            return serviceFactory.Resolve<IElementWrapperCollection>(elements.Select(initElementWrapper), selector, browserWrapper);
+            var telements = elements.Select(initElementWrapper).ToList();
+            var result = serviceFactory.Resolve<ISeleniumWrapperCollection>(telements, selector, (IBrowserWrapper)browserWrapper);
+            return result.Convert<TElement, TBrowser>();
         }
 
-        public static IElementWrapperCollection ToElementsList(this IEnumerable<IWebElement> elements, IBrowserWrapper browserWrapper, string selector, IElementWrapper elementWrapper, IServiceFactory serviceFactory)
+        public static IElementWrapperCollection<TElement, TBrowser> ToElementsList<TElement, TBrowser>(this IEnumerable<IWebElement> elements, TBrowser browserWrapper, string selector, TElement elementWrapper, IServiceFactory serviceFactory) where TElement : IElementWrapper where TBrowser : IBrowserWrapper
         {
             IElementWrapper InitElementWrapper(IWebElement s) => serviceFactory.Resolve<IElementWrapper>(s, browserWrapper);
-            return serviceFactory.Resolve<IElementWrapperCollection>(elements.Select(InitElementWrapper), selector, elementWrapper, browserWrapper);
+            var result = serviceFactory.Resolve<ISeleniumWrapperCollection>((IEnumerable<IElementWrapper>)elements.Select(InitElementWrapper).ToList(), selector, (IElementWrapper)elementWrapper, browserWrapper);
+            return result.Convert<TElement, TBrowser>();
+
         }
     }
 }

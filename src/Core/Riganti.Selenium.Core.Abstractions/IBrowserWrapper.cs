@@ -19,8 +19,8 @@ namespace Riganti.Selenium.Core.Abstractions
         IBrowserWrapper DismissAlert();
         void Dispose();
         IElementWrapper ElementAt(string selector, int index, Func<string, By> tmpSelectMethod = null);
-        IElementWrapperCollection FindElements(By selector);
-        IElementWrapperCollection FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null);
+        IElementWrapperCollection<IElementWrapper, IBrowserWrapper> FindElements(By selector);
+        IElementWrapperCollection<IElementWrapper, IBrowserWrapper> FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null);
         IBrowserWrapper FireJsBlur();
         IElementWrapper First(string selector, Func<string, By> tmpSelectMethod = null);
         IElementWrapper FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null);

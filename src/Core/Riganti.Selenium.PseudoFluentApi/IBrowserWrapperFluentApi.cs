@@ -12,8 +12,8 @@ namespace Riganti.Selenium.Core
         IBrowserWrapperFluentApi CheckIfAlertTextContains(string expectedValue, bool trim = true);
         IBrowserWrapperFluentApi CheckIfAlertTextEquals(string expectedValue, bool caseSensitive = false, bool trim = true);
         IBrowserWrapperFluentApi CheckIfHyperLinkEquals(string selector, string url, UrlKind kind, params UriComponents[] components);
-        IElementWrapperCollection CheckIfIsDisplayed(string selector, Func<string, By> tmpSelectMethod = null);
-        IElementWrapperCollection CheckIfIsNotDisplayed(string selector, Func<string, By> tmpSelectMethod = null);
+        IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> CheckIfIsDisplayed(string selector, Func<string, By> tmpSelectMethod = null);
+        IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi>  CheckIfIsNotDisplayed(string selector, Func<string, By> tmpSelectMethod = null);
         IBrowserWrapperFluentApi CheckIfTitle(Expression<Func<string, bool>> expression, string failureMessage = "");
         IBrowserWrapperFluentApi CheckIfTitleEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true);
         IBrowserWrapperFluentApi CheckIfTitleNotEquals(string title, StringComparison comparison = StringComparison.OrdinalIgnoreCase, bool trim = true);
@@ -26,10 +26,8 @@ namespace Riganti.Selenium.Core
         bool CompareUrl(string url, UrlKind urlKind, params UriComponents[] components);
         IBrowserWrapperFluentApi FileUploadDialogSelect(IElementWrapper fileUploadOpener, string fullFileName);
 
-
-
-        new IElementWrapperCollectionFluetApi FindElements(By selector);
-        new IElementWrapperCollectionFluetApi FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null);
+        new IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> FindElements(By selector);
+        new IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null);
         new IBrowserWrapperFluentApi ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null);
         new IBrowserWrapperFluentApi Click(string selector);
         new IBrowserWrapperFluentApi ConfirmAlert();
