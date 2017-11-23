@@ -2,7 +2,7 @@
 
   <PropertyGroup>  
     <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>  
-    <Version>2.0.0-beta14</Version>
+    <Version>2.0.0-beta15</Version>
 
   </PropertyGroup>
 
