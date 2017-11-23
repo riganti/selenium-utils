@@ -65,9 +65,9 @@ namespace Riganti.Selenium.Core.Abstractions
         IBrowserWrapper Wait();
         IBrowserWrapper Wait(int milliseconds);
         IBrowserWrapper Wait(TimeSpan interval);
-        IBrowserWrapper WaitFor(Action action, int maxTimeout, int checkInterval = 500, string failureMessage = null);
-        IBrowserWrapper WaitFor(Action checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500);
-        IBrowserWrapper WaitFor(Func<bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500);
+        IBrowserWrapper WaitFor(Action action, int maxTimeout, int checkInterval = 50, string failureMessage = null);
+        IBrowserWrapper WaitFor(Action checkExpression, int maxTimeout, string failureMessage, int checkInterval = 50);
+        IBrowserWrapper WaitFor(Func<bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 50);
         IWebDriver _GetInternalWebDriver();
     }
 }

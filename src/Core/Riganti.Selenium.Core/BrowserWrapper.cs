@@ -588,7 +588,7 @@ namespace Riganti.Selenium.Core
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
         /// <param name="ignoreCertainException">When StaleElementReferenceException or InvalidElementStateException is thrown than it would be ignored.</param>
         /// <param name="checkInterval">Interval in miliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
-        public IBrowserWrapper WaitFor(Func<bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500)
+        public IBrowserWrapper WaitFor(Func<bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 50)
         {
             if (condition == null)
             {
@@ -623,7 +623,7 @@ namespace Riganti.Selenium.Core
             } while (!isConditionMet);
             return this;
         }
-        public IBrowserWrapper WaitFor(Action checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500)
+        public IBrowserWrapper WaitFor(Action checkExpression, int maxTimeout, string failureMessage, int checkInterval = 50)
         {
             return WaitFor(() =>
             {
@@ -643,7 +643,7 @@ namespace Riganti.Selenium.Core
         /// </summary>
         /// <param name="maxTimeout">If condition is not reached in this timeout (ms) test is dropped.</param>
         /// <param name="checkInterval">Interval in miliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
-        public IBrowserWrapper WaitFor(Action action, int maxTimeout, int checkInterval = 500, string failureMessage = null)
+        public IBrowserWrapper WaitFor(Action action, int maxTimeout, int checkInterval = 50, string failureMessage = null)
         {
             if (action == null)
             {
