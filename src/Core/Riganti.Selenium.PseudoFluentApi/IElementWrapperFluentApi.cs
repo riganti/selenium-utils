@@ -8,7 +8,8 @@ namespace Riganti.Selenium.Core
     public interface IElementWrapperFluentApi : IElementWrapper
     {
         new IElementWrapperFluentApi ParentElement { get; }
-
+        new IBrowserWrapperFluentApi BrowserWrapper { get; }
+        
         IElementWrapperFluentApi CheckAttribute(string attributeName, Func<string, bool> expression, string failureMessage = null);
         IElementWrapperFluentApi CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null);
         IElementWrapperFluentApi CheckAttribute(string attributeName, string[] allowedValues, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null);
