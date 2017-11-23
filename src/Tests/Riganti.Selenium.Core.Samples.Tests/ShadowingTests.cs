@@ -62,6 +62,16 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
             });
         }
 
+        [TestMethod]
+        public void ElementWrapperShadow()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                //checking API
+                browser.NavigateToUrl("/test/FindElements");
+                browser.CheckIfIsDisplayed("p");
+            });
+        }
 
     }
 }
