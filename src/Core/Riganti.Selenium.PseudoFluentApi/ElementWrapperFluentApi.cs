@@ -155,7 +155,7 @@ namespace Riganti.Selenium.FluentApi
         /// <summary>
         /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element.
         /// </summary>
-        /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Be sure that all browsers you are using are generating the same result to prevent unexpected results of this method.</remarks>
+        /// <remarks>Some browsers adds unnecessary attributes to InnerHtml property. Be sure that all browsers you are using are generating the same result to prevent unexpected results of this method.</remarks>
         public virtual IElementWrapperFluentApi CheckIfJsPropertyInnerHtmlEquals(string text, bool caseSensitive = true, bool trim = true)
         {
             return EvaluateElementCheck<UnexpectedElementStateException>(
@@ -165,7 +165,7 @@ namespace Riganti.Selenium.FluentApi
         /// <summary>
         /// This check-method inserts javascript to the site and checks returned value of innerHTML property of specific element.
         /// </summary>
-        /// <remarks>Some browsers adds unneccessery attributes to InnerHtml property. Be sure that all browsers you are using are generate the same result to prevent unexpected results of this method.</remarks>
+        /// <remarks>Some browsers adds unnecessary attributes to InnerHtml property. Be sure that all browsers you are using are generate the same result to prevent unexpected results of this method.</remarks>
 
         public virtual IElementWrapperFluentApi CheckIfJsPropertyInnerHtml(Func<string, bool> expression, string failureMessage = null)
         {
