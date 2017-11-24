@@ -17,7 +17,7 @@ namespace Riganti.Selenium.Core
         IElementWrapperFluentApi CheckClassAttribute(string value, bool caseInsensitive = true, bool trimValue = true);
         IElementWrapperFluentApi CheckIfContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null);
         IElementWrapperFluentApi CheckIfContainsText();
-        IElementWrapperFluentApi CheckIfDoesNotContainsText();
+        IElementWrapperFluentApi CheckIfTextEmpty();
         IElementWrapperFluentApi CheckIfHasAttribute(string name);
         IElementWrapperFluentApi CheckIfHasClass(string value, bool caseInsensitive = true);
         IElementWrapperFluentApi CheckIfHasNotAttribute(string name);

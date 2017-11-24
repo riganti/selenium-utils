@@ -4,18 +4,32 @@ using OpenQA.Selenium;
 using Riganti.Selenium.AssertApi;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Drivers;
+using Riganti.Selenium.Core.UnitTests.Mock;
 using Xunit.Abstractions;
 
 namespace Riganti.Selenium.Core.Samples.AssertApi.Tests
 {
     public abstract class AppSeleniumTest : SeleniumTest
     {
-        public void RunInAllBrowsers(Action<BrowserWrapperAssertApi> testBody, [CallerMemberName]string callerMemberName = "", [CallerFilePath]string callerFilePath = "", [CallerLineNumber]int callerLineNumber = 0)
+        public void RunInAllBrowsers(Action<IBrowserWrapper> testBody, [CallerMemberName]string callerMemberName = "", [CallerFilePath]string callerFilePath = "", [CallerLineNumber]int callerLineNumber = 0)
         {
             AssertApiSeleniumTestExecutorExtensions.RunInAllBrowsers(this, testBody, callerMemberName, callerFilePath, callerLineNumber);
         }
         public AppSeleniumTest(ITestOutputHelper output) : base(output)
         {
         }
+
+        public IBrowserWrapper CreateMockedIBrowserWrapper(MockIWebDriver driver = null)
+        {
+            driver = driver ?? new MockIWebDriver();
+            return new BrowserWrapper(new MockIWebBrowser(driver), driver, new MockITestInstance(() => new TestContextProvider(),
+                test =>
+                {
+                    test.TestSuiteRunner.ServiceFactory.RegisterTransient<IBrowserWrapper, BrowserWrapper>();
+                    test.TestSuiteRunner.ServiceFactory.RegisterTransient<IElementWrapper, ElementWrapper>();
+                    test.TestSuiteRunner.ServiceFactory.RegisterTransient<ISeleniumWrapperCollection, ElementWrapperCollection<IElementWrapper, IBrowserWrapper>>();
+                }), new ScopeOptions());
+        }
+
     }
 }

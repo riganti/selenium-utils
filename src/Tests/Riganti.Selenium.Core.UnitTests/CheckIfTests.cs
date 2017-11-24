@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using Riganti.Selenium.Core;
-using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
-using Riganti.Selenium.FluentApi;
-using Selenium.Core.UnitTests.Mock;
+using Riganti.Selenium.Core.UnitTests.Mock;
+using Selenium.Core.UnitTests;
 
-namespace Selenium.Core.UnitTests
+namespace Riganti.Selenium.Core.UnitTests
 {
     [TestClass]
-    public class CheckIfTests
+    public class CheckIfTests : MockingTest
     {
-      
+   
         [TestMethod]
         public void CheckIfTagName_ArrayTest()
         {
             var driverMock = new MockIWebDriver { FindElementsAction = () => new List<IWebElement>() { new MockIWebElement() { TagName = "frame" } } };
-            var browserMock = new MockIWebBrowser(driverMock);
-            var browser = new BrowserWrapperFluentApi(browserMock, driverMock, new MockITestInstance(), new ScopeOptions());
+            var browser = CreateMockedIBrowserWrapper(driverMock);
 
             var element = browser.First("frame");
             element.CheckIfTagName(new[] { "frame", "iframe" });
@@ -34,8 +27,7 @@ namespace Selenium.Core.UnitTests
         public void CheckIfTagName_ArrayTest2()
         {
             var driverMock = new MockIWebDriver { FindElementsAction = () => new List<IWebElement>() { new MockIWebElement() { TagName = "iframe" } } };
-            var browserMock = new MockIWebBrowser(driverMock);
-            var browser = new BrowserWrapperFluentApi(browserMock, driverMock, new MockITestInstance(), new ScopeOptions());
+            var browser = CreateMockedIBrowserWrapper(driverMock);
 
             var element = browser.First("iframe");
             element.CheckIfTagName(new[] { "frame", "iframe" });
@@ -47,8 +39,7 @@ namespace Selenium.Core.UnitTests
         public void CheckIfTagName_ArrayTest3()
         {
             var driverMock = new MockIWebDriver { FindElementsAction = () => new List<IWebElement>() { new MockIWebElement() { TagName = "a" } } };
-            var browserMock = new MockIWebBrowser(driverMock);
-            var browser = new BrowserWrapperFluentApi(browserMock, driverMock, new MockITestInstance(), new ScopeOptions());
+            var browser = CreateMockedIBrowserWrapper(driverMock);
 
             var element = browser.First("a");
             element.CheckIfTagName(new[] { "frame", "iframe" });

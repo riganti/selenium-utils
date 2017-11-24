@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using OpenQA.Selenium;
 
-namespace Selenium.Core.UnitTests.Mock
+namespace Riganti.Selenium.Core.UnitTests.Mock
 {
     public class MockIWebElement : IWebElement
     {
@@ -48,12 +48,12 @@ namespace Selenium.Core.UnitTests.Mock
             throw new NotImplementedException();
         }
 
-        public string TagName { get; set; }
-        public string Text { get; set; }
-        public bool Enabled { get; set; }
+        public string TagName { get; set; } = "div";
+        public string Text { get; set; } = "";
+        public bool Enabled { get; set; } = true;
         public bool Selected { get; set; }
-        public Point Location { get; set; }
-        public Size Size { get; set; }
-        public bool Displayed { get; set; }
+        public Point Location { get; set; } = new Point(0, 0);
+        public Size Size { get; set; } = new Size(20, 20);
+        public bool Displayed { get; set; } = true;
     }
 }

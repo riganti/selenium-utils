@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Riganti.Selenium.Core.UnitTests.Abstraction\Riganti.Selenium.Core.UnitTests.Mock.csproj" />
     <ProjectReference Include="..\..\Core\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj" />
     <ProjectReference Include="..\..\Integrations\Riganti.Selenium.MSTest2Integration\Riganti.Selenium.MSTest2Integration.csproj" />
     <ProjectReference Include="..\Riganti.Selenium.Core.Samples.Tests\Riganti.Selenium.Core.Samples.FluentApi.Tests.csproj" />

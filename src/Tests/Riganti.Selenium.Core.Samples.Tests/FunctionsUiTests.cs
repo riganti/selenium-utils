@@ -12,6 +12,7 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
     [TestClass]
     public class FunctionsUiTests : SeleniumTest
     {
+
         #region SelectMethodTests
         [TestMethod]
         public void SelectMethod_Basic()
@@ -93,61 +94,6 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
         }
         #endregion
 
-        #region TextTests
-        [TestMethod]
-        public void Text_CheckIfTextEquals()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/text");
-                browser.First("#button").CheckIfTextEquals("text", false);
-                browser.First("#input").CheckIfTextEquals("text", false);
-
-                browser.First("#area").CheckIfTextEquals("TeXt", false);
-                browser.First("#area").CheckIfTextEquals("text");
-            });
-        }
-
-        [TestMethod]
-        public void Text_CheckIfTextEquals_ExpectedFailure()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/text");
-                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
-                {
-                    browser.First("#input").CheckIfTextEquals("text2", false);
-                });
-                MSAssert.ThrowsException<UnexpectedElementStateException>(() =>
-                {
-                    browser.First("#area").CheckIfTextEquals("TeXt");
-                });
-            });
-        }
-
-        [TestMethod]
-        public void Text_CheckIfText()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/text");
-                browser.First("#button").CheckIfText(s => s.ToLower().Contains("text"));
-                browser.First("#input").CheckIfText(s => s.Contains("text"));
-                browser.First("#area").CheckIfText(s => s.Contains("text"));
-            });
-        }
-
-        [TestMethod]
-        [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
-        public void Text_CheckIfText_ExpectedFailure()
-        {
-            this.RunInAllBrowsers(browser =>
-            {
-                browser.NavigateToUrl("/test/text");
-                browser.First("#input").CheckIfText(s => !s.Contains("text"));
-            });
-        }
-        #endregion
 
         #region JsTests
         [TestMethod]

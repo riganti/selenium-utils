@@ -10,14 +10,14 @@ using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Core.Api;
 using Riganti.Selenium.Core.Drivers;
 using Riganti.Selenium.Core.Factories;
+using Riganti.Selenium.Core.UnitTests.Mock;
 using Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers;
-using Selenium.Core.UnitTests.Mock;
 using TestConfiguration = Riganti.Selenium.Core.TestConfiguration;
 
 namespace Selenium.Core.UnitTests
 {
     [TestClass]
-    public class TimeOutTests
+    public class TimeOutTests : MockingTest
     {
         private IBrowserWrapper browser;
 
@@ -26,8 +26,7 @@ namespace Selenium.Core.UnitTests
         [TestInitialize]
         public void TestInit()
         {
-            var mockIWebBrowser = new MockIWebBrowser();
-            browser = new BrowserWrapperFluentApi(mockIWebBrowser, mockIWebBrowser.Driver, new MockITestInstance(), new ScopeOptions());
+            browser = CreateMockedIBrowserWrapper();
         }
 
 
@@ -41,7 +40,7 @@ namespace Selenium.Core.UnitTests
         public void BrowserWaitForTimeoutTest2()
         {
             var i = 0;
-            browser.WaitFor(() => i++ == 5, 2000, "test timeouted");
+            browser.WaitFor(() => i++ == 5, 2000, 500, "test timeouted");
         }
 
         [TestMethod, Timeout(5000)]

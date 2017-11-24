@@ -127,7 +127,7 @@ namespace Riganti.Selenium.Core.Api
         }
         public static void DoesNotContainsText(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var DoesNotContainsText = new DoesNotContainTextValidator();
+            var DoesNotContainsText = new NotContainsTextValidator();
             operationRunner.Evaluate<UnexpectedElementStateException>(DoesNotContainsText);
         }
 
@@ -162,17 +162,7 @@ namespace Riganti.Selenium.Core.Api
             operationRunner.Evaluate<UnexpectedElementStateException>(checkTagName);
         }
 
-        //public static void TagNameValidator(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule, string failureMessage = null)
-        //{
-        //    operationRunner.TagName(rule, failureMessage);
-        //}
-
-        //public static void TagName(this IOperationRunner<IElementWrapper> operationRunner, Expression<Func<string, bool>> rule, string failureMessage = null)
-        //{
-        //    var TagName = new TagName(rule, failureMessage, operationRunner);
-        //    operationRunner.Evaluate<UnexpectedElementStateException>(TagName);
-        //}
-
+      
 
         public static void ContainsElement(this IOperationRunner<IElementWrapper> operationRunner, string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
@@ -294,8 +284,8 @@ namespace Riganti.Selenium.Core.Api
 
         public static void UrlEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string url)
         {
-            var checkUrlExquals = new UrlEqualsValidator(url);
-            operationRunner.Evaluate<BrowserLocationException>(checkUrlExquals);
+            var checkUrlEquals = new UrlEqualsValidator(url);
+            operationRunner.Evaluate<BrowserLocationException>(checkUrlEquals);
         }
         //TODO
         //public static void HyperLinkEquals(this IOperationRunner<IBrowserWrapper> operationRunner, string selector, string url, UrlKind kind, params UriComponents[] components)

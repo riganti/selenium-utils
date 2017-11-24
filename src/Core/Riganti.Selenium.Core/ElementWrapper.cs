@@ -520,9 +520,6 @@ return false;
             return this;
         }
 
-        /// <summary>
-        /// Waits the ActionWaitTime before next step.
-        /// </summary>
         public virtual IElementWrapper Wait()
         {
             if (ActionWaitTime != 0)
@@ -530,9 +527,7 @@ return false;
             return this;
         }
 
-        /// <summary>
-        /// Waits the specified time before next step.
-        /// </summary>
+   
         public virtual IElementWrapper Wait(int milliseconds)
         {
             Thread.Sleep(milliseconds);

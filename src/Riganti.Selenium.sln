@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Core", "Core\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj", "{B4467232-B573-461E-AF44-4B195120F2C8}"
 EndProject
@@ -56,6 +56,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.LambdaApi", "Core\Riganti.Selenium.LambdaApi\Riganti.Selenium.LambdaApi.csproj", "{79A8D0B4-7832-4BC8-B216-B724E40BEA12}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.xUnitIntegration.UnitTests", "Tests\Riganti.Selenium.xUnitIntegration.UnitTests\Riganti.Selenium.xUnitIntegration.UnitTests.csproj", "{6C2F8993-6E0B-4742-8A4B-43887928EB36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Selenium.Core.UnitTests.Mock", "..\Riganti.Selenium.Core.UnitTests.Abstraction\Riganti.Selenium.Core.UnitTests.Mock.csproj", "{53BF5A97-F866-4872-83A8-2D187D566291}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,6 +153,10 @@ Global
 		{6C2F8993-6E0B-4742-8A4B-43887928EB36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C2F8993-6E0B-4742-8A4B-43887928EB36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C2F8993-6E0B-4742-8A4B-43887928EB36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53BF5A97-F866-4872-83A8-2D187D566291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53BF5A97-F866-4872-83A8-2D187D566291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53BF5A97-F866-4872-83A8-2D187D566291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53BF5A97-F866-4872-83A8-2D187D566291}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -178,6 +184,7 @@ Global
 		{29F34401-F335-4AE3-9DF9-42F00F930C1F} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
 		{79A8D0B4-7832-4BC8-B216-B724E40BEA12} = {E83BB596-BF2A-4FE2-9843-E5649B561293}
 		{6C2F8993-6E0B-4742-8A4B-43887928EB36} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
+		{53BF5A97-F866-4872-83A8-2D187D566291} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {069407A3-360C-4D69-AFA7-4E7532D148A7}

@@ -15,7 +15,7 @@ using Riganti.Selenium.Core.Api;
 using Riganti.Selenium.Validators.Checkers;
 using Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers;
 
-namespace Riganti.Selenium.FluentApi
+namespace Riganti.Selenium.Core
 {
     public class ElementWrapperFluentApi : ElementWrapper, IElementWrapperFluentApi
     {
@@ -461,6 +461,7 @@ namespace Riganti.Selenium.FluentApi
         {
             return EvaluateElementCheck<UnexpectedElementStateException>(new ContainsTextValidator());
         }
+        
 
         public virtual IElementWrapperFluentApi CheckIfIsNotEnabled()
         {
@@ -475,9 +476,9 @@ namespace Riganti.Selenium.FluentApi
         /// <summary>
         /// Checks whether element contains some text.
         /// </summary>
-        public virtual IElementWrapperFluentApi CheckIfDoesNotContainsText()
+        public virtual IElementWrapperFluentApi CheckIfTextEmpty()
         {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new DoesNotContainTextValidator());
+            return EvaluateElementCheck<UnexpectedElementStateException>(new NotContainsTextValidator());
         }
 
 

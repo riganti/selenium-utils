@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace Selenium.Core.UnitTests.Mock
+namespace Riganti.Selenium.Core.UnitTests.Mock
 {
     public class MockITargetLocaltor : ITargetLocator
     {

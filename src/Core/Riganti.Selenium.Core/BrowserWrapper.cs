@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Xml.Schema;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using Riganti.Selenium.Core.Abstractions;
@@ -17,7 +18,7 @@ using Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers;
 
 namespace Riganti.Selenium.Core
 {
-    public abstract class BrowserWrapper : IBrowserWrapper
+    public class BrowserWrapper : IBrowserWrapper
     {
 
         protected readonly IWebBrowser browser;
@@ -25,7 +26,7 @@ namespace Riganti.Selenium.Core
         protected internal ITestInstance TestInstance { get; protected set; }
         public IServiceFactory ServiceFactory => TestInstance.TestClass.TestSuiteRunner.ServiceFactory;
 
-        
+
 
         public int ActionWaitTime { get; set; }
 
@@ -580,15 +581,8 @@ namespace Riganti.Selenium.Core
         #endregion Frames support
 
 
-        /// <summary>
-        /// Waits until the condition is true.
-        /// </summary>
-        /// <param name="condition">Expression that determine whether test should wait or continue</param>
-        /// <param name="maxTimeout">If condition is not reached in this timeout (ms) test is dropped.</param>
-        /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
-        /// <param name="ignoreCertainException">When StaleElementReferenceException or InvalidElementStateException is thrown than it would be ignored.</param>
-        /// <param name="checkInterval">Interval in miliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
-        public IBrowserWrapper WaitFor(Func<bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 50)
+        /// <inheritdoc />
+        public IBrowserWrapper WaitFor(Func<bool> condition, int timeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 50)
         {
             if (condition == null)
             {
@@ -615,7 +609,7 @@ namespace Riganti.Selenium.Core
                         throw;
                 }
 
-                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
+                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > timeout)
                 {
                     throw new WaitBlockException(failureMessage);
                 }
@@ -623,27 +617,31 @@ namespace Riganti.Selenium.Core
             } while (!isConditionMet);
             return this;
         }
-        public IBrowserWrapper WaitFor(Action checkExpression, int maxTimeout, string failureMessage, int checkInterval = 50)
+        /// <inheritdoc />
+
+        public IBrowserWrapper WaitFor(Func<bool> condition, int timeout, int checkInterval = 50, string failureMessage = null)
+        {
+            return WaitFor(condition, timeout, failureMessage, true, checkInterval);
+        }
+        /// <inheritdoc />
+
+        public IBrowserWrapper WaitFor(Action action, int timeout, string failureMessage, int checkInterval = 50)
         {
             return WaitFor(() =>
             {
                 try
                 {
-                    checkExpression();
+                    action();
                 }
                 catch
                 {
                     return false;
                 }
                 return true;
-            }, maxTimeout, failureMessage, true, checkInterval);
+            }, timeout, failureMessage, true, checkInterval);
         }
-        /// <summary>
-        /// Repeats execution of the action until the action is executed without exception.
-        /// </summary>
-        /// <param name="maxTimeout">If condition is not reached in this timeout (ms) test is dropped.</param>
-        /// <param name="checkInterval">Interval in miliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
-        public IBrowserWrapper WaitFor(Action action, int maxTimeout, int checkInterval = 50, string failureMessage = null)
+        /// <inheritdoc />
+        public IBrowserWrapper WaitFor(Action action, int timeout, int checkInterval = 50, string failureMessage = null)
         {
             if (action == null)
             {
@@ -664,7 +662,7 @@ namespace Riganti.Selenium.Core
                     exceptionThrown = ex;
                 }
 
-                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
+                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > timeout)
                 {
                     if (failureMessage != null)
                     {

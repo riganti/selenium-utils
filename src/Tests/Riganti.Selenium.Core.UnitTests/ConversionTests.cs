@@ -7,20 +7,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Selenium.Core.Abstractions;
-using Riganti.Selenium.FluentApi;
-using Selenium.Core.UnitTests.Mock;
+using Riganti.Selenium.Core.UnitTests.Mock;
+using Selenium.Core.UnitTests;
 
 namespace Riganti.Selenium.Core.UnitTests
 {
     [TestClass]
-    public class ConversionTests
+    public class ConversionTests : MockingTest
     {
         [TestMethod]
+        // ReSharper disable once InconsistentNaming
         public void IEnumerableConversionTests()
         {
-            var browser = new BrowserWrapperFluentApi(new MockIWebBrowser(new MockIWebDriver()),
-                new MockIWebDriver(), new MockITestInstance(), new ScopeOptions());
-
+            var browser = CreateMockedIBrowserWrapper();
             var elements = new List<IElementWrapper>()
             {
                 new ElementWrapperFluentApi(new MockIWebElement(), browser)
@@ -32,20 +31,7 @@ namespace Riganti.Selenium.Core.UnitTests
 
         }
 
-        //public static IEnumerable<TElement, TBrowser> Cast<TElement, TBrowser>(IEnumerable<TElement, TBrowser> source)
-        //{
-        //    return CastIterator<TResult>(source);
-        //}
-
-        //private static asd<TResult> CastIterator<TResult>(asd<IBrowserWrapper> source)
-        //{
-        //    foreach (TResult result in source)
-        //        yield return result;
-        //}
+     
     }
-
-    interface asd<T> : IEnumerable<T>
-    {
-
-    }
+    
 }

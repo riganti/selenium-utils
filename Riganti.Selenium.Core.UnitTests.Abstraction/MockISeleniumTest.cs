@@ -1,9 +1,7 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riganti.Selenium.Core;
 using Riganti.Selenium.Core.Configuration;
 
-namespace Selenium.Core.UnitTests.Mock
+namespace Riganti.Selenium.Core.UnitTests.Mock
 {
     public class MockISeleniumTest : ISeleniumTest
     {

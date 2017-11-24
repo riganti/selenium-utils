@@ -2,7 +2,7 @@
 using Riganti.Selenium.Core.Drivers;
 using Riganti.Selenium.Core.Factories;
 
-namespace Selenium.Core.UnitTests.Mock
+namespace Riganti.Selenium.Core.UnitTests.Mock
 {
     public class MockIWebBrowser : IWebBrowser
     {
