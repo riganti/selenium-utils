@@ -6,7 +6,7 @@ namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
     {
         public CheckResult Validate(IElementWrapper wrapper)
         {
-            var isSucceeded = string.IsNullOrWhiteSpace(wrapper.GetInnerText());
+            var isSucceeded = !string.IsNullOrWhiteSpace(wrapper.GetInnerText());
             return isSucceeded ? CheckResult.Succeeded : new CheckResult($"Element doesn't contain text. \r\n Element selector: {wrapper.Selector} \r\n");
         }
     }

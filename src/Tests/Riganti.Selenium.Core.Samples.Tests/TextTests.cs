@@ -79,5 +79,25 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
                 browser.First("#empty-div").CheckIfTextEmpty();
             });
         }
+        [TestMethod]
+        [ExpectedSeleniumException(typeof(UnexpectedElementStateException))]
+
+        public void CheckIfContainsTextTest_ExpectedFailure()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/text");
+                browser.First("#empty-div").CheckIfContainsText();
+            });
+        }
+        [TestMethod]
+        public void CheckIfContainsTextTest()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl("/test/text");
+                browser.First("#div-text").CheckIfContainsText();
+            });
+        }
     }
 }
