@@ -5,7 +5,7 @@
     <Version>2.0.0-beta17</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Selenium.Support" Version="3.7.0" />
+    <PackageReference Include="Selenium.Support" Version="3.8.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Riganti.Selenium.Core.Abstractions\Riganti.Selenium.Core.Abstractions.csproj" />

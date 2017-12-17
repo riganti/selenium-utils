@@ -19,13 +19,13 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Docker.DotNet" Version="3.125.0" />
-		<PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR">
 		  <Version>1.0.0-alpha2-final</Version>
 		</PackageReference>
-		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
 		<PackageReference Include="DotVVM.AspNetCore" Version="1.1.7" />
 	</ItemGroup>
   <ItemGroup>
