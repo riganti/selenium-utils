@@ -26,6 +26,8 @@ namespace Riganti.Selenium.Core.Samples.AssertApi.Tests
                 AssertUI.HasClass(browser.First("#hasClasses"), "class2");
                 AssertUI.HasClass(browser.First("#hasClasses"), "class3");
                 AssertUI.HasClass(browser.First("#hasClasses"), "class4");
+                AssertUI.HasClass(browser.First("#hasClasses"), "class1 class4");
+                AssertUI.HasClass(browser.First("#hasClasses"), "class1   class4");
             });
         }
         [Fact]
@@ -40,14 +42,36 @@ namespace Riganti.Selenium.Core.Samples.AssertApi.Tests
                 });
             });
         }
-
+        [Fact]
+        public void HasClass_ProvidedMoreThenOne2_FailureExpected()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl(TestPageUrl);
+                Assert.Throws<UnexpectedElementStateException>(() =>
+                {
+                    AssertUI.HasClass(browser.First("#hasClasses"), "class6 class4");
+                });
+            });
+        }
+        [Fact]
+        public void HasClass_ProvidedMoreThenOne3_FailureExpected()
+        {
+            RunInAllBrowsers(browser =>
+            {
+                browser.NavigateToUrl(TestPageUrl);
+                Assert.Throws<UnexpectedElementStateException>(() =>
+                {
+                    AssertUI.HasClass(browser.First("#hasClasses"), "class6 class4     ");
+                });
+            });
+        }
         [Fact]
         public void HasClass_ProvidedEmpty()
         {
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl(TestPageUrl);
-
                 AssertUI.HasClass(browser.First("#emptyClasses"), "");
             });
         }
@@ -130,9 +154,6 @@ namespace Riganti.Selenium.Core.Samples.AssertApi.Tests
                 AssertUI.HasNotClass(browser.First("#hasNotClasses"), "class0");
             });
         }
-
-
-
 
     }
 }

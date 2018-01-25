@@ -57,7 +57,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.LambdaApi"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.xUnitIntegration.UnitTests", "Tests\Riganti.Selenium.xUnitIntegration.UnitTests\Riganti.Selenium.xUnitIntegration.UnitTests.csproj", "{6C2F8993-6E0B-4742-8A4B-43887928EB36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Selenium.Core.UnitTests.Mock", "..\Riganti.Selenium.Core.UnitTests.Abstraction\Riganti.Selenium.Core.UnitTests.Mock.csproj", "{53BF5A97-F866-4872-83A8-2D187D566291}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Selenium.Core.UnitTests.Mock", "Tests\Riganti.Selenium.Core.UnitTests.Abstraction\Riganti.Selenium.Core.UnitTests.Mock.csproj", "{53BF5A97-F866-4872-83A8-2D187D566291}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

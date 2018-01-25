@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Linq;
 using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers

@@ -50,7 +50,7 @@ namespace Riganti.Selenium.Core
 
         public static void IsDisplayed(IElementWrapper wrapper)
         {
-            var isDisplayed = new  IsDisplayedValidator();
+            var isDisplayed = new IsDisplayedValidator();
             EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, isDisplayed);
         }
 
@@ -149,7 +149,7 @@ namespace Riganti.Selenium.Core
             EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, isElementNotInView);
         }
 
-        
+
 
         public static void TagName(IElementWrapper wrapper, string expectedTagName, string failureMessage = null)
         {
@@ -163,7 +163,7 @@ namespace Riganti.Selenium.Core
             EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, checkTagName);
         }
 
-       
+
 
         public static void TagName(IElementWrapper wrapper, Expression<Func<string, bool>> rule, string failureMessage = null)
         {
@@ -238,8 +238,9 @@ namespace Riganti.Selenium.Core
 
         public static void HasClass(IElementWrapper wrapper, string value, bool caseSensitive = true)
         {
-            Attribute(wrapper, "class", p => p.Split(' ').Any(c => string.Equals(c, value,
-                caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value: '{value}'.");
+            var values = value.Split(' ');
+            Attribute(wrapper, "class", p => values.All(v => p.Split(' ').Any(c => string.Equals(c, v,
+               caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase))), $"Expected value: '{value}'.");
         }
 
         public static void HasNotClass(IElementWrapper wrapper, string value, bool caseSensitive = true)
@@ -345,7 +346,7 @@ namespace Riganti.Selenium.Core
         }
 
         public static void Check<TException, T>(IValidator<T> validator, T wrapper)
-            where TException : TestExceptionBase, new() where T: ISupportedByValidator
+            where TException : TestExceptionBase, new() where T : ISupportedByValidator
         {
             EvaluateValidator<TException, T>(wrapper, validator);
         }
