@@ -1,7 +1,7 @@
 ﻿{
   "factories": {
-    //"chrome:fast": {}
-    "phantom:fast": {}
+    "chrome:fast": {}
+    //"phantom:fast": {}
     //"chrome:coordinator": {
     //  "options": {
     //    "coordinatorUrl": "http://192.168.88.216:5001/"

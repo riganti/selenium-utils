@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -140,6 +141,7 @@ namespace Riganti.Selenium.Core
             }
             catch (Exception e)
             {
+                //e = e.Demystify();
                 var exceptions = new List<Exception>();
                 if (e is AggregateException)
                 {
@@ -150,6 +152,12 @@ namespace Riganti.Selenium.Core
                 {
                     var a = e as SeleniumTestFailedException;
                     exceptions.AddRange(a.InnerExceptions);
+                }
+                int i = 0;
+                foreach (Exception ee in exceptions)
+                {
+                    exceptions[i] = ee.Demystify();
+                    i++;
                 }
                 throw new SeleniumTestFailedException(exceptions);
             }
