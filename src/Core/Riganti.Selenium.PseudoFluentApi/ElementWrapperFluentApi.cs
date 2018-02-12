@@ -478,7 +478,7 @@ namespace Riganti.Selenium.Core
         /// </summary>
         public virtual IElementWrapperFluentApi CheckIfTextEmpty()
         {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new NotContainsTextValidator());
+            return EvaluateElementCheck<UnexpectedElementStateException>(new TextEmptyValidator());
         }
 
 

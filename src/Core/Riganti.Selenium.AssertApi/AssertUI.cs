@@ -127,7 +127,12 @@ namespace Riganti.Selenium.Core
         }
         public static void TextEmpty(IElementWrapper wrapper)
         {
-            var doesNotContainsText = new NotContainsTextValidator();
+            var doesNotContainsText = new TextEmptyValidator();
+            EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, doesNotContainsText);
+        }
+        public static void TextNotEmpty(IElementWrapper wrapper)
+        {
+            var doesNotContainsText = new TextNotEmptyValidator();
             EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, doesNotContainsText);
         }
 

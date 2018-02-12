@@ -127,7 +127,7 @@ namespace Riganti.Selenium.Core.Api
         }
         public static void DoesNotContainsText(this IOperationRunner<IElementWrapper> operationRunner)
         {
-            var DoesNotContainsText = new NotContainsTextValidator();
+            var DoesNotContainsText = new TextEmptyValidator();
             operationRunner.Evaluate<UnexpectedElementStateException>(DoesNotContainsText);
         }
 

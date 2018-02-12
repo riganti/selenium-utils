@@ -32,7 +32,26 @@ namespace Riganti.Selenium.Core.Samples.AssertApi.Tests
             var browser = CreateMockedIBrowserWrapper(driver);
             AssertUI.TextEmpty(browser.First("#empty-div"));
         }
+        [Fact]
+        public void TextNotEmpty()
+        {
+            var driver = new MockIWebDriver() { FindElementsAction = () => new List<IWebElement>() { new MockIWebElement() { Text = "text" } } };
+            var browser = CreateMockedIBrowserWrapper(driver);
 
+            var div = browser.First("");
+            AssertUI.TextNotEmpty(div);
+        }
+        [Fact]
+        public void TextNotEmptyText_ExpectedFailure()
+        {
+            var driver = new MockIWebDriver() { FindElementsAction = () => new List<IWebElement>() { new MockIWebElement() } };
+            var browser = CreateMockedIBrowserWrapper(driver);
+            Assert.Throws<UnexpectedElementStateException>(() =>
+            {
+                AssertUI.TextNotEmpty(browser.First("#empty-div"));
+            });
+
+        }
 
     }
 
