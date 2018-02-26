@@ -26,7 +26,7 @@
 		  <Version>1.0.0-alpha2-final</Version>
 		</PackageReference>
 		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
-		<PackageReference Include="DotVVM.AspNetCore" Version="1.1.7" />
+		<PackageReference Include="DotVVM.AspNetCore" Version="2.0.0-preview02-25978" />
 	</ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="DotVVM.Compiler.Light" Version="1.1.0.1" />
