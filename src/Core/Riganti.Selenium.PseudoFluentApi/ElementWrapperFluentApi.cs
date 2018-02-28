@@ -213,6 +213,12 @@ namespace Riganti.Selenium.Core
                 caseInsensitive, trimValue, failureMessage));
         }
 
+        public virtual IElementWrapperFluentApi CheckCssStyle(string styleName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
+        {
+            return EvaluateElementCheck<UnexpectedElementStateException>(new CssStyleValidator(styleName, value,
+                caseSensitive, trimValue, failureMessage));
+        }
+
         public virtual IElementWrapperFluentApi CheckClassAttribute(Func<string, bool> expression, string failureMessage = "")
         {
             return CheckAttribute("class", expression, failureMessage);
@@ -232,7 +238,6 @@ namespace Riganti.Selenium.Core
         {
             return CheckAttribute("class", p => !p.Split(' ').Select(s => s.Trim()).Any(c => string.Equals(c, value, caseInsensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase)), $"Expected value should not contain: '{value}'.");
         }
-
 
         public IElementWrapperFluentApi CheckIfHasAttribute(string name)
         {

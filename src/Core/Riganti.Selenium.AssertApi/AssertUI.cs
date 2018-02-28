@@ -266,6 +266,12 @@ namespace Riganti.Selenium.Core
             EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, hasNotAttribute);
         }
 
+        public static void CssStyle(IElementWrapper wrapper, string styleName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
+        {
+            var checkCssStyle = new CssStyleValidator(styleName, value, caseSensitive, trimValue, failureMessage);
+            EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, checkCssStyle);
+        }
+
         public static void AlertTextEquals(IBrowserWrapper wrapper, string expectedValue,
             bool caseSensitive = false, bool trim = true)
         {

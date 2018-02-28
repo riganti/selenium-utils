@@ -681,6 +681,5 @@ return elementInViewport2(arguments[0]);
             var attr = GetAttribute("class");
             return attr.Split(' ').Any(s => string.Equals(cssClass, s, StringComparison.OrdinalIgnoreCase));
         }
-
     }
 }

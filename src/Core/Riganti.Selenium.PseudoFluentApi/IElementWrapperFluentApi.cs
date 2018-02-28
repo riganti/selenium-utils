@@ -13,6 +13,7 @@ namespace Riganti.Selenium.Core
         IElementWrapperFluentApi CheckAttribute(string attributeName, Func<string, bool> expression, string failureMessage = null);
         IElementWrapperFluentApi CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null);
         IElementWrapperFluentApi CheckAttribute(string attributeName, string[] allowedValues, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null);
+        IElementWrapperFluentApi CheckCssStyle(string styleName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null);
         IElementWrapperFluentApi CheckClassAttribute(Func<string, bool> expression, string failureMessage = "");
         IElementWrapperFluentApi CheckClassAttribute(string value, bool caseInsensitive = true, bool trimValue = true);
         IElementWrapperFluentApi CheckIfContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null);
