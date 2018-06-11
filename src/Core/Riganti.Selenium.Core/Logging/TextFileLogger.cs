@@ -9,7 +9,7 @@ namespace Riganti.Selenium.Core.Logging
     {
         public string Name => "textFile";
 
-        public IDictionary<string, string> Options { get; }
+        public IDictionary<string, string> Options { get; } = new Dictionary<string, string>();
 
         private string LogFileName => Options["logFileName"];
 
