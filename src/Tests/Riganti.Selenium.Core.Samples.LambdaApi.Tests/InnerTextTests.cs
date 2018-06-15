@@ -11,7 +11,7 @@ namespace Riganti.Selenium.Core.Samples.LambdaApi.Tests
     {
         public InnerTextTests(ITestOutputHelper output) : base(output) { }
 
-        [Fact]
+     //   [Fact]
         public void TextTest()
         {
             RunInAllBrowsers(browser =>

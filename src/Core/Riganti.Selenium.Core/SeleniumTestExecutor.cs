@@ -16,7 +16,8 @@ namespace Riganti.Selenium.Core
     /// <summary>
     /// This class represents the funcation of UI tests based on selenium. Provides logging, re-try logic, screenshots, etc..
     /// </summary>
-    public abstract class SeleniumTestExecutor : ISeleniumTest {
+    public abstract class SeleniumTestExecutor : ISeleniumTest
+    {
 
         private static object testSuiteRunnerLocker = new object();
         private static TestSuiteRunner testSuiteRunner = null;
@@ -70,10 +71,25 @@ namespace Riganti.Selenium.Core
         /// </summary>
         public virtual string ResolveConfigurationFilePath()
         {
+            // default 
             var url = new Uri(Assembly.GetExecutingAssembly().CodeBase);
-            var defaultConfigurationPath = Path.Combine(Path.GetDirectoryName(Uri.UnescapeDataString(url.AbsolutePath)), "seleniumconfig.json");
-            Trace.WriteLine($"Default selenium configuration location: {defaultConfigurationPath}");
-            return defaultConfigurationPath;
+            var configurationPath = Path.Combine(Path.GetDirectoryName(Uri.UnescapeDataString(url.AbsolutePath)), "seleniumconfig.json");
+            Trace.WriteLine($"Default selenium configuration location: {configurationPath}");
+            if (File.Exists(configurationPath))
+            {
+                return configurationPath;
+            }
+            Trace.WriteLine($"File '{configurationPath}' does not exist.");
+            
+            // alternative #1 
+            configurationPath = new DirectoryInfo(Environment.CurrentDirectory).GetFiles("seleniumconfig.json", SearchOption.AllDirectories).First().FullName;
+            if (File.Exists(configurationPath))
+            {
+                return configurationPath;
+            }
+            Trace.WriteLine($"File '{configurationPath}' does not exist.");
+
+            throw new SeleniumTestConfigurationException("Cannot find seleniumconfig.json file.");
         }
 
         protected abstract TestSuiteRunner InitializeTestSuiteRunner(SeleniumTestsConfiguration configuration);

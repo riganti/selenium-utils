@@ -96,7 +96,6 @@ namespace Riganti.Selenium.Core
             .ToList();
         }
 
-
         public virtual void RunInAllBrowsers(ISeleniumTest testClass, Action<IBrowserWrapper> action, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
             var testName = callerMemberName;

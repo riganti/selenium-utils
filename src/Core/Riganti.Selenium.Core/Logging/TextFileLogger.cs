@@ -7,23 +7,23 @@ namespace Riganti.Selenium.Core.Logging
 {
     public class TextFileLogger : ILogger
     {
-        public string Name => "textFile";
+        public virtual string Name => "textFile";
 
         public IDictionary<string, string> Options { get; } = new Dictionary<string, string>();
 
-        private string LogFileName => Options["logFileName"];
+        protected virtual string LogFileName => Options["logFileName"];
 
 
-        public void WriteLine(ITestContext instanceContext, string message, TraceLevel level)
+        public virtual void WriteLine(ITestContext instanceContext, string message, TraceLevel level)
         {
             File.AppendAllText(LogFileName, $"[{level}] {message}\r\n");
         }
 
-        public void OnTestStarted(ITestContext instanceContext)
+        public virtual void OnTestStarted(ITestContext instanceContext)
         {
         }
 
-        public void OnTestFinished(ITestContext instanceContext)
+        public virtual void OnTestFinished(ITestContext instanceContext)
         {
         }
     }

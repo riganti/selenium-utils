@@ -9,16 +9,16 @@ namespace Riganti.Selenium.Core.Logging
     /// </summary>
     public class TraceLogger : ILogger
     {
-        public string Name => "trace";
+        public virtual string Name => "trace";
 
-        public IDictionary<string, string> Options { get; } = new Dictionary<string, string>();
+        public  IDictionary<string, string> Options { get; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Write message to log.
         /// </summary>
         /// <param name="message">Text to write.</param>
         /// <param name="level">message importance</param>
-        public void WriteLine(ITestContext instanceContext, string message, TraceLevel level)
+        public virtual void WriteLine(ITestContext instanceContext, string message, TraceLevel level)
         {
             switch (level)
             {
@@ -41,11 +41,11 @@ namespace Riganti.Selenium.Core.Logging
             }
         }
 
-        public void OnTestStarted(ITestContext instanceContext)
+        public virtual void OnTestStarted(ITestContext instanceContext)
         {
         }
 
-        public void OnTestFinished(ITestContext instanceContext)
+        public virtual void OnTestFinished(ITestContext instanceContext)
         {
         }
     }
