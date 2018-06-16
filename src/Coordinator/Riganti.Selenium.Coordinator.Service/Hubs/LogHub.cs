@@ -11,12 +11,12 @@ namespace Riganti.Selenium.Coordinator.Service.Hubs
 
         public static void AddMessage(IHubContext<LogHub> hubContext, string message, bool isError)
         {
-            hubContext.Clients.All.InvokeAsync("addMessage", message, isError);
+            hubContext.Clients.All.SendAsync("addMessage", message, isError);
         }
 
         public static void Refresh(IHubContext<LogHub> hubContext)
         {
-            hubContext.Clients.All.InvokeAsync("refresh");
+            hubContext.Clients.All.SendAsync("refresh");
         }
     }
 }

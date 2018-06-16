@@ -46,10 +46,7 @@ namespace Riganti.Selenium.Coordinator.Service
 
             services.Configure<AppConfiguration>(Configuration);
 
-            services.AddDotVVM(options =>
-            {
-                options.AddDefaultTempStorages("Temp");
-            });
+            services.AddDotVVM<DotvvmStartup>();
 
             services.AddMvc();
 
