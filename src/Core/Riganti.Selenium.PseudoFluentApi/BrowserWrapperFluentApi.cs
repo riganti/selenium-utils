@@ -278,19 +278,19 @@ namespace Riganti.Selenium.Core
             return (IBrowserWrapperFluentApi)base.Wait(interval);
         }
 
-        public new IBrowserWrapperFluentApi WaitFor(Action action, int maxTimeout, int checkInterval = 500, string failureMessage = null)
+        public new IBrowserWrapperFluentApi WaitFor(Action action, int maxTimeout, int checkInterval = 30, string failureMessage = null)
         {
             return (IBrowserWrapperFluentApi)base.WaitFor(action, maxTimeout, checkInterval, failureMessage);
         }
 
         public new IBrowserWrapperFluentApi WaitFor(Action checkExpression, int maxTimeout, string failureMessage,
-            int checkInterval = 500)
+            int checkInterval = 30)
         {
             return (IBrowserWrapperFluentApi)base.WaitFor(checkExpression, maxTimeout, failureMessage, checkInterval);
         }
 
         public new IBrowserWrapperFluentApi WaitFor(Func<bool> condition, int maxTimeout, string failureMessage,
-            bool ignoreCertainException = true, int checkInterval = 500)
+            bool ignoreCertainException = true, int checkInterval = 30)
         {
             return (IBrowserWrapperFluentApi)base.WaitFor(condition, maxTimeout, failureMessage,
                 ignoreCertainException);

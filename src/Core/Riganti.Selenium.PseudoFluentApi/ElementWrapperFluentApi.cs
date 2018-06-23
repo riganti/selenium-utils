@@ -520,7 +520,7 @@ namespace Riganti.Selenium.Core
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
         /// <param name="ignoreCertainException">When StaleElementReferenceException or InvalidElementStateException is thrown than it would be ignored.</param>
         /// <param name="checkInterval">Interval in milliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
-        IElementWrapperFluentApi IElementWrapperFluentApi.WaitFor(Func<IElementWrapperFluentApi, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500)
+        IElementWrapperFluentApi IElementWrapperFluentApi.WaitFor(Func<IElementWrapperFluentApi, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 30)
         {
             return (IElementWrapperFluentApi)base.WaitFor((e) => condition((IElementWrapperFluentApi)e), maxTimeout, failureMessage, ignoreCertainException, checkInterval);
         }
@@ -528,7 +528,7 @@ namespace Riganti.Selenium.Core
         /// <inheritdoc />
         public new IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> Children =>base.Children.Convert<IElementWrapperFluentApi, IBrowserWrapperFluentApi>();
 
-        IElementWrapperFluentApi IElementWrapperFluentApi.WaitFor(Action<IElementWrapperFluentApi> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500)
+        IElementWrapperFluentApi IElementWrapperFluentApi.WaitFor(Action<IElementWrapperFluentApi> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 30)
         {
             return (IElementWrapperFluentApi)base.WaitFor((e) => checkExpression((IElementWrapperFluentApi)e), maxTimeout, failureMessage, checkInterval);
         }

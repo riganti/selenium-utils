@@ -541,8 +541,8 @@ return false;
         /// <param name="maxTimeout">If condition is not reached in this timeout (ms) test is dropped.</param>
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
         /// <param name="ignoreCertainException">When StaleElementReferenceException or InvalidElementStateException is thrown than it would be ignored.</param>
-        /// <param name="checkInterval">Interval in milliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
-        public IElementWrapper WaitFor(Func<IElementWrapper, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500)
+        /// <param name="checkInterval">Interval in milliseconds. RECOMMENDATION: let the interval greater than 30ms</param>
+        public IElementWrapper WaitFor(Func<IElementWrapper, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 30)
         {
             if (condition == null)
             {
@@ -578,7 +578,7 @@ return false;
             return this;
         }
 
-        public IElementWrapper WaitFor(Action<IElementWrapper> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500)
+        public IElementWrapper WaitFor(Action<IElementWrapper> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 30)
         {
             return WaitFor(elm =>
             {

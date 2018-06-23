@@ -135,7 +135,7 @@ namespace Riganti.Selenium.Core.Abstractions
         /// <param name="failureMessage">message in case that rule is not satisfied</param>
         /// <param name="checkInterval">interval between individual checks</param>
         /// <returns></returns>
-        IElementWrapper WaitFor(Action<IElementWrapper> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500);
-        IElementWrapper WaitFor(Func<IElementWrapper, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500);
+        IElementWrapper WaitFor(Action<IElementWrapper> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 30);
+        IElementWrapper WaitFor(Func<IElementWrapper, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 30);
     }
 }

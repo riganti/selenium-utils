@@ -80,7 +80,7 @@ namespace Riganti.Selenium.Core.Abstractions
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
         /// <param name="checkInterval">Interval in milliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
 
-        IBrowserWrapper WaitFor(Action action, int timeout, int checkInterval = 50, string failureMessage = null);
+        IBrowserWrapper WaitFor(Action action, int timeout, int checkInterval = 30, string failureMessage = null);
 
         /// <summary>
         /// Waits until the condition is true.
@@ -89,7 +89,7 @@ namespace Riganti.Selenium.Core.Abstractions
         /// <param name="timeout">If condition is not reached in this timeout (ms) test is dropped.</param>
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
         /// <param name="checkInterval">Interval in milliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
-        IBrowserWrapper WaitFor(Action action, int timeout, string failureMessage, int checkInterval = 50);
+        IBrowserWrapper WaitFor(Action action, int timeout, string failureMessage, int checkInterval = 30);
         /// <summary>
         /// Waits until the condition is true.
         /// </summary>
@@ -98,7 +98,7 @@ namespace Riganti.Selenium.Core.Abstractions
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
         /// <param name="ignoreCertainException">When StaleElementReferenceException or InvalidElementStateException is thrown than it would be ignored.</param>
         /// <param name="checkInterval">Interval in milliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
-        IBrowserWrapper WaitFor(Func<bool> condition, int timeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 50);
+        IBrowserWrapper WaitFor(Func<bool> condition, int timeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 30);
         /// <summary>
         /// Waits until the condition is true.
         /// </summary>
@@ -106,7 +106,7 @@ namespace Riganti.Selenium.Core.Abstractions
         /// <param name="timeout">If condition is not reached in this timeout (ms) test is dropped.</param>
         /// <param name="failureMessage">Message which is displayed in exception log in case that the condition is not reached</param>
         /// <param name="checkInterval">Interval in milliseconds. RECOMMENDATION: let the interval greater than 250ms</param>
-        IBrowserWrapper WaitFor(Func<bool> condition, int timeout, int checkInterval = 50, string failureMessage = null);
+        IBrowserWrapper WaitFor(Func<bool> condition, int timeout, int checkInterval = 30, string failureMessage = null);
         IWebDriver _GetInternalWebDriver();
     }
 }

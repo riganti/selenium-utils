@@ -56,8 +56,8 @@ namespace Riganti.Selenium.Core
         new IBrowserWrapperFluentApi Wait();
         new IBrowserWrapperFluentApi Wait(int milliseconds);
         new IBrowserWrapperFluentApi Wait(TimeSpan interval);
-        new IBrowserWrapperFluentApi WaitFor(Action action, int maxTimeout, int checkInterval = 500, string failureMessage = null);
-        new IBrowserWrapperFluentApi WaitFor(Action checkExpression, int maxTimeout, string failureMessage, int checkInterval = 500);
-        new IBrowserWrapperFluentApi WaitFor(Func<bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 500);
+        new IBrowserWrapperFluentApi WaitFor(Action action, int maxTimeout, int checkInterval = 30, string failureMessage = null);
+        new IBrowserWrapperFluentApi WaitFor(Action checkExpression, int maxTimeout, string failureMessage, int checkInterval = 30);
+        new IBrowserWrapperFluentApi WaitFor(Func<bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 30);
     }
 }

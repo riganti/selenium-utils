@@ -582,7 +582,7 @@ namespace Riganti.Selenium.Core
 
 
         /// <inheritdoc />
-        public IBrowserWrapper WaitFor(Func<bool> condition, int timeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 50)
+        public IBrowserWrapper WaitFor(Func<bool> condition, int timeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 30)
         {
             if (condition == null)
             {
@@ -619,29 +619,31 @@ namespace Riganti.Selenium.Core
         }
         /// <inheritdoc />
 
-        public IBrowserWrapper WaitFor(Func<bool> condition, int timeout, int checkInterval = 50, string failureMessage = null)
+        public IBrowserWrapper WaitFor(Func<bool> condition, int timeout, int checkInterval = 30, string failureMessage = null)
         {
             return WaitFor(condition, timeout, failureMessage, true, checkInterval);
         }
         /// <inheritdoc />
 
-        public IBrowserWrapper WaitFor(Action action, int timeout, string failureMessage, int checkInterval = 50)
+        public IBrowserWrapper WaitFor(Action action, int timeout, string failureMessage, int checkInterval = 30)
         {
+            Exception exception = null;
             return WaitFor(() =>
             {
                 try
                 {
                     action();
                 }
-                catch
+                catch (Exception ex)
                 {
+                    exception = ex;
                     return false;
                 }
                 return true;
-            }, timeout, failureMessage, true, checkInterval);
+            }, timeout, failureMessage ?? exception?.ToString(), true, checkInterval);
         }
         /// <inheritdoc />
-        public IBrowserWrapper WaitFor(Action action, int timeout, int checkInterval = 50, string failureMessage = null)
+        public IBrowserWrapper WaitFor(Action action, int timeout, int checkInterval = 30, string failureMessage = null)
         {
             if (action == null)
             {
