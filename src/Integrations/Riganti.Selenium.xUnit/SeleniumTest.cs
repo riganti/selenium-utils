@@ -22,8 +22,11 @@ namespace Riganti.Selenium.Core
         {
             var provider = new TestContextProvider();
             provider.SetContext(TestOutput);
+            return CreateNewTestSuiteRunner(configuration, provider);
+        }
+        protected virtual TestSuiteRunner CreateNewTestSuiteRunner(SeleniumTestsConfiguration configuration, TestContextProvider provider)
+        {
             return new XunitTestSuiteRunner(configuration, provider);
         }
-
     }
 }

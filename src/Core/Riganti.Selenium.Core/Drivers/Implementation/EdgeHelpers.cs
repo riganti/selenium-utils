@@ -14,7 +14,6 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
         {
             var options = new EdgeOptions()
             {
-                 
             };
 
             return new EdgeDriver(options);

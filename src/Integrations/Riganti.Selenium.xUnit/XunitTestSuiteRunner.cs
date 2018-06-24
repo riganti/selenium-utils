@@ -8,7 +8,7 @@ namespace Riganti.Selenium.xUnitIntegration
 {
     public class XunitTestSuiteRunner : TestSuiteRunner
     {
-        public XunitTestSuiteRunner(SeleniumTestsConfiguration configuration, TestContextProvider testContextProvider) : base(configuration, (ITestContextProvider) testContextProvider)
+        public XunitTestSuiteRunner(SeleniumTestsConfiguration configuration, TestContextProvider testContextProvider, Action<ServiceFactory, TestSuiteRunner> registerServices = null) : base(configuration, (ITestContextProvider) testContextProvider, registerServices)
         {
         }
 

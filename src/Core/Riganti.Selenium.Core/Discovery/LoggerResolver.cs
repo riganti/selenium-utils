@@ -14,7 +14,7 @@ namespace Riganti.Selenium.Core.Discovery
     public class LoggerResolver
     {
 
-        public List<ILogger> CreateLoggers(SeleniumTestsConfiguration configuration, Assembly[] assemblies)
+        public List<ILogger> CreateLoggers(SeleniumTestsConfiguration configuration, IEnumerable<Assembly> assemblies)
         {
             // find all loggers
             var foundTypes = DiscoverLoggers(assemblies);
@@ -43,7 +43,7 @@ namespace Riganti.Selenium.Core.Discovery
             return result;
         }
 
-        private IEnumerable<Type> DiscoverLoggers(Assembly[] assemblies)
+        private IEnumerable<Type> DiscoverLoggers(IEnumerable<Assembly> assemblies)
         {
             var foundTypes = assemblies.SelectMany(a => a.GetExportedTypes())
                 .Where(t => typeof(ILogger).IsAssignableFrom(t))

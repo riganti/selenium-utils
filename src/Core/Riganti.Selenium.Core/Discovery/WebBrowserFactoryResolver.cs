@@ -12,10 +12,10 @@ using Riganti.Selenium.Core.Logging;
 
 namespace Riganti.Selenium.Core.Discovery
 {
-    public class WebBrowserFactoryResolver<T> where T: TestSuiteRunner
+    public class WebBrowserFactoryResolver<T> where T : TestSuiteRunner
     {
 
-        public Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories(T runner, Assembly[] assemblies)
+        public Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories(T runner, IEnumerable<Assembly> assemblies)
         {
             // find all factories
             var foundTypes = DiscoverFactories(assemblies);
@@ -31,7 +31,7 @@ namespace Riganti.Selenium.Core.Discovery
                 {
                     throw new SeleniumTestConfigurationException($"The factory '{factoryConfiguration.Key}' was not found!");
                 }
-                
+
                 // load options
                 foreach (var entry in factoryConfiguration.Value.Options)
                 {
@@ -50,12 +50,24 @@ namespace Riganti.Selenium.Core.Discovery
             return result;
         }
 
-        private IEnumerable<Type> DiscoverFactories(Assembly[] assemblies)
+        protected virtual IEnumerable<Type> DiscoverFactories(IEnumerable<Assembly> assemblies)
         {
-            var foundTypes = assemblies.SelectMany(a => a.GetExportedTypes())
+            var foundTypes = GetExportedTypes(assemblies)
                 .Where(t => typeof(IWebBrowserFactory).IsAssignableFrom(t))
                 .Where(t => !t.IsAbstract);
             return foundTypes;
+        }
+
+        private static IEnumerable<Type> GetExportedTypes(IEnumerable<Assembly> assemblies)
+        {
+            try
+            {
+                return assemblies.SelectMany(a => a.GetExportedTypes());
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                return e.Types.ToArray();
+            }
         }
 
         private IList<IWebBrowserFactory> InstantiateFactories(T testSuiteRunner, IEnumerable<Type> foundTypes)
@@ -65,7 +77,7 @@ namespace Riganti.Selenium.Core.Discovery
             {
                 try
                 {
-                    var instance = (IWebBrowserFactory) Activator.CreateInstance(type, testSuiteRunner);
+                    var instance = (IWebBrowserFactory)Activator.CreateInstance(type, testSuiteRunner);
                     instances.Add(instance);
                 }
                 catch (Exception ex)
@@ -75,6 +87,6 @@ namespace Riganti.Selenium.Core.Discovery
             }
             return instances;
         }
-        
+
     }
 }

@@ -9,6 +9,9 @@ using Riganti.Selenium.Core.Factories;
 
 namespace Riganti.Selenium.Core.Drivers
 {
+    /// <summary>
+    /// Provides basic functions for generic implementation of web driver. 
+    /// </summary>
     public abstract class WebBrowserBase : IWebBrowser
     {
         private static int uniqueBrowserIndex = 1;

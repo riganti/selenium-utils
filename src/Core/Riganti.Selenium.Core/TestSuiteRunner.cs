@@ -21,7 +21,7 @@ namespace Riganti.Selenium.Core
         private readonly Dictionary<string, IWebBrowserFactory> factories;
 
         private readonly List<TestConfiguration> testConfigurations;
-        private readonly Assembly[] searchAssemblies;
+        public List<Assembly> SearchAssemblies { get; private set; }
 
 
         public SeleniumTestsConfiguration Configuration { get; }
@@ -37,9 +37,12 @@ namespace Riganti.Selenium.Core
 
 
 
-        public TestSuiteRunner(SeleniumTestsConfiguration configuration, ITestContextProvider testContextProvider)
+        public TestSuiteRunner(SeleniumTestsConfiguration configuration, ITestContextProvider testContextProvider, Action<ServiceFactory, TestSuiteRunner> registerServices = null)
         {
-            searchAssemblies = new[] { Assembly.GetExecutingAssembly() };
+            SearchAssemblies = new List<Assembly>() { Assembly.GetExecutingAssembly() };
+            ServiceFactory.RegisterTransient<WebBrowserFactoryResolver<TestSuiteRunner>, WebBrowserFactoryResolver<TestSuiteRunner>>();
+
+            registerServices?.Invoke(ServiceFactory, this);
 
             this.Configuration = configuration;
             this.TestContextProvider = testContextProvider;
@@ -47,7 +50,7 @@ namespace Riganti.Selenium.Core
             this.TestContextAccessor = new TestContextAccessor();
 
             // load configuration and get all loggers and factories
-            LoggerService = CreateLoggerService(searchAssemblies);
+            LoggerService = CreateLoggerService(SearchAssemblies);
             factories = CreateWebBrowserFactories();
 
             this.LogInfo("RIGANTI Selenium-Utils Test framework initialized.");
@@ -73,17 +76,17 @@ namespace Riganti.Selenium.Core
         }
 
 
-        private LoggerService CreateLoggerService(Assembly[] assemblies)
+        private LoggerService CreateLoggerService(IEnumerable<Assembly> assemblies)
         {
             var discoveryService = new LoggerResolver();
             var loggers = discoveryService.CreateLoggers(Configuration, assemblies);
             return new LoggerService(loggers);
         }
 
-        private Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories()
+        protected virtual Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories()
         {
-            var factoryResolver = new WebBrowserFactoryResolver<TestSuiteRunner>();
-            return factoryResolver.CreateWebBrowserFactories(this, searchAssemblies);
+            var factoryResolver = ServiceFactory.Resolve<WebBrowserFactoryResolver<TestSuiteRunner>>();
+            return factoryResolver.CreateWebBrowserFactories(this, SearchAssemblies);
         }
 
         private List<TestConfiguration> GetTestConfigurations()

@@ -9,6 +9,7 @@ using Riganti.Selenium.Core.Factories;
 
 namespace Riganti.Selenium.Core.Drivers
 {
+    /// <inheritdoc />
     public abstract class FastWebBrowserBase : WebBrowserBase
     {
 
@@ -40,14 +41,10 @@ namespace Riganti.Selenium.Core.Drivers
 
                 Factory.LogInfo("Cleaning session");
 
-                ExpectedConditions.AlertIsPresent()(driverInstance)?.Dismiss();
-                driverInstance.Manage().Cookies.DeleteAllCookies();
+                DismissAllAlerts();
+                DeleteAllCookies();
 
-                if (!(driverInstance.Url.Contains("chrome:") || driverInstance.Url.Contains("data:") || driverInstance.Url.Contains("about:")))
-                {
-                    ((IJavaScriptExecutor)driverInstance).ExecuteScript("if(typeof(Storage) !== undefined) { localStorage.clear(); }");
-                    ((IJavaScriptExecutor)driverInstance).ExecuteScript("if(typeof(Storage) !== undefined) { sessionStorage.clear(); }");
-                }
+                CleanSessionAndLocalStorage();
 
                 driverInstance.Navigate().GoToUrl("about:blank");
             }, s =>
@@ -56,6 +53,23 @@ namespace Riganti.Selenium.Core.Drivers
 
             });
 
+        }
+
+        protected virtual void CleanSessionAndLocalStorage()
+        {
+            if (!(driverInstance.Url.Contains("chrome:") || driverInstance.Url.Contains("data:") || driverInstance.Url.Contains("about:")))
+            {
+                ((IJavaScriptExecutor)driverInstance).ExecuteScript("if(typeof(Storage) !== undefined) { localStorage.clear(); }");
+                ((IJavaScriptExecutor)driverInstance).ExecuteScript("if(typeof(Storage) !== undefined) { sessionStorage.clear(); }");
+            }
+        }
+
+        /// <summary>
+        /// Removed all cookies from browser during cleaning session
+        /// </summary>
+        protected virtual void DeleteAllCookies()
+        {
+            driverInstance.Manage().Cookies.DeleteAllCookies();
         }
 
         /// <summary>
@@ -69,7 +83,7 @@ namespace Riganti.Selenium.Core.Drivers
                 {
                     try
                     {
-                        ExpectedConditions.AlertIsPresent()(driverInstance)?.Dismiss();
+                        DismissAllAlerts();
                         driverInstance.Dispose();
                     }
                     catch
@@ -95,6 +109,14 @@ namespace Riganti.Selenium.Core.Drivers
             }
         }
         /// <summary>
+        /// Dismisses all alerts during cleaning session
+        /// </summary>
+        protected virtual void DismissAllAlerts()
+        {
+            ExpectedConditions.AlertIsPresent()(driverInstance)?.Dismiss();
+        }
+
+        /// <summary>
         /// Tries to get PID and kill it.
         /// </summary>
         /// <param name="webDriver">Driver to kill.</param>
@@ -117,8 +139,8 @@ namespace Riganti.Selenium.Core.Drivers
             var commandServer = fields.FirstOrDefault(s => s.Name == "server")?.GetValue(commandExecutor);
             if (commandServer != null)
             {
-                var firefoxBinary = commandServer.GetType().GetRuntimeFields().FirstOrDefault(a => a.Name == "process").GetValue(commandServer);
-                if (firefoxBinary == null)
+                var firefoxBinary = commandServer.GetType().GetRuntimeFields().FirstOrDefault(a => a.Name == "process")?.GetValue(commandServer);
+                if (firefoxBinary != null)
                 {
                     var firefoxProcess = firefoxBinary.GetType().GetRuntimeFields().FirstOrDefault(a => a.Name == "process").GetValue(commandServer) as Process;
                     KillProcess(firefoxProcess.Id);

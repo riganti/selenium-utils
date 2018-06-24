@@ -13,7 +13,7 @@ namespace Riganti.Selenium.Core.Samples.AssertApi.Tests
     public class AnyOperationRunnerTests : AppSeleniumTest
     {
         [Fact]
-        public void AnyOpertaionRunner()
+        public void AnyOperationRunner()
         {
             RunInAllBrowsers(browser =>
             {
@@ -24,7 +24,7 @@ namespace Riganti.Selenium.Core.Samples.AssertApi.Tests
         }
         [Fact]
 
-        public void AnyOpertaionRunner_FailureExpected()
+        public void AnyOperationRunner_FailureExpected()
         {
             Assert.ThrowsAny<Exception>(() =>
             {
