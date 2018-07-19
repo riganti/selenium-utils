@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Riganti.Selenium.Core.Abstractions;
+using Riganti.Selenium.Core.Abstractions.Attributes;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Core.Configuration;
 using Riganti.Selenium.Core.Discovery;
@@ -127,8 +128,17 @@ namespace Riganti.Selenium.Core
 
         private void RunInAllBrowsersSequential(ISeleniumTest testClass, string testName, Action<IBrowserWrapper> action)
         {
+            var skipBrowserAttributes = SkipBrowserAttribute.TryToRetrieveFromStackTrace();
+
             foreach (var testConfiguration in testConfigurations)
             {
+                if (skipBrowserAttributes.Any(a => a.BrowserName == testConfiguration.Factory.Name))
+                {
+                    this.LogInfo($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Test was skipped for browser: {testConfiguration.Factory.Name}");
+
+                    continue;
+                }
+
                 RunSingleTest(testClass, testConfiguration, testName, action).Wait();
             }
         }
