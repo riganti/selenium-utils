@@ -132,9 +132,11 @@ namespace Riganti.Selenium.Core
 
             foreach (var testConfiguration in testConfigurations)
             {
-                if (skipBrowserAttributes.Any(a => a.BrowserName == testConfiguration.Factory.Name))
+                var skipBrowserAttribute = skipBrowserAttributes.FirstOrDefault(a => a.BrowserName == testConfiguration.Factory.Name);
+                if (skipBrowserAttribute != null)
                 {
-                    this.LogInfo($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Test was skipped for browser: {testConfiguration.Factory.Name}");
+                    this.LogInfo($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Test was skipped for " +
+                        $"browser: {skipBrowserAttribute.BrowserName}, Reason: {skipBrowserAttribute.Reason}");
 
                     continue;
                 }
