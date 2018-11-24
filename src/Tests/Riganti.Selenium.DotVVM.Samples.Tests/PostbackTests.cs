@@ -20,5 +20,4 @@ namespace Selenium.DotVVM.Samples.Tests
             });
         }
     }
-
 }

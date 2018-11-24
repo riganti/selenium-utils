@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core;
+using Riganti.Selenium.Core.Abstractions.Exceptions;
 
 namespace Riganti.Selenium.DotVVM
 {
@@ -8,16 +10,71 @@ namespace Riganti.Selenium.DotVVM
     {
         /// <summary>
         /// Determines whether tested page is dotvvm.
+        /// The detection is ensured by waiting for invocation of DotVVM Init.
         /// </summary>
         /// <param name="browser"></param>
-        /// <returns></returns>
-        public static bool IsDotvvmPage(this IBrowserWrapper browser)
+        /// <param name="maxDotvvmLoadTimeout">is the maximum time interval in which the DotVVM has to be loaded.</param>
+        public static bool IsDotvvmPage(this IBrowserWrapper browser, long maxDotvvmLoadTimeout = 8000)
         {
             try
             {
-                return string.Equals("true",
-                    browser.GetJavaScriptExecutor().ExecuteScript("return dotvvm instanceof DotVVM").ToString(),
-                    StringComparison.OrdinalIgnoreCase);
+                var result = "loading";
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                var isFirstRun = true;
+                while (stopwatch.ElapsedMilliseconds < maxDotvvmLoadTimeout && result == "loading")
+                {
+                    if (!isFirstRun)
+                    {
+                        browser.Wait(30);
+                    }
+                    isFirstRun = false;
+
+                    var executor = browser.GetJavaScriptExecutor();
+                    result = executor.ExecuteScript(
+       @"return (function seleniumUtils_IsDotvvmPageLoaded() {
+            var state = (window.__riganti_selenium_utils_dotvvm || (window.__riganti_selenium_utils_dotvvm = {}));
+            if (state.inited) {
+                return true;
+            }
+            if (window.dotvvm != null && window.dotvvm instanceof DotVVM) {
+                dotvvm.events.init.subscribe(function () { state.inited = true });
+                state.loaded = true;
+            }
+            if (!state.loaded && document.scripts.length > 0) {
+                for (const key in document.scripts) {
+                    if (document.scripts.hasOwnProperty(key)) {
+                        var script = document.scripts[key];
+                        if (script.src.indexOf('/dotvvm--internal') > -1) {
+                            state.loaded = true;
+                            return 'loading';
+                        } else {
+                            if (document.readyState === 'complete') {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!state.loaded && document.readyState !== 'complete') {
+                state.loaded = false;
+                return 'loading';
+            }
+            return state.inited || 'loading';
+        })();"
+                                    )?.ToString();
+                }
+
+                stopwatch.Stop();
+                if (result == "loading")
+                {
+                    return false;
+                }
+                else
+                {
+                    return string.Equals(result, "true", StringComparison.OrdinalIgnoreCase);
+                }
             }
             catch (Exception ex)
             {
@@ -26,7 +83,20 @@ namespace Riganti.Selenium.DotVVM
         }
 
         /// <summary>
-        /// Waits for dotvvm postback to be finished.
+        /// Waits until DotVVM event Init is performed.
+        ///</summary>
+        /// <param name="browser"></param>
+        /// <param name="maxDotvvmLoadTimeout">is the maximum time interval in which the DotVVM has to be loaded.</param>
+        public static void WaitUntilDotvvmInited(this IBrowserWrapper browser, int maxDotvvmLoadTimeout = 8000)
+        {
+            if (!IsDotvvmPage(browser, maxDotvvmLoadTimeout))
+            {
+                throw new PageLoadException("Page did not initiate DotVVM.");
+            }
+        }
+
+        /// <summary>
+        /// Waits for DotVVM postback to be finished.
         /// </summary>
         /// <param name="browser"></param>
         /// <param name="timeout">Timeout in ms.</param>
@@ -34,12 +104,13 @@ namespace Riganti.Selenium.DotVVM
         {
             if (browser.IsDotvvmPage())
             {
-                browser.WaitFor(() => 
-                string.Equals("false", browser.GetJavaScriptExecutor().ExecuteScript("return dotvvm.isPostbackRunning()").ToString(), StringComparison.OrdinalIgnoreCase)
+                browser.WaitFor(() =>
+                    {
+                        var result = browser.GetJavaScriptExecutor().ExecuteScript("return dotvvm.isPostbackRunning()").ToString();
+                        return string.Equals("false", result, StringComparison.OrdinalIgnoreCase);
+                    }
                 , timeout, "DotVVM postback still running.");
             }
-
         }
-
     }
 }

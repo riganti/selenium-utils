@@ -9,21 +9,21 @@ using System.Threading.Tasks;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Attributes;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
+using Riganti.Selenium.Core.Abstractions.Reporting;
 using Riganti.Selenium.Core.Configuration;
 using Riganti.Selenium.Core.Discovery;
 using Riganti.Selenium.Core.Factories;
 using Riganti.Selenium.Core.Logging;
+using Riganti.Selenium.Core.Reporting;
 
 namespace Riganti.Selenium.Core
 {
     public class TestSuiteRunner : IDisposable
     {
+        private Dictionary<string, IWebBrowserFactory> factories;
 
-        private readonly Dictionary<string, IWebBrowserFactory> factories;
-
-        private readonly List<TestConfiguration> testConfigurations;
+        private List<TestConfiguration> testConfigurations;
         public List<Assembly> SearchAssemblies { get; private set; }
-
 
         public SeleniumTestsConfiguration Configuration { get; }
 
@@ -33,15 +33,16 @@ namespace Riganti.Selenium.Core
 
         public ITestContextProvider TestContextProvider { get; }
 
-        public LoggerService LoggerService { get; }
+        public IReportingMetadataProvider ReportingMetadataProvider { get; }
+
+        public LoggerService LoggerService { get; set; }
         public ServiceFactory ServiceFactory { get; } = new ServiceFactory();
-
-
 
         public TestSuiteRunner(SeleniumTestsConfiguration configuration, ITestContextProvider testContextProvider, Action<ServiceFactory, TestSuiteRunner> registerServices = null)
         {
             SearchAssemblies = new List<Assembly>() { Assembly.GetExecutingAssembly() };
             ServiceFactory.RegisterTransient<WebBrowserFactoryResolver<TestSuiteRunner>, WebBrowserFactoryResolver<TestSuiteRunner>>();
+            ServiceFactory.RegisterTransient<ResultReportersFactory, ResultReportersFactory>();
 
             registerServices?.Invoke(ServiceFactory, this);
 
@@ -49,10 +50,21 @@ namespace Riganti.Selenium.Core
             this.TestContextProvider = testContextProvider;
             this.WebBrowserPool = new WebBrowserPool(this);
             this.TestContextAccessor = new TestContextAccessor();
+            ReportingMetadataProvider = new DefaultReportingMetadataProvider(testContextProvider);
+        }
 
-            // load configuration and get all loggers and factories
+        /// <summary>
+        /// Load configuration and get all loggers and factories
+        /// </summary>
+
+        private void Initialize()
+        {
+            if (LoggerService != null)
+                return;
             LoggerService = CreateLoggerService(SearchAssemblies);
             factories = CreateWebBrowserFactories();
+            var reporters = CreateReporters();
+            Reporter = new AggregatedReporter(reporters, ReportingMetadataProvider);
 
             this.LogInfo("RIGANTI Selenium-Utils Test framework initialized.");
             this.LogVerbose("WebBrowserFactories discovered: ");
@@ -60,6 +72,7 @@ namespace Riganti.Selenium.Core
             {
                 this.LogVerbose("* " + factory.Key);
             }
+
             this.LogVerbose("Loggers discovered: ");
             foreach (var logger in LoggerService.Loggers)
             {
@@ -76,6 +89,13 @@ namespace Riganti.Selenium.Core
             }
         }
 
+        internal AggregatedReporter Reporter { get; set; }
+
+        protected virtual Dictionary<string, ITestResultReporter> CreateReporters()
+        {
+            var factoryResolver = ServiceFactory.Resolve<ResultReportersFactory>();
+            return factoryResolver.CreateReporters(SearchAssemblies, Configuration);
+        }
 
         private LoggerService CreateLoggerService(IEnumerable<Assembly> assemblies)
         {
@@ -100,8 +120,16 @@ namespace Riganti.Selenium.Core
             .ToList();
         }
 
+        /// <summary>
+        /// Runs the test specified by action in all browsers specified in seleniumconfig.json
+        /// </summary>
+        /// <param name="action">Test definition</param>
+        /// <param name="callerMemberName">Name of the method that calls this one. Can be provided by attributes.</param>
+        /// <param name="callerFilePath">File name of the method that calls this one. Can be provided by attributes.</param>
+        /// <param name="callerLineNumber">Line number of the method that calls this one. Can be provided by attributes.</param>
         public virtual void RunInAllBrowsers(ISeleniumTest testClass, Action<IBrowserWrapper> action, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
+            Initialize();
             var testName = callerMemberName;
             this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Entering RunInAllBrowsers from {callerFilePath}:{callerLineNumber}");
 
@@ -118,8 +146,13 @@ namespace Riganti.Selenium.Core
                         RunInAllBrowsersSequential(testClass, testName, action);
                     }
                 });
+                Reporter.ReportSuccessfulTest(testName, callerFilePath, callerLineNumber);
             }
-
+            catch (Exception ex)
+            {
+                Reporter.ReportFailedTest(ex, testName, callerFilePath, callerLineNumber);
+                throw;
+            }
             finally
             {
                 this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Leaving RunInAllBrowsers");
@@ -155,14 +188,12 @@ namespace Riganti.Selenium.Core
             catch (Exception e)
             {
                 var exceptions = new List<Exception>();
-                if (e is AggregateException)
+                if (e is AggregateException a1)
                 {
-                    var a = (AggregateException)e;
-                    exceptions.AddRange(a.InnerExceptions);
+                    exceptions.AddRange(a1.InnerExceptions);
                 }
-                else if(e is SeleniumTestFailedException)
+                else if (e is SeleniumTestFailedException a)
                 {
-                    var a = e as SeleniumTestFailedException;
                     exceptions.AddRange(a.InnerExceptions);
                 }
                 throw new SeleniumTestFailedException(exceptions);
@@ -189,7 +220,6 @@ namespace Riganti.Selenium.Core
                 this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testFullName}: Finishing test run");
             }
         }
-
 
         public void Dispose()
         {

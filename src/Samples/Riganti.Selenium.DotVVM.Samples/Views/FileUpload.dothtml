@@ -1,5 +1,4 @@
 ﻿@viewModel Riganti.Selenium.DotVVM.Samples.ViewModels.FileUploadViewModel, Riganti.Selenium.DotVVM.Samples
-
 <!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -11,5 +10,3 @@
     <dot:FileUpload ID="FUpload" UploadedFiles="{value: Files}" UploadButtonText="text" />
 </body>
 </html>
-
-

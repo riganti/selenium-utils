@@ -18,5 +18,12 @@
     "loggers": {
       "testContext": {}
     }
+  },
+  "reporting": {
+    //"reporters": {
+    //  "azureDevOps": {
+    //    "ReportTestResultUrl": "<add upload function url>"
+    //  }
+    //}
   }
 }

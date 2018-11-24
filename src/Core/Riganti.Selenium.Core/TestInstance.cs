@@ -23,7 +23,6 @@ namespace Riganti.Selenium.Core
         public ISeleniumTest TestClass { get; }
         public IWebBrowser CurrentWebBrowser { get; private set; }
 
-
         public TestInstance(TestSuiteRunner runner, ISeleniumTest testClass, TestConfiguration testConfiguration,
             string testName, Action<IBrowserWrapper> testAction)
         {
@@ -66,11 +65,11 @@ namespace Riganti.Selenium.Core
             ExecuteSafe(() => { exception.WebBrowser = CurrentWebBrowser.Factory.Name; });
 
             var result = ExecuteSafe(() => { exception.CurrentUrl = CurrentWebBrowser.Driver.Url; });
-            
+
             // when browser is frozen then taking screenshot is non-sense.
             if (!result) return;
 
-            ExecuteSafe(() => 
+            ExecuteSafe(() =>
             {
                 try
                 {
@@ -79,7 +78,6 @@ namespace Riganti.Selenium.Core
                 catch
                 {
                     //TODO try take a screenshot by other way
-
                 }
             });
         }
@@ -91,7 +89,7 @@ namespace Riganti.Selenium.Core
                 action();
                 return true;
             }
-            catch(UnhandledAlertException ex) 
+            catch (UnhandledAlertException ex)
             {
                 return true;
             }
@@ -158,7 +156,6 @@ namespace Riganti.Selenium.Core
                     errors.Add(ex);
                 }
             }
-
             throw new SeleniumTestFailedException(errors);
         }
 

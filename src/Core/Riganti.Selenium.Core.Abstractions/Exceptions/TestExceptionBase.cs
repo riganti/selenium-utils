@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using OpenQA.Selenium;
 using Riganti.Selenium.Core.Abstractions.Attributes;
+using Riganti.Selenium.Core.Abstractions.Reporting;
 
 namespace Riganti.Selenium.Core.Abstractions.Exceptions
 {
@@ -26,7 +28,6 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
                 {
                     return FullStackTrace;
                 }
-
 
                 var allFrames = new StackTrace(this, true).GetFrames()?.Select(s => new { Frame = s, s.GetMethod()?.ReflectedType }).Where(frame => frame.ReflectedType?.Namespace?.Contains("Riganti.Selenium") != true).ToList();
                 if (allFrames == null) return "";
@@ -57,7 +58,7 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
         public string WebBrowser { get; set; }
         public string CurrentUrl { get; set; }
         public string Screenshot { get; set; }
-
+        public Dictionary<string, TestRunInputResult> ReporterResults { get; set; }
 
         protected TestExceptionBase()
         {
@@ -66,7 +67,6 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
         protected TestExceptionBase(string message) : base()
         {
             ExceptionMessage = message;
-
         }
 
         public string ExceptionMessage { get; set; }
@@ -92,10 +92,9 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
             }
             sb.AppendLine(StackTrace);
 
-
-
             return sb.ToString();
         }
+
         private string RenderMetadata()
         {
             var sb = new StringBuilder();
@@ -106,8 +105,38 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
             AppendField(sb, "Browser", WebBrowser);
             AppendField(sb, "Url", CurrentUrl);
             AppendField(sb, "Screenshot", Screenshot);
-            return sb.ToString();
+            AppendReportersResults(sb, ReporterResults);
 
+            return sb.ToString();
+        }
+
+        private void AppendReportersResults(StringBuilder sb, Dictionary<string, TestRunInputResult> reporterResults)
+        {
+            if (reporterResults != null && reporterResults.Any())
+            {
+                sb.AppendLine("Reporters results: ");
+                foreach (var result in reporterResults)
+                {
+                    if (result.Value is FailedTestRunInputResult failedResult)
+                    {
+                        if (failedResult.Exception != null)
+                        {
+                            AppendField(sb, $"{result.Key}.Exception ", failedResult.Exception?.Message);
+                        }
+                        continue;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(result.Value?.TestResultUrl))
+                    {
+                        AppendField(sb, $"{result.Key}.TestResultUrl ", result.Value.TestResultUrl);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(result.Value?.TestSuiteUrl))
+                    {
+                        AppendField(sb, $"{result.Key}.TestSuiteUrl ", result.Value.TestSuiteUrl);
+                    }
+                }
+            }
         }
 
         private void RenderExceptionMessage(StringBuilder sb)
@@ -135,6 +164,7 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
             sb.Append(": ");
             sb.AppendLine(value);
         }
+
         private string GetClassName()
         {
             return GetType().ToString();

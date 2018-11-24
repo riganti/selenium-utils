@@ -18,10 +18,8 @@ namespace Riganti.Selenium.Core
     /// </summary>
     public abstract class SeleniumTestExecutor : ISeleniumTest
     {
-
         private static object testSuiteRunnerLocker = new object();
         private static TestSuiteRunner testSuiteRunner = null;
-        //public virtual ISeleniumAssertion Assert { get; set; } = new SeleniumAssertion();
 
         public TestSuiteRunner TestSuiteRunner
         {
@@ -47,12 +45,19 @@ namespace Riganti.Selenium.Core
                             {
                                 testSuiteRunner.Dispose();
                             };
+                            Process.GetCurrentProcess().Exited += OnExited;
                         }
                     }
                 }
                 return testSuiteRunner;
             }
         }
+
+        private void OnExited(object sender, EventArgs e)
+        {
+            testSuiteRunner.Dispose();
+        }
+
         /// <summary>
         /// Creates configuration builder from seleniumconfig.json
         /// </summary>
@@ -66,12 +71,13 @@ namespace Riganti.Selenium.Core
 
             return builder;
         }
+
         /// <summary>
         /// Resolves path to seleniumconfig.json
         /// </summary>
         public virtual string ResolveConfigurationFilePath()
         {
-            // default 
+            // default
             var url = new Uri(Assembly.GetExecutingAssembly().CodeBase);
             var configurationPath = Path.Combine(Path.GetDirectoryName(Uri.UnescapeDataString(url.AbsolutePath)), "seleniumconfig.json");
             Trace.WriteLine($"Default selenium configuration location: {configurationPath}");
@@ -80,8 +86,8 @@ namespace Riganti.Selenium.Core
                 return configurationPath;
             }
             Trace.WriteLine($"File '{configurationPath}' does not exist.");
-            
-            // alternative #1 
+
+            // alternative #1
             configurationPath = new DirectoryInfo(Environment.CurrentDirectory).GetFiles("seleniumconfig.json", SearchOption.AllDirectories).First().FullName;
             if (File.Exists(configurationPath))
             {
@@ -95,6 +101,5 @@ namespace Riganti.Selenium.Core
         protected abstract TestSuiteRunner InitializeTestSuiteRunner(SeleniumTestsConfiguration configuration);
 
         public Guid CurrentScope { get; set; }
-
     }
 }

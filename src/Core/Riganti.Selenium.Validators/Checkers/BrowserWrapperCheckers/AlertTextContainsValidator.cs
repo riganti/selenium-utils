@@ -5,7 +5,6 @@ namespace Riganti.Selenium.Validators.Checkers.BrowserWrapperCheckers
     public class AlertTextContainsValidator : IValidator<IBrowserWrapper>
     {
         private readonly string expectedValue;
-        private readonly bool caseSensitive;
         private readonly bool trim;
 
         public AlertTextContainsValidator(string expectedValue, bool trim = true)
@@ -29,7 +28,6 @@ namespace Riganti.Selenium.Validators.Checkers.BrowserWrapperCheckers
                 alertText = alert.Text;
                 trimExpectedValue = expectedValue;
             }
-
 
             var isSucceeded = alertText != null && alertText.Contains(trimExpectedValue);
 

@@ -15,12 +15,8 @@ namespace Riganti.Selenium.Core
             this.testInstance = testInstance;
         }
 
-
-
         public IWebBrowser CurrentWebBrowser => testInstance.CurrentWebBrowser;
 
         public string BaseUrl => testInstance.TestConfiguration.BaseUrl;
-
-
     }
 }

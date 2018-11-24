@@ -11,7 +11,6 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
     {
         private static string pathToFirefoxBinary;
 
-
         public static FirefoxDriver CreateFirefoxDriver(LocalWebBrowserFactory factory)
         {
             if (!string.IsNullOrWhiteSpace(pathToFirefoxBinary))
@@ -21,7 +20,7 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
 
             try
             {
-                return new FirefoxDriver(GetFirefoxProfile());
+                return new FirefoxDriver(GetFirefoxOptions());
             }
             catch
             {
@@ -62,7 +61,7 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
             };
             return new FirefoxDriver(firefoxOptions);
         }
-        
+
         public static FirefoxProfile GetFirefoxProfile()
         {
             var profile = new FirefoxProfile();
@@ -73,5 +72,10 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
             return profile;
         }
 
+        public static FirefoxOptions GetFirefoxOptions()
+        {
+            var options = new FirefoxOptions { Profile = GetFirefoxProfile() };
+            return options;
+        }
     }
 }

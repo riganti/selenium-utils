@@ -29,7 +29,6 @@ namespace Selenium.Core.UnitTests
             browser = CreateMockedIBrowserWrapper();
         }
 
-
         [TestMethod, Timeout(5000), ExpectedException(typeof(WaitBlockException), AllowDerivedTypes = true)]
         public void BrowserWaitForTimeoutTest()
         {
@@ -55,13 +54,13 @@ namespace Selenium.Core.UnitTests
         {
             browser.WaitFor(new Action(() => throw new Exception("Condition is not valid.")), 2000, "test timeouted", checkInterval: 100);
         }
+
         [TestMethod, Timeout(5000)]
         public void BrowserWaitForTimeoutTest6()
         {
             var i = 0;
             browser.WaitFor(() =>
             {
-
                 if (i++ == 3)
                 {
                     return;
@@ -69,6 +68,7 @@ namespace Selenium.Core.UnitTests
                 throw new Exception("Not valid.");
             }, 2000, "test timeouted", checkInterval: 100);
         }
+
         #endregion Browser tests
 
         #region Element tests
@@ -85,7 +85,7 @@ namespace Selenium.Core.UnitTests
         {
             var element = new ElementWrapper(new MockIWebElement(), browser);
             var i = 0;
-            element.WaitFor(elm => i++ == 5, 2000, "test timeouted");
+            element.WaitFor(elm => i++ == 5, 2000, "test timeouted", checkInterval: 800);
         }
 
         [TestMethod, Timeout(5000)]
@@ -116,7 +116,6 @@ namespace Selenium.Core.UnitTests
             var i = 0;
             element.WaitFor((elm) =>
             {
-
                 if (i++ == 3)
                 {
                     return;
@@ -124,7 +123,7 @@ namespace Selenium.Core.UnitTests
                 throw new Exception("Not valid.");
             }, 2000, "test timeouted", checkInterval: 100);
         }
+
         #endregion Element tests
     }
-
 }
