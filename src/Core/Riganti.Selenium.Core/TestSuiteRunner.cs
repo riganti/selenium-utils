@@ -196,6 +196,10 @@ namespace Riganti.Selenium.Core
                 {
                     exceptions.AddRange(a.InnerExceptions);
                 }
+                else
+                {
+                    exceptions.Add(e);
+                }
                 throw new SeleniumTestFailedException(exceptions);
             }
         }

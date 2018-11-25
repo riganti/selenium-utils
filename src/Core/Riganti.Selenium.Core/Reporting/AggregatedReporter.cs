@@ -26,7 +26,10 @@ namespace Riganti.Selenium.Core.Reporting
         {
             this.reporters = reporters;
             this.reportingMetadataProvider = reportingMetadataProvider;
-            Tasks = new List<Task>() { new Task(async () => await SendResult()), new Task(async () => await SendResult()) };
+            Tasks = new List<Task>() {
+                new Task(async () => await SendResult()),
+                new Task(async () => await SendResult())
+            };
         }
 
         public List<Task> Tasks { get; set; }
