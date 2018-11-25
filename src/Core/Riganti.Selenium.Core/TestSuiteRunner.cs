@@ -64,7 +64,7 @@ namespace Riganti.Selenium.Core
             LoggerService = CreateLoggerService(SearchAssemblies);
             factories = CreateWebBrowserFactories();
             var reporters = CreateReporters();
-            Reporter = new AggregatedReporter(reporters, ReportingMetadataProvider);
+            Reporter = new AggregatedReporter(reporters, ReportingMetadataProvider, Configuration);
 
             this.LogInfo("RIGANTI Selenium-Utils Test framework initialized.");
             this.LogVerbose("WebBrowserFactories discovered: ");

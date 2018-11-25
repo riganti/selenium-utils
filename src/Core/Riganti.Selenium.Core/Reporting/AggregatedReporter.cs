@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Core.Abstractions.Reporting;
+using Riganti.Selenium.Core.Configuration;
+using Riganti.Selenium.Core.Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Selenium.Core.Reporting
 {
@@ -14,6 +16,7 @@ namespace Riganti.Selenium.Core.Reporting
     {
         private readonly IDictionary<string, ITestResultReporter> reporters;
         private readonly IReportingMetadataProvider reportingMetadataProvider;
+        private readonly SeleniumTestsConfiguration configuration;
         private static ConcurrentQueue<TestRunInputData> Queue { get; }
 
         static AggregatedReporter()
@@ -22,14 +25,18 @@ namespace Riganti.Selenium.Core.Reporting
         }
 
         public AggregatedReporter(IDictionary<string, ITestResultReporter> reporters,
-                IReportingMetadataProvider reportingMetadataProvider)
+            IReportingMetadataProvider reportingMetadataProvider, SeleniumTestsConfiguration configuration)
         {
             this.reporters = reporters;
             this.reportingMetadataProvider = reportingMetadataProvider;
-            Tasks = new List<Task>() {
-                new Task(async () => await SendResult()),
-                new Task(async () => await SendResult())
-            };
+            this.configuration = configuration;
+            if (configuration.Reporting.Parallel)
+            {
+                Tasks = new List<Task>() {
+                        new Task(async () => await SendResult()),
+                        new Task(async () => await SendResult())
+                   };
+            }
         }
 
         public List<Task> Tasks { get; set; }
@@ -59,7 +66,20 @@ namespace Riganti.Selenium.Core.Reporting
 
         private void EnqueueResult(TestRunInputData data)
         {
-            Queue.Enqueue(data);
+            if (configuration.Reporting.Parallel)
+            {
+                SendResultSync(data);
+            }
+            else
+            {
+                Queue.Enqueue(data);
+            }
+        }
+
+        private IEnumerable<TestRunInputResult> SendResultSync(TestRunInputData data)
+        {
+            var results = ReportTestResult(data).RunSync();
+            return results;
         }
 
         public void ReportSuccessfulTest(string testName, string callerFilePath, int callerLineNumber)
