@@ -4,7 +4,8 @@ using OpenQA.Selenium;
 
 namespace Riganti.Selenium.Core.Abstractions
 {
-    public interface IElementWrapperCollection<TElement, TBrowser> : ISeleniumWrapperCollection, IReadOnlyCollection<TElement> where TElement : IElementWrapper where TBrowser : IBrowserWrapper
+    public interface IElementWrapperCollection<TElement, TBrowser> : ISeleniumWrapperCollection,
+        IReadOnlyCollection<TElement> where TElement : IElementWrapper where TBrowser : IBrowserWrapper
     {
         TElement this[int index] { get; set; }
 
@@ -13,7 +14,10 @@ namespace Riganti.Selenium.Core.Abstractions
 
         bool Contains(TElement item);
         TElement ElementAt(int index);
-        IElementWrapperCollection<TElement, TBrowser> FindElements(string selector, Func<string, By> tmpSelectMethod = null);
+
+        IElementWrapperCollection<TElement, TBrowser> FindElements(string selector,
+            Func<string, By> tmpSelectMethod = null);
+
         TElement First(string selector, Func<string, By> tmpSelectMethod = null);
         TElement FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null);
         void ForEach(Action<TElement> action);
@@ -28,7 +32,6 @@ namespace Riganti.Selenium.Core.Abstractions
         IElementWrapperCollection<TElement, TBrowser> ThrowIfEmptyOrMoreThanOne();
         IElementWrapperCollection<TElement, TBrowser> ThrowIfSequenceContainsMoreThanOneElement();
         IElementWrapperCollection<TElement, TBrowser> ThrowIfSequenceEmpty();
-
     }
 
     public interface ISeleniumWrapperCollection : ISeleniumWrapper

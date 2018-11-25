@@ -8,7 +8,8 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
         {
         }
 
-        public SeleniumTestConfigurationException(string message, Exception innerException) : base(message, innerException)
+        public SeleniumTestConfigurationException(string message, Exception innerException) : base(message,
+            innerException)
         {
         }
     }

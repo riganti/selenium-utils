@@ -23,16 +23,20 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
             get
             {
                 var useFullStack = new StackTrace(this, true).GetFrames()?
-                                       .Any(s => s.GetMethod().GetCustomAttributes<FullStackTraceAttribute>().Any()) ?? false;
+                                       .Any(s => s.GetMethod().GetCustomAttributes<FullStackTraceAttribute>().Any()) ??
+                                   false;
                 if (useFullStack)
                 {
                     return FullStackTrace;
                 }
 
-                var allFrames = new StackTrace(this, true).GetFrames()?.Select(s => new { Frame = s, s.GetMethod()?.ReflectedType }).Where(frame => frame.ReflectedType?.Namespace?.Contains("Riganti.Selenium") != true).ToList();
+                var allFrames = new StackTrace(this, true).GetFrames()
+                    ?.Select(s => new {Frame = s, s.GetMethod()?.ReflectedType}).Where(frame =>
+                        frame.ReflectedType?.Namespace?.Contains("Riganti.Selenium") != true).ToList();
                 if (allFrames == null) return "";
 
-                var lastIndex = allFrames.LastIndexOf(allFrames.LastOrDefault(s => s.ReflectedType.FullName?.Contains("System.Runtime") == true));
+                var lastIndex = allFrames.LastIndexOf(allFrames.LastOrDefault(s =>
+                    s.ReflectedType.FullName?.Contains("System.Runtime") == true));
                 var lastIndex2 = -1;
 
                 for (int i = lastIndex; i > -1; i--)
@@ -90,6 +94,7 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
                 sb.AppendLine(InnerException.ToString());
                 sb.AppendLine(" --- End of inner exception --- ");
             }
+
             sb.AppendLine(StackTrace);
 
             return sb.ToString();
@@ -123,6 +128,7 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
                         {
                             AppendField(sb, $"{result.Key}.Exception ", failedResult.Exception?.Message);
                         }
+
                         continue;
                     }
 

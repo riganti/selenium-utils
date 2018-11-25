@@ -35,11 +35,13 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
         private string GetStackTrace()
         {
             var useFullStack = new StackTrace(this, true).GetFrames()?
-                .Any(s => s.GetMethod().GetCustomAttributes<FullStackTraceAttribute>().Any()) ?? false;
+                                   .Any(s => s.GetMethod().GetCustomAttributes<FullStackTraceAttribute>().Any()) ??
+                               false;
             if (useFullStack)
             {
                 return FullStackTrace;
             }
+
             return InnerExceptions?.FirstOrDefault()?.StackTrace ?? FullStackTrace;
         }
 
@@ -60,6 +62,7 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
             {
                 l.AddRange(UnwrapExceptions(exp.InnerExceptions));
             }
+
             return l;
         }
 
@@ -77,6 +80,7 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
         {
             return RenderMetadata();
         }
+
         private string RenderMetadata()
         {
             var sb = new StringBuilder();
@@ -87,11 +91,12 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
             RenderInnerAggregatedExceptions(sb);
 
             return sb.ToString();
-
         }
+
         private void RenderInnerCheckResults(StringBuilder sb)
         {
-            RenderCollectionIfNotEmpty(sb, InnerCheckResults, "Inner check results", (index, result) => $"Inner check result #{index}: '{result}'.");
+            RenderCollectionIfNotEmpty(sb, InnerCheckResults, "Inner check results",
+                (index, result) => $"Inner check result #{index}: '{result}'.");
         }
 
         private void RenderStackTrace(StringBuilder sb, int i, Exception exception)
@@ -117,11 +122,11 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
             {
                 //top exception = this
                 sb.AppendLine(exception.StackTrace);
-
             }
         }
 
-        private void RenderCollectionIfNotEmpty<T>(StringBuilder sb, T[] source, string collectionName, Func<int, T, string> createMessage)
+        private void RenderCollectionIfNotEmpty<T>(StringBuilder sb, T[] source, string collectionName,
+            Func<int, T, string> createMessage)
         {
             if (source.Any())
             {
@@ -136,7 +141,6 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
 
         private void RenderInnerAggregatedExceptions(StringBuilder sb)
         {
-
             // add all exceptions to report
             if (InnerExceptions != null && InnerExceptions.Count > 0)
             {
@@ -169,14 +173,12 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
             if (testedObject != null)
             {
                 builder.AppendLine(message);
-
             }
         }
+
         private void RenderMessage(StringBuilder sb)
         {
             RenderWhenNotNull(sb, ExceptionMessage, ExceptionMessage);
         }
-
-
     }
 }

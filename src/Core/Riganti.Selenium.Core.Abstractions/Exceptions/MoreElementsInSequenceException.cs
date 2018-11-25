@@ -18,7 +18,8 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
         {
         }
 
-        protected MoreElementsInSequenceException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected MoreElementsInSequenceException(SerializationInfo info, StreamingContext context) : base(info,
+            context)
         {
         }
     }

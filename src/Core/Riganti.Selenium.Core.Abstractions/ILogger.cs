@@ -3,7 +3,6 @@ using System.Diagnostics;
 
 namespace Riganti.Selenium.Core.Abstractions
 {
-
     /// <summary>
     /// Defines the interface through which the user can log events into some stream.
     /// </summary>
@@ -35,6 +34,5 @@ namespace Riganti.Selenium.Core.Abstractions
         /// This method is called when test finished.
         /// </summary>
         void OnTestFinished(ITestContext instanceContext);
-
     }
 }

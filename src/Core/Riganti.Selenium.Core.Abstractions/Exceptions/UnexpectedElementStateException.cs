@@ -18,7 +18,8 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
         {
         }
 
-        protected UnexpectedElementStateException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected UnexpectedElementStateException(SerializationInfo info, StreamingContext context) : base(info,
+            context)
         {
         }
     }
