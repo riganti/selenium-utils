@@ -37,9 +37,15 @@ namespace Riganti.Selenium.Core.Abstractions
 
         /// <summary>
         /// Clears input values. 
+        ///
+        /// Note: Browser internally fires onchange event!
         /// </summary>
         IElementWrapper Clear();
 
+        /// <summary>
+        /// Removes content of element by performing sequence of keyboard strokes.
+        /// </summary>
+        IElementWrapper ClearInputByKeyboard();
         /// <summary>
         /// Performs click on this element.
         /// </summary>

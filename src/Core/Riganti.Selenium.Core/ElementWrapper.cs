@@ -512,10 +512,28 @@ return false;
 
         /// <summary>
         /// Removes content of element.
+        ///
+        /// Note: Browser internally fires onchange event!
         /// </summary>
         public IElementWrapper Clear()
         {
             WebElement.Clear();
+            Wait();
+            return this;
+        }
+        /// <summary>
+        /// Removes content of element by performing sequence of keyboard strokes.
+        /// </summary>
+        public IElementWrapper ClearInputByKeyboard()
+        {
+            var navigator = new Actions(BrowserWrapper.Driver);
+            navigator.Click(WebElement)
+                .SendKeys(Keys.End)
+                .KeyDown(Keys.Shift)
+                .SendKeys(Keys.Home)
+                .KeyUp(Keys.Shift)
+                .SendKeys(Keys.Backspace)
+                .Perform();
             Wait();
             return this;
         }
