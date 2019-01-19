@@ -1,0 +1,7 @@
+﻿@viewModel Riganti.Selenium.DotVVM.Samples.ViewModels.Spa.SpaPage2ViewModel, Riganti.Selenium.DotVVM.Samples
+@masterPage  Views/Spa/spa.dotmaster
+
+<dot:Content ContentPlaceHolderID="MainContent">
+    Content 2
+    <dot:RouteLink RouteName="Spa_SpaPage1" Text="Page 1" />
+</dot:Content>

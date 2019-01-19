@@ -19,6 +19,9 @@
     </ItemGroup>
     <ItemGroup>
         <None Remove="dotvvm_serialized_config.json.tmp" />
+        <None Remove="Views\Spa\spa.dotmaster" />
+        <None Remove="Views\Spa\SpaPage1.dothtml" />
+        <None Remove="Views\Spa\SpaPage2.dothtml" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="wwwroot\" />

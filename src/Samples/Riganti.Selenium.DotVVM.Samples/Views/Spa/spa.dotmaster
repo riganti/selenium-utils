@@ -1,0 +1,16 @@
+﻿@viewModel Riganti.Selenium.DotVVM.Samples.ViewModels.Spa.SpaViewModel, Riganti.Selenium.DotVVM.Samples
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <dot:TextBox Text="text" />
+    <div>
+        <dot:SpaContentPlaceHolder ID="MainContent" />
+    </div>
+</body>
+</html>
