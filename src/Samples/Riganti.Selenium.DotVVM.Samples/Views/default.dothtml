@@ -19,5 +19,17 @@
 
     <dot:Button Text="Wait button" Click="{command: Wait()}" ID="WaitButton" ClientIDMode="Static" />
     <dot:Literal Text="{value: LabelText}" ID="LabelText" ClientIDMode="Static" />
+	
+	<script>
+	console.log("log");
+	console.warn("warn");
+	console.error("error");
+	console.info("info");
+
+
+	throw "asd";
+	</script>
+
+
 </body>
 </html>

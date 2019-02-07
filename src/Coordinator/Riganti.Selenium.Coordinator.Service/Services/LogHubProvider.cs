@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using System;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging.Console;
@@ -8,13 +10,14 @@ namespace Riganti.Selenium.Coordinator.Service.Services
 {
     public class LogHubProvider : ILoggerProvider
     {
-        private readonly IHubContext<LogHub> hubContext;
+        private readonly Func<IServiceProvider> serviceProviderAccessor;
+
 
         public LogLevel Level { get; set; } = LogLevel.Information;
 
-        public LogHubProvider(IHubContext<LogHub> hubContext)
+        public LogHubProvider(Func<IServiceProvider> serviceProviderAccessor)
         {
-            this.hubContext = hubContext;
+            this.serviceProviderAccessor = serviceProviderAccessor;
         }
 
         public ILogger CreateLogger(string categoryName)
@@ -24,7 +27,7 @@ namespace Riganti.Selenium.Coordinator.Service.Services
                 return NullLogger.Instance;
             }
 
-            return new LogHubLogger(categoryName, Level, hubContext);
+            return new LogHubLogger(categoryName, Level, serviceProviderAccessor().GetService<IHubContext<LogHub>>());
         }
 
         public void Dispose()

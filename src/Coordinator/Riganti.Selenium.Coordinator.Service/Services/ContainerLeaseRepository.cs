@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
@@ -13,7 +15,7 @@ namespace Riganti.Selenium.Coordinator.Service.Services
 {
     public class ContainerLeaseRepository : IDisposable
     {
-
+        private HttpClient httpClient = new HttpClient();
         private readonly IOptions<AppConfiguration> options;
         private readonly DockerProvisioningService dockerProvisioningService;
         private readonly ILogger<ContainerLeaseRepository> logger;
@@ -36,10 +38,10 @@ namespace Riganti.Selenium.Coordinator.Service.Services
             this.hubContext = hubContext;
 
             this.timer = new Timer(DropExpiredLocks, null, LeaseTimeout, LeaseTimeout);
-            
+
             lock (locker)
             {
-                leases = options.Value.Browsers.ToDictionary(b => b.BrowserType, b => Enumerable.Range(0, b.MaxInstances).Select(i => (ContainerLeaseData) null).ToList());
+                leases = options.Value.Browsers.ToDictionary(b => b.BrowserType, b => Enumerable.Range(0, b.MaxInstances).Select(i => (ContainerLeaseData)null).ToList());
             }
         }
 
@@ -77,16 +79,17 @@ namespace Riganti.Selenium.Coordinator.Service.Services
             try
             {
                 // start container
-                var container = await dockerProvisioningService.StartContainer(options.Value.GetBrowser(browserType).ImageName, browserType, index);
+                var container = await dockerProvisioningService.StartContainer(GetImageName(browserType), browserType, index);
 
                 // return lease
                 lease.ContainerId = container.ContainerId;
                 lease.Url = container.Url;
+                logger.LogInformation($"Warm up started for browser {browserType} (ID={lease.LeaseId}).");
+                await WarmupBrowserHub(lease);
+
                 lease.ExpirationDateUtc = DateTime.UtcNow + LeaseTimeout;
                 logger.LogInformation($"Lock for browser {browserType} (ID={lease.LeaseId}) acquired and valid until {lease.ExpirationDateUtc}.");
-
                 LogHub.Refresh(hubContext);
-                
                 return lease;
             }
             catch (Exception ex)
@@ -95,6 +98,36 @@ namespace Riganti.Selenium.Coordinator.Service.Services
                 throw;
             }
 
+        }
+
+        private async Task WarmupBrowserHub(ContainerLeaseData lease)
+        {
+            var url = lease.Url;
+            if (url == null) throw new ArgumentException(nameof(url));
+            var builder = new UriBuilder(url) { Path = "/wd/hub" };
+            var ping = builder.Uri;
+
+            for (int i = 0; i < 200; i++)
+            {
+                try
+                {
+                    var data = await httpClient.GetAsync(ping);
+                    if ((int)data.StatusCode < 400)
+                    {
+                        logger.LogInformation($"Browser warmed up (WarmIndex: {i*50} ms |ID={lease.LeaseId}).");
+                        return;
+                    }
+                }
+                catch (Exception e)
+                {
+                    await Task.Delay(50);
+                }
+            }
+        }
+
+        private string GetImageName(string browserType)
+        {
+            return options.Value.GetBrowser(browserType).ImageName;
         }
 
         public Task<ContainerLeaseData> RenewLease(Guid leaseId)
@@ -142,7 +175,7 @@ namespace Riganti.Selenium.Coordinator.Service.Services
                     if (index >= 0)
                     {
                         lease = browser.Value[index];
-                        
+
                         // drop lease
                         browser.Value[index] = null;
                         break;

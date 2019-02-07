@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Logging.Console;
 using Riganti.Selenium.Coordinator.Service.Services;
 using Riganti.Selenium.Coordinator.Service.Data;
@@ -35,6 +37,7 @@ namespace Riganti.Selenium.Coordinator.Service
         }
 
         public IConfigurationRoot Configuration { get; }
+        public IServiceProvider ServiceProvider { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -49,30 +52,30 @@ namespace Riganti.Selenium.Coordinator.Service
             services.AddDotVVM<DotvvmStartup>();
 
             services.AddMvc();
+            services.AddLogging(s =>
+            {
+                s.AddConsole();
+                // add SignalR logger
+                s.AddProvider(new LogHubProvider(() => ServiceProvider)
+                {
+                    Level = LogLevel.Debug
+                });
+            });
 
             services.AddSignalR();
-            
+
             services.AddSingleton<ContainerLeaseRepository>();
             services.AddSingleton<DockerProvisioningService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            // add console logger
-            loggerFactory.AddConsole();
-
-            // add SignalR logger
-            var logHubContext = app.ApplicationServices.GetService<IHubContext<LogHub>>();
-            loggerFactory.AddProvider(new LogHubProvider(logHubContext)
-            {
-                Level = env.IsDevelopment() ? LogLevel.Debug : LogLevel.Information
-            });
-
+            this.ServiceProvider = app.ApplicationServices;
             // use SignalR
             app.UseSignalR(options =>
             {
-                options.MapHub<LogHub>("log");
+                options.MapHub<LogHub>("/log");
             });
 
             // use DotVVM
@@ -80,7 +83,7 @@ namespace Riganti.Selenium.Coordinator.Service
 
             // use ASP.NET Core
             app.UseMvc();
-            
+
 
             // use static files
             app.UseStaticFiles(new StaticFileOptions

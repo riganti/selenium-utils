@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-nightly:2.0
+FROM microsoft/aspnetcore-build
 ARG source
 WORKDIR /app
 EXPOSE 80

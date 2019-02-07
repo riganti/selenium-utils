@@ -8,6 +8,15 @@ namespace Riganti.Selenium.Coordinator.Service.Hubs
 {
     public class LogHub : Hub
     {
+        public override async Task OnConnectedAsync()
+        {
+            await this.Clients.All.SendAsync("addMessage", "Client connected");
+        }
+
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            return base.OnDisconnectedAsync(exception);
+        }
 
         public static void AddMessage(IHubContext<LogHub> hubContext, string message, bool isError)
         {

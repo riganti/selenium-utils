@@ -1,0 +1,66 @@
+﻿@viewModel Riganti.Selenium.Coordinator.Service.ViewModels.SettingsViewModel, Riganti.Selenium.Coordinator.Service
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Selenium Coordinator Dashboard</title>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <%--<script src="~/lib/signalr-client/signalr-client.js"></script>--%>
+    <script src="~/lib/signalr-client/signalr.js"></script>
+</head>
+<body>
+    <div style="padding-top:10px;padding-right:15px; float: right;">
+        <dot:RouteLink RouteName="Default">
+            Dashboard
+            </dot:LinkButton>
+    </div>
+    <div class="container-fluid">
+        <h2>Selenium Coordinator Settings</h2>
+        <h3>Registered Browsers</h3>
+        <div class="row">
+            <div class="col-lg-3">
+                <dot:Repeater DataSource="{value:  Browsers}">
+                    <h4>{{value: BrowserType}}</h4>
+                    <table class="table-striped table">
+                        <tr>
+                            <td>Image name: </td>
+                            <td>{{value: ImageName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Maximum instances: </td>
+                            <td>{{value: MaxInstances}}</td>
+                        </tr>
+                        <tr>
+                            <td>Is available: </td>
+                            <td>{{value: IsAvailable}}</td>
+                        </tr>
+                    </table>
+                </dot:Repeater>
+
+            </div>
+            <div class="col-lg-3">
+                <h4>Docker settings</h4>
+                <table class="table-striped table">
+                    <tr>
+                        <td><dot:Button class="btn btn-primary" Text="Download missing images" Click="{command: Download()}" /> </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Docker URL: </td>
+                        <td>{{value: DockerUrl}}</td>
+                    </tr>
+                    <tr>
+                        <td>External url pattern: </td>
+                        <td>{{value: ExternalUrlPattern}}</td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

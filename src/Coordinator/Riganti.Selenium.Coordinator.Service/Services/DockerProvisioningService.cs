@@ -13,17 +13,17 @@ namespace Riganti.Selenium.Coordinator.Service.Services
 {
     public class DockerProvisioningService
     {
-        private readonly IOptions<AppConfiguration> options;
+        private readonly AppConfiguration appConfig;
         private readonly ILogger<DockerProvisioningService> logger;
         private readonly DockerClient client;
 
 
-        public DockerProvisioningService(IOptions<AppConfiguration> options, ILogger<DockerProvisioningService> logger)
+        public DockerProvisioningService(IOptions<AppConfiguration> appConfig, ILogger<DockerProvisioningService> logger)
         {
-            this.options = options;
+            this.appConfig = appConfig.Value;
             this.logger = logger;
 
-            var config = new DockerClientConfiguration(new Uri(options.Value.DockerApiUrl));
+            var config = new DockerClientConfiguration(new Uri(this.appConfig.DockerApiUrl));
             client = config.CreateClient();
         }
 
@@ -68,7 +68,7 @@ namespace Riganti.Selenium.Coordinator.Service.Services
             return new ContainerInfo()
             {
                 ContainerId = container.ID,
-                Url = string.Format(options.Value.ExternalUrlPattern, port)
+                Url = string.Format(appConfig.ExternalUrlPattern, port)
             };
         }
 
@@ -134,10 +134,64 @@ namespace Riganti.Selenium.Coordinator.Service.Services
                 });
 
                 logger.LogDebug($"Container {browserType}({instanceId} created (ID={createdContainer.ID}).");
-                foreach (var warning in createdContainer.Warnings)
+
+                if (createdContainer.Warnings != null)
                 {
-                    logger.LogWarning($"Container {createdContainer.ID} warning: " + warning);
+                    foreach (var warning in createdContainer.Warnings)
+                    {
+                        logger.LogWarning($"Container {createdContainer.ID} warning: " + warning);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error calling Docker API!");
+                throw;
+            }
+        }
+        private async Task<IList<ImagesListResponse>> ListImages()
+        {
+            logger.LogDebug($"Looking for images ");
+
+            try
+            {
+                var images = await client.Images.ListImagesAsync(new ImagesListParameters()
+                {
+                    All = true
+                });
+                return images;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error calling Docker API!");
+                throw;
+            }
+        }
+        public async Task<List<AvailableBrowserTypeImage>> GetAvailableBrowsers()
+        {
+            var browsers = this.appConfig.Browsers.Select(s => new AvailableBrowserTypeImage() { BrowserType = s.BrowserType, ImageName = s.ImageName, IsAvailable = false, MaxInstances = s.MaxInstances }).ToList();
+            var images = await ListImages();
+            foreach (var browser in browsers)
+            {
+                if (images.Any(s => s.RepoTags.Contains(browser.ImageName))) browser.IsAvailable = true;
+            }
+
+            return browsers;
+        }
+        public async Task TryPullImages(string imageName)
+        {
+            logger.LogDebug($"Looking for image {imageName}");
+            try
+            {
+                var progress = new Progress<JSONMessage>();
+                progress.ProgressChanged += (sender, message) =>
+                {
+                    logger.LogInformation($"Downloading image {imageName}: {message.ProgressMessage}");
+                };
+                 await client.Images.CreateImageAsync(new ImagesCreateParameters()
+                {
+                    FromImage = imageName
+                }, new AuthConfig(), progress);
             }
             catch (Exception ex)
             {

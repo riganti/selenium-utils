@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Coordinato
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Coordinator.Client.Tests", "Coordinator\Riganti.Selenium.Coordinator.Client.Tests\Riganti.Selenium.Coordinator.Client.Tests.csproj", "{137023D1-4C00-4B3B-A1D4-892DF240C3E5}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "Coordinator\docker-compose.dcproj", "{0E4811A9-487A-4E75-A4CC-0F3467D5D3E9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Core.UnitTests", "Tests\Riganti.Selenium.Core.UnitTests\Riganti.Selenium.Core.UnitTests.csproj", "{9398E1E2-4679-47B9-9E64-2256713C5DFC}"
 EndProject
