@@ -90,6 +90,9 @@ namespace Riganti.Selenium.Core
             return CheckTagName(expectedTagName, failureMessage);
         }
 
+
+    
+
         /// <summary>
         /// Checks if this element contains other element(s) selected by <see cref="cssSelector"/>.
         /// </summary>
@@ -219,14 +222,23 @@ namespace Riganti.Selenium.Core
                 caseSensitive, trimValue, failureMessage));
         }
 
-        public virtual IElementWrapperFluentApi CheckClassAttribute(Func<string, bool> expression, string failureMessage = "")
+        public virtual IElementWrapperFluentApi CheckClassAttribute(Func<string, bool> expression, string failureMessage = null)
         {
             return CheckAttribute("class", expression, failureMessage);
         }
-
-        public virtual IElementWrapperFluentApi CheckClassAttribute(string value, bool caseInsensitive = true, bool trimValue = true)
+        public IElementWrapperFluentApi CheckClassAttribute(string value, string failureMessage = null, bool caseInsensitive = true,
+            bool trimValue = true)
         {
-            return CheckAttribute("class", value, caseInsensitive, trimValue);
+            return EvaluateElementCheck<UnexpectedElementStateException>(new ClassAttributeValidator(value, !caseInsensitive, trimValue, failureMessage));
+        }
+
+        public virtual IElementWrapperFluentApi CheckClassAttribute(string value, bool caseInsensitive = true, bool trimValue = true, string failureMessage = null)
+        {
+            return EvaluateElementCheck<UnexpectedElementStateException>(new ClassAttributeValidator(value, !caseInsensitive, trimValue, failureMessage));
+        }
+        public virtual IElementWrapperFluentApi CheckClassAttribute(string[] value, string failureMessage = null, bool caseInsensitive = true, bool trimValue = true)
+        {
+            return EvaluateElementCheck<UnexpectedElementStateException>(new ClassAttributeValidator(value, !caseInsensitive, trimValue, failureMessage));
         }
 
         public virtual IElementWrapperFluentApi CheckIfHasClass(string value, bool caseInsensitive = true)
@@ -466,7 +478,7 @@ namespace Riganti.Selenium.Core
         {
             return EvaluateElementCheck<UnexpectedElementStateException>(new ContainsTextValidator());
         }
-        
+
 
         public virtual IElementWrapperFluentApi CheckIfIsNotEnabled()
         {
@@ -526,7 +538,7 @@ namespace Riganti.Selenium.Core
         }
 
         /// <inheritdoc />
-        public new IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> Children =>base.Children.Convert<IElementWrapperFluentApi, IBrowserWrapperFluentApi>();
+        public new IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> Children => base.Children.Convert<IElementWrapperFluentApi, IBrowserWrapperFluentApi>();
 
         IElementWrapperFluentApi IElementWrapperFluentApi.WaitFor(Action<IElementWrapperFluentApi> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 30)
         {

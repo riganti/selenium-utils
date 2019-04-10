@@ -44,7 +44,7 @@ namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase));
                 
             if (!isSucceeded){
-                return new CheckResult(failureMessage ?? $"Attribute contains unexpected value. Expected value: '{string.Concat("|", tempAllowedValues)}', Provided value: '{attribute}' \r\n Element selector: {wrapper.FullSelector} \r\n");
+                return new CheckResult(failureMessage ?? $"Attribute contains unexpected value. Expected value: '{(tempAllowedValues.Length == 1 ? tempAllowedValues[0] : string.Concat("|", tempAllowedValues))}', Provided value: '{attribute}' \r\n Element selector: {wrapper.FullSelector} \r\n");
             }
             return CheckResult.Succeeded;
         }

@@ -1,11 +1,11 @@
 ﻿{
   "factories": {
-    //"chrome:fast": {}
-    "chrome:coordinator": {
-      "options": {
-        "coordinatorUrl": "http://localhost:62242/"
-      }
-    }
+    "chrome:fast": {}
+    //"chrome:coordinator": {
+    //  "options": {
+    //    "coordinatorUrl": "http://localhost:62242/"
+    //  }
+    //}
   },
   "baseUrls": [
     "http://localhost:6277/"

@@ -9,13 +9,14 @@ namespace Riganti.Selenium.Core
     {
         new IElementWrapperFluentApi ParentElement { get; }
         new IBrowserWrapperFluentApi BrowserWrapper { get; }
-        
+
         IElementWrapperFluentApi CheckAttribute(string attributeName, Func<string, bool> expression, string failureMessage = null);
         IElementWrapperFluentApi CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null);
         IElementWrapperFluentApi CheckAttribute(string attributeName, string[] allowedValues, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null);
         IElementWrapperFluentApi CheckCssStyle(string styleName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null);
-        IElementWrapperFluentApi CheckClassAttribute(Func<string, bool> expression, string failureMessage = "");
-        IElementWrapperFluentApi CheckClassAttribute(string value, bool caseInsensitive = true, bool trimValue = true);
+        IElementWrapperFluentApi CheckClassAttribute(Func<string, bool> expression, string failureMessage = null);
+        IElementWrapperFluentApi CheckClassAttribute(string[] allowedValues, string failureMessage = null, bool caseInsensitive = true, bool trimValue = true);
+        IElementWrapperFluentApi CheckClassAttribute(string value, string failureMessage = null, bool caseInsensitive = true, bool trimValue = true);
         IElementWrapperFluentApi CheckIfContainsElement(string cssSelector, Func<string, By> tmpSelectMethod = null);
         IElementWrapperFluentApi CheckIfContainsText();
         IElementWrapperFluentApi CheckIfTextEmpty();
@@ -78,7 +79,7 @@ namespace Riganti.Selenium.Core
         IElementWrapperFluentApi WaitFor(Action<IElementWrapperFluentApi> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 30);
         IElementWrapperFluentApi WaitFor(Func<IElementWrapperFluentApi, bool> condition, int maxTimeout, string failureMessage, bool ignoreCertainException = true, int checkInterval = 30);
 
-        new IElementWrapperCollection<IElementWrapperFluentApi,IBrowserWrapperFluentApi> Children { get; }
-        new IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi>  FindElements(string selector, Func<string, By> tmpSelectMethod = null);
+        new IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> Children { get; }
+        new IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> FindElements(string selector, Func<string, By> tmpSelectMethod = null);
     }
 }
