@@ -8,7 +8,7 @@
     <AssemblyVersion>2.0.5</AssemblyVersion>
     <FileVersion>2.0.5</FileVersion>
     <Description>Integration of Riganti.Selenium.DotVVM for DotVVM Framework.</Description>
-    <Version>2.0.5-preview01-final</Version>
+    <Version>2.0.5-preview02-final</Version>
     <PackageProjectUrl>https://github.com/riganti/selenium-utils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/riganti/selenium-utils</RepositoryUrl>
     <PackageTags>selenium ui tests riganti ci dotvvm</PackageTags>

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-    <Version>2.0.5-preview01-final</Version>
+    <Version>2.0.5-preview02-final</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
