@@ -4,7 +4,7 @@ using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
 {
-    public class ValidatorAttributeValidator : IValidator<IElementWrapper>
+    public class AttributeValuesValidator : IValidator<IElementWrapper>
     {
         private readonly string[] allowedValues;
         private readonly string attributeName;
@@ -12,7 +12,7 @@ namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
         private bool trimValue;
         private readonly string failureMessage;
 
-        public ValidatorAttributeValidator(string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
+        public AttributeValuesValidator(string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
             this.allowedValues = new[] {value};
             this.attributeName = attributeName;
@@ -21,7 +21,7 @@ namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
             this.failureMessage = failureMessage;
         }
 
-        public ValidatorAttributeValidator(string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
+        public AttributeValuesValidator(string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
 
             this.allowedValues = allowedValues;
@@ -44,7 +44,7 @@ namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase));
                 
             if (!isSucceeded){
-                return new CheckResult(failureMessage ?? $"Attribute contains unexpected value. Expected value: '{(tempAllowedValues.Length == 1 ? tempAllowedValues[0] : string.Concat("|", tempAllowedValues))}', Provided value: '{attribute}' \r\n Element selector: {wrapper.FullSelector} \r\n");
+                return new CheckResult(failureMessage ?? $"Attribute contains unexpected value. Expected value: '{(tempAllowedValues.Length == 1 ? tempAllowedValues[0] : string.Join("|", tempAllowedValues))}', Provided value: '{attribute}' \r\n Element selector: {wrapper.FullSelector} \r\n");
             }
             return CheckResult.Succeeded;
         }

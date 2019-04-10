@@ -206,13 +206,13 @@ namespace Riganti.Selenium.Core
 
         public virtual IElementWrapperFluentApi CheckAttribute(string attributeName, string value, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new ValidatorAttributeValidator(attributeName, value,
+            return EvaluateElementCheck<UnexpectedElementStateException>(new AttributeValuesValidator(attributeName, value,
                 caseInsensitive, trimValue, failureMessage));
         }
 
         public virtual IElementWrapperFluentApi CheckAttribute(string attributeName, string[] allowedValues, bool caseInsensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            return EvaluateElementCheck<UnexpectedElementStateException>(new ValidatorAttributeValidator(attributeName, allowedValues,
+            return EvaluateElementCheck<UnexpectedElementStateException>(new AttributeValuesValidator(attributeName, allowedValues,
                 caseInsensitive, trimValue, failureMessage));
         }
 

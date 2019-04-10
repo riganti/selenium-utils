@@ -215,13 +215,13 @@ namespace Riganti.Selenium.Core
 
         public static void Attribute(IElementWrapper wrapper, string attributeName, string value, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var checkAttribute = new ValidatorAttributeValidator(attributeName, value, caseSensitive, trimValue, failureMessage);
+            var checkAttribute = new AttributeValuesValidator(attributeName, value, caseSensitive, trimValue, failureMessage);
             EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, checkAttribute);
         }
 
         public static void Attribute(IElementWrapper wrapper, string attributeName, string[] allowedValues, bool caseSensitive = false, bool trimValue = true, string failureMessage = null)
         {
-            var checkAttribute = new ValidatorAttributeValidator(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
+            var checkAttribute = new AttributeValuesValidator(attributeName, allowedValues, caseSensitive, trimValue, failureMessage);
             EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, checkAttribute);
         }
 
