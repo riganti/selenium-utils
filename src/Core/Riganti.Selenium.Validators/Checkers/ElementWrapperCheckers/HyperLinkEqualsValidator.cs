@@ -6,14 +6,17 @@ namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
 {
     public class HyperLinkEqualsValidator : IValidator<IElementWrapper>
     {
+        private bool strictQueryStringParamsOrder;
+        private bool checkQueryStringParams;
         private readonly string url;
 
         private readonly UrlKind kind;
 
         private readonly UriComponents finalComponent;
 
-        public HyperLinkEqualsValidator(string url, UrlKind kind, params UriComponents[] components)
+        public HyperLinkEqualsValidator(string url, UrlKind kind, bool strictQueryStringParamsOrder, params UriComponents[] components)
         {
+            this.strictQueryStringParamsOrder = strictQueryStringParamsOrder;
             this.url = url;
             this.kind = kind;
             if (components.Length == 0)
@@ -24,6 +27,19 @@ namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
             UriComponents tempComponent = components[0];
             components.ToList().ForEach(s => tempComponent |= s);
             finalComponent = tempComponent;
+
+            if (this.strictQueryStringParamsOrder == false && (finalComponent & UriComponents.Query) > 0)
+            {
+                checkQueryStringParams = true;
+                finalComponent = finalComponent & ~UriComponents.Query;
+            }
+            else if (this.strictQueryStringParamsOrder == false && (finalComponent & UriComponents.PathAndQuery) > 0)
+            {
+                checkQueryStringParams = true;
+                finalComponent = finalComponent & ~UriComponents.PathAndQuery;
+                finalComponent = finalComponent | UriComponents.Path;
+            }
+
         }
 
         public CheckResult Validate(IElementWrapper wrapper)
@@ -50,6 +66,14 @@ namespace Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers
             var expectedHref = new Uri(tempUrl);
             var isSucceeded = Uri.Compare(providedHref, expectedHref, finalComponent, UriFormat.SafeUnescaped,
                                   StringComparison.OrdinalIgnoreCase) == 0;
+
+            // check query string without exact order
+            if (checkQueryStringParams)
+            {
+                var urlQueryParts = providedHref.Query.Trim('?').Split('&');
+                isSucceeded = expectedHref.Query.Trim('?').Split('&').All(s => urlQueryParts.Contains(s));
+            }
+
             return isSucceeded ? CheckResult.Succeeded : new CheckResult($"Link '{wrapper.FullSelector}' provided value '{providedHref}' of attribute href. Provided value does not match with expected value '{url}'.");
         }
     }

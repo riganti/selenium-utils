@@ -303,7 +303,7 @@ namespace Riganti.Selenium.Core
         public IBrowserWrapperFluentApi CheckIfHyperLinkEquals(string selector, string url, UrlKind kind, params UriComponents[] components)
         {
             var elements = FindElements(selector);
-            var validator = new HyperLinkEqualsValidator(url, kind, components);
+            var validator = new HyperLinkEqualsValidator(url, kind, true, components);
             var runner = new AllOperationRunner<IElementWrapper>(elements);
             runner.Evaluate<UnexpectedElementStateException>(validator);
 

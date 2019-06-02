@@ -138,10 +138,21 @@ namespace Riganti.Selenium.Core
 
         public static void HyperLinkEquals(IElementWrapper wrapper, string url, UrlKind kind, params UriComponents[] components)
         {
-            var hyperLinkEquals = new HyperLinkEqualsValidator(url, kind, components);
+            var hyperLinkEquals = new HyperLinkEqualsValidator(url, kind, true, components);
             EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, hyperLinkEquals);
         }
-
+        public static void HyperLinkEquals(IElementWrapper wrapper, string url, UrlKind kind, bool strictQueryStringParamsOrder, params UriComponents[] components)
+        {
+            var hyperLinkEquals = new HyperLinkEqualsValidator(url, kind, strictQueryStringParamsOrder, components);
+            EvaluateValidator<UnexpectedElementStateException, IElementWrapper>(wrapper, hyperLinkEquals);
+        }
+        public static void HyperLinkEquals(IBrowserWrapper wrapper, string selector, string url, UrlKind kind, params UriComponents[] components)
+        {
+            var elements = wrapper.FindElements(selector);
+            var operationRunner = All(elements);
+            var hyperLinkEquals = new HyperLinkEqualsValidator(url, kind, true, components);
+            operationRunner.Evaluate<UnexpectedElementStateException>(hyperLinkEquals);
+        }
         public static void IsElementInView(IElementWrapper wrapper, ElementWrapper element)
         {
             var isElementInView = new IsElementInViewValidator(element);
@@ -309,13 +320,7 @@ namespace Riganti.Selenium.Core
             EvaluateValidator<BrowserLocationException, IBrowserWrapper>(wrapper, checkUrlExquals);
         }
 
-        public static void HyperLinkEquals(IBrowserWrapper wrapper, string selector, string url, UrlKind kind, params UriComponents[] components)
-        {
-            var elements = wrapper.FindElements(selector);
-            var operationRunner = All(elements);
-            var hyperLinkEquals = new HyperLinkEqualsValidator(url, kind, components);
-            operationRunner.Evaluate<UnexpectedElementStateException>(hyperLinkEquals);
-        }
+
 
         public static void IsDisplayed(IBrowserWrapper wrapper, string selector, Func<string, By> tmpSelectedMethod = null)
         {

@@ -133,7 +133,7 @@ namespace Riganti.Selenium.Core.Api
 
         public static void HyperLineEquals(this IOperationRunner<IElementWrapper> operationRunner, string url, UrlKind kind, params UriComponents[] components)
         {
-            var HyperLinkEquals = new HyperLinkEqualsValidator(url, kind, components);
+            var HyperLinkEquals = new HyperLinkEqualsValidator(url, kind, true, components);
             operationRunner.Evaluate<UnexpectedElementStateException>(HyperLinkEquals);
         }
 
@@ -162,7 +162,7 @@ namespace Riganti.Selenium.Core.Api
             operationRunner.Evaluate<UnexpectedElementStateException>(checkTagName);
         }
 
-      
+
 
         public static void ContainsElement(this IOperationRunner<IElementWrapper> operationRunner, string cssSelector, Func<string, By> tmpSelectMethod = null)
         {

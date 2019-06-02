@@ -563,7 +563,7 @@ namespace Riganti.Selenium.Core
         public IElementWrapperFluentApi CheckIfHyperLinkEquals(string url, UrlKind kind, params UriComponents[] components)
         {
             return EvaluateElementCheck<UnexpectedElementStateException>(
-                new HyperLinkEqualsValidator(url, kind, components));
+                new HyperLinkEqualsValidator(url, kind, true, components));
         }
 
         /// <inheritdoc cref="IElementWrapper.ScrollTo()" />
