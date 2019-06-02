@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net461;netcoreapp2.0;</TargetFrameworks>
     <IsPackable>true</IsPackable>
-    <Version>2.0.5-preview03-final</Version>
+    <Version>2.0.5-preview04-final</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Company>Riganti s.r.o.</Company>
     <Authors>Ladislav Šesták</Authors>
