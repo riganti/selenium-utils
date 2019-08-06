@@ -181,6 +181,10 @@ namespace Riganti.Selenium.Core.Abstractions
         IBrowserWrapper WaitFor(Func<bool> condition, int timeout, int checkInterval = 30,
             string failureMessage = null);
 
+        /// <summary>
+        /// Returns WebDriver without scope activation. Be careful!!! This is unsecure!
+        /// This method can be used only for operations that do NOT use DOM.
+        /// </summary>
         IWebDriver _GetInternalWebDriver();
     }
 }

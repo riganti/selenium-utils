@@ -9,6 +9,11 @@
     //  "options": {
     //    "coordinatorUrl": "http://192.168.88.216:5001/"
     //  }
+    //},
+    //"chrome:coordinator": {
+    //  "options": {
+    //    "coordinatorUrl": "http://localhost:62242/"
+    //  }
     //}
   },
   "baseUrls": [
