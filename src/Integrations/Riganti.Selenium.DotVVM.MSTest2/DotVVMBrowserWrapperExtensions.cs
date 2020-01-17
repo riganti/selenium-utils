@@ -37,7 +37,7 @@ namespace Riganti.Selenium.DotVVM
             if (state.inited) {
                 return true;
             }
-            if (window.dotvvm != null && window.dotvvm instanceof DotVVM) {
+            if (window.dotvvm != null) {
                 dotvvm.events.init.subscribe(function () { state.inited = true });
                 state.loaded = true;
             }
