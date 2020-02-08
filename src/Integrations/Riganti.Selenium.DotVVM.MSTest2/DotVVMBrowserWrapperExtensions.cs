@@ -42,7 +42,7 @@ namespace Riganti.Selenium.DotVVM
                 state.loaded = true;
             }
             if (!state.loaded && document.scripts.length > 0) {
-                for (const key in document.scripts) {
+                for (var key in document.scripts) {
                     if (document.scripts.hasOwnProperty(key)) {
                         var script = document.scripts[key];
                         if (script.src.indexOf('/dotvvm--internal') > -1) {
