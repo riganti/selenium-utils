@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>   
    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
@@ -7,7 +7,7 @@
     <IsPackable>true</IsPackable>
 
 
-    <Version>2.0.6.1</Version>
+    <Version>2.0.6.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
