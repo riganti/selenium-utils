@@ -135,15 +135,20 @@ namespace Riganti.Selenium.Core
 
             try
             {
+                var skipBrowserAttributes = (
+                        testClass.GetType().GetMethod(callerMemberName)?.GetCustomAttributes<SkipBrowserAttribute>() 
+                        ?? SkipBrowserAttribute.TryToRetrieveFromStackTrace())
+                    .ToList();
+                
                 FormatFinalException(() =>
                 {
                     if (Configuration.TestRunOptions.RunInParallel)
                     {
-                        RunInAllBrowsersParallel(testClass, testName, action);
+                        RunInAllBrowsersParallel(testClass, testName, action, skipBrowserAttributes);
                     }
                     else
                     {
-                        RunInAllBrowsersSequential(testClass, testName, action);
+                        RunInAllBrowsersSequential(testClass, testName, action, skipBrowserAttributes);
                     }
                 });
                 Reporter.ReportSuccessfulTest(testName, callerFilePath, callerLineNumber);
@@ -159,22 +164,11 @@ namespace Riganti.Selenium.Core
             }
         }
 
-        private void RunInAllBrowsersSequential(ISeleniumTest testClass, string testName, Action<IBrowserWrapper> action)
+        private void RunInAllBrowsersSequential(ISeleniumTest testClass, string testName, Action<IBrowserWrapper> action, IReadOnlyCollection<SkipBrowserAttribute> skipBrowserAttributes)
         {
-            var skipBrowserAttributes = SkipBrowserAttribute.TryToRetrieveFromStackTrace();
-
             foreach (var testConfiguration in testConfigurations)
             {
-                var skipBrowserAttribute = skipBrowserAttributes.FirstOrDefault(a => a.BrowserName == testConfiguration.Factory.Name);
-                if (skipBrowserAttribute != null)
-                {
-                    this.LogInfo($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Test was skipped for " +
-                        $"browser: {skipBrowserAttribute.BrowserName}, Reason: {skipBrowserAttribute.Reason}");
-
-                    continue;
-                }
-
-                RunSingleTest(testClass, testConfiguration, testName, action).Wait();
+                RunSingleTest(testClass, testConfiguration, testName, action, skipBrowserAttributes).Wait();
             }
         }
 
@@ -204,13 +198,21 @@ namespace Riganti.Selenium.Core
             }
         }
 
-        private void RunInAllBrowsersParallel(ISeleniumTest testClass, string testName, Action<IBrowserWrapper> action)
+        private void RunInAllBrowsersParallel(ISeleniumTest testClass, string testName, Action<IBrowserWrapper> action, IReadOnlyCollection<SkipBrowserAttribute> skipBrowserAttributes)
         {
-            Parallel.ForEach(testConfigurations, c => RunSingleTest(testClass, c, testName, action).Wait());
+            Parallel.ForEach(testConfigurations, c => RunSingleTest(testClass, c, testName, action, skipBrowserAttributes).Wait());
         }
 
-        private async Task RunSingleTest(ISeleniumTest testClass, TestConfiguration testConfiguration, string testName, Action<IBrowserWrapper> action)
+        private async Task RunSingleTest(ISeleniumTest testClass, TestConfiguration testConfiguration, string testName, Action<IBrowserWrapper> action, IReadOnlyCollection<SkipBrowserAttribute> skipBrowserAttributes)
         {
+            var skipBrowserAttribute = skipBrowserAttributes.FirstOrDefault(a => a.BrowserName == testConfiguration.Factory.Name);
+            if (skipBrowserAttribute != null)
+            {
+                this.LogInfo($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Test was skipped for " +
+                             $"browser: {skipBrowserAttribute.BrowserName}, Reason: {skipBrowserAttribute.Reason}");
+                return;
+            }
+
             var testFullName = $"{testName} for {testConfiguration.BaseUrl} in {testConfiguration.Factory.Name}";
 
             this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testFullName}: Starting test run");
