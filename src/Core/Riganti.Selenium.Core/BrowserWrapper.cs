@@ -627,6 +627,10 @@ namespace Riganti.Selenium.Core
 
         public IBrowserWrapper WaitFor(Action action, int timeout, string failureMessage, int checkInterval = 30)
         {
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
             Exception exception = null;
             return WaitFor(() =>
             {
