@@ -25,7 +25,7 @@ Fluent API is perfect for really simple tests. You can stack more checking metho
 element.CheckIfInnerTextEquals("value", ...).CheckHasAttribute("data-custom");
 ```
 
-## Labda API 
+## Lambda API 
 Lambda API is a theoretical concept for now. It is compromis between AsertApi and FluentApi. 
 
 ```
