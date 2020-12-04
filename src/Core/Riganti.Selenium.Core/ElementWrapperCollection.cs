@@ -128,7 +128,8 @@ namespace Riganti.Selenium.Core
         /// </summary>
         public TElement SingleOrDefault()
         {
-            return ThrowIfSequenceContainsMoreThanOneElement()[0];
+            var elements = ThrowIfSequenceContainsMoreThanOneElement();
+            return elements.Count == 0 ? default : elements[0];
         }
         /// <summary>
         /// Returns the only web element of a sequence, and throws an exception if there is not exactly one element in the sequence.
