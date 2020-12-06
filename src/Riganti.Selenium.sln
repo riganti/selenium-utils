@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30524.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Core", "Core\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj", "{B4467232-B573-461E-AF44-4B195120F2C8}"
 EndProject
@@ -60,6 +60,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Core.UnitTests.Mock", "Tests\Riganti.Selenium.Core.UnitTests.Abstraction\Riganti.Selenium.Core.UnitTests.Mock.csproj", "{53BF5A97-F866-4872-83A8-2D187D566291}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Core.Samples.Common.Tests", "Tests\Riganti.Selenium.Core.Samples.Common.Tests\Riganti.Selenium.Core.Samples.Common.Tests.csproj", "{A790C47B-A9F6-489F-915F-57411C23A697}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Selenium.DotVVM3.Samples", "Riganti.Selenium.DotVVM3Samples\Riganti.Selenium.DotVVM3.Samples.csproj", "{1D3FB8C1-7673-4F47-8A71-4A8AC5C29662}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Selenium.DotVVM3.Samples.Tests", "Tests\Riganti.Selenium.DotVVM3.Samples.Tests\Riganti.Selenium.DotVVM3.Samples.Tests.csproj", "{F6363378-E182-4D67-971B-D0714BC8F9E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -163,6 +167,14 @@ Global
 		{A790C47B-A9F6-489F-915F-57411C23A697}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A790C47B-A9F6-489F-915F-57411C23A697}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A790C47B-A9F6-489F-915F-57411C23A697}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D3FB8C1-7673-4F47-8A71-4A8AC5C29662}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D3FB8C1-7673-4F47-8A71-4A8AC5C29662}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D3FB8C1-7673-4F47-8A71-4A8AC5C29662}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D3FB8C1-7673-4F47-8A71-4A8AC5C29662}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6363378-E182-4D67-971B-D0714BC8F9E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6363378-E182-4D67-971B-D0714BC8F9E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6363378-E182-4D67-971B-D0714BC8F9E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6363378-E182-4D67-971B-D0714BC8F9E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -192,6 +204,8 @@ Global
 		{6C2F8993-6E0B-4742-8A4B-43887928EB36} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
 		{53BF5A97-F866-4872-83A8-2D187D566291} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
 		{A790C47B-A9F6-489F-915F-57411C23A697} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
+		{1D3FB8C1-7673-4F47-8A71-4A8AC5C29662} = {08822873-F53A-4CBD-8A9E-D62ED6B3A614}
+		{F6363378-E182-4D67-971B-D0714BC8F9E7} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {069407A3-360C-4D69-AFA7-4E7532D148A7}

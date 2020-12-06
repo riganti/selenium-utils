@@ -28,3 +28,11 @@ foreach($file in $files)
     & .\nuget.exe push $file.FullName -source $source -apiKey $key
 }
 
+$files = dir $PWD\.. -Recurse | where {$_.Name.EndsWith(".snupkg")} | where {!$_.FullName.Contains("packages")} | where {!$_.FullName.Contains(".symbols.snupkg")}
+
+foreach($file in $files)
+{
+    echo "Uploading package: " + $file.FullName 
+    & .\nuget.exe push $file.FullName -source $source -apiKey $key
+}
+
