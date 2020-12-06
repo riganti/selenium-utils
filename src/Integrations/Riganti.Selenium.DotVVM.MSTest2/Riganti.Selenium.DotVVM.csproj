@@ -5,10 +5,10 @@
     <IsPackable>true</IsPackable>
     <IncludeSymbols>True</IncludeSymbols>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyVersion>2.0.6.3</AssemblyVersion>
-    <FileVersion>2.0.6.3</FileVersion>
+    <AssemblyVersion>2.0.7</AssemblyVersion>
+    <FileVersion>2.0.7</FileVersion>
     <Description>Integration of Riganti.Selenium.DotVVM for DotVVM Framework.</Description>
-    <Version>2.0.6.3</Version>
+    <Version>2.0.7</Version>
     <PackageProjectUrl>https://github.com/riganti/selenium-utils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/riganti/selenium-utils</RepositoryUrl>
     <PackageTags>selenium ui tests riganti ci dotvvm</PackageTags>
