@@ -5,8 +5,7 @@
     <IsPackable>true</IsPackable>
     <IncludeSymbols>True</IncludeSymbols>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyVersion>3.0.0-preview01-final</AssemblyVersion>
-    <FileVersion>3.0.0-preview01-final</FileVersion>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
     <Description>Integration of Riganti.Selenium.DotVVM for DotVVM Framework.</Description>
     <Version>3.0.0-preview01-final</Version>
     <PackageProjectUrl>https://github.com/riganti/selenium-utils</PackageProjectUrl>
