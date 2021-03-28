@@ -7,9 +7,6 @@ using System.Runtime;
 
 namespace Riganti.Selenium.Core
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class WaitForExecutor
     {
         public void WaitFor(Action condition, int timeout, string failureMessage, int checkInterval, bool throwOriginal)
@@ -28,21 +25,12 @@ namespace Riganti.Selenium.Core
                     condition();
                     isConditionMet = true;
                 }
-                catch (StaleElementReferenceException)
+                catch (TestExceptionBase ex)
                 {
                     if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > timeout)
                     {
                         if (throwOriginal) throw;
-                        else
-                            throw new WaitBlockException(failureMessage);
-                    }
-                }
-                catch (InvalidElementStateException)
-                {
-                    if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > timeout)
-                    {
-                        if (throwOriginal) throw;
-                        else throw new WaitBlockException(failureMessage);
+                        else throw new WaitBlockException(failureMessage ?? ex.Message, ex);
                     }
                 }
                 Thread.Sleep(checkInterval);

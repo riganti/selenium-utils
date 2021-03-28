@@ -151,6 +151,7 @@ namespace Riganti.Selenium.Core.Abstractions
         /// <summary>
         /// Stops execution for time specified in ActionWaitTime.
         /// </summary>
+        [Obsolete("Please use WaitFor or exact timeout.")]
         IElementWrapper Wait();
 
         /// <summary>
@@ -178,5 +179,7 @@ namespace Riganti.Selenium.Core.Abstractions
 
         IElementWrapper WaitFor(Func<IElementWrapper, bool> condition, int maxTimeout, string failureMessage,
             bool ignoreCertainException = true, int checkInterval = 30);
+        IElementWrapperCollection<IElementWrapper, IBrowserWrapper> WaitFor(Func<IElementWrapper, IElementWrapperCollection<IElementWrapper, IBrowserWrapper>> selector, WaitForOptions options = null);
+        IElementWrapper WaitFor(Func<IElementWrapper, IElementWrapper> selector, WaitForOptions options = null);
     }
 }
