@@ -301,7 +301,6 @@ return false;
         {
             var selectElm = new SelectElement(WebElement);
             process(selectElm);
-            Wait();
             return this;
         }
 
@@ -322,14 +321,12 @@ return false;
         public virtual IElementWrapper Submit()
         {
             WebElement.Submit();
-            Wait();
             return this;
         }
 
         public virtual IElementWrapper SendKeys(string text)
         {
             WebElement.SendKeys(text);
-            Wait();
             return this;
         }
 
@@ -439,7 +436,6 @@ return false;
         public virtual IElementWrapper Click()
         {
             WebElement.Click();
-            Wait();
             return this;
         }
 
@@ -518,7 +514,6 @@ return false;
         public IElementWrapper Clear()
         {
             WebElement.Clear();
-            Wait();
             return this;
         }
         /// <summary>
@@ -534,10 +529,10 @@ return false;
                 .KeyUp(Keys.Shift)
                 .SendKeys(Keys.Backspace)
                 .Perform();
-            Wait();
             return this;
         }
 
+        [Obsolete("Please use WaitFor or specify exact timeout.")]
         public virtual IElementWrapper Wait()
         {
             if (ActionWaitTime != 0)
@@ -545,7 +540,7 @@ return false;
             return this;
         }
 
-   
+
         public virtual IElementWrapper Wait(int milliseconds)
         {
             Thread.Sleep(milliseconds);
@@ -611,6 +606,31 @@ return false;
                 return true;
             }, maxTimeout, failureMessage, true, checkInterval);
         }
+
+        public IElementWrapper WaitFor(Func<IElementWrapper, IElementWrapper> selector, WaitForOptions options = null)
+        {
+            IElementWrapper wrapper = null;
+            WaitForExecutor.WaitFor(() =>
+            {
+                wrapper = selector(this);
+                if (wrapper is null) throw new ElementNotFoundException();
+            }, options);
+
+            return wrapper;
+        }
+
+        public IElementWrapperCollection<IElementWrapper, IBrowserWrapper> WaitFor(Func<IElementWrapper, IElementWrapperCollection<IElementWrapper, IBrowserWrapper>> selector, WaitForOptions options = null)
+        {
+            IElementWrapperCollection<IElementWrapper, IBrowserWrapper> wrappers = null;
+            WaitForExecutor.WaitFor(() =>
+            {
+                wrappers = selector(this);
+                if (wrappers is null) throw new ElementNotFoundException();
+            }, options);
+
+            return wrappers;
+        }
+
 
         /// <summary>
         /// Waits the specified time before next step.

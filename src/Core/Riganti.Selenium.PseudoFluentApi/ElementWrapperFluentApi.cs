@@ -336,14 +336,12 @@ namespace Riganti.Selenium.Core
         public new virtual IElementWrapperFluentApi Submit()
         {
             WebElement.Submit();
-            Wait();
             return this;
         }
 
         public new virtual IElementWrapperFluentApi SendKeys(string text)
         {
             WebElement.SendKeys(text);
-            Wait();
             return this;
         }
 
@@ -511,6 +509,7 @@ namespace Riganti.Selenium.Core
         /// <summary>
         /// Waits the ActionWaitTime before next step.
         /// </summary>
+        [Obsolete("Please use WaitFor or specify exact timeout.")]
         public new virtual IElementWrapperFluentApi Wait()
         {
             return (IElementWrapperFluentApi)base.Wait();
