@@ -1,0 +1,28 @@
+trigger:
+- main
+
+pool:
+   name: 'FERRARI_AP01'
+
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- powershell: |
+   $file = Get-ChildItem -Path $pwd -Filter *without*.sln -Recurse
+   dotnet build $file.FullName | Write-Host
+  displayName: 'PowerShell Script'
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '**\*.Selenium.MSTestIntegration.csproj'
+
+- task: VSBuild@1
+  displayName: 'Build solution **\*.Selenium.MSTestIntegration.csproj'
+  inputs:
+    solution: '**\*.Selenium.MSTestIntegration.csproj'
+    maximumCpuCount: true
