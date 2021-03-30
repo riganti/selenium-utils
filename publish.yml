@@ -9,6 +9,10 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: NuGetAuthenticate@0
+  inputs:
+    forceReinstallCredentialProvider: true
+    
 - powershell: |
    $file = Get-ChildItem -Path $pwd -Filter *without*.sln -Recurse
    dotnet build $file.FullName | Write-Host
