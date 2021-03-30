@@ -27,3 +27,11 @@ steps:
   inputs:
     solution: '**\Riganti.Selenium.WithoutCoordinator.sln'
     maximumCpuCount: true
+
+- task: PowerShell@2
+  displayName: publish
+  inputs:
+    targetType: filePath
+    filePath: './$(System.DefaultWorkingDirectory)\src\tools\publish.ps1 '
+    arguments: '-source $(source) -key $(apikey)'
+    workingDirectory: 'src\tools'
