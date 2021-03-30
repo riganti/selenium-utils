@@ -1,3 +1,4 @@
+trigger: none 
 pool:
    name: 'FERRARI_AP01'
 
