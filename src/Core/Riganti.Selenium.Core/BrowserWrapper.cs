@@ -383,7 +383,7 @@ namespace Riganti.Selenium.Core
         /// <returns></returns>
         public IElementWrapperCollection<IElementWrapper, IBrowserWrapper> FindElements(By selector)
         {
-            return Driver.FindElements(selector).ToElementsList<IElementWrapper, IBrowserWrapper>(this, selector.GetSelector(), TestInstance.TestClass.TestSuiteRunner.ServiceFactory);
+            return Extensions.ToElementsList<IElementWrapper, IBrowserWrapper>(() => Driver.FindElements(selector), this, selector.GetSelector(), TestInstance.TestClass.TestSuiteRunner.ServiceFactory);
         }
 
         /// <summary>
@@ -394,7 +394,7 @@ namespace Riganti.Selenium.Core
         public IElementWrapperCollection<IElementWrapper, IBrowserWrapper> FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
 
-            return Driver.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)).ToElementsList<IElementWrapper, IBrowserWrapper>(this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector(), TestInstance.TestClass.TestSuiteRunner.ServiceFactory);
+            return Extensions.ToElementsList<IElementWrapper, IBrowserWrapper>(() => Driver.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)), this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector(), TestInstance.TestClass.TestSuiteRunner.ServiceFactory);
         }
 
         /// <summary>
@@ -494,7 +494,7 @@ namespace Riganti.Selenium.Core
 
         public IBrowserWrapper SendKeys(string selector, string text, Func<string, By> tmpSelectMethod = null)
         {
-            FindElements(selector, tmpSelectMethod).ForEach(s => { s.SendKeys(text);  });
+            FindElements(selector, tmpSelectMethod).ForEach(s => { s.SendKeys(text); });
             return this;
         }
 
@@ -504,7 +504,7 @@ namespace Riganti.Selenium.Core
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
         public IBrowserWrapper ClearElementsContent(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            FindElements(selector, tmpSelectMethod).ForEach(s => { s.Clear();  });
+            FindElements(selector, tmpSelectMethod).ForEach(s => { s.Clear(); });
             return this;
         }
 
