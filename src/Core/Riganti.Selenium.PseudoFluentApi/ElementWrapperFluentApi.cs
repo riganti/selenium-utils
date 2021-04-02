@@ -33,11 +33,11 @@ namespace Riganti.Selenium.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="Core.ElementWrapper"/> class.
         /// </summary>
-        /// <param name="webElement">The web element.</param>
+        /// <param name="webElementSelector">The selector that gets web element.</param>
         /// <param name="browserWrapper">The browser wrapper.</param>
         /// <param name="selector">The selector.</param>
-        public ElementWrapperFluentApi(IWebElement webElement, IBrowserWrapper browserWrapper)
-            : base(webElement, browserWrapper)
+        public ElementWrapperFluentApi(Func<IWebElement> webElementSelector, IBrowserWrapper browserWrapper)
+            : base(webElementSelector, browserWrapper)
         {
         }
 
@@ -91,7 +91,7 @@ namespace Riganti.Selenium.Core
         }
 
 
-    
+
 
         /// <summary>
         /// Checks if this element contains other element(s) selected by <see cref="cssSelector"/>.

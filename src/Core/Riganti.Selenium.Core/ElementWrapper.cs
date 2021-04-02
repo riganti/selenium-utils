@@ -13,13 +13,14 @@ using Riganti.Selenium.Core.Api;
 using Riganti.Selenium.Validators.Checkers;
 using Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers;
 using Riganti.Selenium.Core.Comparators;
+using System.Collections.Generic;
 
 namespace Riganti.Selenium.Core
 {
     /// <inheritdoc />
     public class ElementWrapper : IElementWrapper
     {
-        protected readonly IWebElement element;
+        protected readonly Func<IWebElement> element;
         protected readonly IBrowserWrapper browser;
 
         /// <inheritdoc cref="IElementWrapper.Selector"/>
@@ -47,7 +48,7 @@ namespace Riganti.Selenium.Core
             get
             {
                 ParentWrapper.ActivateScope();
-                return element;
+                return element();
             }
         }
 
@@ -99,11 +100,11 @@ namespace Riganti.Selenium.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="ElementWrapper"/> class.
         /// </summary>
-        /// <param name="webElement">The web element.</param>
+        /// <param name="webElementSelector">The web element.</param>
         /// <param name="browserWrapper">The browser wrapper.</param>
-        public ElementWrapper(IWebElement webElement, IBrowserWrapper browserWrapper)
+        public ElementWrapper(Func<IWebElement> webElementSelector, IBrowserWrapper browserWrapper)
         {
-            element = webElement;
+            element = webElementSelector;
             browser = browserWrapper;
             SelectMethod = browser.SelectMethod;
             BaseUrl = browser.BaseUrl;
@@ -338,7 +339,9 @@ return false;
         /// <returns></returns>
         public virtual IElementWrapperCollection<IElementWrapper, IBrowserWrapper> FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var collection = WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList<IElementWrapper, IBrowserWrapper>(browser, selector, this, browser.ServiceFactory);
+            var collection = Extensions.ToElementsList<IElementWrapper, IBrowserWrapper>(
+                                                       () => WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)),
+                                                       browser, selector, this, browser.ServiceFactory);
             collection.ParentWrapper = this;
             return collection;
         }

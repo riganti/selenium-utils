@@ -22,16 +22,16 @@ namespace Riganti.Selenium.Core.UnitTests
             var browser = CreateMockedIBrowserWrapper();
             var elements = new List<IElementWrapper>()
             {
-                new ElementWrapperFluentApi(new MockIWebElement(), browser)
+                new ElementWrapperFluentApi(()=>new MockIWebElement(), browser)
             };
             var collection = new ElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi>(
-                new IElementWrapperFluentApi[] { new ElementWrapperFluentApi(new MockIWebElement(), browser) }, "selector", browser);
+            () => new IElementWrapperFluentApi[] { new ElementWrapperFluentApi(() => new MockIWebElement(), browser) }, "selector", browser);
 
-            var collection2 = new ElementWrapperCollection<IElementWrapper, IBrowserWrapper>(elements, "selec2", collection.BrowserWrapper, collection);
+            var collection2 = new ElementWrapperCollection<IElementWrapper, IBrowserWrapper>(() => elements, "selec2", collection.BrowserWrapper, collection);
 
         }
 
-     
+
     }
-    
+
 }
