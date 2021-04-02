@@ -8,18 +8,32 @@ namespace Riganti.Selenium.Core
 {
     public static class Extensions
     {
-        public static IElementWrapperCollection<TElement, TBrowser> ToElementsList<TElement, TBrowser>(this IEnumerable<IWebElement> elements, TBrowser browserWrapper, string selector, IServiceFactory serviceFactory) where TElement : IElementWrapper where TBrowser : IBrowserWrapper
+        public static IElementWrapperCollection<TElement, TBrowser> ToElementsList<TElement, TBrowser>(Func<IEnumerable<IWebElement>> elements, TBrowser browserWrapper, string selector, IServiceFactory serviceFactory) where TElement : IElementWrapper where TBrowser : IBrowserWrapper
         {
-            Func<IWebElement, IElementWrapper> initElementWrapper = (s) => serviceFactory.Resolve<IElementWrapper>(s, browserWrapper);
-            var telements = elements.Select(initElementWrapper).ToList();
-            var result = serviceFactory.Resolve<ISeleniumWrapperCollection>(telements, selector, (IBrowserWrapper)browserWrapper);
+            Func<IWebElement, IElementWrapper> initElementWrapper = (s) => serviceFactory.Resolve<IElementWrapper>(new Func<IWebElement>(() => s), browserWrapper);
+
+            var result = serviceFactory.Resolve<ISeleniumWrapperCollection>(
+                                                        new Func<IEnumerable<IElementWrapper>>(() => elements().Select(initElementWrapper).ToList()),
+                                                        selector,
+                                                        (IBrowserWrapper)browserWrapper);
+
             return result.Convert<TElement, TBrowser>();
         }
 
-        public static IElementWrapperCollection<TElement, TBrowser> ToElementsList<TElement, TBrowser>(this IEnumerable<IWebElement> elements, TBrowser browserWrapper, string selector, TElement elementWrapper, IServiceFactory serviceFactory) where TElement : IElementWrapper where TBrowser : IBrowserWrapper
+
+        public static IElementWrapperCollection<TElement, TBrowser> ToElementsList<TElement, TBrowser>(Func<IEnumerable<IWebElement>> elements,
+            TBrowser browserWrapper,
+            string selector,
+            TElement elementWrapper,
+            IServiceFactory serviceFactory) where TElement : IElementWrapper where TBrowser : IBrowserWrapper
         {
-            IElementWrapper InitElementWrapper(IWebElement s) => serviceFactory.Resolve<IElementWrapper>(s, browserWrapper);
-            var result = serviceFactory.Resolve<ISeleniumWrapperCollection>((IEnumerable<IElementWrapper>)elements.Select(InitElementWrapper).ToList(), selector, (IElementWrapper)elementWrapper, browserWrapper);
+
+            Func<IWebElement, IElementWrapper> initElementWrapper = (s) => serviceFactory.Resolve<IElementWrapper>(new Func<IWebElement>(() => s), browserWrapper);
+
+            var result = serviceFactory.Resolve<ISeleniumWrapperCollection>(
+                                                      new Func<IEnumerable<IElementWrapper>>(() => elements().Select(initElementWrapper).ToList()),
+                                                      selector, (IElementWrapper)elementWrapper, browserWrapper);
+            
             return result.Convert<TElement, TBrowser>();
 
         }
