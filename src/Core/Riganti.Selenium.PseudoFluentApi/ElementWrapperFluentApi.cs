@@ -353,7 +353,9 @@ namespace Riganti.Selenium.Core
         /// <returns></returns>
         public new virtual IElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi> FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var collection = WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)).ToElementsList<IElementWrapperFluentApi, IBrowserWrapperFluentApi>((IBrowserWrapperFluentApi)browser, selector, this, browser.ServiceFactory);
+            var collection = Extensions.ToElementsList<IElementWrapperFluentApi, IBrowserWrapperFluentApi>(
+                () => WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)),
+                (IBrowserWrapperFluentApi)browser, selector, this, browser.ServiceFactory);
             collection.ParentWrapper = this;
             return collection;
         }
