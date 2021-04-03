@@ -247,7 +247,7 @@ namespace Riganti.Selenium.Core
 
         public IElementWrapperCollection<TElement, TBrowser> FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            var results = GetCollection().SelectMany(item => item.FindElements(selector, tmpSelectMethod));
+            var results = new Func<IEnumerable<IElementWrapper>>(() => GetCollection().SelectMany(item => item.FindElements(selector, tmpSelectMethod)));
             var result = BrowserWrapper.ServiceFactory.Resolve<ISeleniumWrapperCollection>(results, selector, this, BrowserWrapper);
             return result.Convert<TElement, TBrowser>();
         }

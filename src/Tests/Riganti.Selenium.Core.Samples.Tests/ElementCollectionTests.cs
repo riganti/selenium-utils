@@ -17,7 +17,6 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
                 var d = c.FindElements("div");
                 var e = d.FindElements("p");
                 e.ThrowIfSequenceEmpty();
-
             });
         }
       
