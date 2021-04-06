@@ -18,13 +18,21 @@ namespace Riganti.Selenium.DotVVM
                 {
                     element.BrowserWrapper.LogVerbose("Selenium.DotVVM : Uploading file");
                     var name = element.GetTagName();
+                    var iframeCount = element.FindElements("iframe", SelectBy.CssSelector).Count;
                     if (name == "a" && element.HasAttribute("onclick") && (element.GetAttribute("onclick")?.Contains("showUploadDialog") ?? false))
                     {
-                        UploadFileByA(element, fullFileName);
-                        return;
+                        if (iframeCount == 1)
+                        {
+                            UploadFileByA(element, fullFileName);
+                            return;
+                        }
+                        else
+                        {
+                            element = element.ParentElement.ParentElement;
+                        }
                     }
 
-                    if (name == "div" && element.FindElements("iframe", SelectBy.CssSelector).Count == 1)
+                    if (name == "div" && iframeCount == 1)
                     {
                         UploadFileByDiv(element, fullFileName);
                         return;
@@ -56,6 +64,7 @@ namespace Riganti.Selenium.DotVVM
 
                     element.BrowserWrapper.LogVerbose("Selenium.DotVVM : Cannot identify DotVVM scenario. Uploading over standard procedure.");
                 }
+                
             }
 
             element.BrowserWrapper.OpenInputFileDialog(element, fullFileName);
