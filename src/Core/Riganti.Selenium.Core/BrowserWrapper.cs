@@ -383,7 +383,7 @@ namespace Riganti.Selenium.Core
         /// <returns></returns>
         public IElementWrapperCollection<IElementWrapper, IBrowserWrapper> FindElements(By selector)
         {
-            return Extensions.ToElementsList<IElementWrapper, IBrowserWrapper>(() => Driver.FindElements(selector), this, selector.GetSelector(), TestInstance.TestClass.TestSuiteRunner.ServiceFactory);
+            return Extensions.ToElementsList<IElementWrapper, IBrowserWrapper>(() => Driver.FindElements(selector), this, selector.GetSelector(), _ => selector, TestInstance.TestClass.TestSuiteRunner.ServiceFactory);
         }
 
         /// <summary>
@@ -393,8 +393,9 @@ namespace Riganti.Selenium.Core
         /// <param name="tmpSelectMethod">temporary method which determine how the elements are selected</param>
         public IElementWrapperCollection<IElementWrapper, IBrowserWrapper> FindElements(string cssSelector, Func<string, By> tmpSelectMethod = null)
         {
-
-            return Extensions.ToElementsList<IElementWrapper, IBrowserWrapper>(() => Driver.FindElements((tmpSelectMethod ?? SelectMethod)(cssSelector)), this, (tmpSelectMethod ?? SelectMethod)(cssSelector).GetSelector(), TestInstance.TestClass.TestSuiteRunner.ServiceFactory);
+            var usedSelectMethod = (tmpSelectMethod ?? SelectMethod);
+            return Extensions.ToElementsList<IElementWrapper, IBrowserWrapper>(() => Driver.FindElements(usedSelectMethod(cssSelector)), this, cssSelector, usedSelectMethod,
+                TestInstance.TestClass.TestSuiteRunner.ServiceFactory);
         }
 
         /// <summary>
