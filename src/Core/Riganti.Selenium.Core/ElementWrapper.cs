@@ -339,9 +339,10 @@ return false;
         /// <returns></returns>
         public virtual IElementWrapperCollection<IElementWrapper, IBrowserWrapper> FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
+            var usedSelectMethod = tmpSelectMethod ?? SelectMethod;
             var collection = Extensions.ToElementsList<IElementWrapper, IBrowserWrapper>(
-                                                       () => WebElement.FindElements((tmpSelectMethod ?? SelectMethod)(selector)),
-                                                       browser, selector, this, browser.ServiceFactory);
+                                                       () => WebElement.FindElements(usedSelectMethod(selector)),
+                                                       browser, selector, usedSelectMethod, this, browser.ServiceFactory);
             collection.ParentWrapper = this;
             return collection;
         }
