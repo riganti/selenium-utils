@@ -13,6 +13,8 @@ namespace Riganti.Selenium.Core
     public class ElementWrapperCollection<TElement, TBrowser> : IElementWrapperCollection<TElement, TBrowser> where TBrowser : IBrowserWrapper where TElement : IElementWrapper
     {
         public string Selector { get; }
+        public Func<string, By> SelectMethod { get; set; }
+
         public TElement this[int index]
         {
             get { return ElementAt(index); }
@@ -44,44 +46,47 @@ namespace Riganti.Selenium.Core
 
 
         /// <inheritdoc />
-        public ElementWrapperCollection(Func<IEnumerable> collection, string selector, IBrowserWrapper browserWrapper)
+        public ElementWrapperCollection(Func<IEnumerable> collection, string selector, Func<string, By> selectMethod, IBrowserWrapper browserWrapper)
         {
             this.getCollectionSelector = () =>
             {
                 var result = new List<TElement>(collection().Cast<TElement>());
-                SetReferences(result, selector);
+                SetReferences(result, selector, selectMethod);
                 return result;
             };
             Selector = selector;
+            SelectMethod = selectMethod;
             BrowserWrapper = (TBrowser)browserWrapper;
         }
 
 
         /// <inheritdoc />
-        public ElementWrapperCollection(Func<IEnumerable> collection, string selector, ISeleniumWrapper parentElement, IBrowserWrapper browserWrapper)
+        public ElementWrapperCollection(Func<IEnumerable> collection, string selector, Func<string, By> selectMethod, ISeleniumWrapper parentElement, IBrowserWrapper browserWrapper)
         {
             this.getCollectionSelector = () =>
             {
                 var result = new List<TElement>(collection().Cast<TElement>());
-                SetReferences(result, selector);
+                SetReferences(result, selector, selectMethod);
                 return result;
             };
             Selector = selector;
             ParentWrapper = parentElement;
+            SelectMethod = selectMethod;
             BrowserWrapper = (TBrowser)browserWrapper;
         }
 
         /// <inheritdoc />
-        public ElementWrapperCollection(Func<IEnumerable> collection, string selector, IBrowserWrapper browserWrapper, ISeleniumWrapper parentCollection)
+        public ElementWrapperCollection(Func<IEnumerable> collection, string selector, Func<string, By> selectMethod, IBrowserWrapper browserWrapper, ISeleniumWrapper parentCollection)
         {
             this.getCollectionSelector = () =>
             {
                 var result = new List<TElement>(collection().Cast<TElement>());
-                SetReferences(result, selector);
+                SetReferences(result, selector, selectMethod);
                 return result;
             };
             Selector = selector;
             BrowserWrapper = (TBrowser)browserWrapper;
+            SelectMethod = selectMethod;
             ParentWrapper = parentCollection;
         }
 
@@ -90,11 +95,12 @@ namespace Riganti.Selenium.Core
         /// Sets children reference to Parent wrapper.
         /// </summary>
         /// <param name="selector"></param>
-        private void SetReferences(List<TElement> elms, string selector)
+        private void SetReferences(List<TElement> elms, string selector, Func<string, By> selectMethod)
         {
             foreach (var ew in elms)
             {
                 ew.Selector = selector;
+                ew.SelectMethod = selectMethod;
                 ew.ParentWrapper = this;
             }
         }
@@ -281,7 +287,7 @@ namespace Riganti.Selenium.Core
         IElementWrapperCollection<TElement1, TBrowser1> ISeleniumWrapperCollection.Convert<TElement1, TBrowser1>()
         {
             return new ElementWrapperCollection<TElement1, TBrowser1>(() => GetCollection().Cast<TElement1>(),
-                Selector, BrowserWrapper, ParentWrapper);
+                Selector, SelectMethod ,BrowserWrapper, ParentWrapper);
         }
     }
 }

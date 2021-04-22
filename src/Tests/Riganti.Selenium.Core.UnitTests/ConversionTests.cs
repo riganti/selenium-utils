@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.UnitTests.Mock;
 using Selenium.Core.UnitTests;
@@ -24,10 +25,11 @@ namespace Riganti.Selenium.Core.UnitTests
             {
                 new ElementWrapperFluentApi(()=>new MockIWebElement(), browser)
             };
-            var collection = new ElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi>(
-            () => new IElementWrapperFluentApi[] { new ElementWrapperFluentApi(() => new MockIWebElement(), browser) }, "selector", browser);
 
-            var collection2 = new ElementWrapperCollection<IElementWrapper, IBrowserWrapper>(() => elements, "selec2", collection.BrowserWrapper, collection);
+            var collection = new ElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi>(
+            () => new IElementWrapperFluentApi[] { new ElementWrapperFluentApi(() => new MockIWebElement(), browser) }, "selector", By.CssSelector, browser);
+
+            var collection2 = new ElementWrapperCollection<IElementWrapper, IBrowserWrapper>(() => elements, "selec2", By.CssSelector, collection.BrowserWrapper, collection);
 
         }
 
