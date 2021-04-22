@@ -7,7 +7,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyVersion>3.0.0</AssemblyVersion>
     <Description>Integration of Riganti.Selenium.DotVVM for DotVVM Framework.</Description>
-    <Version>3.0.0-preview03-final</Version>
+    <Version>3.0.0-preview04-final</Version>
     <PackageProjectUrl>https://github.com/riganti/selenium-utils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/riganti/selenium-utils</RepositoryUrl>
     <PackageTags>selenium ui tests riganti ci dotvvm</PackageTags>
