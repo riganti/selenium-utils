@@ -5,9 +5,6 @@ using OpenQA.Selenium.Support.UI;
 
 namespace Riganti.Selenium.Core.Abstractions
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public interface IElementWrapper : ISeleniumWrapper, ISupportedByValidator
     {
         /// <summary>
@@ -120,7 +117,7 @@ namespace Riganti.Selenium.Core.Abstractions
         IElementWrapper Last(string selector, Func<string, By> tmpSelectMethod = null);
         IElementWrapper LastOrDefault(string selector, Func<string, By> tmpSelectMethod = null);
         IElementWrapper PerformActionOnSelectElement(Action<SelectElement> process);
-        IElementWrapper ScrollTo();
+        IElementWrapper ScrollTo(WaitForOptions waitForOptions = null);
         IElementWrapper Select(Action<SelectElement> process);
 
         /// <summary>
