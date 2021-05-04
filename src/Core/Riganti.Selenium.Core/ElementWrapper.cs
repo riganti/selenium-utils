@@ -646,7 +646,7 @@ return false;
         }
 
 
-        public IElementWrapper ScrollTo()
+        public IElementWrapper ScrollTo(WaitForOptions waitForOptions = null)
         {
             var javascript = @"
             function findPosition(element) {
@@ -662,10 +662,21 @@ return false;
             window.scroll(0,findPosition(arguments[0]));
         ";
             var executor = browser.GetJavaScriptExecutor();
-            executor.ExecuteScript(javascript, element);
+            executor.ExecuteScript(javascript, WaitForInternalElement(waitForOptions));
             return this;
         }
 
+        private IWebElement WaitForInternalElement(WaitForOptions waitForOptions)
+        {
+            IWebElement elm = null;
+            var w = new WaitForExecutor();
+            w.WaitFor(() =>
+            {
+                elm = element();
+                return elm != null;
+            }, waitForOptions);
+            return elm;
+        }
 
         public bool IsElementInView(IElementWrapper element)
         {

@@ -36,6 +36,37 @@ namespace Riganti.Selenium.Core
                 Thread.Sleep(checkInterval);
             } while (!isConditionMet);
         }
+        public void WaitFor(Func<bool> condition, WaitForOptions options = null)
+        {
+            options ??= WaitForOptions.DefaultOptions;
+            if (condition == null)
+            {
+                throw new NullReferenceException("Condition cannot be null.");
+            }
+            var now = DateTime.UtcNow;
+
+            bool isConditionMet = false;
+            do
+            {
+                try
+                {
+                    isConditionMet = condition();
+                }
+                catch (TestExceptionBase ex)
+                {
+                    if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > options.Timeout)
+                    {
+                        if (options.ThrowOriginalException) throw;
+                        else throw new WaitBlockException(options.FailureMessage ?? ex.Message, ex);
+                    }
+                }
+                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > options.Timeout)
+                {
+                    throw new WaitBlockException(options.FailureMessage);
+                }
+                Thread.Sleep(options.CheckInterval);
+            } while (!isConditionMet);
+        }
 
         /// <summary>
         /// Waits until condition does not throw exception.
