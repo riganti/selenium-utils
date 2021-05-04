@@ -7,6 +7,7 @@
     <ApplicationIcon></ApplicationIcon>
     <IncludeContentInPack>False</IncludeContentInPack>
     <IncludeSymbols>True</IncludeSymbols>
+    <LangVersion>9.0</LangVersion>
     <FileVersion>3.0.0.0</FileVersion>
     <Description>Basic utilities for performing UI tests based on selenium on CI servers.</Description>
     <Company>RIGANTI s.r.o.</Company>
