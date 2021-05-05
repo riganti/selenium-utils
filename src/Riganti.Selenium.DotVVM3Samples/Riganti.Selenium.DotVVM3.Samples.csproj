@@ -4,12 +4,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="**/*.dothtml;**/*.dotmaster;**/*.dotcontrol" Exclude="obj/**/*.*;bin/**/*.*" CopyToPublishDirectory="Always" />
+    <Compile Remove="temp\**" />
+    <Content Remove="temp\**" />
+    <EmbeddedResource Remove="temp\**" />
     <None Remove="**/*.dothtml;**/*.dotmaster;**/*.dotcontrol" />
+    <None Remove="temp\**" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="dotvvm_serialized_config.json.tmp" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DotVVM.AspNetCore" Version="3.0.0" />
+    <PackageReference Include="DotVVM.AspNetCore" Version="3.0.3" />
   </ItemGroup>
 </Project>
