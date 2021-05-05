@@ -207,7 +207,7 @@ namespace Riganti.Selenium.Core
             var hyperLinkEquals = new HyperLinkEqualsValidator(url, kind, true, components);
             operationRunner.Evaluate<UnexpectedElementStateException>(hyperLinkEquals);
         }
-        public static void IsElementInView(IElementWrapper wrapper, ElementWrapper element, WaitForOptions waitForOptions = null)
+        public static void IsElementInView(IElementWrapper wrapper, IElementWrapper element, WaitForOptions waitForOptions = null)
         {
             WaitForExecutor.WaitFor(() =>
             {
