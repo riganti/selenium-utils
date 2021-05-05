@@ -569,9 +569,9 @@ namespace Riganti.Selenium.Core
         }
 
         /// <inheritdoc cref="IElementWrapper.ScrollTo()" />
-        public new IElementWrapperFluentApi ScrollTo()
+        public new IElementWrapperFluentApi ScrollTo(WaitForOptions waitForOptions = null)
         {
-            return (IElementWrapperFluentApi)base.ScrollTo();
+            return (IElementWrapperFluentApi)base.ScrollTo(waitForOptions);
         }
 
         public IElementWrapperFluentApi CheckIfIsElementInView(IElementWrapperFluentApi element)
