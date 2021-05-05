@@ -7,7 +7,7 @@
     <IsPackable>true</IsPackable>
 
 
-    <Version>3.0.0-preview05-final</Version>
+    <Version>3.0.0-preview06-final</Version>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
