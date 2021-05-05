@@ -100,10 +100,12 @@ namespace Riganti.Selenium.Core
             foreach (var ew in elms)
             {
                 ew.Selector = selector;
-                ew.SelectMethod = selectMethod;
                 ew.ParentWrapper = this;
             }
         }
+        /// <summary>
+        /// Throws exception when collection of elements does not contain any elements.
+        /// </summary>
         public IElementWrapperCollection<TElement, TBrowser> ThrowIfSequenceEmpty()
         {
             if (!GetCollection().Any())
@@ -113,6 +115,9 @@ namespace Riganti.Selenium.Core
             return this;
         }
 
+        /// <summary>
+        /// Throws exception when collection of elements does contain more then one element. 
+        /// </summary>
         public IElementWrapperCollection<TElement, TBrowser> ThrowIfSequenceContainsMoreThanOneElement()
         {
             if (Count > 1)
@@ -122,7 +127,7 @@ namespace Riganti.Selenium.Core
             return this;
         }
         /// <summary>
-        /// Throws exception when lenght of a sequence is empty or the sequence contains more than one element.
+        /// Throws exception when length of a sequence is empty or the sequence contains more than one element.
         /// </summary>
         /// <returns></returns>
         public IElementWrapperCollection<TElement, TBrowser> ThrowIfEmptyOrMoreThanOne()
@@ -287,7 +292,7 @@ namespace Riganti.Selenium.Core
         IElementWrapperCollection<TElement1, TBrowser1> ISeleniumWrapperCollection.Convert<TElement1, TBrowser1>()
         {
             return new ElementWrapperCollection<TElement1, TBrowser1>(() => GetCollection().Cast<TElement1>(),
-                Selector, SelectMethod ,BrowserWrapper, ParentWrapper);
+                Selector, SelectMethod, BrowserWrapper, ParentWrapper);
         }
     }
 }
