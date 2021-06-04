@@ -75,22 +75,6 @@ namespace Riganti.Selenium.Core
             BrowserWrapper = (TBrowser)browserWrapper;
         }
 
-        /// <inheritdoc />
-        public ElementWrapperCollection(Func<IEnumerable> collection, string selector, Func<string, By> selectMethod, IBrowserWrapper browserWrapper, ISeleniumWrapper parentCollection)
-        {
-            this.getCollectionSelector = () =>
-            {
-                var result = new List<TElement>(collection().Cast<TElement>());
-                SetReferences(result, selector, selectMethod);
-                return result;
-            };
-            Selector = selector;
-            BrowserWrapper = (TBrowser)browserWrapper;
-            SelectMethod = selectMethod;
-            ParentWrapper = parentCollection;
-        }
-
-
         /// <summary>
         /// Sets children reference to Parent wrapper.
         /// </summary>
@@ -259,7 +243,7 @@ namespace Riganti.Selenium.Core
         public IElementWrapperCollection<TElement, TBrowser> FindElements(string selector, Func<string, By> tmpSelectMethod = null)
         {
             var results = new Func<IEnumerable<IElementWrapper>>(() => GetCollection().SelectMany(item => item.FindElements(selector, tmpSelectMethod)));
-            var result = BrowserWrapper.ServiceFactory.Resolve<ISeleniumWrapperCollection>(results, selector, this, BrowserWrapper);
+            var result = BrowserWrapper.ServiceFactory.Resolve<ISeleniumWrapperCollection>(results, selector, tmpSelectMethod, this, BrowserWrapper);
             return result.Convert<TElement, TBrowser>();
         }
 
@@ -292,7 +276,7 @@ namespace Riganti.Selenium.Core
         IElementWrapperCollection<TElement1, TBrowser1> ISeleniumWrapperCollection.Convert<TElement1, TBrowser1>()
         {
             return new ElementWrapperCollection<TElement1, TBrowser1>(() => GetCollection().Cast<TElement1>(),
-                Selector, SelectMethod, BrowserWrapper, ParentWrapper);
+                Selector, SelectMethod, ParentWrapper, BrowserWrapper);
         }
     }
 }
