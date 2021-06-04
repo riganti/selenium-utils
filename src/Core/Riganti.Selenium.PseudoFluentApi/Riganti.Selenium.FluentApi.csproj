@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net461;netstandard2.0;net5.0</TargetFrameworks>
-    <Version>3.0.0-preview07-final</Version>
+    <Version>3.0.0-preview08-final</Version>
     <Product>Riganti.Selenium.FluentApi</Product>
     <Company>Riganti s.r.o.</Company>
     <Authors>Ladislav Šesták</Authors>
