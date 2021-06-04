@@ -29,7 +29,7 @@ namespace Riganti.Selenium.Core.UnitTests
             var collection = new ElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi>(
             () => new IElementWrapperFluentApi[] { new ElementWrapperFluentApi(() => new MockIWebElement(), browser) }, "selector", By.CssSelector, browser);
 
-            var collection2 = new ElementWrapperCollection<IElementWrapper, IBrowserWrapper>(() => elements, "selec2", By.CssSelector, collection.BrowserWrapper, collection);
+            var collection2 = new ElementWrapperCollection<IElementWrapper, IBrowserWrapper>(() => elements, "selec2", By.CssSelector, collection, collection.BrowserWrapper);
 
         }
 
