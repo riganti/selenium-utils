@@ -123,6 +123,7 @@ namespace Riganti.Selenium.Core
         /// <summary>
         /// Runs the test specified by action in all browsers specified in seleniumconfig.json
         /// </summary>
+        /// <param name="testClass">Current test class</param>
         /// <param name="action">Test definition</param>
         /// <param name="callerMemberName">Name of the method that calls this one. Can be provided by attributes.</param>
         /// <param name="callerFilePath">File name of the method that calls this one. Can be provided by attributes.</param>
@@ -136,10 +137,10 @@ namespace Riganti.Selenium.Core
             try
             {
                 var skipBrowserAttributes = (
-                        testClass.GetType().GetMethod(callerMemberName)?.GetCustomAttributes<SkipBrowserAttribute>() 
+                        testClass.GetType().GetMethod(callerMemberName)?.GetCustomAttributes<SkipBrowserAttribute>()
                         ?? SkipBrowserAttribute.TryToRetrieveFromStackTrace())
                     .ToList();
-                
+
                 FormatFinalException(() =>
                 {
                     if (Configuration.TestRunOptions.RunInParallel)

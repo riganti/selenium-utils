@@ -21,7 +21,8 @@ namespace Riganti.Selenium.Core.Logging
 
         public LoggerService(List<ILogger> loggers)
         {
-            this.loggers = loggers;
+            this.loggers = loggers?.Where(s => s is { }).ToList() ?? new List<ILogger>();
+            Debug.Assert(loggers.Count != 0, "SeleniumUtils: No logger available.");
         }
 
 
