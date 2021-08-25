@@ -28,10 +28,10 @@ namespace Riganti.Selenium.Core.Abstractions
         IEnumerable<TResult> Select<TResult>(Func<TElement, TResult> selector);
         TElement Single();
         TElement SingleOrDefault();
-        IElementWrapperCollection<TElement, TBrowser> ThrowIfDifferentCountThan(int count);
-        IElementWrapperCollection<TElement, TBrowser> ThrowIfEmptyOrMoreThanOne();
-        IElementWrapperCollection<TElement, TBrowser> ThrowIfSequenceContainsMoreThanOneElement();
-        IElementWrapperCollection<TElement, TBrowser> ThrowIfSequenceEmpty();
+        IElementWrapperCollection<TElement, TBrowser> ThrowIfDifferentCountThan(int count, WaitForOptions waitForOptions = null);
+        IElementWrapperCollection<TElement, TBrowser> ThrowIfEmptyOrMoreThanOne(WaitForOptions waitForOptions = null);
+        IElementWrapperCollection<TElement, TBrowser> ThrowIfSequenceContainsMoreThanOneElement(WaitForOptions waitForOptions = null);
+        IElementWrapperCollection<TElement, TBrowser> ThrowIfSequenceEmpty(WaitForOptions waitForOptions = null);
     }
 
     public interface ISeleniumWrapperCollection : ISeleniumWrapper

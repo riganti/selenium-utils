@@ -90,44 +90,59 @@ namespace Riganti.Selenium.Core
         /// <summary>
         /// Throws exception when collection of elements does not contain any elements.
         /// </summary>
-        public IElementWrapperCollection<TElement, TBrowser> ThrowIfSequenceEmpty()
+        public IElementWrapperCollection<TElement, TBrowser> ThrowIfSequenceEmpty(WaitForOptions waitForOptions = null)
         {
-            if (!GetCollection().Any())
+            WaitForExecutor.WaitFor(() =>
             {
-                throw new EmptySequenceException($"Sequence contains no elements. Selector: '{FullSelector}'");
-            }
+                if (!GetCollection().Any())
+                {
+                    throw new EmptySequenceException($"Sequence contains no elements. Selector: '{FullSelector}'");
+                }
+            }, waitForOptions);
             return this;
         }
 
         /// <summary>
         /// Throws exception when collection of elements does contain more then one element. 
         /// </summary>
-        public IElementWrapperCollection<TElement, TBrowser> ThrowIfSequenceContainsMoreThanOneElement()
+        public IElementWrapperCollection<TElement, TBrowser> ThrowIfSequenceContainsMoreThanOneElement(WaitForOptions waitForOptions = null)
         {
-            if (Count > 1)
+            WaitForExecutor.WaitFor(() =>
             {
-                throw new MoreElementsInSequenceException($"Sequence contains more than one element. Selector: '{FullSelector}'");
-            }
+                if (Count > 1)
+                {
+                    throw new MoreElementsInSequenceException($"Sequence contains more than one element. Selector: '{FullSelector}'");
+                }
+            }, waitForOptions);
             return this;
         }
         /// <summary>
         /// Throws exception when length of a sequence is empty or the sequence contains more than one element.
         /// </summary>
         /// <returns></returns>
-        public IElementWrapperCollection<TElement, TBrowser> ThrowIfEmptyOrMoreThanOne()
+        public IElementWrapperCollection<TElement, TBrowser> ThrowIfEmptyOrMoreThanOne(WaitForOptions waitForOptions = null)
         {
-            return ThrowIfSequenceEmpty().ThrowIfSequenceContainsMoreThanOneElement();
+            WaitForExecutor.WaitFor(() =>
+            {
+                ThrowIfSequenceEmpty(WaitForOptions.Disabled).ThrowIfSequenceContainsMoreThanOneElement(WaitForOptions.Disabled);
+            }, waitForOptions);
+            return this;
         }
+
         /// <summary>
         /// Throws exception when lenght of sequence is different then specified number.
         /// </summary>
         /// <param name="count">expected sequence lenght</param>
-        public IElementWrapperCollection<TElement, TBrowser> ThrowIfDifferentCountThan(int count)
+
+        public IElementWrapperCollection<TElement, TBrowser> ThrowIfDifferentCountThan(int count, WaitForOptions waitForOptions = null)
         {
-            if (Count != count)
+            WaitForExecutor.WaitFor(() =>
             {
-                throw new SequenceCountException($"Element count in sequence is different from the expected value. Selector: '{FullSelector}', Expected value: '{count}', Actual value: '{Count}'.");
-            }
+                if (Count != count)
+                {
+                    throw new SequenceCountException($"Element count in sequence is different from the expected value. Selector: '{FullSelector}', Expected value: '{count}', Actual value: '{Count}'.");
+                }
+            }, waitForOptions);
             return this;
         }
         /// <summary>
@@ -135,7 +150,7 @@ namespace Riganti.Selenium.Core
         /// </summary>
         public TElement SingleOrDefault()
         {
-            var elements = ThrowIfSequenceContainsMoreThanOneElement();
+            var elements = ThrowIfSequenceContainsMoreThanOneElement(WaitForOptions.Disabled);
             return elements.Count == 0 ? default : elements[0];
         }
         /// <summary>
