@@ -14,7 +14,9 @@ namespace Riganti.Selenium.Core.Discovery
 {
     public class WebBrowserFactoryResolver<T> where T : TestSuiteRunner
     {
-
+        /// <summary>
+        /// Discovers factories, apply configuration and returns enabled factories  
+        /// </summary>
         public Dictionary<string, IWebBrowserFactory> CreateWebBrowserFactories(T runner, IEnumerable<Assembly> assemblies)
         {
             // find all factories
@@ -49,7 +51,9 @@ namespace Riganti.Selenium.Core.Discovery
             }
             return result;
         }
-
+        /// <summary>
+        /// Iterates all types of assemblies and returns IWebBrowserFactory types that can be initiated.
+        /// </summary>
         protected virtual IEnumerable<Type> DiscoverFactories(IEnumerable<Assembly> assemblies)
         {
             var foundTypes = GetExportedTypes(assemblies)
