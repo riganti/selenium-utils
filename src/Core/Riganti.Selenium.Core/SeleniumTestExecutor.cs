@@ -35,7 +35,7 @@ namespace Riganti.Selenium.Core
                             }
 
                             testSuiteRunner = InitializeTestSuiteRunner(configuration);
-
+              
                             AppDomain.CurrentDomain.DomainUnload += (sender, args) =>
                             {
                                 testSuiteRunner.Dispose();
