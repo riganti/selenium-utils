@@ -21,12 +21,12 @@ steps:
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
-    restoreSolution: '**\*.Selenium.MSTestIntegration.csproj'
+    restoreSolution: '**\Riganti.Selenium.WithoutCoordinator.sln'
 
 - task: VSBuild@1
-  displayName: 'Build solution **\*.Selenium.MSTestIntegration.csproj'
+  displayName: 'Build solution **\Riganti.Selenium.WithoutCoordinator.sln'
   inputs:
-    solution: '**\*.Selenium.MSTestIntegration.csproj'
+    solution: '**\Riganti.Selenium.WithoutCoordinator.sln'
     maximumCpuCount: true
 
 - task: PowerShell@2
