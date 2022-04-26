@@ -1,5 +1,4 @@
-﻿using System;
-using Riganti.Selenium.Core.Abstractions.Exceptions;
+﻿using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Validators.Checkers;
 
 namespace Riganti.Selenium.Core.Api

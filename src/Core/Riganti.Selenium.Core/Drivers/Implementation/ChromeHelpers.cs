@@ -1,5 +1,4 @@
-﻿using System;
-using OpenQA.Selenium.Chrome;
+﻿using OpenQA.Selenium.Chrome;
 using Riganti.Selenium.Core.Factories;
 
 namespace Riganti.Selenium.Core.Drivers.Implementation

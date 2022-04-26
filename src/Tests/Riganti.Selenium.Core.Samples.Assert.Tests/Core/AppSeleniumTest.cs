@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using OpenQA.Selenium;
 using Riganti.Selenium.AssertApi;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Configuration;
-using Riganti.Selenium.Core.Drivers;
 using Riganti.Selenium.Core.UnitTests.Mock;
 using Riganti.Selenium.xUnitIntegration;
 using Xunit.Abstractions;

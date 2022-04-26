@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Riganti.Selenium.Core.Abstractions;
-using Riganti.Selenium.Core;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 
 namespace Riganti.Selenium.DotVVM

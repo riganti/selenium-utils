@@ -1,9 +1,6 @@
-﻿using OpenQA.Selenium;
-using System;
-using Riganti.Selenium.Core.Abstractions;
+﻿using System;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using System.Threading;
-using System.Runtime;
 
 namespace Riganti.Selenium.Core
 {

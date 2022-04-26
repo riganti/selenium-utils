@@ -1,5 +1,4 @@
-﻿using Riganti.Selenium.AssertApi;
-using Xunit;
+﻿using Xunit;
 using Xunit.Abstractions;
 
 namespace Riganti.Selenium.Core.Samples.AssertApi.Tests

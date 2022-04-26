@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Net.NetworkInformation;
 using System.Threading;
 using Riganti.Selenium.Core.Configuration;
-using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Core
 {

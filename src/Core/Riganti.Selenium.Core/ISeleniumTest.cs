@@ -1,5 +1,4 @@
 using System;
-using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Core
 {

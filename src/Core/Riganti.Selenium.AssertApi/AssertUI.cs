@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,9 +9,6 @@ using Riganti.Selenium.Core.Api;
 using Riganti.Selenium.Validators.Checkers;
 using Riganti.Selenium.Validators.Checkers.BrowserWrapperCheckers;
 using Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers;
-using Riganti.Selenium.AssertApi;
-using Riganti.Selenium.Core;
-using OpenQA.Selenium.Remote;
 
 namespace Riganti.Selenium.Core
 {

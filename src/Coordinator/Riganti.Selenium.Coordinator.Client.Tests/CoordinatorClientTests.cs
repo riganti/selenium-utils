@@ -1,7 +1,6 @@
 using System;
 using System.Net.Http;
 using System.Threading;
-using Riganti.Selenium.Core.Abstractions.Attributes;
 using Xunit;
 
 namespace Riganti.Selenium.Coordinator.Client.Tests

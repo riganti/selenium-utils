@@ -1,15 +1,10 @@
-﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Core.Configuration;
-using Riganti.Selenium.Core.Abstractions;
-using Riganti.Selenium.Core.Api;
 
 namespace Riganti.Selenium.Core
 {

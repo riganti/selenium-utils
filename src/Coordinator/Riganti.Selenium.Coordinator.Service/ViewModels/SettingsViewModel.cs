@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DotVVM.Framework.ViewModel;
 using Microsoft.Extensions.Options;
-using Riganti.Selenium.Coordinator.Service.Data;
 using Riganti.Selenium.Coordinator.Service.Services;
 
 namespace Riganti.Selenium.Coordinator.Service.ViewModels

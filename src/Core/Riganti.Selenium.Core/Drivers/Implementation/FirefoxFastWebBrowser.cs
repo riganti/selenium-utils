@@ -1,5 +1,4 @@
-﻿using System;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using Riganti.Selenium.Core.Factories;
 
 namespace Riganti.Selenium.Core.Drivers.Implementation

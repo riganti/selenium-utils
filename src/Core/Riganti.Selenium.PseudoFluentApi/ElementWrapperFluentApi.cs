@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using Riganti.Selenium.Core;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
-using Riganti.Selenium.Core.Api;
 using Riganti.Selenium.Validators.Checkers;
 using Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers;
 

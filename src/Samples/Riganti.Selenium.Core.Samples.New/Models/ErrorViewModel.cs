@@ -1,5 +1,3 @@
-using System;
-
 namespace Riganti.Selenium.Core.Samples.New.Models
 {
     public class ErrorViewModel

@@ -1,8 +1,6 @@
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using Riganti.Selenium.Core.Abstractions;
-using Riganti.Selenium.Core.Abstractions.Exceptions;
 
 namespace Riganti.Selenium.Validators.Checkers.BrowserWrapperCheckers
 {

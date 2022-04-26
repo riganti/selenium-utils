@@ -1,5 +1,4 @@
 ﻿using Riganti.Selenium.Core.Factories;
-using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Core
 {

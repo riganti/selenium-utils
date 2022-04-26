@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Riganti.Selenium.Core.Drivers;
 using Riganti.Selenium.Core.Factories;
-using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Core
 {

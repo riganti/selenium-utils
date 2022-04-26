@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using Riganti.Selenium.Core;
 using Xunit;

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using Riganti.Selenium.LambdaApi;
-using Riganti.Selenium.Core;
-using Riganti.Selenium.Core.Abstractions;
 using Xunit.Abstractions;
 
 namespace Riganti.Selenium.Core.Samples.LambdaApi.Tests

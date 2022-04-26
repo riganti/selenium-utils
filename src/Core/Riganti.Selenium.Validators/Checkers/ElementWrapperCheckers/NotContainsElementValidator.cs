@@ -1,5 +1,4 @@
 using System;
-using System.Linq.Expressions;
 using OpenQA.Selenium;
 using Riganti.Selenium.Core.Abstractions;
 

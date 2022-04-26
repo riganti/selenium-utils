@@ -1,8 +1,6 @@
 using System;
 using System.IO;
-using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.IE;
 using Riganti.Selenium.Core.Factories;
 
 namespace Riganti.Selenium.Core.Drivers.Implementation

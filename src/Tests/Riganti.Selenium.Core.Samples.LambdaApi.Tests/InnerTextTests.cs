@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
-using Xunit.Abstractions;
-using Xunit.Sdk;
+﻿using Xunit.Abstractions;
 
 namespace Riganti.Selenium.Core.Samples.LambdaApi.Tests
 {

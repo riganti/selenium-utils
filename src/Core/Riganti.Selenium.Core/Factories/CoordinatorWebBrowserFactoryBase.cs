@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Riganti.Selenium.Coordinator.Client;
 using Riganti.Selenium.Core.Drivers;
 using Riganti.Selenium.Core.Drivers.Implementation;
-using Riganti.Selenium.Core.Configuration;
-using Riganti.Selenium.Core.Logging;
 
 namespace Riganti.Selenium.Core.Factories
 {
