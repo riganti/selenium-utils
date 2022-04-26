@@ -78,12 +78,12 @@ namespace Riganti.Selenium.Core
         /// <summary>
         /// Sets children reference to Parent wrapper.
         /// </summary>
-        /// <param name="selector"></param>
         private void SetReferences(List<TElement> elms, string selector, Func<string, By> selectMethod)
         {
             foreach (var ew in elms)
             {
                 ew.Selector = selector;
+                ew.SelectMethod = selectMethod;
                 ew.ParentWrapper = this;
             }
         }
@@ -285,7 +285,10 @@ namespace Riganti.Selenium.Core
         /// <param name="tmpSelectMethod">Defines what type of selector are you want to use only for this query.</param>
         public TElement FirstOrDefault(string selector, Func<string, By> tmpSelectMethod = null)
         {
-            return (TElement)GetCollection().Select(item => item.FirstOrDefault(selector, tmpSelectMethod)).FirstOrDefault(element => element != null);
+            var elm = (TElement)GetCollection()
+                .Select(item => item.FirstOrDefault(selector, tmpSelectMethod)) // select .FirstOrDefault from children - not from the collection itself
+                .FirstOrDefault(element => element != null); // filter default nulls
+            return elm;
         }
 
         IElementWrapperCollection<TElement1, TBrowser1> ISeleniumWrapperCollection.Convert<TElement1, TBrowser1>()

@@ -1,0 +1,31 @@
+﻿
+<script>
+    function recreate(){
+        var d = document.querySelector("#div1");
+        var body = document.querySelector("body");
+        body.removeChild(d);
+
+        var a = document.createElement("div");
+        a.id = "div1";
+        var b = document.createElement("div")
+        b.id = "div2";
+        var c = document.createElement("div")
+        c.id = "div3";
+        var i = document.createElement("input")
+        i.id="input1";
+        i.value="changed"
+        c.appendChild(i);
+        b.appendChild(c);
+        a.appendChild(b);
+        body.appendChild(a);
+    }
+</script>
+
+
+<div id="div1">
+    <div id="div2">
+        <div id="div3">
+            <input id="input1" type="button" value="init" onclick="javascript: recreate();" />
+        </div>
+    </div>
+</div>

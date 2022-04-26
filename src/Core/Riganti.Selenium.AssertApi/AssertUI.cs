@@ -537,12 +537,16 @@ namespace Riganti.Selenium.Core
 
         public static AnyOperationRunner<T> Any<T>(IEnumerable<T> wrappers, WaitForOptions waitForOptions = null) where T : ISupportedByValidator
         {
-            return new AnyOperationRunner<T>(wrappers);
+            return new AnyOperationRunner<T>(wrappers, waitForOptions);
         }
 
         public static AllOperationRunner<T> All<T>(IEnumerable<T> elementWrappers, WaitForOptions waitForOptions = null) where T : ISupportedByValidator
         {
-            return new AllOperationRunner<T>(elementWrappers);
+            return new AllOperationRunner<T>(elementWrappers, waitForOptions);
+        }
+        public new static bool Equals(object obj)
+        {
+            throw new AssertationMisusageException("Do not use this methods for assertation. For text comparison use TextEquals or other methods.");
         }
     }
 }

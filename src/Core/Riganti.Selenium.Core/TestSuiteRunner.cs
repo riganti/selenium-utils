@@ -130,6 +130,26 @@ namespace Riganti.Selenium.Core
         /// <param name="callerLineNumber">Line number of the method that calls this one. Can be provided by attributes.</param>
         public virtual void RunInAllBrowsers(ISeleniumTest testClass, Action<IBrowserWrapper> action, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
+            if (testClass is null)
+            {
+                throw new ArgumentNullException(nameof(testClass));
+            }
+
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            if (string.IsNullOrEmpty(callerMemberName))
+            {
+                throw new ArgumentException($"'{nameof(callerMemberName)}' cannot be null or empty.", nameof(callerMemberName));
+            }
+
+            if (string.IsNullOrEmpty(callerFilePath))
+            {
+                throw new ArgumentException($"'{nameof(callerFilePath)}' cannot be null or empty.", nameof(callerFilePath));
+            }
+
             Initialize();
             var testName = callerMemberName;
             this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Entering RunInAllBrowsers from {callerFilePath}:{callerLineNumber}");
@@ -227,7 +247,9 @@ namespace Riganti.Selenium.Core
                 this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testFullName}: Finishing test run");
             }
         }
-
+        /// <summary>
+        /// Releases all web drivers used by pool
+        /// </summary>
         public void Dispose()
         {
             WebBrowserPool.DisposeAllBrowsers().Wait();

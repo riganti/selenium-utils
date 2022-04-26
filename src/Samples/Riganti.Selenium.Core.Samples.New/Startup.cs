@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Riganti.Selenium.Core.Samples.New
+﻿namespace Riganti.Selenium.Core.Samples.New
 {
     public class Startup
     {
@@ -25,12 +16,11 @@ namespace Riganti.Selenium.Core.Samples.New
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
             else
             {
@@ -38,15 +28,18 @@ namespace Riganti.Selenium.Core.Samples.New
             }
 
             app.UseStaticFiles();
+            app.UseRouting();
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(builder =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}");
-                routes.MapRoute(
+                builder.MapControllerRoute(
                     name: "test",
-                    template: "{controller=Test}/{action}/{id?}");
+                    pattern: "{controller=Test}/{action}/{id?}");
+
+                builder.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}");
+
             });
         }
     }

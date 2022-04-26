@@ -25,7 +25,7 @@ namespace Riganti.Selenium.Core.Samples.New.Controllers
                 CookieOptions cookie = new CookieOptions();
                 Response.Cookies.Append("test_cookie", "default value", cookie);
             }
-            return View(new CookieModel(){Text = ControllerContext.HttpContext.Request.Cookies["test_cookie"] });
+            return View(new CookieModel() { Text = ControllerContext.HttpContext.Request.Cookies["test_cookie"] });
         }
 
         public ActionResult CookiesSetCookie()
@@ -61,6 +61,8 @@ namespace Riganti.Selenium.Core.Samples.New.Controllers
         public ActionResult DragAndDrop() { return View(null); }
         public ActionResult CssClasses() { return View(null); }
         public ActionResult CssStyles() { return View(null); }
+        public ActionResult ReloadElement() { return View(null); }
+
     }
 
     public class CookieModel
