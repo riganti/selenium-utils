@@ -1,4 +1,3 @@
-using System;
 using OpenQA.Selenium;
 
 namespace Riganti.Selenium.Core

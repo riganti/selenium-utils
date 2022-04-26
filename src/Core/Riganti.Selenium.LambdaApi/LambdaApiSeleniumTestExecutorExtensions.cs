@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
 using Riganti.Selenium.Core;
-using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.LambdaApi
 {

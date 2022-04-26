@@ -1,6 +1,5 @@
 ﻿using Riganti.Selenium.Core.Configuration;
 using Riganti.Selenium.Core.Drivers;
-using Riganti.Selenium.Core.Abstractions;
 using Xunit.Abstractions;
 
 namespace Riganti.Selenium.Core

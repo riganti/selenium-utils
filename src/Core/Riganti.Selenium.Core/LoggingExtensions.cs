@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Riganti.Selenium.Core.Factories;
-using Riganti.Selenium.Core.Abstractions;
-using Riganti.Selenium.Core.Logging;
 
 namespace Riganti.Selenium.Core
 {

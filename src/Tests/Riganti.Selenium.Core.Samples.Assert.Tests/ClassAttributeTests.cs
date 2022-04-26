@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Riganti.Selenium.Core.Abstractions.Exceptions;
+﻿using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Xunit;
 using Xunit.Abstractions;
 

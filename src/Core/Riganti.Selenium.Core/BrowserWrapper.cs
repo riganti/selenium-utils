@@ -2,21 +2,14 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Threading;
-using System.Xml.Schema;
 using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Support.UI;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Core.Api;
 using Riganti.Selenium.Core.Drivers;
 using Riganti.Selenium.Validators.Checkers;
-using Riganti.Selenium.Core.Configuration;
-using Riganti.Selenium.Core;
 using Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers;
-using System.Net.Http;
-using System.Collections.Generic;
 
 namespace Riganti.Selenium.Core
 {
