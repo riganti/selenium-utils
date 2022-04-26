@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
-using OpenQA.Selenium.Support.UI;
 using Riganti.Selenium.Core.Factories;
 
 namespace Riganti.Selenium.Core.Drivers

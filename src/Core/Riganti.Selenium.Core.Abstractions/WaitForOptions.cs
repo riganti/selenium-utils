@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace Riganti.Selenium.Core
+﻿namespace Riganti.Selenium.Core
 {
     /// <summary>
     /// Options to modify behavior of WaitFor block.

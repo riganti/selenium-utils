@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using OpenQA.Selenium;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
-using Riganti.Selenium.Validators.Checkers;
 using Riganti.Selenium.Validators.Checkers.BrowserWrapperCheckers;
 using Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers;
-using HyperLinkEquals = Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers.HyperLinkEqualsValidator;
-using IsDisplayed = Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers.IsDisplayedValidator;
-using IsNotDisplayed = Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers.IsNotDisplayedValidator;
-using Riganti.Selenium.Validators;
 
 namespace Riganti.Selenium.Core.Api
 {

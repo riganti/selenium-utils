@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Riganti.Selenium.Core.Abstractions;
-using Riganti.Selenium.Core.Configuration;
-using Riganti.Selenium.Core.Discovery;
 
 namespace Riganti.Selenium.Core.Logging
 {

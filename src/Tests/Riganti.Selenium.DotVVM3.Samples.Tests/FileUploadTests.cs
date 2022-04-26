@@ -1,9 +1,5 @@
 ﻿using Riganti.Selenium.Core;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Riganti.Selenium.DotVVM;
 using System.IO;
 using Xunit;

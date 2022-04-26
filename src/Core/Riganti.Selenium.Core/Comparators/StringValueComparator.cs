@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 

@@ -1,6 +1,5 @@
 ﻿using Riganti.Selenium.Core.Configuration;
 using Riganti.Selenium.xUnitIntegration;
-using Riganti.Selenium.Core;
 using Xunit.Abstractions;
 
 namespace Riganti.Selenium.Core

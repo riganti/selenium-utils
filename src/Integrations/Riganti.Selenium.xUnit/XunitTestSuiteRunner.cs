@@ -1,11 +1,8 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using Riganti.Selenium.Core;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Configuration;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace Riganti.Selenium.xUnitIntegration
 {

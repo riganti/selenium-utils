@@ -1,18 +1,11 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
 using Riganti.Selenium.Core;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Core.Api;
-using Riganti.Selenium.Core.Drivers;
-using Riganti.Selenium.Core.Factories;
 using Riganti.Selenium.Core.UnitTests.Mock;
 using Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers;
-using TestConfiguration = Riganti.Selenium.Core.TestConfiguration;
 
 namespace Selenium.Core.UnitTests
 {

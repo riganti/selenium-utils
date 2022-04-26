@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riganti.Selenium.Core.Configuration;
 using Riganti.Selenium.Core.Drivers;
-using Riganti.Selenium.Core.Abstractions;
 
 namespace Riganti.Selenium.Core
 {

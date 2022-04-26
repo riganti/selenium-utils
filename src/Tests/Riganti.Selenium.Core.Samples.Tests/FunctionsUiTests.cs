@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using MSAssert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 

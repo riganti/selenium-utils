@@ -1,6 +1,4 @@
 ﻿using OpenQA.Selenium;
-using Riganti.Selenium.AssertApi;
-using System.Security.Principal;
 using Xunit;
 using Xunit.Abstractions;
 

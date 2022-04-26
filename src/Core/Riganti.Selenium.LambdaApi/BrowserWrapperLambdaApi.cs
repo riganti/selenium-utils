@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using Riganti.Selenium.Core;
 using Riganti.Selenium.Core.Drivers;
-using Riganti.Selenium.Core.Abstractions;
-using Riganti.Selenium.Core.Configuration;
 
 namespace Riganti.Selenium.LambdaApi
 {
