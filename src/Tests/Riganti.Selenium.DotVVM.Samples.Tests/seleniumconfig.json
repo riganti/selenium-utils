@@ -10,7 +10,7 @@
     //}
   },
   "baseUrls": [
-    "http://localhost:5000/"
+    "http://localhost:7190/"
   ],
   "testRunOptions": {
     "runInParallel": false,

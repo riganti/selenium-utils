@@ -19,7 +19,6 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
             {
                 options.AddArgument("--disable-extensions");
             }
-
             return new ChromeDriver(options);
         }
 

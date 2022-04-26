@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30524.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.31903.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Core", "Core\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj", "{B4467232-B573-461E-AF44-4B195120F2C8}"
 EndProject
@@ -16,8 +16,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{E83BB596-BF2A-4FE2-9843-E5649B561293}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.MSTestIntegration", "Integrations\Riganti.Selenium.MSTestIntegration\Riganti.Selenium.MSTestIntegration.csproj", "{7DB45AE2-D09E-4EA2-B691-4161485A32DC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Coordinator", "Coordinator", "{56C2E9D7-1C68-47EE-BFB4-27AF259FF7A5}"
 EndProject
@@ -61,9 +59,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Core.UnitT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Core.Samples.Common.Tests", "Tests\Riganti.Selenium.Core.Samples.Common.Tests\Riganti.Selenium.Core.Samples.Common.Tests.csproj", "{A790C47B-A9F6-489F-915F-57411C23A697}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Selenium.DotVVM3.Samples", "Riganti.Selenium.DotVVM3Samples\Riganti.Selenium.DotVVM3.Samples.csproj", "{1D3FB8C1-7673-4F47-8A71-4A8AC5C29662}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.DotVVM3.Samples", "Riganti.Selenium.DotVVM3Samples\Riganti.Selenium.DotVVM3.Samples.csproj", "{1D3FB8C1-7673-4F47-8A71-4A8AC5C29662}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Selenium.DotVVM3.Samples.Tests", "Tests\Riganti.Selenium.DotVVM3.Samples.Tests\Riganti.Selenium.DotVVM3.Samples.Tests.csproj", "{F6363378-E182-4D67-971B-D0714BC8F9E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.DotVVM3.Samples.Tests", "Tests\Riganti.Selenium.DotVVM3.Samples.Tests\Riganti.Selenium.DotVVM3.Samples.Tests.csproj", "{F6363378-E182-4D67-971B-D0714BC8F9E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,10 +85,6 @@ Global
 		{359F976A-6222-4CD7-BE4B-DE33C0E46ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{359F976A-6222-4CD7-BE4B-DE33C0E46ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{359F976A-6222-4CD7-BE4B-DE33C0E46ADC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DB45AE2-D09E-4EA2-B691-4161485A32DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DB45AE2-D09E-4EA2-B691-4161485A32DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DB45AE2-D09E-4EA2-B691-4161485A32DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DB45AE2-D09E-4EA2-B691-4161485A32DC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{54D8BE40-2942-4C71-B07E-58B0F0DABEC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{54D8BE40-2942-4C71-B07E-58B0F0DABEC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54D8BE40-2942-4C71-B07E-58B0F0DABEC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -184,7 +178,6 @@ Global
 		{421F5B2A-AEDD-41F0-81B6-D6603B574C0E} = {522555E0-D971-4C48-AD27-C3888DB383C5}
 		{D31B7A50-9AFD-43ED-9520-43D51DCF07B4} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
 		{359F976A-6222-4CD7-BE4B-DE33C0E46ADC} = {522555E0-D971-4C48-AD27-C3888DB383C5}
-		{7DB45AE2-D09E-4EA2-B691-4161485A32DC} = {522555E0-D971-4C48-AD27-C3888DB383C5}
 		{54D8BE40-2942-4C71-B07E-58B0F0DABEC3} = {56C2E9D7-1C68-47EE-BFB4-27AF259FF7A5}
 		{D486FAAB-A9C4-4ED1-AF6E-3F28C7CFAB68} = {56C2E9D7-1C68-47EE-BFB4-27AF259FF7A5}
 		{137023D1-4C00-4B3B-A1D4-892DF240C3E5} = {56C2E9D7-1C68-47EE-BFB4-27AF259FF7A5}

@@ -48,6 +48,11 @@ namespace Riganti.Selenium.Core.UnitTests.Mock
             return null;
         }
 
+        public IWebDriver NewWindow(WindowType typeHint)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public MockIWebDriver CurrentDriver { get; set; }
     }
 }

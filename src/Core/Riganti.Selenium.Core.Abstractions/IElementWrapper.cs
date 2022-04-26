@@ -23,7 +23,7 @@ namespace Riganti.Selenium.Core.Abstractions
         IElementWrapper ParentElement { get; }
 
         /// <summary>
-        /// Describes defautl way how to get element(s) from site. (by css selector, tag name, xpath,..)
+        /// Describes default way how to get element(s) from children of this element. (by css selector, tag name, xpath,..)
         /// </summary>
         Func<string, By> SelectMethod { get; set; }
 

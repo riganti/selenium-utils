@@ -48,6 +48,21 @@ namespace Riganti.Selenium.Core.UnitTests.Mock
             throw new NotImplementedException();
         }
 
+        public string GetDomAttribute(string attributeName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetDomProperty(string propertyName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ISearchContext GetShadowRoot()
+        {
+            throw new NotImplementedException();
+        }
+
         public string TagName { get; set; } = "div";
         public string Text { get; set; } = "";
         public bool Enabled { get; set; } = true;

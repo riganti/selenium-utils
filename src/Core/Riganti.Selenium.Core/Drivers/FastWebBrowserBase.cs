@@ -113,7 +113,7 @@ namespace Riganti.Selenium.Core.Drivers
         /// </summary>
         protected virtual void DismissAllAlerts()
         {
-            ExpectedConditions.AlertIsPresent()(driverInstance)?.Dismiss();
+            driverInstance.SwitchTo()?.Alert()?.Dismiss();
         }
 
         /// <summary>
