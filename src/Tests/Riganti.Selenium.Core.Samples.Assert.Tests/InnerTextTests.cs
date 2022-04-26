@@ -23,5 +23,4 @@ namespace Riganti.Selenium.Core.Samples.AssertApi.Tests
             });
         }
     }
-
 }

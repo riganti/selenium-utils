@@ -67,7 +67,6 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
             var profile = new FirefoxProfile();
             profile.SetPreference("browser.privatebrowsing.autostart", true);
             profile.SetPreference("browser.privatebrowsing.dont_prompt_on_enter", true);
-            profile.AcceptUntrustedCertificates = true;
             profile.DeleteAfterUse = true;
             return profile;
         }

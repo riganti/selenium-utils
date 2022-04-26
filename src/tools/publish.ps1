@@ -17,7 +17,6 @@ dotnet pack -c  Release --no-build ..\Core\Riganti.Selenium.PseudoFluentApi\Riga
 dotnet pack -c  Release --no-build ..\Core\Riganti.Selenium.Validators\Riganti.Selenium.Validators.csproj                                   
 dotnet pack -c  Release --no-build ..\Integrations\Riganti.Selenium.DotVVM.MSTest2\Riganti.Selenium.DotVVM.csproj
 dotnet pack -c  Release --no-build ..\Integrations\Riganti.Selenium.MSTest2Integration\Riganti.Selenium.MSTest2Integration.csproj           
-dotnet pack -c  Release --no-build ..\Integrations\Riganti.Selenium.MSTestIntegration\Riganti.Selenium.MSTestIntegration.csproj             
 dotnet pack -c  Release --no-build ..\Integrations\Riganti.Selenium.xUnit\Riganti.Selenium.xUnitIntegration.csproj        
 
 $files = dir $PWD\.. -Recurse | where {$_.Name.EndsWith(".nupkg")} | where {!$_.FullName.Contains("packages")} | where {!$_.FullName.Contains(".symbols.nupkg")}

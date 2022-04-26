@@ -1,18 +1,12 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
-using System.Threading;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Core.Api;
 using Riganti.Selenium.Core.Drivers;
 using Riganti.Selenium.Validators.Checkers.BrowserWrapperCheckers;
 using Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers;
-using Riganti.Selenium.Validators.Checkers;
 
 namespace Riganti.Selenium.Core
 {
@@ -87,7 +81,7 @@ namespace Riganti.Selenium.Core
 
             var validator = new IsDisplayedValidator();
 
-            var runner = new AllOperationRunner<IElementWrapper>(collection);
+            var runner = new AllOperationRunner<IElementWrapper>(collection, null);
             runner.Evaluate<UnexpectedElementStateException>(validator);
 
             return collection;
@@ -101,7 +95,7 @@ namespace Riganti.Selenium.Core
 
             var validator = new IsNotDisplayedValidator();
 
-            var runner = new AllOperationRunner<IElementWrapper>(collection);
+            var runner = new AllOperationRunner<IElementWrapper>(collection, null);
             runner.Evaluate<UnexpectedElementStateException>(validator);
 
             return collection;
@@ -304,7 +298,7 @@ namespace Riganti.Selenium.Core
         {
             var elements = FindElements(selector);
             var validator = new HyperLinkEqualsValidator(url, kind, true, components);
-            var runner = new AllOperationRunner<IElementWrapper>(elements);
+            var runner = new AllOperationRunner<IElementWrapper>(elements, null);
             runner.Evaluate<UnexpectedElementStateException>(validator);
 
             return this;

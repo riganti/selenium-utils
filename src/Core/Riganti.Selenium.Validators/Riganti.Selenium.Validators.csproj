@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Selenium.Support" Version="3.141.0" />
+    <PackageReference Include="Selenium.Support" Version="4.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Riganti.Selenium.Core.Abstractions\Riganti.Selenium.Core.Abstractions.csproj" />

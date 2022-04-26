@@ -4,16 +4,11 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using OpenQA.Selenium.Interactions;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Core.Api;
-using Riganti.Selenium.Validators.Checkers;
-using Riganti.Selenium.Validators.Checkers.ElementWrapperCheckers;
-using Riganti.Selenium.Core.Comparators;
-using System.Collections.Generic;
 
 namespace Riganti.Selenium.Core
 {

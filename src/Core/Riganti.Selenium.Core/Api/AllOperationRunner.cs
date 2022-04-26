@@ -11,13 +11,15 @@ namespace Riganti.Selenium.Core.Api
     public class AllOperationRunner<T> : OperationRunnerBase<T> where T : ISupportedByValidator
     {
         private readonly IEnumerable<T> wrappers;
+        private readonly WaitForOptions waitForOptions;
 
-        public AllOperationRunner(IEnumerable<T> wrappers)
+        public AllOperationRunner(IEnumerable<T> wrappers, WaitForOptions waitForOptions)
         {
             this.wrappers = wrappers;
+            this.waitForOptions = waitForOptions;
         }
 
-        public override void Evaluate<TException>(IValidator<T> validator) 
+        public override void Evaluate<TException>(IValidator<T> validator)
         {
             var checkResults = wrappers.Select(validator.Validate).ToArray();
             var checkResult = CreateCheckResult(checkResults);

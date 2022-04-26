@@ -8,10 +8,12 @@ namespace Riganti.Selenium.Core.Api
     public class AnyOperationRunner<T> : OperationRunnerBase<T> where T : ISupportedByValidator
     {
         private readonly IEnumerable<T> wrappers;
+        private readonly WaitForOptions waitForExecutor;
 
-        public AnyOperationRunner(IEnumerable<T> wrappers)
+        public AnyOperationRunner(IEnumerable<T> wrappers, WaitForOptions options)
         {
             this.wrappers = wrappers;
+            this.waitForExecutor = options;
         }
         /// <summary>
         /// 
