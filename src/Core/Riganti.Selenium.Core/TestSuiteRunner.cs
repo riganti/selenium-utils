@@ -158,15 +158,18 @@ namespace Riganti.Selenium.Core
                         testClass.GetType().GetMethod(callerMemberName)?.GetCustomAttributes<SkipBrowserAttribute>()
                         ?? SkipBrowserAttribute.TryToRetrieveFromStackTrace())
                     .ToList();
+                this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Found {skipBrowserAttributes.Count} SkipBrowser attributes");
 
                 FormatFinalException(() =>
                 {
                     if (Configuration.TestRunOptions.RunInParallel)
                     {
+                        this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Running tests in parallel");
                         RunInAllBrowsersParallel(testClass, testName, action, skipBrowserAttributes);
                     }
                     else
                     {
+                        this.LogVerbose($"(#{Thread.CurrentThread.ManagedThreadId}) {testName}: Running tests sequentially");
                         RunInAllBrowsersSequential(testClass, testName, action, skipBrowserAttributes);
                     }
                 });

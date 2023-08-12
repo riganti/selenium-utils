@@ -22,7 +22,7 @@ namespace Riganti.Selenium.Core.Abstractions.Attributes
         {
             return new StackTrace()
                        .GetFrames()
-                       .Select(f => f.GetMethod().GetCustomAttributes<SkipBrowserAttribute>())
+                       ?.Select(f => f.GetMethod()?.GetCustomAttributes<SkipBrowserAttribute>() ?? Enumerable.Empty<SkipBrowserAttribute>())
                        .FirstOrDefault(attr => attr.Any())
                    ?? Enumerable.Empty<SkipBrowserAttribute>();
         }
