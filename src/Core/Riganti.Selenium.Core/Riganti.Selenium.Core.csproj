@@ -12,7 +12,7 @@
     <Description>Basic utilities for performing UI tests based on selenium on CI servers.</Description>
     <Company>RIGANTI s.r.o.</Company>
     <Authors>Ladislav Šesták</Authors>
-    <Version>3.0.0-preview12-final</Version>
+    <Version>3.0.0-preview13-final</Version>
     <RepositoryUrl>https://github.com/riganti/selenium-utils</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <PackageTags>selenium ui tests riganti ci</PackageTags>
