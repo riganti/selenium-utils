@@ -81,7 +81,6 @@ namespace Riganti.Selenium.Core
             foreach (var ew in elms)
             {
                 ew.Selector = selector;
-                ew.SelectMethod = selectMethod;
                 ew.ParentWrapper = this;
             }
         }
