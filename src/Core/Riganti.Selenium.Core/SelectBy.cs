@@ -21,9 +21,9 @@ namespace Riganti.Selenium.Core
             }
             SelectBy by = new SelectBy("SelectBy.CssSelector");
             by.FindElementMethod =
-                (ISearchContext context) => ((IFindsByCssSelector)context).FindElementByCssSelector(cssSelectorToFind);
+                (ISearchContext context) => context.FindElement(By.CssSelector(cssSelectorToFind));
             by.FindElementsMethod =
-                (ISearchContext context) => ((IFindsByCssSelector)context).FindElementsByCssSelector(cssSelectorToFind);
+                (ISearchContext context) => context.FindElements(By.CssSelector(cssSelectorToFind));
             by.Value = cssSelectorToFind;
             return by;
         }
@@ -41,8 +41,8 @@ namespace Riganti.Selenium.Core
             var fullSelector = string.IsNullOrWhiteSpace(formatString) ? cssSelectorToFind : string.Format(formatString, cssSelectorToFind);
             SelectBy by = new SelectBy("SelectBy.CssSelector");
             by.FormatString = formatString;
-            by.FindElementMethod = (ISearchContext context) => ((IFindsByCssSelector)context).FindElementByCssSelector(fullSelector);
-            by.FindElementsMethod = (ISearchContext context) => ((IFindsByCssSelector)context).FindElementsByCssSelector(fullSelector);
+            by.FindElementMethod = (ISearchContext context) => context.FindElement(By.CssSelector(fullSelector));
+            by.FindElementsMethod = (ISearchContext context) => context.FindElements(By.CssSelector(fullSelector));
             by.Value = fullSelector;
             return by;
         }
@@ -58,8 +58,8 @@ namespace Riganti.Selenium.Core
                 throw new ArgumentNullException("tagNameToFind", "Cannot find elements when name tag name is null.");
             }
             SelectBy by = new SelectBy("SelectBy.TagName");
-            by.FindElementMethod = (ISearchContext context) => ((IFindsByTagName)context).FindElementByTagName(tagNameToFind);
-            by.FindElementsMethod = (ISearchContext context) => ((IFindsByTagName)context).FindElementsByTagName(tagNameToFind);
+            by.FindElementMethod = (ISearchContext context) => context.FindElement(By.TagName(tagNameToFind));
+            by.FindElementsMethod = (ISearchContext context) => context.FindElements(By.TagName(tagNameToFind));
             by.Value = tagNameToFind;
             return by;
         }
