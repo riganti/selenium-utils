@@ -93,7 +93,7 @@ export DISPLAY
 TEST_RESULTS_DIR="$ROOT/artifacts/test"
 SAMPLES_DIR="$ROOT/src/Tests/Riganti.Selenium.Core.Samples.Tests"
 SAMPLES_PROFILE="${SAMPLES_PROFILE:-seleniumconfig.aspnetcorelatest.chrome.json}"
-SAMPLES_PORT="${SAMPLES_PORT:-16019}"
+SAMPLES_PORT="${SAMPLES_PORT:-6278}"
 SAMPLES_PORT_API="${SAMPLES_PORT_API:-50001}"
 TRX_NAME="${TRX_NAME:-ui-test-results.trx}"
 
