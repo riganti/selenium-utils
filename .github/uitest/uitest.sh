@@ -170,7 +170,7 @@ function start_samples {
         --configuration "$CONFIGURATION" \
         -- \
         --urls "http://localhost:${PORT}/" \
-        --environment "$ASPNETCORE_ENV"
+        --environment "$ASPNETCORE_ENV" >/dev/null &
 
     PID=$!
     eval "$PID_VAR=$PID"
@@ -222,16 +222,16 @@ else
 fi
 
 
-# start_group "Run UI tests"
-# {
-#     dotnet test "$SAMPLES_DIR" \
-#         --filter "Category!=owin-only&$test_env_filter" \
-#         --no-restore \
-#         --configuration $CONFIGURATION \
-#         --logger "trx;LogFileName=$TRX_NAME" \
-#         --results-directory "$TEST_RESULTS_DIR"
-# }
-# end_group
+start_group "Run UI tests"
+{
+    dotnet test "$SAMPLES_DIR" \
+        --filter "Category!=owin-only&$test_env_filter" \
+        --no-restore \
+        --configuration $CONFIGURATION \
+        --logger "trx;LogFileName=$TRX_NAME" \
+        --results-directory "$TEST_RESULTS_DIR"
+}
+end_group
 
-# kill $XVFB_PID $SAMPLES_PID 2>/dev/null
-# clean_uitest
+kill $XVFB_PID $SAMPLES_PID 2>/dev/null
+clean_uitest
