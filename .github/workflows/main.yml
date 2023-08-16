@@ -22,7 +22,7 @@ jobs:
       fail-fast: false # don't kill tests when one environment fails
       matrix:
         # specify only one config, all other configurations are included explicitly
-        # browser: [chrome, firefox]
+        browser: [firefox]
         os: [ubuntu-latest]
 
     env:
@@ -40,4 +40,3 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         build-configuration: "${{ matrix.environment == 'Production' && 'Release' || 'Debug' }}"
         runtime-environment: "${{ matrix.environment }}"
-        samples-config: "firefox"
