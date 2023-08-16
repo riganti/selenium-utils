@@ -170,7 +170,7 @@ function start_samples {
         --configuration "$CONFIGURATION" \
         -- \
         --urls "http://localhost:${PORT}/" \
-        --environment "$ASPNETCORE_ENV" &
+        --environment "$ASPNETCORE_ENV"
 
     PID=$!
     eval "$PID_VAR=$PID"
