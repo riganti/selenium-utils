@@ -198,3 +198,5 @@ FakesAssemblies/
 /Riganti.Utils/Riganti.Utils.Testing/.nuget2
 /src/tools/Artifacts
 /src/.vscode
+
+!*.pubxml

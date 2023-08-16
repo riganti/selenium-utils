@@ -1,0 +1,43 @@
+name: Run tests
+
+on:
+  push:
+    branches:
+    - 'main'
+    - 'release/**'
+  pull_request:
+  workflow_dispatch:
+
+env:
+  DOTNET_NOLOGO: 1
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+jobs:
+  ui-tests:
+    name: UI tests
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 50
+    strategy:
+      fail-fast: false # don't kill tests when one environment fails
+      matrix:
+        # specify only one config, all other configurations are included explicitly
+        # browser: [chrome, firefox]
+        os: [ubuntu-latest]
+
+    env:
+      SLN: "src/Riganti.Selenium.sln"
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up
+      uses: ./.github/setup
+      with:
+        sln: ${{ env.SLN }}
+    - name: Run UI tests
+      uses: ./.github/uitest
+      with:
+        browser: ${{ matrix.browser }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        build-configuration: "${{ matrix.environment == 'Production' && 'Release' || 'Debug' }}"
+        runtime-environment: "${{ matrix.environment }}"
+        samples-config: "firefox"
