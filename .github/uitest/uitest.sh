@@ -212,7 +212,7 @@ end_group
 
 start_group "Start samples"
 {
-    start_samples "src/Samples/Riganti.Selenium.Core.Samples.New" "${SAMPLES_PORT}" "${SAMPLES_PID}"
+    start_samples "src/Samples/Riganti.Selenium.Core.Samples.New" "${SAMPLES_PORT}" "SAMPLES_PID"
 }
 end_group
 
