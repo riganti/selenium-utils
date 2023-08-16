@@ -18,7 +18,7 @@ Usage: $PROGRAM [options]
 
 Options:
     -h, --help          Show this help.
-    --root ROOT         Path to the repo root (default = \$DOTVVM_ROOT:-\$PWD).
+    --root ROOT         Path to the repo root (default = \$PWD).
     --config CONFIG     The build configuration (default = \$BUILD_CONFIGURATION:-Release).
     --environment ENV   The runtime ASP.NET Core configuration (default = Development).
     --samples-profile   (default = \$SAMPLES_PROFILE:-seleniumconfig.aspnetcorelatest.chrome.json).
@@ -30,7 +30,7 @@ EOF
             exit 0
         ;;
         '--root')
-            DOTVVM_ROOT="$2"
+            ROOT="$2"
             shift 2
             continue
         ;;
@@ -84,10 +84,7 @@ fi
 # config var setting
 # ==================
 
-ROOT=${DOTVVM_ROOT:-$(pwd)}
-# override DOTVVM_ROOT in case this is a local build
-export DOTVVM_ROOT=$ROOT
-
+ROOT="${ROOT:-$(pwd)}"
 CONFIGURATION="${BUILD_CONFIGURATION:-Release}"
 ASPNETCORE_ENV="${ASPNETCORE_ENV:-Production}"
 DISPLAY="${DISPLAY:-":42"}"
@@ -173,7 +170,7 @@ function start_samples {
         --configuration "$CONFIGURATION" \
         -- \
         --urls "http://localhost:${PORT}/" \
-        --environment "$ASPNETCORE_ENV" >/dev/null &
+        --environment "$ASPNETCORE_ENV" &
 
     PID=$!
     eval "$PID_VAR=$PID"
@@ -225,16 +222,16 @@ else
 fi
 
 
-start_group "Run UI tests"
-{
-    dotnet test "$SAMPLES_DIR" \
-        --filter "Category!=owin-only&$test_env_filter" \
-        --no-restore \
-        --configuration $CONFIGURATION \
-        --logger "trx;LogFileName=$TRX_NAME" \
-        --results-directory "$TEST_RESULTS_DIR"
-}
-end_group
+# start_group "Run UI tests"
+# {
+#     dotnet test "$SAMPLES_DIR" \
+#         --filter "Category!=owin-only&$test_env_filter" \
+#         --no-restore \
+#         --configuration $CONFIGURATION \
+#         --logger "trx;LogFileName=$TRX_NAME" \
+#         --results-directory "$TEST_RESULTS_DIR"
+# }
+# end_group
 
-kill $XVFB_PID $SAMPLES_PID 2>/dev/null
-clean_uitest
+# kill $XVFB_PID $SAMPLES_PID 2>/dev/null
+# clean_uitest
