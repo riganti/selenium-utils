@@ -92,6 +92,7 @@ SLN="$ROOT/ci/linux/Linux.sln"
 export DISPLAY
 TEST_RESULTS_DIR="$ROOT/artifacts/test"
 SAMPLES_DIR="$ROOT/src/Tests/Riganti.Selenium.Sandbox"
+SANDBOX_DIR="$ROOT/src/Tests/Riganti.Selenium.Sandbox"
 SAMPLES_PROFILE="${SAMPLES_PROFILE:-seleniumconfig.aspnetcorelatest.chrome.json}"
 SAMPLES_PORT="${SAMPLES_PORT:-6278}"
 SAMPLES_PORT_API="${SAMPLES_PORT_API:-50001}"
@@ -191,6 +192,7 @@ if [ ! -f "$PROFILE_PATH" ]; then
     exit 1
 fi
 cp -f "$PROFILE_PATH" "$SAMPLES_DIR/seleniumconfig.json"
+cp -f "$PROFILE_PATH" "$SANDBOX_DIR/seleniumconfig.json"
 
 clean_uitest
 
@@ -224,9 +226,19 @@ fi
 
 start_group "Run Sandbox"
 {
-    dotnet run --project "$SAMPLES_DIR"
+    dotnet run --project "$SANDBOX_DIR"
 }
 end_group
+
+start_group "Run UI tests"
+{
+    dotnet test "$SAMPLES_DIR" \
+        --filter "Category!=owin-only&$test_env_filter" \
+        --no-restore \
+        --configuration $CONFIGURATION \
+        --logger "trx;LogFileName=$TRX_NAME" \
+        --results-directory "$TEST_RESULTS_DIR"
+}
 
 kill $XVFB_PID $SAMPLES_PID 2>/dev/null
 clean_uitest
