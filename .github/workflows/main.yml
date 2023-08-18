@@ -3,8 +3,8 @@ name: Run tests
 on:
   push:
     branches:
-    - 'main'
-    - 'release/**'
+      - "main"
+      - "release/**"
   pull_request:
   workflow_dispatch:
 
@@ -22,21 +22,21 @@ jobs:
       fail-fast: false # don't kill tests when one environment fails
       matrix:
         # specify only one config, all other configurations are included explicitly
-        browser: [firefox]
+        browser: [firefox, chrome]
         os: [ubuntu-latest]
 
     env:
       SLN: "src/Riganti.Selenium.sln"
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up
-      uses: ./.github/setup
-      with:
-        sln: ${{ env.SLN }}
-    - name: Run UI tests
-      uses: ./.github/uitest
-      with:
-        browser: ${{ matrix.browser }}
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        build-configuration: "${{ matrix.environment == 'Production' && 'Release' || 'Debug' }}"
-        runtime-environment: "${{ matrix.environment }}"
+      - uses: actions/checkout@v3
+      - name: Set up
+        uses: ./.github/setup
+        with:
+          sln: ${{ env.SLN }}
+      - name: Run UI tests
+        uses: ./.github/uitest
+        with:
+          browser: ${{ matrix.browser }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          build-configuration: "${{ matrix.environment == 'Production' && 'Release' || 'Debug' }}"
+          runtime-environment: "${{ matrix.environment }}"
