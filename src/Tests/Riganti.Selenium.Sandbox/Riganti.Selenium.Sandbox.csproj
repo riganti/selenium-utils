@@ -14,5 +14,11 @@
   <ItemGroup>
     <None Remove="seleniumconfig.json" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="seleniumconfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>
