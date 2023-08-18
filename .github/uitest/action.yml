@@ -54,9 +54,9 @@ runs:
       DOTVVM_SAMPLES_CONFIG_PROFILE: ${{ inputs.samples-config }}
 
   # publish the result to github
-  # - uses: ./.github/test-report
-  #   with:
-  #     trx-path: artifacts/test/ui-test-results-${{ inputs.browser }}-${{ runner.os }}.trx
-  #     report-name: ${{ inputs.browser }}-tests-${{ runner.os }}-${{ inputs.runtime-environment }}-${{ inputs.samples-config }}
-  #     report-title: UI Test Results from ${{ inputs.browser }} on ${{ runner.os }}
-  #     github-token: ${{ inputs.github-token }}
+  - uses: ./.github/test-report
+    with:
+      trx-path: artifacts/test/ui-test-results-${{ inputs.browser }}-${{ runner.os }}.trx
+      report-name: ${{ inputs.browser }}-tests-${{ runner.os }}-${{ inputs.runtime-environment }}-${{ inputs.samples-config }}
+      report-title: UI Test Results from ${{ inputs.browser }} on ${{ runner.os }}
+      github-token: ${{ inputs.github-token }}
