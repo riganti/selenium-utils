@@ -33,6 +33,8 @@ jobs:
         uses: ./.github/setup
         with:
           sln: ${{ env.SLN }}
+      - run: type firefox
+      - run: type geckodriver
       - name: Run UI tests
         uses: ./.github/uitest
         with:
