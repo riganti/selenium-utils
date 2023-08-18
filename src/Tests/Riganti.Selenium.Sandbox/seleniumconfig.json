@@ -1,0 +1,17 @@
+﻿{
+  "factories": {
+    "firefox:fast": {}
+  },
+  "baseUrls": [
+    "http://localhost:6278/"
+  ],
+  "testRunOptions": {
+    "runInParallel": false,
+    "testAttemptsCount": 1
+  },
+  "logging": {
+    "loggers": {
+      "Stdout": {}
+    }
+  }
+}

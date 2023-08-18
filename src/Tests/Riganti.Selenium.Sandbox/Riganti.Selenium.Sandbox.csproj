@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Riganti.Selenium.PseudoFluentApi\Riganti.Selenium.FluentApi.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="seleniumconfig.json" />
+  </ItemGroup>
+
+</Project>
