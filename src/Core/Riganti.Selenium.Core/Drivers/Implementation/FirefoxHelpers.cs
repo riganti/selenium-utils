@@ -22,9 +22,11 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
             {
                 return new FirefoxDriver(GetFirefoxOptions());
             }
-            catch
+            catch (Exception e)
             {
                 factory.LogInfo("Default location of firefox was not found.");
+                
+                factory.LogError(e);
 
                 var env = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
                 if (env.Contains("(x86)"))
