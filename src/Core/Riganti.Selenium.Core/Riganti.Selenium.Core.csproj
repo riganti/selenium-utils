@@ -54,7 +54,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Selenium.Support" Version="4.1.0" />
+    <PackageReference Include="Selenium.Support" Version="4.11.0" />
   </ItemGroup>
 
 

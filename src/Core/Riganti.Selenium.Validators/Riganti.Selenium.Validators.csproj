@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Selenium.Support" Version="4.1.0" />
+    <PackageReference Include="Selenium.Support" Version="4.11.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Riganti.Selenium.Core.Abstractions\Riganti.Selenium.Core.Abstractions.csproj" />
