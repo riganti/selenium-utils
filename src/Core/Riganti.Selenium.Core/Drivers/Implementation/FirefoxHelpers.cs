@@ -11,6 +11,8 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
 
         public static FirefoxDriver CreateFirefoxDriver(LocalWebBrowserFactory factory)
         {
+            factory.LogInfo($"Creating firefox driver from '{pathToFirefoxBinary}'.");
+
             if (!string.IsNullOrWhiteSpace(pathToFirefoxBinary))
             {
                 return CreateAlternativeInstance();
