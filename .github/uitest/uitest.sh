@@ -224,7 +224,7 @@ fi
 
 start_group "Run Sandbox"
 {
-    dotnet run "$SAMPLES_DIR"
+    dotnet run --project "$SAMPLES_DIR"
 }
 end_group
 
