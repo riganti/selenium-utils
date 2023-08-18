@@ -81,6 +81,7 @@ namespace Riganti.Selenium.Core.Drivers
                 {
                     try
                     {
+                        Factory.LogVerbose($"Dismissing alerts in and then killing browser '{UniqueName}'.");
                         DismissAllAlerts();
                         driverInstance.Dispose();
                     }
