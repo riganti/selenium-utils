@@ -91,7 +91,7 @@ DISPLAY="${DISPLAY:-":42"}"
 SLN="$ROOT/ci/linux/Linux.sln"
 export DISPLAY
 TEST_RESULTS_DIR="$ROOT/artifacts/test"
-SAMPLES_DIR="$ROOT/src/Tests/Riganti.Selenium.Core.Samples.Tests"
+SAMPLES_DIR="$ROOT/src/Tests/Riganti.Selenium.Sandbox"
 SANDBOX_DIR="$ROOT/src/Tests/Riganti.Selenium.Sandbox"
 SAMPLES_PROFILE="${SAMPLES_PROFILE:-seleniumconfig.aspnetcorelatest.chrome.json}"
 SAMPLES_PORT="${SAMPLES_PORT:-6278}"

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Riganti.Selenium.Core;
 
@@ -6,8 +8,16 @@ namespace Riganti.Selenium.Sandbox;
 
 public class Program : SeleniumTest
 {
-    public static void Main()
+    public static void DefinitelyNotMain()
     {
+        Trace.WriteLine("test trace");
+        Debug.WriteLine("test debug");
+        Console.WriteLine("test console");
+        foreach(var l in Trace.Listeners) {
+            Console.WriteLine(l);
+        }
+        return;
+        
         var test = new Program();
 
         test.RunInAllBrowsers(browser =>
