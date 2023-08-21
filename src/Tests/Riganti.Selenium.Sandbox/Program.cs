@@ -3,23 +3,57 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Riganti.Selenium.Core;
+using Xunit;
+using Xunit.Runners;
 
 namespace Riganti.Selenium.Sandbox;
 
 public class Program : SeleniumTest
 {
-    public static void DefinitelyNotMain()
+    public static int Main()
     {
-        Trace.WriteLine("test trace");
-        Debug.WriteLine("test debug");
-        Console.WriteLine("test console");
-        foreach(var l in Trace.Listeners) {
-            Console.WriteLine(l);
-        }
-        return;
+        var runner = AssemblyRunner.WithoutAppDomain(typeof(Program).Assembly.Location);
         
-        var test = new Program();
+        runner.OnDiagnosticMessage = message =>
+        {
+            Console.WriteLine(message);
+        };
 
+        var success = true;
+
+        runner.OnTestStarting = info =>
+        {
+            Console.WriteLine($"[xUnit] {info.TypeName}.{info.MethodName}: starting");
+        };
+
+        runner.OnTestFailed = info =>
+        {
+            success = false;
+            Console.WriteLine($"[xUnit] {info.TypeName}.{info.MethodName}: failed");
+        };
+        
+        runner.OnTestPassed = info =>
+        {
+            Console.WriteLine($"[xUnit] {info.TypeName}.{info.MethodName}: passed");
+        };
+
+        runner.Start(parallel: false);
+
+        var waitOne = new System.Threading.ManualResetEvent(false);
+        runner.OnExecutionComplete = info =>
+        {
+            waitOne.Set();
+        };
+
+        waitOne.WaitOne();
+        
+        Console.WriteLine(success ? "Success" : "Failure");
+        return success ? 0 : 1;
+    }
+    
+    private static void RunInlineSamplesTests()
+    {
+        var test = new Program();
         test.RunInAllBrowsers(browser =>
         {
             browser.NavigateToUrl("/test/CssStyles");

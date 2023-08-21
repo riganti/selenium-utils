@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using OpenQA.Selenium;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -13,6 +14,7 @@ namespace Riganti.Selenium.Sandbox
         [Fact]
         public void TestBackingReferencesFromCollection()
         {
+            Console.WriteLine("Test started.");
             RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/FindElements");

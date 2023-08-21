@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace Riganti.Selenium.Sandbox
