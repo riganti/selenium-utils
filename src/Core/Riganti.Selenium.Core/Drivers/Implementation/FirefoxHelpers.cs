@@ -32,7 +32,7 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
             }
             catch (Exception e)
             {
-                factory.LogError("Firefox driver could not be created.")
+                factory.LogError("Firefox driver could not be created.");
                 factory.LogError(e);
 
                 var env = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
