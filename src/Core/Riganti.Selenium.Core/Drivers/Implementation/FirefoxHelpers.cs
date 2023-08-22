@@ -14,7 +14,7 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
         static FirefoxHelpers()
         {
             service = FirefoxDriverService.CreateDefaultService();
-            service.LogLevel = FirefoxDriverLogLevel.Trace;
+            // service.LogLevel = FirefoxDriverLogLevel.Trace;
         }
 
         public static FirefoxDriver CreateFirefoxDriver(LocalWebBrowserFactory factory)
@@ -32,8 +32,7 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
             }
             catch (Exception e)
             {
-                factory.LogInfo("Default location of firefox was not found.");
-                
+                factory.LogError("Firefox driver could not be created.")
                 factory.LogError(e);
 
                 var env = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
