@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net462;net6.0</TargetFrameworks>
     <IsPackable>true</IsPackable>
-    <Version>3.0.0-preview13-final</Version>
+    <Version>3.0.0-preview14-final</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Company>RIGANTI s.r.o.</Company>
     <Authors>Ladislav Šesták</Authors>
