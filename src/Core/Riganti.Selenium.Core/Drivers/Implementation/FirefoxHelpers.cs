@@ -8,9 +8,19 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
     public static class FirefoxHelpers
     {
         private static string pathToFirefoxBinary;
+        
+        private static FirefoxDriverService service;
+        
+        static FirefoxHelpers()
+        {
+            service = FirefoxDriverService.CreateDefaultService();
+            // service.LogLevel = FirefoxDriverLogLevel.Trace;
+        }
 
         public static FirefoxDriver CreateFirefoxDriver(LocalWebBrowserFactory factory)
         {
+            factory.LogInfo($"Creating firefox driver from '{pathToFirefoxBinary}'.");
+
             if (!string.IsNullOrWhiteSpace(pathToFirefoxBinary))
             {
                 return CreateAlternativeInstance();
@@ -18,11 +28,12 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
 
             try
             {
-                return new FirefoxDriver(GetFirefoxOptions());
+                return new FirefoxDriver(service, GetFirefoxOptions());
             }
-            catch
+            catch (Exception e)
             {
-                factory.LogInfo("Default location of firefox was not found.");
+                factory.LogInfo("Firefox driver could not be created.");
+                factory.LogError(e);
 
                 var env = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
                 if (env.Contains("(x86)"))

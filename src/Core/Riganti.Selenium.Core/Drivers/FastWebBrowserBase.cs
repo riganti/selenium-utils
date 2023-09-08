@@ -81,6 +81,7 @@ namespace Riganti.Selenium.Core.Drivers
                 {
                     try
                     {
+                        Factory.LogVerbose($"Dismissing alerts in and then killing browser '{UniqueName}'.");
                         DismissAllAlerts();
                         driverInstance.Dispose();
                     }
@@ -111,7 +112,14 @@ namespace Riganti.Selenium.Core.Drivers
         /// </summary>
         protected virtual void DismissAllAlerts()
         {
-            driverInstance.SwitchTo()?.Alert()?.Dismiss();
+            try
+            {
+                driverInstance.SwitchTo()?.Alert()?.Dismiss();
+            }
+            catch (NoAlertPresentException)
+            {
+                // ignore it
+            }
         }
 
         /// <summary>
@@ -124,7 +132,7 @@ namespace Riganti.Selenium.Core.Drivers
             if (driverWithExecutor is null) return;
 
             driverWithExecutor.CommandExecutor.Dispose();
-            var s= Process.Start("");
+            var s = Process.Start("");
         }
     }
 }

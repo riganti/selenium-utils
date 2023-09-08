@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;net461;net5.0</TargetFrameworks>
-		<Version>3.0.0-preview13-final</Version>
+		<Version>3.0.0-preview14-final</Version>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -11,6 +11,6 @@
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Selenium.Support" Version="4.1.0" />
+		<PackageReference Include="Selenium.Support" Version="4.11.0" />
 	</ItemGroup>
 </Project>

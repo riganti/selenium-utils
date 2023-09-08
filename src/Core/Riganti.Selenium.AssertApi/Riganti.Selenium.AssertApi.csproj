@@ -2,7 +2,7 @@
 
   <PropertyGroup>  
     <TargetFrameworks>net461;netstandard2.0;net5.0</TargetFrameworks>  
-    <Version>3.0.0-preview13-final</Version>
+    <Version>3.0.0-preview14-final</Version>
 
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
