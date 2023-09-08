@@ -224,7 +224,7 @@ namespace Riganti.Selenium.Core.Api
         {
             operationRunner.Attribute("class",
                 p =>
-#if NET5_0_OR_GREATER
+#if NET5_0_OR_GREATER || NETSTANDARD
                 p.Split(' ', StringSplitOptions.None)
 #else
                 p.Split(' ')
@@ -236,7 +236,7 @@ namespace Riganti.Selenium.Core.Api
         public static void HasNotClass(this IOperationRunner<IElementWrapper> operationRunner, string value, bool caseSensitive = false)
         {
             operationRunner.Attribute("class", p => !p.
-#if NET5_0_OR_GREATER
+#if NET5_0_OR_GREATER || NETSTANDARD
             Split(' ', StringSplitOptions.None)
 #else
             Split(' ')

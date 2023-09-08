@@ -355,7 +355,7 @@ namespace Riganti.Selenium.Core
             {
                 var values = value.Split(' ');
                 Attribute(wrapper, "class", p => values.All(v => p
-#if NET5_0_OR_GREATER
+#if NET5_0_OR_GREATER || NETSTANDARD
                 .Split(' ', StringSplitOptions.None)
 #else
                 .Split(' ')
@@ -369,7 +369,7 @@ namespace Riganti.Selenium.Core
             WaitForExecutor.WaitFor(() =>
             {
                 Attribute(wrapper, "class", p => !p
-#if NET5_0_OR_GREATER
+#if NET5_0_OR_GREATER || NETSTANDARD
                 .Split(' ', StringSplitOptions.None)
 #else
                 .Split(' ')
