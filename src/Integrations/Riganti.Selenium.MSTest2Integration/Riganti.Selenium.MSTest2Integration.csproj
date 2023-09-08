@@ -4,7 +4,6 @@
     <TargetFrameworks>$(DefaultTargetFrameworks)</TargetFrameworks>
 
     <IsPackable>true</IsPackable>
-    <IncludeContentInPack>False</IncludeContentInPack>
     <PackageId>Riganti.Selenium.MSTest2Integration</PackageId>
     <Product>Riganti.Selenium.MSTest2Integration</Product>
     <AssemblyName>Riganti.Selenium.MSTest2Integration</AssemblyName>
