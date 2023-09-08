@@ -1,0 +1,45 @@
+﻿using System;
+using System.Net;
+using System.Runtime.CompilerServices;
+using System.Text;
+using OpenQA.Selenium;
+using Riganti.Selenium.Core;
+using Riganti.Selenium.Core.Abstractions;
+using Xunit.Abstractions;
+
+namespace Riganti.Selenium.Sandbox
+{
+    public class AppSeleniumTest : Core.SeleniumTest
+    {
+        static AppSeleniumTest()
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        }
+
+        public AppSeleniumTest(ITestOutputHelper output) : base(output)
+        {
+        }
+
+        public By SelectByDataUi(string selector)
+            => SelectBy.CssSelector($"[data-ui='{selector}']");
+        public By SelectByUiTestName(string selector)
+                    => SelectBy.CssSelector($"[data-uitest-name='{selector}']");
+
+        public virtual void RunInAllBrowsers(Action<IBrowserWrapperFluentApi> testBody,
+            [CallerMemberName] string callerMemberName = "",
+            [CallerFilePath] string callerFilePath = "",
+            [CallerLineNumber] int callerLineNumber = 0)
+        {
+            TestSuiteRunner.ServiceFactory.RegisterTransient<IBrowserWrapper, BrowserWrapperFluentApi>();
+            TestSuiteRunner.ServiceFactory.RegisterTransient<IElementWrapper, ElementWrapperFluentApi>();
+            TestSuiteRunner.ServiceFactory.RegisterTransient<ISeleniumWrapperCollection, ElementWrapperCollection<IElementWrapperFluentApi, IBrowserWrapperFluentApi>>();
+            TestSuiteRunner.RunInAllBrowsers(this, Convert(testBody), callerMemberName, callerFilePath, callerLineNumber);
+        }
+        
+        public static Action<IBrowserWrapper> Convert(Action<IBrowserWrapperFluentApi> action)
+        {
+            return o => action((IBrowserWrapperFluentApi)o);
+        }
+    }
+}

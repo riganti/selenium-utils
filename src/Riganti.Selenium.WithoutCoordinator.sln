@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Selenium.Core.Sampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Selenium.LambdaApi", "Core\Riganti.Selenium.LambdaApi\Riganti.Selenium.LambdaApi.csproj", "{79A8D0B4-7832-4BC8-B216-B724E40BEA12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Selenium.Sandbox", "Tests\Riganti.Selenium.Sandbox\Riganti.Selenium.Sandbox.csproj", "{444F95B6-0274-4906-A7B1-F5EF904D0D11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,10 @@ Global
 		{79A8D0B4-7832-4BC8-B216-B724E40BEA12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79A8D0B4-7832-4BC8-B216-B724E40BEA12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79A8D0B4-7832-4BC8-B216-B724E40BEA12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{444F95B6-0274-4906-A7B1-F5EF904D0D11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{444F95B6-0274-4906-A7B1-F5EF904D0D11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{444F95B6-0274-4906-A7B1-F5EF904D0D11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{444F95B6-0274-4906-A7B1-F5EF904D0D11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +156,7 @@ Global
 		{353D8FE1-C499-4931-A564-3DED67ABE500} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
 		{29F34401-F335-4AE3-9DF9-42F00F930C1F} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
 		{79A8D0B4-7832-4BC8-B216-B724E40BEA12} = {E83BB596-BF2A-4FE2-9843-E5649B561293}
+		{444F95B6-0274-4906-A7B1-F5EF904D0D11} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {069407A3-360C-4D69-AFA7-4E7532D148A7}

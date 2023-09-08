@@ -1,0 +1,20 @@
+{
+    "factories": {
+      "chrome:fast": {
+        "capabilities": [ "--no-sandbox" ]
+      }
+    },
+    "baseUrls": [
+      "http://localhost:6278/"
+    ],
+    "testRunOptions": {
+      "runInParallel": false,
+      "testAttemptsCount": 2
+    },
+    "logging": {
+      "loggers": {
+        "testContext": {}
+      }
+    }
+  }
+  
