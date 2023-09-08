@@ -26,7 +26,7 @@ jobs:
         os: [ubuntu-latest]
 
     env:
-      SLN: "src/Riganti.Selenium.sln"
+      SLN: "src/Riganti.Selenium.WithoutCoordinator.sln"
     steps:
       - uses: actions/checkout@v3
       - name: Set up
