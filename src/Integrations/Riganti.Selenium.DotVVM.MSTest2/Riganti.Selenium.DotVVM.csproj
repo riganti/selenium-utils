@@ -1,24 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard2.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>$(DefaultTargetFrameworks)</TargetFrameworks>
     <IsPackable>true</IsPackable>
-    <IncludeSymbols>True</IncludeSymbols>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyVersion>3.0.0</AssemblyVersion>
     <Description>Integration of Riganti.Selenium.DotVVM for DotVVM Framework.</Description>
-    <Version>3.0.0-preview14-final</Version>
-    <PackageProjectUrl>https://github.com/riganti/selenium-utils</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/riganti/selenium-utils</RepositoryUrl>
-    <PackageTags>selenium ui tests riganti ci dotvvm</PackageTags>
-    <PackageReleaseNotes>Added support for detection of init event.</PackageReleaseNotes>
-    <Authors>Ladislav Šesták</Authors>
-    <Company>RIGANTI s.r.o.</Company>
-    <PackageIconUrl>https://github.com/riganti/selenium-utils/raw/master/Riganti.Utils/Icon.png</PackageIconUrl>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\net461\Riganti.Selenium.DotVVM.xml</DocumentationFile>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj" />
   </ItemGroup>

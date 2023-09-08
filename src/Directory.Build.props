@@ -1,0 +1,49 @@
+<Project>
+  <PropertyGroup Label="Basic info">
+    <Company>RIGANTI s.r.o.</Company>
+    <Authors>RIGANTI</Authors>
+    <Description>Basic utilities for performing UI tests based on selenium on CI servers.</Description>
+    <PackageTags>selenium;ui;tests;riganti;ci</PackageTags>
+    <Version>3.0.0-preview14-final</Version>
+    <PackageIcon>Icon.png</PackageIcon>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/riganti/selenium-utils</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/riganti/selenium-utils</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Icon.png" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <PropertyGroup Label="Licensing">
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Building">
+    <LangVersion>11.0</LangVersion>
+    <!-- Disable warning for missing XML doc comments. -->
+    <NoWarn>$(NoWarn);CS1591;CS1573</NoWarn>
+    <Deterministic>true</Deterministic>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <DefaultTargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard2.1;net6.0;net472</DefaultTargetFrameworks>
+    <DefaultTargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard2.1;net6.0</DefaultTargetFrameworks>
+    <RunnerTargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">net6.0;net472</RunnerTargetFrameworks>
+    <RunnerTargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">net6.0</RunnerTargetFrameworks>
+    <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+    <AutomaticallyUseReferenceAssemblyPackages>false</AutomaticallyUseReferenceAssemblyPackages>
+  </PropertyGroup>
+
+  <PropertyGroup Label="SourceLink">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- NB: Don't generate symbol packages. Symbols and sources are packed into the dlls. -->
+    <IncludeSymbols>false</IncludeSymbols>
+    <DebugType>embedded</DebugType>
+    <EmbedAllSources>true</EmbedAllSources>
+  </PropertyGroup>
+
+  <ItemGroup Label="SourceLink">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+  </ItemGroup>
+</Project>

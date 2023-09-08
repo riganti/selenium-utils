@@ -1,34 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461;net5.0</TargetFrameworks>
-
+    <TargetFrameworks>$(DefaultTargetFrameworks)</TargetFrameworks>
     <AssemblyName>Riganti.Selenium.Core</AssemblyName>
-    <ApplicationIcon></ApplicationIcon>
     <IncludeContentInPack>False</IncludeContentInPack>
-    <IncludeSymbols>True</IncludeSymbols>
-    <LangVersion>9.0</LangVersion>
-    <FileVersion>3.0.0.0</FileVersion>
-    <Description>Basic utilities for performing UI tests based on selenium on CI servers.</Description>
-    <Company>RIGANTI s.r.o.</Company>
-    <Authors>Ladislav Šesták</Authors>
-    <Version>3.0.0-preview14-final</Version>
-    <RepositoryUrl>https://github.com/riganti/selenium-utils</RepositoryUrl>
-    <RepositoryType></RepositoryType>
-    <PackageTags>selenium ui tests riganti ci</PackageTags>
-    <PackageReleaseNotes></PackageReleaseNotes>
-    <PackageProjectUrl>https://github.com/riganti/selenium-utils</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/riganti/selenium-utils/new-api/Riganti.Utils/Riganti.Utils.Testing/Icon.png</PackageIconUrl>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-  </ItemGroup>
-
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\net461\Riganti.Selenium.Core.xml</DocumentationFile>
@@ -52,11 +28,9 @@
     <DefineConstants>TRACE;DEBUG;net50</DefineConstants>
   </PropertyGroup>
 
-
   <ItemGroup>
     <PackageReference Include="Selenium.Support" Version="4.11.0" />
   </ItemGroup>
-
 
   <ItemGroup>
     <ProjectReference Include="..\..\Coordinator\Riganti.Selenium.Coordinator.Client\Riganti.Selenium.Coordinator.Client.csproj" />

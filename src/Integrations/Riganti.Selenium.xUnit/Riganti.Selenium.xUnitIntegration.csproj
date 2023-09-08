@@ -1,21 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;net6.0</TargetFrameworks>
+    <TargetFrameworks>$(RunnerTargetFrameworks)</TargetFrameworks>
     <IsPackable>true</IsPackable>
-    <Version>3.0.0-preview14-final</Version>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Company>RIGANTI s.r.o.</Company>
-    <Authors>Ladislav Šesták</Authors>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
