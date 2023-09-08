@@ -4,7 +4,7 @@
     <Authors>RIGANTI</Authors>
     <Description>Basic utilities for performing UI tests based on selenium on CI servers.</Description>
     <PackageTags>selenium;ui;tests;riganti;ci</PackageTags>
-    <Version>3.0.0-preview14-final</Version>
+    <Version>3.0.0-preview15-final</Version>
     <PackageIcon>Icon.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/riganti/selenium-utils</RepositoryUrl>
