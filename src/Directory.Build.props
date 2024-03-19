@@ -44,4 +44,9 @@
   <ItemGroup Label="SourceLink">
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
   </ItemGroup>
+
+  <ItemGroup Label="ReferenceAssemblies">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
+  </ItemGroup>
+
 </Project>
