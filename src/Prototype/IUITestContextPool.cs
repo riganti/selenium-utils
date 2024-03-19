@@ -1,6 +1,8 @@
+using System;
+
 namespace Riganti.Selenium.Prototype;
 
-public interface IUITestContextPool
+public interface IUITestContextPool : IDisposable
 {
     UITestContext Obtain(IUITestContextOptions options);
 
