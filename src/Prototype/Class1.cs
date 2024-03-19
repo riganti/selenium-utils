@@ -1,4 +1,4 @@
-﻿namespace Prototype;
+﻿namespace Riganti.Selenium.Prototype;
 
 public class Class1
 {
