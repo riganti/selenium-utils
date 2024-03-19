@@ -28,7 +28,7 @@ jobs:
     env:
       SLN: "src/Riganti.Selenium.WithoutCoordinator.sln"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up
         uses: ./.github/setup
         with:
