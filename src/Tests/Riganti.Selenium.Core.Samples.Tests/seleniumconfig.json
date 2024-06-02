@@ -1,13 +1,13 @@
 ﻿{
   "factories": {
-    //"chrome:fast": {
+    "chrome:fast": {
+      "capabilities": [ "--window-size=1920,1080", "--headless", "--disable-gpu" ],
+      "BrowserVersion": "124"
+    },
+    //"firefox:fast": {
     //  "capabilities": [ "--window-size=1920,1080", "--headless", "--disable-gpu" ],
-    //  "BrowserVersion": "124"
-    //},
-    "firefox:fast": {
-      //"capabilities": [ "--window-size=1920,1080", "--headless", "--disable-gpu" ],
-      "BrowserVersion": "stable"
-    }
+    //  "BrowserVersion": "stable"
+    //}
     //"chrome:coordinator": {
     //  "options": {
     //    "coordinatorUrl": "http://localhost:62242/"
