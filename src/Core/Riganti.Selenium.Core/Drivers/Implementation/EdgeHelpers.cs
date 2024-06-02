@@ -11,7 +11,7 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
             {
             };
 
-            options.BrowserVersion = factory.Options.TryGet(nameof(options.BrowserVersion));
+            options.BrowserVersion = factory.Options.TryGetOrDefault(nameof(options.BrowserVersion), "stable");
             return new EdgeDriver(options);
         }
     }

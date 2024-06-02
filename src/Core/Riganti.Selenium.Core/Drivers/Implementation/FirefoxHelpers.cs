@@ -31,7 +31,7 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
         public static FirefoxOptions GetFirefoxOptions(System.Collections.Generic.IDictionary<string, string> _options)
         {
             var options = new FirefoxOptions { Profile = GetFirefoxProfile() };
-            options.BrowserVersion = _options.TryGet(nameof(options.BrowserVersion));
+            options.BrowserVersion = _options.TryGetOrDefault(nameof(options.BrowserVersion), "stable");
             return options;
         }
     }
