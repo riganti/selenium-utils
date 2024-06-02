@@ -58,10 +58,3 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           build-configuration: "${{ matrix.environment == 'Production' && 'Release' || 'Debug' }}"
           runtime-environment: "${{ matrix.environment }}"
-      - name: Test Reporter
-        uses: dorny/test-reporter@v1.9.1
-        with: 
-          artifact: ${{ matrix.browser }}-tests-Linux--Default            # artifact name
-          name: ${{ matrix.browser }} UI Tests                    # Name of the check run which will be created
-          path: '*.trx'                     # Path to test results (inside artifact .zip)
-          reporter: dotnet-trx              # Format of test results
