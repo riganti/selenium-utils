@@ -1,8 +1,12 @@
 ﻿{
   "factories": {
-    "chrome:fast": {
-      "capabilities": [ "--window-size=1920,1080", "--headless", "--disable-gpu" ], 
-      "BrowserVersion": "124" 
+    //"chrome:fast": {
+    //  "capabilities": [ "--window-size=1920,1080", "--headless", "--disable-gpu" ],
+    //  "BrowserVersion": "124"
+    //},
+    "firefox:fast": {
+      //"capabilities": [ "--window-size=1920,1080", "--headless", "--disable-gpu" ],
+      "BrowserVersion": "stable"
     }
     //"chrome:coordinator": {
     //  "options": {
