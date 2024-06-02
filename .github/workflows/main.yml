@@ -58,3 +58,20 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           build-configuration: "${{ matrix.environment == 'Production' && 'Release' || 'Debug' }}"
           runtime-environment: "${{ matrix.environment }}"
+  report:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Test Reporter
+      uses: dorny/test-reporter@v1.9.1
+      with: 
+        artifact: chrome-tests-Linux--Default            # artifact name
+        name: Chrome UI Tests                    # Name of the check run which will be created
+        path: '*.trx'                     # Path to test results (inside artifact .zip)
+        reporter: dotnet-trx              # Format of test results
+    - name: Test Reporter
+      uses: dorny/test-reporter@v1.9.1
+      with: 
+        artifact: firefox-tests-Linux--Default            # artifact name
+        name: Firefox UI Tests                    # Name of the check run which will be created
+        path: '*.trx'                     # Path to test results (inside artifact .zip)
+        reporter: dotnet-trx              # Format of test results

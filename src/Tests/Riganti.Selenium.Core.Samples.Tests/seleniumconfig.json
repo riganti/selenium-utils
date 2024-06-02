@@ -1,7 +1,8 @@
 ﻿{
   "factories": {
     "chrome:fast": {
-      "capabilities": [ "--window-size=1920,1080", "--headless", "--disable-gpu" ]
+      "capabilities": [ "--window-size=1920,1080", "--headless", "--disable-gpu" ], 
+      "BrowserVersion": "124" 
     }
     //"chrome:coordinator": {
     //  "options": {

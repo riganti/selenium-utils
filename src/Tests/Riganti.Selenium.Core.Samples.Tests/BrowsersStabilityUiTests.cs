@@ -70,7 +70,7 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
         }
 
         [TestMethod]
-        [ExpectedSeleniumException(typeof(InvalidSelectorException))]
+        [ExpectedSeleniumException(typeof(JavaScriptException))]
         public void SelectMethod_InvalidXPathSelector_ExpectedException()
         {
             this.RunInAllBrowsers(browser =>

@@ -13,6 +13,5 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
         {
             Lease = lease;
         }
-        
     }
 }
