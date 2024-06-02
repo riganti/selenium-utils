@@ -13,7 +13,7 @@ public class Program : SeleniumTest
     public static int Main()
     {
         var runner = AssemblyRunner.WithoutAppDomain(typeof(Program).Assembly.Location);
-        
+
         runner.OnDiagnosticMessage = message =>
         {
             Console.WriteLine(message);
@@ -31,13 +31,13 @@ public class Program : SeleniumTest
             success = false;
             Console.WriteLine($"[xUnit] {info.TypeName}.{info.MethodName}: failed");
         };
-        
+
         runner.OnTestPassed = info =>
         {
             Console.WriteLine($"[xUnit] {info.TypeName}.{info.MethodName}: passed");
         };
 
-        runner.Start(parallel: false);
+        runner.Start(new AssemblyRunnerStartOptions() { Parallel = false });
 
         var waitOne = new System.Threading.ManualResetEvent(false);
         runner.OnExecutionComplete = info =>
@@ -46,11 +46,11 @@ public class Program : SeleniumTest
         };
 
         waitOne.WaitOne();
-        
+
         Console.WriteLine(success ? "Success" : "Failure");
         return success ? 0 : 1;
     }
-    
+
     private static void RunInlineSamplesTests()
     {
         var test = new Program();
@@ -58,15 +58,15 @@ public class Program : SeleniumTest
         {
             browser.NavigateToUrl("/test/CssStyles");
 
-                browser.First("#hasStyles")
-                    .CheckCssStyle("font-size", "8px")
-                    .CheckCssStyle("width", "20px")
-                    .CheckCssStyle("height", "20px");
+            browser.First("#hasStyles")
+                .CheckCssStyle("font-size", "8px")
+                .CheckCssStyle("width", "20px")
+                .CheckCssStyle("height", "20px");
 
-                browser.First("#hasNotStyles")
-                    .CheckCssStyle("margin-left", "8px");
+            browser.First("#hasNotStyles")
+                .CheckCssStyle("margin-left", "8px");
         });
-        
+
         test.RunInAllBrowsers(browser =>
             {
                 browser.NavigateToUrl("/test/FindElements");
@@ -77,7 +77,7 @@ public class Program : SeleniumTest
                 var e = d.FindElements("p");
                 e.ThrowIfSequenceEmpty();
             });
-        
+
         Console.WriteLine("Exiting successfully...");
     }
 }

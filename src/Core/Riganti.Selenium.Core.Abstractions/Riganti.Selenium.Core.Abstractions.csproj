@@ -5,6 +5,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Selenium.Support" Version="4.11.0" />
+		<PackageReference Include="Selenium.Support" Version="4.21.0" />
+		<PackageReference Include="Selenium.WebDriver" Version="4.21.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
 	</ItemGroup>
 </Project>
