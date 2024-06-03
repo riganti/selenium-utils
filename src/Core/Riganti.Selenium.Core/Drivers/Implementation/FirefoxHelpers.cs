@@ -18,9 +18,7 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
 
         public static FirefoxDriver CreateFirefoxDriver(LocalWebBrowserFactory factory)
         {
-            Console.WriteLine("Firefox applies capabilities: " + JsonConvert.SerializeObject(factory.Capabilities));
             var ffOptions = GetFirefoxOptions(factory.Options);
-            Console.WriteLine("Firefox applies options: " + JsonConvert.SerializeObject(ffOptions));
             var driver = new FirefoxDriver(service, ffOptions);
             return driver;
         }
@@ -38,10 +36,9 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
         {
             var options = new FirefoxOptions
             {
-                //    Profile = GetFirefoxProfile()
+                Profile = GetFirefoxProfile()
             };
             options.BrowserVersion = _options.TryGet(nameof(options.BrowserVersion));
-            Console.WriteLine($"Requesting {options.BrowserVersion} version of browser");
             return options;
         }
     }
