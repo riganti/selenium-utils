@@ -1,7 +1,10 @@
 {
     "factories": {
       "chrome:fast": {
-        "capabilities": [ "--no-sandbox" ]
+        "capabilities": [ "--no-sandbox" ],
+        "Options": {
+          "BrowserVersion": "124"
+        }
       }
     },
     "baseUrls": [

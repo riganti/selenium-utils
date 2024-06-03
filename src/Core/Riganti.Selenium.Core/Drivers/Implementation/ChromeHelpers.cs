@@ -16,7 +16,7 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
             options.AddArgument("disable-popup-blocking");
 
             options.AddArguments(factory.Capabilities);
-            options.BrowserVersion = factory.Options.TryGetOrDefault(nameof(options.BrowserVersion), "stable");
+            options.BrowserVersion = factory.Options.TryGet(nameof(options.BrowserVersion));
 
             if (factory.GetBooleanOption("disableExtensions"))
             {

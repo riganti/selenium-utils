@@ -1,8 +1,10 @@
 ﻿{
   "factories": {
     "chrome:fast": {
-      "capabilities": [ "--window-size=1920,1080" , "--headless", "--disable-gpu" ], 
-      "BrowserVersion": "124"
+      "capabilities": [ "--window-size=1920,1080", "--headless", "--disable-gpu" ],
+      "Options": {
+        "BrowserVersion": "124"
+      }
     }
     //"firefox:dev": {
     //}

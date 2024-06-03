@@ -23,30 +23,4 @@ namespace Riganti.Selenium.xUnitIntegration
             base.RunInAllBrowsers(testClass, action, callerMemberName, callerFilePath, callerLineNumber);
         }
     }
-
-    //public class SeleniumInternalXunitRunnerReporter : Xunit.IRunnerReporter
-    //{
-    //    public string Description => "This reporter is a bit hack to close all resources when test execution ends.";
-
-    //    public bool IsEnvironmentallyEnabled => true;
-
-    //    public string RunnerSwitch => "riganti-selenium";
-
-    //    public IMessageSink CreateMessageHandler(IRunnerLogger logger)
-    //    {
-    //        return new SeleniumMessageSink();
-    //    }
-    //}
-    //public class SeleniumMessageSink : IMessageSink
-    //{
-    //    public bool OnMessage(IMessageSinkMessage message)
-    //    {
-    //        if (message is TestAssemblyExecutionFinished)
-    //        {
-    //            if (Debugger.IsAttached)
-    //                Debugger.Break();
-    //        }
-    //        return true;
-    //    }
-    //}
 }

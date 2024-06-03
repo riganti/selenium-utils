@@ -1,7 +1,9 @@
 ﻿{
   "factories": {
     "firefox:fast": {
-      "BrowserVersion": "stable"
+      "Options": {
+        "BrowserVersion": "stable"
+      }
     }
   },
   "baseUrls": [
