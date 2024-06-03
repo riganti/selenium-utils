@@ -123,7 +123,7 @@ namespace Riganti.Selenium.Core.Abstractions
         /// <summary>
         /// Takes screenshot of current screen.
         /// </summary>
-        void TakeScreenshot(string filename, ScreenshotImageFormat? format = null);
+        void TakeScreenshot(string filename);
 
         T ThrowIfIsNull<T>(T obj, string message);
 

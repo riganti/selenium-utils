@@ -520,10 +520,9 @@ namespace Riganti.Selenium.Core
         /// Takes a screenshot and returns a full path to the file.
         /// </summary>
         ///<param name="filename">Path where the screenshot is going to be saved.</param>
-        ///<param name="format">Default value is PNG.</param>
-        public void TakeScreenshot(string filename, ScreenshotImageFormat? format = null)
+        public void TakeScreenshot(string filename)
         {
-            ((ITakesScreenshot)driver).GetScreenshot().SaveAsFile(filename, format ?? ScreenshotImageFormat.Png);
+            ((ITakesScreenshot)driver).GetScreenshot().SaveAsFile(filename);
         }
 
         /// <summary>

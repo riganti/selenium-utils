@@ -49,8 +49,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.DotVVM.Sam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Core.Samples.AssertApi.Tests", "Tests\Riganti.Selenium.Core.Samples.Assert.Tests\Riganti.Selenium.Core.Samples.AssertApi.Tests.csproj", "{353D8FE1-C499-4931-A564-3DED67ABE500}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Core.Samples.LambdaApi.Tests", "Tests\Riganti.Selenium.Core.Samples.LambdaApi.Tests\Riganti.Selenium.Core.Samples.LambdaApi.Tests.csproj", "{29F34401-F335-4AE3-9DF9-42F00F930C1F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.LambdaApi", "Core\Riganti.Selenium.LambdaApi\Riganti.Selenium.LambdaApi.csproj", "{79A8D0B4-7832-4BC8-B216-B724E40BEA12}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.xUnitIntegration.UnitTests", "Tests\Riganti.Selenium.xUnitIntegration.UnitTests\Riganti.Selenium.xUnitIntegration.UnitTests.csproj", "{6C2F8993-6E0B-4742-8A4B-43887928EB36}"
@@ -63,7 +61,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.DotVVM3.Sa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.DotVVM3.Samples.Tests", "Tests\Riganti.Selenium.DotVVM3.Samples.Tests\Riganti.Selenium.DotVVM3.Samples.Tests.csproj", "{F6363378-E182-4D67-971B-D0714BC8F9E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Selenium.Sandbox", "Tests\Riganti.Selenium.Sandbox\Riganti.Selenium.Sandbox.csproj", "{D942F0E4-06E6-4C53-9146-EFE3FC816F0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Selenium.Sandbox", "Tests\Riganti.Selenium.Sandbox\Riganti.Selenium.Sandbox.csproj", "{D942F0E4-06E6-4C53-9146-EFE3FC816F0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,10 +141,6 @@ Global
 		{353D8FE1-C499-4931-A564-3DED67ABE500}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{353D8FE1-C499-4931-A564-3DED67ABE500}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{353D8FE1-C499-4931-A564-3DED67ABE500}.Release|Any CPU.Build.0 = Release|Any CPU
-		{29F34401-F335-4AE3-9DF9-42F00F930C1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{29F34401-F335-4AE3-9DF9-42F00F930C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{29F34401-F335-4AE3-9DF9-42F00F930C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{29F34401-F335-4AE3-9DF9-42F00F930C1F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{79A8D0B4-7832-4BC8-B216-B724E40BEA12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{79A8D0B4-7832-4BC8-B216-B724E40BEA12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79A8D0B4-7832-4BC8-B216-B724E40BEA12}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -198,7 +192,6 @@ Global
 		{55238D70-D60F-490E-9D31-A6A81EA758DA} = {08822873-F53A-4CBD-8A9E-D62ED6B3A614}
 		{8AB57B5D-93E0-482E-970A-544663D87192} = {08822873-F53A-4CBD-8A9E-D62ED6B3A614}
 		{353D8FE1-C499-4931-A564-3DED67ABE500} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
-		{29F34401-F335-4AE3-9DF9-42F00F930C1F} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
 		{79A8D0B4-7832-4BC8-B216-B724E40BEA12} = {E83BB596-BF2A-4FE2-9843-E5649B561293}
 		{6C2F8993-6E0B-4742-8A4B-43887928EB36} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}
 		{53BF5A97-F866-4872-83A8-2D187D566291} = {693F6CF7-F573-4ACA-84E6-E90BBBA0A3C1}

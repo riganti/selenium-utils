@@ -8,6 +8,7 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
 
         public static ChromeDriver CreateChromeDriver(LocalWebBrowserFactory factory)
         {
+            
             var options = new ChromeOptions();
             options.AddArgument("test-type");
             options.AddArgument("disable-popup-blocking");

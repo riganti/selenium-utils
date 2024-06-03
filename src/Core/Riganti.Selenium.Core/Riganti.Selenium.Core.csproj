@@ -26,7 +26,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Selenium.Support" Version="4.11.0" />
+    <PackageReference Include="Selenium.Support" Version="4.21.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.21.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +38,10 @@
 
   <ItemGroup>
     <Reference Condition="'$(TargetFramework)'=='net461'" Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
 
 </Project>
