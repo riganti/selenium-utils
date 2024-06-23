@@ -1,8 +1,16 @@
 ﻿{
   "factories": {
     "chrome:fast": {
-      "capabilities": [ "--window-size=1920,1080", "--headless", "--disable-gpu" ]
-    }
+      "capabilities": [ "--window-size=1920,1080", "--headless", "--disable-gpu" ],
+      "Options": {
+        "BrowserVersion": "124"
+      }
+    },
+    //"firefox:fast": {
+    //  "Options": {
+    //    "BrowserVersion": "104"
+    //  }
+    //}
     //"chrome:coordinator": {
     //  "options": {
     //    "coordinatorUrl": "http://localhost:62242/"

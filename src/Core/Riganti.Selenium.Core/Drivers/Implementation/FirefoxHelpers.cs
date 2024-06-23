@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using Newtonsoft.Json;
 using OpenQA.Selenium.Firefox;
 using Riganti.Selenium.Core.Factories;
 
@@ -7,68 +9,18 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
 {
     public static class FirefoxHelpers
     {
-        private static string pathToFirefoxBinary;
-        
         private static FirefoxDriverService service;
-        
+
         static FirefoxHelpers()
         {
             service = FirefoxDriverService.CreateDefaultService();
-            // service.LogLevel = FirefoxDriverLogLevel.Trace;
         }
 
         public static FirefoxDriver CreateFirefoxDriver(LocalWebBrowserFactory factory)
         {
-            factory.LogInfo($"Creating firefox driver from '{pathToFirefoxBinary}'.");
-
-            if (!string.IsNullOrWhiteSpace(pathToFirefoxBinary))
-            {
-                return CreateAlternativeInstance();
-            }
-
-            try
-            {
-                return new FirefoxDriver(service, GetFirefoxOptions());
-            }
-            catch (Exception e)
-            {
-                factory.LogInfo("Firefox driver could not be created.");
-                factory.LogError(e);
-
-                var env = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-                if (env.Contains("(x86)"))
-                {
-                    env = env.Replace("(x86)", "").Trim();
-                }
-                var firefox = "Mozilla Firefox\\Firefox.exe";
-                if (File.Exists(Path.Combine(env, firefox)))
-                {
-                    return CreateAlternativeInstance(env, firefox);
-                }
-
-                env = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-                if (File.Exists(Path.Combine(env, firefox)))
-                {
-                    return CreateAlternativeInstance(env, firefox);
-                }
-                throw;
-            }
-        }
-
-        private static FirefoxDriver CreateAlternativeInstance(string env, string firefox)
-        {
-            pathToFirefoxBinary = Path.Combine(env, firefox);
-            return CreateAlternativeInstance();
-        }
-
-        private static FirefoxDriver CreateAlternativeInstance()
-        {
-            var firefoxOptions = new FirefoxOptions()
-            {
-                BrowserExecutableLocation = pathToFirefoxBinary,
-                Profile = GetFirefoxProfile()
-            };
-            return new FirefoxDriver(firefoxOptions);
+            var ffOptions = GetFirefoxOptions(factory.Options);
+            var driver = new FirefoxDriver(service, ffOptions);
+            return driver;
         }
 
         public static FirefoxProfile GetFirefoxProfile()
@@ -80,9 +32,13 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
             return profile;
         }
 
-        public static FirefoxOptions GetFirefoxOptions()
+        public static FirefoxOptions GetFirefoxOptions(System.Collections.Generic.IDictionary<string, string> _options)
         {
-            var options = new FirefoxOptions { Profile = GetFirefoxProfile() };
+            var options = new FirefoxOptions
+            {
+                Profile = GetFirefoxProfile()
+            };
+            options.BrowserVersion = _options.TryGet(nameof(options.BrowserVersion));
             return options;
         }
     }

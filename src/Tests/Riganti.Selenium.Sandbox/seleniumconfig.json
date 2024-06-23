@@ -1,6 +1,10 @@
 ﻿{
   "factories": {
-    "firefox:fast": {}
+    "firefox:fast": {
+      "Options": {
+        "BrowserVersion": "stable"
+      }
+    }
   },
   "baseUrls": [
     "http://localhost:6278/"

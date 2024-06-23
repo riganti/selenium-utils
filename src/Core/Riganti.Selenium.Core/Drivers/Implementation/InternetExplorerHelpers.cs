@@ -12,9 +12,8 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
             {
                 BrowserCommandLineArguments = "-private"
             };
-
+            options.BrowserVersion = factory.Options.TryGet(nameof(options.BrowserVersion));
             return new InternetExplorerDriver(options);
         }
-
     }
 }

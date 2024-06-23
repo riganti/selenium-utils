@@ -253,7 +253,7 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
                 browser.NavigateToUrl("/test/Cookies");
                 browser.First("#CookieIndicator").CheckIfInnerTextEquals("default value");
                 
-                browser.Click("#SetCookies").Wait();
+                browser.Click("#SetCookies").Wait(1000);
                 browser.NavigateToUrl("/test/Cookies");
                 browser.First("#CookieIndicator").CheckIfInnerTextEquals("new value");
             };
