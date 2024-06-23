@@ -80,13 +80,14 @@ namespace Riganti.Selenium.Core.Samples.FluentApi.Tests
                     var elem = browser.Single("#span");
                     elem.Single("///***-*///@@##@šš+š++++---><<>''", By.XPath);
                 });
-                throw new System.Exception("SelectMethod_InvalidXPathSelector_ExpectedException was supposed to fail!!!");
             }
             catch (System.Exception)
             {
                 // ignore
                 // reason: Firefox driver and Chrome driver throw different exceptions
+                return;
             }
+            throw new System.Exception("SelectMethod_InvalidXPathSelector_ExpectedException was supposed to fail!!!");
         }
     }
 }
