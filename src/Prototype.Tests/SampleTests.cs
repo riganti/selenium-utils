@@ -12,4 +12,10 @@ public class SampleTests
         ctx.WebDriver.Navigate().GoToUrl("https://example.com");
         pool.Return(ctx);
     }
+
+    [UIFact]
+    public void Simple_WithAutomaticTestContext(UITestContext ctx)
+    {
+        ctx.WebDriver.Navigate().GoToUrl("https://example.com");
+    }
 }

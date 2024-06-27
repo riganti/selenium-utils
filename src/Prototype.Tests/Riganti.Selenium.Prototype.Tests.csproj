@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Prototype\Prototype.csproj" />
+    <ProjectReference Include="..\Prototype\Riganti.Selenium.Prototype.csproj" />
   </ItemGroup>
 
 </Project>
