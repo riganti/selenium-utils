@@ -7,7 +7,6 @@ using System.Runtime.Serialization;
 using System.Text;
 using OpenQA.Selenium;
 using Riganti.Selenium.Core.Abstractions.Attributes;
-using Riganti.Selenium.Core.Abstractions.Reporting;
 
 namespace Riganti.Selenium.Core.Abstractions.Exceptions
 {
@@ -61,7 +60,6 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
         public string WebBrowser { get; set; }
         public string CurrentUrl { get; set; }
         public string Screenshot { get; set; }
-        public Dictionary<string, TestRunInputResult> ReporterResults { get; set; }
 
         protected TestExceptionBase()
         {
@@ -109,39 +107,8 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
             AppendField(sb, "Browser", WebBrowser);
             AppendField(sb, "Url", CurrentUrl);
             AppendField(sb, "Screenshot", Screenshot);
-            AppendReportersResults(sb, ReporterResults);
 
             return sb.ToString();
-        }
-
-        private void AppendReportersResults(StringBuilder sb, Dictionary<string, TestRunInputResult> reporterResults)
-        {
-            if (reporterResults != null && reporterResults.Any())
-            {
-                sb.AppendLine("Reporters results: ");
-                foreach (var result in reporterResults)
-                {
-                    if (result.Value is FailedTestRunInputResult failedResult)
-                    {
-                        if (failedResult.Exception != null)
-                        {
-                            AppendField(sb, $"{result.Key}.Exception ", failedResult.Exception?.Message);
-                        }
-
-                        continue;
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(result.Value?.TestResultUrl))
-                    {
-                        AppendField(sb, $"{result.Key}.TestResultUrl ", result.Value.TestResultUrl);
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(result.Value?.TestSuiteUrl))
-                    {
-                        AppendField(sb, $"{result.Key}.TestSuiteUrl ", result.Value.TestSuiteUrl);
-                    }
-                }
-            }
         }
 
         private void RenderExceptionMessage(StringBuilder sb)

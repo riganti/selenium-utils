@@ -11,6 +11,5 @@ namespace Riganti.Selenium.Core.Configuration
         public TestRunOptions TestRunOptions { get; } = new TestRunOptions();
 
         public LoggingOptions Logging { get; } = new LoggingOptions();
-        public ReportingOptions Reporting { get; } = new ReportingOptions();
     }
 }
