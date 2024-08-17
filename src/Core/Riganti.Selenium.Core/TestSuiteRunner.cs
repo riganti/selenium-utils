@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Attributes;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
-using Riganti.Selenium.Core.Abstractions.Reporting;
 using Riganti.Selenium.Core.Configuration;
 using Riganti.Selenium.Core.Discovery;
 using Riganti.Selenium.Core.Factories;
 using Riganti.Selenium.Core.Logging;
-using Riganti.Selenium.Core.Reporting;
 
 namespace Riganti.Selenium.Core
 {
@@ -31,8 +29,6 @@ namespace Riganti.Selenium.Core
 
         public ITestContextProvider TestContextProvider { get; }
 
-        public IReportingMetadataProvider ReportingMetadataProvider { get; }
-
         public LoggerService LoggerService { get; set; }
         public ServiceFactory ServiceFactory { get; } = new ServiceFactory();
 
@@ -40,7 +36,6 @@ namespace Riganti.Selenium.Core
         {
             SearchAssemblies = new List<Assembly>() { Assembly.GetExecutingAssembly() };
             ServiceFactory.RegisterTransient<WebBrowserFactoryResolver<TestSuiteRunner>, WebBrowserFactoryResolver<TestSuiteRunner>>();
-            ServiceFactory.RegisterTransient<ResultReportersFactory, ResultReportersFactory>();
 
             registerServices?.Invoke(ServiceFactory, this);
 
@@ -48,7 +43,6 @@ namespace Riganti.Selenium.Core
             this.TestContextProvider = testContextProvider;
             this.WebBrowserPool = new WebBrowserPool(this);
             this.TestContextAccessor = new TestContextAccessor();
-            ReportingMetadataProvider = new DefaultReportingMetadataProvider(testContextProvider);
         }
 
         /// <summary>
@@ -61,8 +55,6 @@ namespace Riganti.Selenium.Core
                 return;
             LoggerService = CreateLoggerService(SearchAssemblies);
             factories = CreateWebBrowserFactories();
-            var reporters = CreateReporters();
-            Reporter = new AggregatedReporter(reporters, ReportingMetadataProvider, Configuration);
 
             this.LogInfo("RIGANTI Selenium-Utils Test framework initialized.");
             this.LogVerbose("WebBrowserFactories discovered: ");
@@ -85,14 +77,6 @@ namespace Riganti.Selenium.Core
             {
                 this.LogVerbose($"* [{testConfiguration.BaseUrl}] {testConfiguration.Factory.Name}");
             }
-        }
-
-        internal AggregatedReporter Reporter { get; set; }
-
-        protected virtual Dictionary<string, ITestResultReporter> CreateReporters()
-        {
-            var factoryResolver = ServiceFactory.Resolve<ResultReportersFactory>();
-            return factoryResolver.CreateReporters(SearchAssemblies, Configuration);
         }
 
         private LoggerService CreateLoggerService(IEnumerable<Assembly> assemblies)
@@ -173,11 +157,9 @@ namespace Riganti.Selenium.Core
                         RunInAllBrowsersSequential(testClass, testName, action, skipBrowserAttributes);
                     }
                 });
-                Reporter.ReportSuccessfulTest(testName, callerFilePath, callerLineNumber);
             }
             catch (Exception ex)
             {
-                Reporter.ReportFailedTest(ex, testName, callerFilePath, callerLineNumber);
                 throw;
             }
             finally
