@@ -89,7 +89,7 @@ namespace Riganti.Selenium.Core
         /// <summary>
         /// Gives path of url of active browser tab.
         /// </summary>
-        public string CurrentUrlPath => new Uri(CurrentUrl).GetLeftPart(UriPartial.Path);
+        public string CurrentUrlPath => new Uri(CurrentUrl).GetComponents(UriComponents.PathAndQuery | UriComponents.Fragment & ~UriComponents.HostAndPort, UriFormat.UriEscaped);
 
 
 
