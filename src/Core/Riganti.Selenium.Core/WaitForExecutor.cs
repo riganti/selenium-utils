@@ -1,6 +1,7 @@
 ﻿using System;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Riganti.Selenium.Core
 {
@@ -12,26 +13,25 @@ namespace Riganti.Selenium.Core
             {
                 throw new NullReferenceException("Condition cannot be null.");
             }
-            var now = DateTime.UtcNow;
+            var stopwatch = Stopwatch.StartNew();
 
-            bool isConditionMet = false;
-            do
+            while (true)
             {
                 try
                 {
                     condition();
-                    isConditionMet = true;
+                    return;
                 }
                 catch (TestExceptionBase ex)
                 {
-                    if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > timeout)
+                    if (stopwatch.ElapsedMilliseconds > timeout)
                     {
                         if (throwOriginal) throw;
                         else throw new WaitBlockException(failureMessage ?? ex.Message, ex);
                     }
                 }
                 Thread.Sleep(checkInterval);
-            } while (!isConditionMet);
+            }
         }
         public void WaitFor(Func<bool> condition, WaitForOptions options = null)
         {
@@ -40,29 +40,30 @@ namespace Riganti.Selenium.Core
             {
                 throw new NullReferenceException("Condition cannot be null.");
             }
-            var now = DateTime.UtcNow;
+            var stopwatch = Stopwatch.StartNew();
 
-            bool isConditionMet = false;
-            do
+            while (true)
             {
                 try
                 {
-                    isConditionMet = condition();
+                    if (condition())
+                        return;
                 }
                 catch (TestExceptionBase ex)
                 {
-                    if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > options.Timeout)
+                    if (stopwatch.ElapsedMilliseconds > options.Timeout)
                     {
                         if (options.ThrowOriginalException) throw;
                         else throw new WaitBlockException(options.FailureMessage ?? ex.Message, ex);
                     }
                 }
-                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > options.Timeout)
+                if (stopwatch.ElapsedMilliseconds > options.Timeout)
                 {
-                    throw new WaitBlockException(options.FailureMessage);
+                    throw new WaitBlockException(options.FailureMessage ?? "Condition returned false after timeout expired.");
                 }
+
                 Thread.Sleep(options.CheckInterval);
-            } while (!isConditionMet);
+            }
         }
 
         /// <summary>

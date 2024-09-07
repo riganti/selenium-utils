@@ -589,34 +589,28 @@ namespace Riganti.Selenium.Core
             {
                 throw new NullReferenceException("Condition cannot be null.");
             }
-            var now = DateTime.UtcNow;
+            var stopwatch = Stopwatch.StartNew();
 
-            bool isConditionMet = false;
-            Exception ex = null;
-            do
+            while (true)
             {
                 try
                 {
-                    isConditionMet = condition();
+                    if (condition())
+                        return this;
                 }
-                catch (StaleElementReferenceException)
+                catch (StaleElementReferenceException) when (ignoreCertainException)
                 {
-                    if (!ignoreCertainException)
-                        throw;
                 }
-                catch (InvalidElementStateException)
+                catch (InvalidElementStateException) when (ignoreCertainException)
                 {
-                    if (!ignoreCertainException)
-                        throw;
                 }
 
-                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > timeout)
+                if (stopwatch.ElapsedMilliseconds > timeout)
                 {
-                    throw new WaitBlockException(failureMessage);
+                    throw new WaitBlockException(failureMessage ?? "Condition returned false after timeout expired.");
                 }
                 Wait(checkInterval);
-            } while (!isConditionMet);
-            return this;
+            }
         }
         /// <inheritdoc />
 
@@ -654,32 +648,28 @@ namespace Riganti.Selenium.Core
             {
                 throw new ArgumentNullException(nameof(action));
             }
-            var now = DateTime.UtcNow;
+            var stopwatch = Stopwatch.StartNew();
 
-            Exception exceptionThrown = null;
-            do
+            while (true)
             {
                 try
                 {
                     action();
-                    exceptionThrown = null;
+                    return this;
                 }
-                catch (Exception ex)
+                catch (Exception exceptionThrown)
                 {
-                    exceptionThrown = ex;
-                }
-
-                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > timeout)
-                {
-                    if (failureMessage != null)
+                    if (stopwatch.ElapsedMilliseconds > timeout)
                     {
-                        throw new WaitBlockException(failureMessage, exceptionThrown);
+                        if (failureMessage != null)
+                        {
+                            throw new WaitBlockException(failureMessage, exceptionThrown);
+                        }
+                        throw;
                     }
-                    throw exceptionThrown;
                 }
                 Wait(checkInterval);
-            } while (exceptionThrown != null);
-            return this;
+            }
         }
 
         public IElementWrapper WaitFor(Func<IBrowserWrapper, IElementWrapper> selector, WaitForOptions options = null)

@@ -9,6 +9,7 @@ using OpenQA.Selenium.Interactions;
 using Riganti.Selenium.Core.Abstractions;
 using Riganti.Selenium.Core.Abstractions.Exceptions;
 using Riganti.Selenium.Core.Api;
+using System.Diagnostics;
 
 namespace Riganti.Selenium.Core
 {
@@ -560,34 +561,30 @@ return false;
             {
                 throw new NullReferenceException("Condition cannot be null.");
             }
-            var now = DateTime.UtcNow;
 
-            bool isConditionMet = false;
-            do
+            var stopwatch = Stopwatch.StartNew();
+
+            while (true)
             {
                 try
                 {
-                    isConditionMet = condition(this);
+                    if (condition(this))
+                        return this;
                 }
-                catch (StaleElementReferenceException)
+                catch (StaleElementReferenceException) when (ignoreCertainException)
                 {
-                    if (!ignoreCertainException)
-                        throw;
                 }
-                catch (InvalidElementStateException)
+                catch (InvalidElementStateException) when (ignoreCertainException)
                 {
-                    if (!ignoreCertainException)
-                        throw;
                 }
 
-                if (DateTime.UtcNow.Subtract(now).TotalMilliseconds > maxTimeout)
+                if (stopwatch.ElapsedMilliseconds > maxTimeout)
                 {
-                    throw new WaitBlockException(failureMessage);
+                    throw new WaitBlockException(failureMessage ?? "Condition returned false after timeout expired.");
                 }
+
                 Wait(checkInterval);
-            } while (!isConditionMet);
-
-            return this;
+            }
         }
 
         public IElementWrapper WaitFor(Action<IElementWrapper> checkExpression, int maxTimeout, string failureMessage, int checkInterval = 30)
