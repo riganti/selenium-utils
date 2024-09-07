@@ -654,7 +654,7 @@ return false;
                 }
             }
 
-            window.scroll(0,findPosition(arguments[0]));
+            window.scroll({ left:0, top:findPosition(arguments[0]), behavior: 'instant' });
         ";
             var executor = browser.GetJavaScriptExecutor();
             executor.ExecuteScript(javascript, WaitForInternalElement(waitForOptions));
