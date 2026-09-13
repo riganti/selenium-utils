@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using OpenQA.Selenium;
 
 namespace Riganti.Selenium.Core.UnitTests.Mock
@@ -25,6 +26,8 @@ namespace Riganti.Selenium.Core.UnitTests.Mock
         public void Dispose()
         {
         }
+
+        public ValueTask DisposeAsync() => default;
 
         public void Close()
         {

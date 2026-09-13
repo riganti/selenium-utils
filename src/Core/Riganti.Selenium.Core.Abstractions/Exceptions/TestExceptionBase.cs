@@ -76,7 +76,7 @@ namespace Riganti.Selenium.Core.Abstractions.Exceptions
         {
         }
 
-        protected TestExceptionBase(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected TestExceptionBase(SerializationInfo info, StreamingContext context) : base(info.GetString("Message"))
         {
         }
 
