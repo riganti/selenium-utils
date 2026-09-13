@@ -9,7 +9,6 @@ Param(
 
 $packages = @(
 	[pscustomobject]@{ Package = "Riganti.Selenium.AssertApi" },
-	[pscustomobject]@{ Package = "Riganti.Selenium.Coordinator.Client" },
 	[pscustomobject]@{ Package = "Riganti.Selenium.Core" },
 	[pscustomobject]@{ Package = "Riganti.Selenium.Core.Abstractions" },
 	[pscustomobject]@{ Package = "Riganti.Selenium.DotVVM" },
