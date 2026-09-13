@@ -9,16 +9,10 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
 {
     public static class FirefoxHelpers
     {
-        private static FirefoxDriverService service;
-
-        static FirefoxHelpers()
-        {
-            service = FirefoxDriverService.CreateDefaultService();
-        }
-
         public static FirefoxDriver CreateFirefoxDriver(LocalWebBrowserFactory factory)
         {
             var ffOptions = GetFirefoxOptions(factory.Options);
+            var service = FirefoxDriverService.CreateDefaultService();
             var driver = new FirefoxDriver(service, ffOptions);
             return driver;
         }
