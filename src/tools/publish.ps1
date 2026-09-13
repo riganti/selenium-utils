@@ -8,7 +8,6 @@ $PWD | Write-host
 dotnet restore ..\Riganti.Selenium.WithoutCoordinator.sln
 dotnet build ..\Riganti.Selenium.WithoutCoordinator.sln -c Release
 
-dotnet pack -c  Release --no-build ..\Coordinator\Riganti.Selenium.Coordinator.Client\Riganti.Selenium.Coordinator.Client.csproj            
 dotnet pack -c  Release --no-build ..\Core\Riganti.Selenium.AssertApi\Riganti.Selenium.AssertApi.csproj                                     
 dotnet pack -c  Release --no-build ..\Core\Riganti.Selenium.Core\Riganti.Selenium.Core.csproj                                               
 dotnet pack -c  Release --no-build ..\Core\Riganti.Selenium.Core.Abstractions\Riganti.Selenium.Core.Abstractions.csproj                     
