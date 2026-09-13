@@ -13,19 +13,19 @@ steps:
   inputs:
     forceReinstallCredentialProvider: true
 - powershell: |
-   $file = Get-ChildItem -Path $pwd -Filter *without*.sln -Recurse
+   $file = Get-ChildItem -Path $pwd -Filter Riganti.Selenium.sln -Recurse
    dotnet build $file.FullName | Write-Host
   displayName: 'PowerShell Script'
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
-    restoreSolution: '**\Riganti.Selenium.WithoutCoordinator.sln'
+    restoreSolution: '**\Riganti.Selenium.sln'
 
 - task: VSBuild@1
-  displayName: 'Build solution **\Riganti.Selenium.WithoutCoordinator.sln'
+  displayName: 'Build solution **\Riganti.Selenium.sln'
   inputs:
-    solution: '**\Riganti.Selenium.WithoutCoordinator.sln'
+    solution: '**\Riganti.Selenium.sln'
     maximumCpuCount: true
 
 - task: PowerShell@2

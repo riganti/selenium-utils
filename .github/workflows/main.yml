@@ -21,7 +21,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     env:
-      SLN: "src/Riganti.Selenium.WithoutCoordinator.sln"
+      SLN: "src/Riganti.Selenium.sln"
     steps:
       - uses: actions/checkout@v4
       - name: Set up
@@ -42,7 +42,7 @@ jobs:
         os: [ubuntu-latest]
 
     env:
-      SLN: "src/Riganti.Selenium.WithoutCoordinator.sln"
+      SLN: "src/Riganti.Selenium.sln"
     steps:
       - uses: actions/checkout@v4
       - name: Set up

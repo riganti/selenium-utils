@@ -26,12 +26,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Selenium.Support" Version="4.21.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.21.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="Selenium.Support" Version="4.49.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.49.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Coordinator\Riganti.Selenium.Coordinator.Client\Riganti.Selenium.Coordinator.Client.csproj" />
     <ProjectReference Include="..\Riganti.Selenium.Core.Abstractions\Riganti.Selenium.Core.Abstractions.csproj" />
     <ProjectReference Include="..\Riganti.Selenium.Validators\Riganti.Selenium.Validators.csproj" />
   </ItemGroup>
