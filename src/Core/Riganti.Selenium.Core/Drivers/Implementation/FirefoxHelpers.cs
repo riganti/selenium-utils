@@ -32,6 +32,7 @@ namespace Riganti.Selenium.Core.Drivers.Implementation
             {
                 Profile = GetFirefoxProfile()
             };
+            options.SetPreference("browser.startup.page", 0);
             options.BrowserVersion = _options.TryGet(nameof(options.BrowserVersion));
             return options;
         }
